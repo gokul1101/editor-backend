@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const studentSchema = new Schema({
-  registerNo: {
+  regno: {
     type: Number,
     required: true,
     unique: true,
