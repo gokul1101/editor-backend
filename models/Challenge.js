@@ -9,7 +9,7 @@ const challengeSchema = new Schema({
   outputFormat: String,
   category: String,
   difficulty: String,
-  testcases: [{ type: Schema.ObjectId, ref: "testcase", unique: true }],
+  testcases: [{ type: Schema.Types.ObjectId, ref: "testcase", unique: true }],
   maxScore: { type: Number, max: 100, default: 0 },
   createdAt: { type: Date, default: Date.now() },
 });

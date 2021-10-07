@@ -8,7 +8,7 @@ const adminSchema = new Schema({
     unique: true,
   },
   password: String,
-  contests: [{ type: Schema.ObjectId, ref: "contest", unique: true }],
+  contests: [{ type: Schema.Types.ObjectId, ref: "contest", unique: true }],
 });
 
 module.exports = model("admin", adminSchema);

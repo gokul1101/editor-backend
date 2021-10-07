@@ -11,6 +11,7 @@ const studentSchema = new Schema({
   password: String,
   gender: String,
   department: String,
+  college : String,
   year: Number,
   points: Number,
 });
