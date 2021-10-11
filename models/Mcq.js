@@ -6,7 +6,7 @@ const mcqSchema = new Schema({
   option2: { type: String, required: true },
   option3: { type: String, required: true },
   option4: { type: String, required: true },
-  crtAnswer: { type: String, required: true },
+  crt_answer: { type: Number, required: true },
 });
 
 module.exports = model("mcq", mcqSchema);
