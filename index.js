@@ -14,12 +14,14 @@ mongoose.connect(
   MONGOURI,
   {
     useUnifiedTopology: true,
-    useCreateIndex: true,
     useNewUrlParser: true,
-    useFindAndModify: false,
   },
   () => console.log("Connected to DB")
 );
+mongoose.Promise = global.Promise;
+mongoose.connection.on("error", error => {
+    console.log('Problem connection to the database'+error);
+});
 
 const router = require("./router/route");
 app.use(router);

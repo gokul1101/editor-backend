@@ -7,7 +7,6 @@ const challengeSchema = new Schema({
   input_format: { type: String, required: true },
   output_format: { type: String, required: true },
   contraints: { type: String, required: true },
-  category: { type: Schema.Types.ObjectId, ref: "challenge_category" },
   difficulty: { type: Schema.Types.ObjectId, ref: "challenge_difficulty" },
   testcases: [{ type: Schema.Types.ObjectId, ref: "testcase", unique: true }],
   max_score: { type: Number, default: 0 },
