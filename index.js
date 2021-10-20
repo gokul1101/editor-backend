@@ -1,29 +1,46 @@
 const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
+const { connect } = require("mongoose");
+const { success, error } = require("consola");
 const cors = require("cors");
 
+//* CONSTANTS
+const { DB, PORT } = require("./config/index");
+
+//* APP INTIALIZATION
+const app = express();
+
+//* MIDDLEWARES
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const PORT = process.env.PORT || 5000;
+//* Router Middleware
+app.use(require("./router/route"));
 
-const { MONGOURI } = require("./config/index");
-mongoose.connect(
-  MONGOURI,
-  {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  },
-  () => console.log("Connected to DB")
-);
-mongoose.Promise = global.Promise;
-mongoose.connection.on("error", error => {
-    console.log('Problem connection to the database'+error);
-});
+const startApp = async () => {
+  try {
+    //* DB CONNECTION
+    await connect(DB, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    });
 
-const router = require("./router/route");
-app.use(router);
+    success({ message: `Connected to DB \n${DB}`, badge: true });
 
-app.listen(PORT, () => console.log("Connected to port " + PORT));
+    //* Started listening to DB
+    app.listen(PORT, () =>
+      success({ message: `Server started on PORT ${PORT}`, badge: true })
+    );
+  } catch (err) {
+    //! Error in connecting DB
+    error({ 
+      message: `Unable to connect with DB \n${err}`,
+      badge: true
+    });
+    startApp();
+  }
+};
+startApp();
+
+
+// app.use('/static', express.static(`${__dirname}/static`, { maxAge: '28 days' }));

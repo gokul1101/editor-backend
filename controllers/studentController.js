@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const User = require("../models/Users");
 const studentLogin = async (req, res) => {
   let { regno, password } = req.body;
   try {

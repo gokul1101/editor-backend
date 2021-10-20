@@ -1,4 +1,6 @@
-const dotenv = require("dotenv")
-dotenv.config()
-const MONGOURI = process.env.DB
-module.exports = {MONGOURI}
+require("dotenv").config()
+module.exports = {
+    DB: process.env.APP_DB,
+    SECRET: process.env.APP_SECRET,
+    PORT: process.env.APP_PORT,
+}

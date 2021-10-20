@@ -1,8 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const submissionSchema = new Schema({
-  quiz: { type: Schema.Types.ObjectId, ref: "quiz", default: null },
-  challenge: { type: Schema.Types.ObjectId, ref: "challenge", default: null },
+  question: { type: Schema.Types.ObjectId, ref: "question", default: null },
   user: { type: Schema.Types.ObjectId, ref: "user", unique: true },
   event_category: {
     type: String,
@@ -11,8 +10,6 @@ const submissionSchema = new Schema({
   },
   score: { type: Number, default: 0 },
   created_at: { type: Date, default: Date.now() },
-  updated_at: { type: Date, default: null },
-  deleted_at: { type: Date, default: null },
 });
 
 module.exports = model("submission", submissionSchema);
