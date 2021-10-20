@@ -43,14 +43,44 @@ const mapCollegeId = async (name) => {
   let college = await College.findOne({ name });
   return college._id;
 };
-
+const mapRoleName = async (id) => {
+  let role = await Role.findById(id);
+  return role.name;
+};
+const mapGenderName = async (id) => {
+  let gender = await Gender.findById(id);
+  return gender.name;
+};
+const mapStreamName = async (id) => {
+  let stream = await Stream.findById(id);
+  return stream.name;
+};
+const mapBatchYear = async (id) => {
+  let batch = await Batch.findById(id);
+  return `${batch.start_year}-${batch.end_year}`;
+};
+const mapCourseName = async (id) => {
+  let course = await Course.findById(id);
+  return course.name;
+};
+const mapCollegeName = async (id) => {
+  let college = await College.findById(id);
+  return college.name;
+};
 module.exports = {
   validateEmail,
   validateRegisterNumber,
   mapBatchId,
+  mapBatchYear,
   mapCollegeId,
   mapCourseId,
   mapGenderId,
   mapRoleId,
   mapStreamId,
+  mapRoleName,
+  mapGenderName,
+  mapStreamName,
+  mapBatchYear,
+  mapCourseName,
+  mapCollegeName,
 };

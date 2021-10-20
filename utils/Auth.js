@@ -1,6 +1,10 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const passport = require("passport");
+const { SECRET } = require("../config/index");
 const User = require("../models/users");
-const bcrypt = require('bcryptjs');
-//*Helper Function
+const Role = require("../models/roles");
+//* Helper Function
 let {
   validateEmail,
   validateRegisterNumber,
@@ -10,6 +14,12 @@ let {
   mapGenderId,
   mapRoleId,
   mapStreamId,
+  mapRoleName,
+  mapGenderName,
+  mapStreamName,
+  mapBatchYear,
+  mapCourseName,
+  mapCollegeName,
 } = require("./helper");
 
 //? To register the User
@@ -20,7 +30,7 @@ const userRegister = async (userDetails, res) => {
       userDetails.regno
     );
     if (!registerNumberNotTaken) {
-      return res.status(400).send({
+      return res.status(400).json({
         message: `Register number already exists.`,
         success: false,
       });
@@ -28,7 +38,7 @@ const userRegister = async (userDetails, res) => {
     //* Validate email
     let emailNotTaken = await validateEmail(userDetails.email);
     if (!emailNotTaken) {
-      return res.status(400).send({
+      return res.status(400).json({
         message: `Email already exists.`,
         success: false,
       });
@@ -46,18 +56,99 @@ const userRegister = async (userDetails, res) => {
     //* Create new user
     const newUser = new User({ ...userDetails });
     await newUser.save();
-    res.status(201).send({
+    res.status(201).json({
       message: "New User Created",
       success: true,
     });
   } catch (err) {
     //! Error in creating user
-    console.log(err)
-    return res.status(500).send({
+    console.log(err);
+    return res.status(500).json({
       message: `unable to create user`,
       success: false,
     });
   }
 };
+//? User Login
+const userLogin = async (userCred, userRole, res) => {
+  let { regno, password } = userCred;
+  //? Check if the regno is in the DB
+  const user = await User.findOne({ regno });
+  if (!user) {
+    //! Register Number not found
+    return res.status(404).json({
+      message: "Register number not found!",
+      success: false,
+    });
+  }
+  const role = await Role.findById(user.role_id);
+  if (role.name !== userRole) {
+    //! Wrong portal log in
+    return res.status(403).json({
+      message: "You have logged in from a wrong portal!",
+      success: false,
+    });
+  }
+  //* User existing from the right portal
+  let isMatch = await bcrypt.compare(password, user.password);
+  if (isMatch) {
+    let token = jwt.sign(
+      {
+        user_id: user._id,
+        role: user.role,
+        regno: user.regno,
+        email: user.email,
+      },
+      SECRET,
+      { expiresIn: "2 days" }
+    );
+    let result = {
+      username: user.name,
+      role: role.name,
+      email: user.email,
+      token: `Bearer ${token}`,
+      expiresIn: 48,
+    };
+    return res.status(200).json({
+      ...result,
+      message: "You are logged in!",
+      success: true,
+    });
+  } else {
+    //! Wrong password
+    return res.status(403).json({
+      message: "Incorrect password.",
+      success: false,
+    });
+  }
+};
+//? Passport Middleware
+const userAuth = passport.authenticate("jwt", { session: false });
 
-module.exports = { userRegister };
+const checkRole = (roles) => async (req, res, next) => {
+  return roles.includes(await mapRoleName(req.user.role_id)) ? next() : res.status(401).json("Unauthorized");
+
+}
+
+const serializeUser = async (user) => {
+  return {
+    regno: user.regno,
+    name: user.name,
+    email: user.email,
+    role: await mapRoleName(user.role_id),
+    gender: await mapGenderName(user.gender_id),
+    stream: await mapStreamName(user.stream_id),
+    batch: await mapBatchYear(user.batch_id),
+    college: await mapCollegeName(user.college_id),
+    course: await mapCourseName(user.course_id),
+    phone_no: user.phone_no,
+  };
+};
+
+module.exports = {
+  userAuth,
+  userRegister,
+  userLogin,
+  serializeUser,
+  checkRole,
+};

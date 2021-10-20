@@ -2,6 +2,7 @@ const express = require("express");
 const { connect } = require("mongoose");
 const { success, error } = require("consola");
 const cors = require("cors");
+const passport = require("passport");
 
 //* CONSTANTS
 const { DB, PORT } = require("./config/index");
@@ -13,6 +14,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(passport.initialize())
+require("./middlewares/passport")(passport);
 
 //* Router Middleware
 app.use(require("./router/route"));
