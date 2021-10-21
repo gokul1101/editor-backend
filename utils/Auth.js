@@ -125,13 +125,14 @@ const userLogin = async (userCred, userRole, res) => {
 //? Passport Middleware
 const userAuth = passport.authenticate("jwt", { session: false });
 
-const checkRole = (roles) => async (req, res, next) => {
-  return roles.includes(await mapRoleName(req.user.role_id)) ? next() : res.status(401).json("Unauthorized");
-
-}
+const checkRole = (roles) => async (req, res, next) =>
+  roles.includes(await mapRoleName(req.user.role_id))
+    ? next()
+    : res.status(401).json("Unauthorized");
 
 const serializeUser = async (user) => {
   return {
+    _id: user._id,
     regno: user.regno,
     name: user.name,
     email: user.email,
