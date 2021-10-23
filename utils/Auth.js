@@ -14,7 +14,6 @@ let {
   mapGenderId,
   mapRoleId,
   mapStreamId,
-  mapRoleName,
   mapGenderName,
   mapStreamName,
   mapBatchYear,
@@ -70,7 +69,7 @@ const userRegister = async (userDetails, res) => {
   }
 };
 //? User Login
-const userLogin = async (userCred, userRole, res) => {
+const userLogin = async (userCred, res) => {
   let { regno, password } = userCred;
   //? Check if the regno is in the DB
   const user = await User.findOne({ regno });
@@ -82,32 +81,25 @@ const userLogin = async (userCred, userRole, res) => {
     });
   }
   const role = await Role.findById(user.role_id);
-  if (role.name !== userRole) {
-    //! Wrong portal log in
-    return res.status(403).json({
-      message: "You have logged in from a wrong portal!",
-      success: false,
-    });
-  }
-  //* User existing from the right portal
+  //? If user exists
   let isMatch = await bcrypt.compare(password, user.password);
   if (isMatch) {
     let token = jwt.sign(
       {
         user_id: user._id,
-        role: user.role,
+        role: role.name,
         regno: user.regno,
         email: user.email,
       },
       SECRET,
-      { expiresIn: "2 days" }
+      { expiresIn: "3h" }
     );
     let result = {
       username: user.name,
       role: role.name,
       email: user.email,
       token: `Bearer ${token}`,
-      expiresIn: 48,
+      expiresIn: 3,
     };
     return res.status(200).json({
       ...result,
@@ -124,11 +116,10 @@ const userLogin = async (userCred, userRole, res) => {
 };
 //? Passport Middleware
 const userAuth = passport.authenticate("jwt", { session: false });
-
-const checkRole = (roles) => async (req, res, next) =>
-  roles.includes(await mapRoleName(req.user.role_id))
-    ? next()
-    : res.status(401).json("Unauthorized");
+ 
+const routeAuth = (role) => (req, res, next) => {
+  (role === req.user.role)? next() : res.status(401).json("Unauthorized");
+}
 
 const serializeUser = async (user) => {
   return {
@@ -136,7 +127,7 @@ const serializeUser = async (user) => {
     regno: user.regno,
     name: user.name,
     email: user.email,
-    role: await mapRoleName(user.role_id),
+    role: user.role_id,
     gender: await mapGenderName(user.gender_id),
     stream: await mapStreamName(user.stream_id),
     batch: await mapBatchYear(user.batch_id),
@@ -151,5 +142,5 @@ module.exports = {
   userRegister,
   userLogin,
   serializeUser,
-  checkRole,
+  routeAuth,
 };

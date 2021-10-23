@@ -1,10 +1,14 @@
 const { Schema, model } = require("mongoose");
 
 const contestSchema = new Schema({
-  contest_code: { type: String, required: true },
-  contest_name: { type: String, required: true, unique: true },
-  starts_at: { type: Date },
-  ends_at: { type: Date },
+  code: { type: String, required: true },
+  name: { type: String, required: true, unique: true },
+  start_date: { type: Date },
+  end_date: { type: Date },
+  start_time: { type: String },
+  end_time: { type: String },
+  duration: { type: String },
+  created_by: { type: Schema.Types.ObjectId, ref: "users" },
   created_at: { type: Date, default: Date.now() },
   updated_at: { type: Date, default: null },
   deleted_at: { type: Date, default: null },

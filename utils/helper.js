@@ -43,10 +43,6 @@ const mapCollegeId = async (name) => {
   let college = await College.findOne({ name });
   return college._id;
 };
-const mapRoleName = async (id) => {
-  let role = await Role.findById(id);
-  return role.name;
-};
 const mapGenderName = async (id) => {
   let gender = await Gender.findById(id);
   return gender.name;
@@ -77,7 +73,6 @@ module.exports = {
   mapGenderId,
   mapRoleId,
   mapStreamId,
-  mapRoleName,
   mapGenderName,
   mapStreamName,
   mapBatchYear,
