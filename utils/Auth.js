@@ -6,14 +6,6 @@ const User = require("../models/users");
 const Role = require("../models/roles");
 //* Helper Function
 let {
-  validateEmail,
-  validateRegisterNumber,
-  mapBatchId,
-  mapCollegeId,
-  mapCourseId,
-  mapGenderId,
-  mapRoleId,
-  mapStreamId,
   mapGenderName,
   mapStreamName,
   mapBatchYear,
@@ -21,53 +13,6 @@ let {
   mapCollegeName,
 } = require("./helper");
 
-//? To register the User
-const userRegister = async (userDetails, res) => {
-  try {
-    //* Validate register number
-    let registerNumberNotTaken = await validateRegisterNumber(
-      userDetails.regno
-    );
-    if (!registerNumberNotTaken) {
-      return res.status(400).json({
-        message: `Register number already exists.`,
-        success: false,
-      });
-    }
-    //* Validate email
-    let emailNotTaken = await validateEmail(userDetails.email);
-    if (!emailNotTaken) {
-      return res.status(400).json({
-        message: `Email already exists.`,
-        success: false,
-      });
-    }
-    //* Get the hashed password
-    let hashedPassword = await bcrypt.hash(userDetails.password, 8);
-    userDetails.password = hashedPassword;
-    //* Map IDs
-    userDetails.role_id = await mapRoleId(userDetails.role_id);
-    userDetails.gender_id = await mapGenderId(userDetails.gender_id);
-    userDetails.stream_id = await mapStreamId(userDetails.stream_id);
-    userDetails.batch_id = await mapBatchId(userDetails.batch_id.split("-"));
-    userDetails.course_id = await mapCourseId(userDetails.course_id);
-    userDetails.college_id = await mapCollegeId(userDetails.college_id);
-    //* Create new user
-    const newUser = new User({ ...userDetails });
-    await newUser.save();
-    res.status(201).json({
-      message: "New User Created",
-      success: true,
-    });
-  } catch (err) {
-    //! Error in creating user
-    console.log(err);
-    return res.status(500).json({
-      message: `unable to create user`,
-      success: false,
-    });
-  }
-};
 //? User Login
 const userLogin = async (userCred, res) => {
   let { regno, password } = userCred;
@@ -116,10 +61,12 @@ const userLogin = async (userCred, res) => {
 };
 //? Passport Middleware
 const userAuth = passport.authenticate("jwt", { session: false });
- 
-const routeAuth = (role) => (req, res, next) => {
-  (role === req.user.role)? next() : res.status(401).json("Unauthorized");
-}
+const { API } = require("./api");
+const routeAuth = (controller) => (req, res, next) => {
+  API[req.user.role].find((api) => api === controller)
+    ? next()
+    : res.status(401).json("Unauthorized");
+};
 
 const serializeUser = async (user) => {
   return {
@@ -139,7 +86,6 @@ const serializeUser = async (user) => {
 
 module.exports = {
   userAuth,
-  userRegister,
   userLogin,
   serializeUser,
   routeAuth,

@@ -2,18 +2,20 @@ const { Schema, model } = require("mongoose");
 
 const answersSchema = new Schema({
   question_id: { type: Schema.Types.ObjectId, ref: "questions" },
-  options : {
-    A : {type: String},
-    B : {type: String},
-    C : {type: String},
-    D : {type: String},
-    correctOption : { type: String, enum:["A", "B", "C", "D"] }
+  options: {
+    A: { type: String },
+    B: { type: String },
+    C: { type: String },
+    D: { type: String },
+    correctOption: { type: String, enum: ["A", "B", "C", "D"] },
   },
-  testcases : {
-    values : [{
-        input : {type : String},
-        output : {type : String},
-    }]
+  testcases: {
+    values: [
+      {
+        input: { type: String },
+        output: { type: String },
+      },
+    ],
   },
   created_at: { type: Date, default: Date.now() },
   updated_at: { type: Date, default: null },

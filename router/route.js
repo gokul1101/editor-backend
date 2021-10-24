@@ -1,21 +1,85 @@
-const { userRegister, userLogin, userAuth, serializeUser, routeAuth } = require("../utils/Auth");
-
 const router = require("express").Router();
+const { userLogin, userAuth, routeAuth } = require("../utils/Auth");
+const {
+  createUser,
+  getUser,
+  updateUser,
+  deteleUser,
+  createAllUsers,
+  getAllUsers,
+  updateAllUsers,
+  deleteAllUsers,
+} = require("../controllers/userController");
+
 //? Public Routes
 //* Login
-router.post("/api/v1/login", async (req, res) => {
-    await userLogin(req.body, res);
-})
+router.post("/api/v1/login", async (req, res) => await userLogin(req.body, res));
 
 //? Private Routes
 //* User registration
-router.post("/api/v1/register-user", async (req, res) => {
-    await userRegister(req.body, res);
-})
-// router.get("/api/v1/student-protected", userAuth, routeAuth("student"), async (req, res) => {
-//     return res.json(await serializeUser(req.user._doc))
-// })
-// router.get("/api/v1/admin-protected", userAuth, routeAuth("admin"), async (req, res) => {
-//     return res.json(await serializeUser(req.user._doc))
-// })
+router.post("/api/v1/user/create", userAuth, routeAuth("createUser"), createUser);
+
+//* User Details
+router.get("/api/v1/user/get", userAuth, routeAuth("getUser"), getUser);
+
+//* User Update 
+router.post("/api/v1/user/update", userAuth, routeAuth("updateUser"), updateUser);
+
+//* User Delete 
+router.post("/api/v1/user/delete", userAuth, routeAuth("deteleUser"), deteleUser);
+
+//* Multiple user CRUD
+router.post("api/v1/user/createAll", userAuth, routeAuth("createAllUsers"), createAllUsers)
+router.post("api/v1/user/getAll", userAuth, routeAuth("getAllUsers"), getAllUsers)
+router.post("api/v1/user/updateAll", userAuth, routeAuth("updateAllUsers"), updateAllUsers)
+router.post("api/v1/user/deleteAll", userAuth, routeAuth("deleteAllUsers"), deleteAllUsers)
+
+//* Contest
+router.post("api/v1/contest/create", userAuth, routeAuth("createContest"), createContest)
+router.post("api/v1/contest/get", userAuth, routeAuth("getContest"), getContest)
+router.post("api/v1/contest/update", userAuth, routeAuth("updateContest"), updateContest)
+router.post("api/v1/contest/delete", userAuth, routeAuth("deleteContest"), deleteContest)
+
+//* Question
+router.post("api/v1/question/create", userAuth, routeAuth("createQuestion"), createQuestion)
+router.post("api/v1/question/get", userAuth, routeAuth("getQuestion"), getQuestion)
+router.post("api/v1/question/update", userAuth, routeAuth("updateQuestion"), updateQuestion)
+router.post("api/v1/question/delete", userAuth, routeAuth("deleteQuestion"), deleteQuestion)
+
+//* Quiz
+router.post("api/v1/quiz/create", userAuth, routeAuth("createQuiz"), createQuiz)
+router.post("api/v1/quiz/get", userAuth, routeAuth("getQuiz"), getQuiz)
+router.post("api/v1/quiz/update", userAuth, routeAuth("updateQuiz"), updateQuiz)
+router.post("api/v1/quiz/delete", userAuth, routeAuth("deleteQuiz"), deleteQuiz)
+
+//* Answer
+router.post("api/v1/answer/create", userAuth, routeAuth("createAnswer"), createAnswer)
+router.post("api/v1/answer/get", userAuth, routeAuth("getAnswer"), getAnswer)
+router.post("api/v1/answer/update", userAuth, routeAuth("updateAnswer"), updateAnswer)
+router.post("api/v1/answer/delete", userAuth, routeAuth("deleteAnswer"), deleteAnswer)
+
+//* Batch
+router.post("api/v1/batch/create", userAuth, routeAuth("createBatch"), createBatch)
+router.post("api/v1/batch/get", userAuth, routeAuth("getBatch"), getBatch)
+router.post("api/v1/batch/update", userAuth, routeAuth("updateBatch"), updateBatch)
+router.post("api/v1/batch/delete", userAuth, routeAuth("deleteBatch"), deleteBatch)
+
+//* Course
+router.post("api/v1/course/create", userAuth, routeAuth("createCourse"), createCourse)
+router.post("api/v1/course/get", userAuth, routeAuth("getCourse"), getCourse)
+router.post("api/v1/course/update", userAuth, routeAuth("updateCourse"), updateCourse)
+router.post("api/v1/course/delete", userAuth, routeAuth("deleteCourse"), deleteCourse)
+
+//* Stream
+router.post("api/v1/stream/create", userAuth, routeAuth("createStream"), createStream)
+router.post("api/v1/stream/get", userAuth, routeAuth("getStream"), getStream)
+router.post("api/v1/stream/update", userAuth, routeAuth("updateStream"), updateStream)
+router.post("api/v1/stream/delete", userAuth, routeAuth("deleteStream"), deleteStream)
+
+//* College
+router.post("api/v1/college/create", userAuth, routeAuth("createCollege"), createCollege)
+router.post("api/v1/college/get", userAuth, routeAuth("getCollege"), getCollege)
+router.post("api/v1/college/update", userAuth, routeAuth("updateCollege"), updateCollege)
+router.post("api/v1/college/delete", userAuth, routeAuth("deleteCollege"), deleteCollege)
+
 module.exports = router;

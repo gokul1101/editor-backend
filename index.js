@@ -14,7 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(passport.initialize())
+app.use(passport.initialize());
 require("./middlewares/passport")(passport);
 
 //* Router Middleware
@@ -36,14 +36,13 @@ const startApp = async () => {
     );
   } catch (err) {
     //! Error in connecting DB
-    error({ 
+    error({
       message: `Unable to connect with DB \n${err}`,
-      badge: true
+      badge: true,
     });
     startApp();
   }
 };
 startApp();
-
 
 // app.use('/static', express.static(`${__dirname}/static`, { maxAge: '28 days' }));
