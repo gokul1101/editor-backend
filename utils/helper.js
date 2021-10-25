@@ -6,12 +6,9 @@ const Batch = require("../models/batches");
 const Course = require("../models/courses");
 const College = require("../models/colleges");
 
-const validateRegisterNumber = async (regno) => {
-  let user = await User.findOne({ regno });
-  return user ? false : true;
-};
-const validateEmail = async (email) => {
-  let user = await User.findOne({ email });
+//* Find user by given data
+const validate = async (data) => {
+  let user = await User.findOne(data);
   return user ? false : true;
 };
 const mapRoleId = async (name) => {
@@ -43,44 +40,12 @@ const mapCollegeId = async (name) => {
   let college = await College.findOne({ name });
   return college._id;
 };
-const mapRoleName = async (id) => {
-  let role = await Role.findById(id);
-  return role.name;
-};
-const mapGenderName = async (id) => {
-  let gender = await Gender.findById(id);
-  return gender.name;
-};
-const mapStreamName = async (id) => {
-  let stream = await Stream.findById(id);
-  return stream.name;
-};
-const mapBatchYear = async (id) => {
-  let batch = await Batch.findById(id);
-  return `${batch.start_year}-${batch.end_year}`;
-};
-const mapCourseName = async (id) => {
-  let course = await Course.findById(id);
-  return course.name;
-};
-const mapCollegeName = async (id) => {
-  let college = await College.findById(id);
-  return college.name;
-};
 module.exports = {
-  validateEmail,
-  validateRegisterNumber,
+  validate,
   mapBatchId,
-  mapBatchYear,
   mapCollegeId,
   mapCourseId,
   mapGenderId,
   mapRoleId,
   mapStreamId,
-  mapRoleName,
-  mapGenderName,
-  mapStreamName,
-  mapBatchYear,
-  mapCourseName,
-  mapCollegeName,
 };

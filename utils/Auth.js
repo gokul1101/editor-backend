@@ -72,20 +72,20 @@ const routeAuth = (controller) => (req, res, next) => {
       });
 };
 
-const serializeUser = async (user) => {
-  let userDetails = {}
+const serializeUser = (user) => {
+  let userDetails = {};
   userDetails._id = user._id;
   userDetails.regno = user.regno;
   userDetails.name = user.name;
   userDetails.email = user.email;
-  userDetails.role = await mapRoleName(user.role_id);
-  userDetails.gender = await mapGenderName(user.gender_id);
-  userDetails.stream = await mapStreamName(user.stream_id);
-  userDetails.college = await mapCollegeName(user.college_id);
-  userDetails.course = await mapCourseName(user.course_id);
-  userDetails.phone_no = user.phone_no
-  if(user.batch_id)
-    userDetails.batch = await mapBatchYear(user.batch_id);
+  userDetails.role_id = user.role_id.name;
+  userDetails.gender_id = user.gender_id.name;
+  userDetails.stream_id = user.stream_id.name;
+  userDetails.college_id = user.college_id.name;
+  userDetails.course_id = user.course_id.name;
+  userDetails.phone_no = user.phone_no;
+  if (user.batch_id)
+    userDetails.batch_id = `${user.batch_id.start_year}-${user.batch_id.end_year}`;
   return userDetails;
 };
 

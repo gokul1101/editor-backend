@@ -2,8 +2,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/users");
 const { serializeUser } = require("../utils/Auth");
 let {
-  validateEmail,
-  validateRegisterNumber,
+  validate,
   mapBatchId,
   mapCollegeId,
   mapCourseId,
@@ -16,19 +15,19 @@ const createUser = async (req, res) => {
   let userDetails = req.body;
   try {
     //* Validate register number
-    let registerNumberNotTaken = await validateRegisterNumber(
-      userDetails.regno
-    );
+    let registerNumberNotTaken = await validate({
+      regno: userDetails.regno,
+    });
     if (!registerNumberNotTaken) {
-      res.status(400).json({
+      return res.status(403).json({
         message: `Register number already exists.`,
         success: false,
       });
     }
     //* Validate email
-    let emailNotTaken = await validateEmail(userDetails.email);
+    let emailNotTaken = await validate({ email: userDetails.email });
     if (!emailNotTaken) {
-      res.status(400).json({
+      return res.status(403).json({
         message: `Email already exists.`,
         success: false,
       });
@@ -62,15 +61,47 @@ const createUser = async (req, res) => {
 };
 const getUser = async (req, res) => {
   try {
-    let user = await User.findOne({regno : req.params.id});
+    let user = await User.findOne({ regno: req.params.id }).populate([
+      {
+        path: "role_id",
+        model: "role",
+        select: "name",
+      },
+      {
+        path: "gender_id",
+        model: "gender",
+        select: "name",
+      },
+      {
+        path: "stream_id",
+        model: "stream",
+        select: "name",
+      },
+      {
+        path: "course_id",
+        model: "course",
+        select: "name",
+      },
+      {
+        path: "college_id",
+        model: "college",
+        select: "name",
+      },
+      {
+        path: "batch_id",
+        model: "batch",
+        select: "start_year end_year",
+      },
+    ]);
     //! User not found
     if (!user || user.deleted_at)
       return res.status(404).json({
         message: `user not found`,
         success: false,
       });
-    let userDetails = await serializeUser(user);
-    if (req.user.role === "student" && userDetails.role === "admin")
+    let userDetails = serializeUser(user);
+    //! Student cannot access admin data
+    if (req.user.role === "student" && userDetails.role_id === "admin")
       return res.status(401).json({
         message: `Unauthorized access`,
         success: false,
@@ -78,7 +109,7 @@ const getUser = async (req, res) => {
     res.status(200).json(userDetails);
   } catch (err) {
     //! Error in finding user details
-    console.log(err)
+    console.log(err);
     res.status(500).json({
       message: `unable to find user details`,
       success: false,
@@ -86,18 +117,99 @@ const getUser = async (req, res) => {
   }
 };
 const updateUser = async (req, res) => {
-  let { data } = req.body;
-  let user = req.user._doc;
-  if (req.user.role === "student")
-    try {
-      res.status(200).json(await serializeUser(user));
-    } catch (err) {
-      //! Error in finding user details
-      res.status(500).json({
-        message: `unable to find user details`,
+  let updateDetails = req.body;
+  try {
+    let user = await User.findById(updateDetails._id).populate([
+      {
+        path: "role_id",
+        model: "role",
+        select: "name",
+      },
+      {
+        path: "gender_id",
+        model: "gender",
+        select: "name",
+      },
+      {
+        path: "stream_id",
+        model: "stream",
+        select: "name",
+      },
+      {
+        path: "course_id",
+        model: "course",
+        select: "name",
+      },
+      {
+        path: "college_id",
+        model: "college",
+        select: "name",
+      },
+      {
+        path: "batch_id",
+        model: "batch",
+        select: "start_year end_year",
+      },
+    ]);
+    //! User not found
+    if (!user || user.deleted_at)
+      return res.status(404).json({
+        message: `user not found`,
         success: false,
       });
+    //* Validate register number
+    if (updateDetails.regno) {
+      let registerNumberNotTaken = await validate({
+        regno: updateDetails.regno,
+      });
+      if (!registerNumberNotTaken)
+        return res.status(403).json({
+          message: `Register number already exists.`,
+          success: false,
+        });
     }
+    //* Validate email
+    if (updateDetails.email) {
+      let emailNotTaken = await validate({ email: updateDetails.email });
+      if (!emailNotTaken)
+        return res.status(403).json({
+          message: `Email already exists.`,
+          success: false,
+        });
+    }
+    //! Student cannot access admin data
+    if (req.user.role === "student" && user.role.name === "admin")
+    return res.status(401).json({
+      message: `Unauthorized access`,
+      success: false,
+    });
+    let userDetails = {};
+    //* Only admins can change these data
+    if(req.user.role === "admin") {
+      if(updateDetails.newPassword) {
+        let hashedPassword = await bcrypt.hash(updateDetails.newPassword, 8);
+        userDetails.password = hashedPassword;
+      }
+      if(updateDetails.regno) userDetails.regno = updateDetails.regno;
+      if(updateDetails.role) userDetails.role_id = await mapRoleId(updateDetails.role);
+    }
+    if(updateDetails.name) userDetails.name = updateDetails.name;
+    if(updateDetails.phone_no) userDetails.phone_no = updateDetails.phone_no;
+    if(updateDetails.gender) userDetails.gender_id = await mapGenderId(updateDetails.gender);
+    if(updateDetails.stream) userDetails.stream_id = await mapStreamId(updateDetails.stream);
+    if(updateDetails.college) userDetails.college_id = await mapCollegeId(updateDetails.college);
+    if(updateDetails.course) userDetails.course_id = await mapCourseId(updateDetails.course);
+    if(updateDetails.batch) userDetails.batch_id = await mapBatchId(updateDetails.batch);
+    await User.findByIdAndUpdate(user._id, userDetails)
+    res.status(200).json(userDetails);
+  } catch (err) {
+    //! Error in finding user details
+    console.log(err);
+    res.status(500).json({
+      message: `unable to find user details`,
+      success: false,
+    });
+  }
 };
 const deteleUser = async (req, res) => {};
 const createAllUsers = async (req, res) => {};
