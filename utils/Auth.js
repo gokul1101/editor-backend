@@ -6,6 +6,7 @@ const User = require("../models/users");
 const Role = require("../models/roles");
 //* Helper Function
 let {
+  mapRoleName,
   mapGenderName,
   mapStreamName,
   mapBatchYear,
@@ -37,14 +38,14 @@ const userLogin = async (userCred, res) => {
         email: user.email,
       },
       SECRET,
-      { expiresIn: "3h" }
+      { expiresIn: "12h" }
     );
     let result = {
       username: user.name,
       role: role.name,
       email: user.email,
       token: `Bearer ${token}`,
-      expiresIn: 3,
+      expiresIn: 12,
     };
     return res.status(200).json({
       ...result,
@@ -65,23 +66,27 @@ const { API } = require("./api");
 const routeAuth = (controller) => (req, res, next) => {
   API[req.user.role].find((api) => api === controller)
     ? next()
-    : res.status(401).json("Unauthorized");
+    : res.status(401).json({
+        message: `Unauthorized`,
+        success: false,
+      });
 };
 
 const serializeUser = async (user) => {
-  return {
-    _id: user._id,
-    regno: user.regno,
-    name: user.name,
-    email: user.email,
-    role: user.role_id,
-    gender: await mapGenderName(user.gender_id),
-    stream: await mapStreamName(user.stream_id),
-    batch: await mapBatchYear(user.batch_id),
-    college: await mapCollegeName(user.college_id),
-    course: await mapCourseName(user.course_id),
-    phone_no: user.phone_no,
-  };
+  let userDetails = {}
+  userDetails._id = user._id;
+  userDetails.regno = user.regno;
+  userDetails.name = user.name;
+  userDetails.email = user.email;
+  userDetails.role = await mapRoleName(user.role_id);
+  userDetails.gender = await mapGenderName(user.gender_id);
+  userDetails.stream = await mapStreamName(user.stream_id);
+  userDetails.college = await mapCollegeName(user.college_id);
+  userDetails.course = await mapCourseName(user.course_id);
+  userDetails.phone_no = user.phone_no
+  if(user.batch_id)
+    userDetails.batch = await mapBatchYear(user.batch_id);
+  return userDetails;
 };
 
 module.exports = {
