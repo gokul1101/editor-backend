@@ -63,6 +63,11 @@ const mapCollegeName = async (id) => {
   let college = await College.findById(id);
   return college.name;
 };
+
+const mapUserId = async (name) => {
+  const user = await User.findOne(name);
+  return user._id;
+};
 module.exports = {
   validateEmail,
   validateRegisterNumber,
@@ -78,4 +83,5 @@ module.exports = {
   mapBatchYear,
   mapCourseName,
   mapCollegeName,
+  mapUserId,
 };

@@ -40,7 +40,8 @@ const createUser = async (req, res) => {
     userDetails.role_id = await mapRoleId(userDetails.role_id);
     userDetails.gender_id = await mapGenderId(userDetails.gender_id);
     userDetails.stream_id = await mapStreamId(userDetails.stream_id);
-    userDetails.batch_id = await mapBatchId(userDetails.batch_id.split("-"));
+    if (userDetails.batch_id)
+      userDetails.batch_id = await mapBatchId(userDetails.batch_id.split("-"));
     userDetails.course_id = await mapCourseId(userDetails.course_id);
     userDetails.college_id = await mapCollegeId(userDetails.college_id);
     //* Create new user

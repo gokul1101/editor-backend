@@ -8,7 +8,7 @@ const userSchema = new Schema({
   role_id: { type: Schema.Types.ObjectId, ref: "role" },
   gender_id: { type: Schema.Types.ObjectId, ref: "gender" },
   stream_id: { type: Schema.Types.ObjectId, ref: "stream" },
-  batch_id: { type: Schema.Types.ObjectId, ref: "batch" },
+  batch_id: { type: Schema.Types.ObjectId, ref: "batch", required: false },
   course_id: { type: Schema.Types.ObjectId, ref: "course" },
   college_id: { type: Schema.Types.ObjectId, ref: "college" },
   phone_no: { type: Number },
