@@ -40,7 +40,8 @@ const createUser = async (req, res) => {
     userDetails.role_id = await mapRoleId(userDetails.role_id);
     userDetails.gender_id = await mapGenderId(userDetails.gender_id);
     userDetails.stream_id = await mapStreamId(userDetails.stream_id);
-    userDetails.batch_id = await mapBatchId(userDetails.batch_id.split("-"));
+    if (userDetails.batch_id)
+      userDetails.batch_id = await mapBatchId(userDetails.batch_id.split("-"));
     userDetails.course_id = await mapCourseId(userDetails.course_id);
     userDetails.college_id = await mapCollegeId(userDetails.college_id);
     //* Create new user
@@ -60,16 +61,24 @@ const createUser = async (req, res) => {
   }
 };
 const getUser = async (req, res) => {
-  let user = req.user._doc;
-  if (!user.deleted_at)
-    res.status(404).json({
-      message: `user not found`,
-      success: false,
-    });
   try {
-    res.status(200).json(await serializeUser(user));
+    let user = await User.findOne({regno : req.params.id});
+    //! User not found
+    if (!user || user.deleted_at)
+      return res.status(404).json({
+        message: `user not found`,
+        success: false,
+      });
+    let userDetails = await serializeUser(user);
+    if (req.user.role === "student" && userDetails.role === "admin")
+      return res.status(401).json({
+        message: `Unauthorized access`,
+        success: false,
+      });
+    res.status(200).json(userDetails);
   } catch (err) {
     //! Error in finding user details
+    console.log(err)
     res.status(500).json({
       message: `unable to find user details`,
       success: false,
