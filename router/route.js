@@ -26,7 +26,7 @@ router.get("/api/v1/user/get/:id", userAuth, routeAuth("getUser"), getUser);
 router.post("/api/v1/user/update", userAuth, routeAuth("updateUser"), updateUser);
 
 //* User Delete 
-router.post("/api/v1/user/delete", userAuth, routeAuth("deteleUser"), deteleUser);
+router.post("/api/v1/user/delete/:id", userAuth, routeAuth("deteleUser"), deteleUser);
 
 //* Multiple user CRUD
 router.post("api/v1/user/createAll", userAuth, routeAuth("createAllUsers"), createAllUsers)
