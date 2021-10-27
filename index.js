@@ -9,11 +9,12 @@ const { DB, PORT } = require("./config/index");
 
 //* APP INTIALIZATION
 const app = express();
-
+const fileupload = require("express-fileupload");
 //* MIDDLEWARES
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(fileupload());
 app.use(passport.initialize());
 require("./middlewares/passport")(passport);
 

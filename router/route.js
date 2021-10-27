@@ -5,7 +5,7 @@ const {
   getUser,
   updateUser,
   deteleUser,
-  createAllUsers,
+  createBulkUsers,
   getAllUsers
 } = require("../controllers/userController");
 
@@ -27,13 +27,8 @@ router.post("/api/v1/user/update", userAuth, routeAuth("updateUser"), updateUser
 router.post("/api/v1/user/delete/:id", userAuth, routeAuth("deteleUser"), deteleUser);
 
 //* Multiple user CRUD
-router.post("/api/v1/user/createAll", userAuth, routeAuth("createAllUsers"), createAllUsers)
-router.post("/api/v1/user/getAll", userAuth, routeAuth("getAllUsers"), getAllUsers)
-
-router.post("/upload", (req, res) => {
-  console.log(req.files)
-  res.send("file sent");
-})
+router.post("/api/v1/users/createAll", userAuth, routeAuth("createBulkUsers"), createBulkUsers);
+router.get("/api/v1/users/getAll", userAuth, routeAuth("getAllUsers"), getAllUsers)
 //* Contest
 // router.post("api/v1/contest/create", userAuth, routeAuth("createContest"), createContest)
 // router.post("api/v1/contest/get", userAuth, routeAuth("getContest"), getContest)

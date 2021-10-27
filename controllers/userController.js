@@ -1,5 +1,8 @@
 const bcrypt = require("bcryptjs");
+const fs = require("fs");
+const xlsx = require("read-excel-file/node");
 const User = require("../models/users");
+const { createUserService } = require("../services/userService");
 const { serializeUser } = require("../utils/Auth");
 let {
   validate,
@@ -9,47 +12,13 @@ let {
   mapGenderId,
   mapRoleId,
   mapStreamId,
+  UUID,
 } = require("../utils/helper");
 //? To register the User
 const createUser = async (req, res) => {
   let userDetails = req.body;
-  try {
-    //* Validate register number
-    let registerNumberNotTaken = await validate({
-      regno: userDetails.regno,
-    });
-    if (!registerNumberNotTaken) {
-      return res.status(403).json({
-        message: `Register number already exists.`,
-        success: false,
-      });
-    }
-    //* Get the hashed password
-    let hashedPassword = await bcrypt.hash(userDetails.password, 8);
-    userDetails.password = hashedPassword;
-    //* Map IDs
-    userDetails.role_id = await mapRoleId(userDetails.role_id);
-    userDetails.gender_id = await mapGenderId(userDetails.gender_id);
-    userDetails.stream_id = await mapStreamId(userDetails.stream_id);
-    if (userDetails.batch_id)
-      userDetails.batch_id = await mapBatchId(userDetails.batch_id.split("-"));
-    userDetails.course_id = await mapCourseId(userDetails.course_id);
-    userDetails.college_id = await mapCollegeId(userDetails.college_id);
-    //* Create new user
-    const newUser = new User({ ...userDetails });
-    await newUser.save();
-    res.status(201).json({
-      message: "New User Created",
-      success: true,
-    });
-  } catch (err) {
-    //! Error in creating user
-    console.log(err);
-    res.status(500).json({
-      message: `unable to create user`,
-      success: false,
-    });
-  }
+  let reponse = await createUserService(userDetails);
+  return res.status(reponse.code).json(reponse);
 };
 const getUser = async (req, res) => {
   try {
@@ -254,13 +223,54 @@ const deteleUser = async (req, res) => {
     });
   }
 };
-const createAllUsers = async (req, res) => {};
+const createBulkUsers = async (req, res) => {
+  const file = req.files.excel;
+  const xlsxFilepath = `./static/excel_data/${UUID()}.xlsx`;
+  file.mv(xlsxFilepath);
+  const schema = {
+    regno: { prop: "regno", type: String },
+    name: { prop: "name", type: String },
+    email: { prop: "email", type: String },
+    role: { prop: "role_id", type: String },
+    gender: { prop: "gender_id", type: String },
+    stream: { prop: "stream_id", type: String },
+    course: { prop: "course_id", type: String },
+    college: { prop: "college_id", type: String },
+    phone_no: { prop: "phone_no", type: Number },
+    batch: { prop: "batch_id", type: String },
+  };
+  const errorLogFilePath = `./static/user-upload-errors/${UUID()}.txt`;
+  fs.writeFile(errorLogFilePath, "Error Logs!", err => err? console.log(err): null);
+  try {
+    let totalCount = 0,
+      error = [];
+    let { rows, err } = await xlsx(xlsxFilepath, { schema });
+    rows.forEach(async (row) => {
+      totalCount++;
+      try {
+        let response = await createUserService(row);
+        if (response.code === 500) {
+          error.push(response.regno);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  } catch (err) {
+    //! Error in creating user
+    console.log(err);
+    res.status(500).json({
+      message: `Error in creating users`,
+    });
+  }
+  res.send("data");
+};
 const getAllUsers = async (req, res) => {};
 module.exports = {
   createUser,
   getUser,
   updateUser,
   deteleUser,
-  createAllUsers,
-  getAllUsers
+  createBulkUsers,
+  getAllUsers,
 };

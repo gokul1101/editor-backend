@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const User = require("../models/users");
 const Role = require("../models/roles");
 const Gender = require("../models/genders");
@@ -5,6 +6,8 @@ const Stream = require("../models/streams");
 const Batch = require("../models/batches");
 const Course = require("../models/courses");
 const College = require("../models/colleges");
+
+const UUID = () => uuidv4();
 
 //* Find user by given data
 const validate = async (data) => {
@@ -41,6 +44,7 @@ const mapCollegeId = async (name) => {
   return college._id;
 };
 module.exports = {
+  UUID,
   validate,
   mapBatchId,
   mapCollegeId,
