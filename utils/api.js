@@ -1,4 +1,4 @@
-const common = ["getUser", "updateUser"];
+const common = ["getUser", "updateUser", "getAllContests", "getContest"];
 const student = [...common];
 const admin = [
   ...common,
@@ -9,9 +9,8 @@ const admin = [
   "updateAllUsers",
   "deleteAllUsers",
   "createContest",
-  "getContest",
   "updateContest",
-  "deleteContest"
+  "deleteContest",
 ];
 
 module.exports = {

@@ -80,10 +80,36 @@ router.post(
 );
 
 //* Contest
-// router.post("api/v1/contest/create", userAuth, routeAuth("createContest"), createContest)
-// router.post("api/v1/contest/get", userAuth, routeAuth("getContest"), getContest)
-// router.post("api/v1/contest/update", userAuth, routeAuth("updateContest"), updateContest)
-// router.post("api/v1/contest/delete", userAuth, routeAuth("deleteContest"), deleteContest)
+router.post(
+  "/api/v1/contest/create",
+  userAuth,
+  routeAuth("createContest"),
+  createContest
+);
+router.post(
+  "/api/v1/contest/get",
+  userAuth,
+  routeAuth("getContest"),
+  getContest
+);
+router.post(
+  "/api/v1/contest/getAll",
+  userAuth,
+  routeAuth("getAllContests"),
+  getAllContests
+);
+router.post(
+  "/api/v1/contest/update",
+  userAuth,
+  routeAuth("updateContest"),
+  updateContest
+);
+router.post(
+  "/api/v1/contest/delete",
+  userAuth,
+  routeAuth("deleteContest"),
+  deleteContest
+);
 
 //* Quiz
 // router.post("api/v1/quiz/create", userAuth, routeAuth("createQuiz"), createQuiz)

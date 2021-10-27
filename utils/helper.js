@@ -6,12 +6,9 @@ const Batch = require("../models/batches");
 const Course = require("../models/courses");
 const College = require("../models/colleges");
 
-const validateRegisterNumber = async (regno) => {
-  let user = await User.findOne({ regno });
-  return user ? false : true;
-};
-const validateEmail = async (email) => {
-  let user = await User.findOne({ email });
+//* Find user by given data
+const validate = async (data) => {
+  let user = await User.findOne(data);
   return user ? false : true;
 };
 const mapRoleId = async (name) => {
@@ -73,10 +70,8 @@ const mapUserId = async (name) => {
   return user._id;
 };
 module.exports = {
-  validateEmail,
-  validateRegisterNumber,
+  validate,
   mapBatchId,
-  mapBatchYear,
   mapCollegeId,
   mapCourseId,
   mapGenderId,
