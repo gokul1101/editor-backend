@@ -9,7 +9,7 @@ const College = require("../models/colleges");
 //* Find user by given data
 const validate = async (data) => {
   let user = await User.findOne(data);
-  return user ? false : true;
+  return (user && !user.isActive) ? false : true;
 };
 const mapRoleId = async (name) => {
   let role = await Role.findOne({ name });

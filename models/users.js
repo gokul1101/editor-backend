@@ -12,6 +12,7 @@ const userSchema = new Schema({
   course_id: { type: Schema.Types.ObjectId, ref: "course" },
   college_id: { type: Schema.Types.ObjectId, ref: "college" },
   phone_no: { type: Number },
+  isActive:{type: Boolean, default: true},
   created_at: { type: Date, default: Date.now() },
   updated_at: { type: Date, default: null },
   deleted_at: { type: Date, default: null },

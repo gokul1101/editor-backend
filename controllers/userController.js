@@ -24,14 +24,6 @@ const createUser = async (req, res) => {
         success: false,
       });
     }
-    //* Validate email
-    let emailNotTaken = await validate({ email: userDetails.email });
-    if (!emailNotTaken) {
-      return res.status(403).json({
-        message: `Email already exists.`,
-        success: false,
-      });
-    }
     //* Get the hashed password
     let hashedPassword = await bcrypt.hash(userDetails.password, 8);
     userDetails.password = hashedPassword;
@@ -216,7 +208,7 @@ const updateUser = async (req, res) => {
     await User.findByIdAndUpdate(user._id, userDetails);
     res.status(200).json({
       userDetails,
-      message: "New User Created",
+      message: "User updated",
       success: true,
     });
   } catch (err) {
@@ -233,7 +225,7 @@ const deteleUser = async (req, res) => {
     let user = await User.findOne({
       regno: req.params.id,
       deleted_at: null,
-    }).populate({ path: "role_id", model: "Role", select: "name" });
+    }).populate({ path: "role_id", model: "role", select: "name" });
     //! User not found
     if (!user || user.deleted_at)
       return res.status(404).json({
@@ -264,15 +256,11 @@ const deteleUser = async (req, res) => {
 };
 const createAllUsers = async (req, res) => {};
 const getAllUsers = async (req, res) => {};
-const updateAllUsers = async (req, res) => {};
-const deleteAllUsers = async (req, res) => {};
 module.exports = {
   createUser,
   getUser,
   updateUser,
   deteleUser,
   createAllUsers,
-  getAllUsers,
-  updateAllUsers,
-  deleteAllUsers,
+  getAllUsers
 };
