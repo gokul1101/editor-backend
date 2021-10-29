@@ -1,7 +1,9 @@
 const bcrypt = require("bcryptjs");
 const fs = require("fs");
+const { join } = require("path");
 const xlsx = require("read-excel-file/node");
 const User = require("../models/users");
+const ErrorLogs = require("../models/errorLogs");
 const { createUserService } = require("../services/userService");
 const { serializeUser } = require("../utils/Auth");
 let {
@@ -224,9 +226,13 @@ const deteleUser = async (req, res) => {
   }
 };
 const createBulkUsers = async (req, res) => {
+  let userDetails = req.user._doc;
   const file = req.files.excel;
-  const xlsxFilepath = `./static/excel_data/${UUID()}.xlsx`;
-  file.mv(xlsxFilepath);
+  const dirCodes = join(__dirname, "/../static", "excel_data");
+  if (!fs.existsSync(dirCodes)) fs.mkdirSync(dirCodes, { recursive: true });
+  const fileName = `${UUID()}.xlsx`;
+  const filePath = join(dirCodes, fileName);
+  file.mv(filePath);
   const schema = {
     regno: { prop: "regno", type: String },
     name: { prop: "name", type: String },
@@ -239,33 +245,33 @@ const createBulkUsers = async (req, res) => {
     phone_no: { prop: "phone_no", type: Number },
     batch: { prop: "batch_id", type: String },
   };
-  const errorLogFilePath = `./static/user-upload-errors/${UUID()}.txt`;
-  fs.writeFile(errorLogFilePath, "Error Logs!", err => err? console.log(err): null);
   try {
-    let totalCount = 0,
-      error = [];
-    let { rows, err } = await xlsx(xlsxFilepath, { schema });
-    rows.forEach(async (row) => {
-      totalCount++;
+    let errors = [];
+    let { rows, err } = await xlsx(filePath, { schema });
+    for (let i in rows) {
       try {
-        let response = await createUserService(row);
-        if (response.code === 500) {
-          error.push(response.regno);
-        }
+        await createUserService(rows[i]);
       } catch (err) {
-        console.log(err);
+        if (err.code === 403 || err.code === 500) errors.push(err.regno);
       }
-    });
+    }
+    if (errors.length !== 0) {
+      let errorLogs = new ErrorLogs({
+        logs: errors,
+        created_by: userDetails._id,
+      });
+      await errorLogs.save();
+    }
+    fs.unlink(filePath, (err) => (err ? console.log(err) : null));
+    res.status(200).json({ errors });
   } catch (err) {
     //! Error in creating user
-    console.log(err);
     res.status(500).json({
       message: `Error in creating users`,
     });
   }
-  res.send("data");
 };
-const getAllUsers = async (req, res) => {};
+const getAllUsers = (req, res) => {};
 module.exports = {
   createUser,
   getUser,

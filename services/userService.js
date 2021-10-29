@@ -10,15 +10,15 @@ let {
   mapStreamId,
 } = require("../utils/helper");
 const createUserService = async (userDetails) => {
+  let regno = userDetails.regno;
   try {
     //* Validate register number
-    let registerNumberNotTaken = await validate({
-      regno: userDetails.regno,
-    });
-    if (!registerNumberNotTaken) {
-      return Promise.resolve({
+    let registerNumberNotTaken = await validate({ regno });
+    if (registerNumberNotTaken) {
+      return Promise.reject({
         code: 403,
         message: `Register number already exists.`,
+        regno
       });
     }
     //* Get the hashed password
@@ -50,15 +50,14 @@ const createUserService = async (userDetails) => {
     return Promise.resolve({
       code: 201,
       message: `New user created.`,
-      regno: userDetails.regno
+      regno
     });
   } catch (err) {
     //! Error in creating user
-    console.log(err);
     return Promise.reject({
       code: 500,
       message: `unable to create user`,
-      regno: userDetails.regno
+      regno
     });
   }
 };

@@ -11,37 +11,65 @@ const UUID = () => uuidv4();
 
 //* Find user by given data
 const validate = async (data) => {
-  let user = await User.findOne(data);
-  return (user && !user.isActive) ? false : true;
+  try{
+    let user = await User.findOne(data);
+    return Promise.resolve(user && user.isActive);
+  } catch(err){
+    return Promise.reject(err)
+  }
 };
 const mapRoleId = async (name) => {
-  let role = await Role.findOne({ name });
-  return role._id;
+  try{
+    let role = await Role.findOne({ name });
+    return Promise.resolve(role._id);
+  } catch(err) {
+    return Promise.reject(err)
+  }
 };
 const mapGenderId = async (name) => {
-  let gender = await Gender.findOne({ name });
-  return gender._id;
+  try{
+    let gender = await Gender.findOne({ name });
+    return Promise.resolve(gender._id);
+  } catch(err) {
+    return Promise.reject(err)
+  }
 };
 const mapStreamId = async (name) => {
-  let stream = await Stream.findOne({ name });
-  return stream._id;
+  try{
+    let stream = await Stream.findOne({ name });
+    return Promise.resolve(stream._id);
+  } catch(err) {
+    return Promise.reject(err)
+  }
 };
 const mapBatchId = async ([start, end]) => {
-  let batch = await Batch.findOne({ start_year: +start, end_year: +end });
-  if (!batch) {
-    let newBatch = new Batch({ start_year: +start, end_year: +end });
-    newBatch.save();
-    return newBatch._id;
+  try{
+    let batch = await Batch.findOne({ start_year: +start, end_year: +end });
+    if (!batch) {
+      let newBatch = new Batch({ start_year: +start, end_year: +end });
+      newBatch.save();
+      return Promise.resolve(newBatch._id);
+    }
+    return Promise.resolve(batch._id);
+  } catch(err) {
+    return Promise.reject(err)
   }
-  return batch._id;
 };
 const mapCourseId = async (name) => {
-  let course = await Course.findOne({ name });
-  return course._id;
+  try{
+    let course = await Course.findOne({ name });
+    return Promise.resolve(course._id);
+  } catch(err) {
+    return Promise.reject(err)
+  }
 };
 const mapCollegeId = async (name) => {
-  let college = await College.findOne({ name });
-  return college._id;
+  try{
+    let college = await College.findOne({ name });
+    return Promise.resolve(college._id);
+  } catch(err) {
+    return Promise.reject(err)
+  }
 };
 module.exports = {
   UUID,
