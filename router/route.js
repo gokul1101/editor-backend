@@ -5,10 +5,8 @@ const {
   getUser,
   updateUser,
   deteleUser,
-  createAllUsers,
+  createBulkUsers,
   getAllUsers,
-  updateAllUsers,
-  deleteAllUsers,
 } = require("../controllers/userController");
 const {
   createContest,
@@ -55,30 +53,17 @@ router.post(
 
 //* Multiple user CRUD
 router.post(
-  "api/v1/user/createAll",
+  "/api/v1/users/createAll",
   userAuth,
-  routeAuth("createAllUsers"),
-  createAllUsers
+  routeAuth("createBulkUsers"),
+  createBulkUsers
 );
-router.post(
-  "api/v1/user/getAll",
+router.get(
+  "/api/v1/users/getAll",
   userAuth,
   routeAuth("getAllUsers"),
   getAllUsers
 );
-router.post(
-  "api/v1/user/updateAll",
-  userAuth,
-  routeAuth("updateAllUsers"),
-  updateAllUsers
-);
-router.post(
-  "api/v1/user/deleteAll",
-  userAuth,
-  routeAuth("deleteAllUsers"),
-  deleteAllUsers
-);
-
 //* Contest
 router.post(
   "/api/v1/contest/create",

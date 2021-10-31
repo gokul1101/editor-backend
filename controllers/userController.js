@@ -1,5 +1,10 @@
 const bcrypt = require("bcryptjs");
+const fs = require("fs");
+const { join } = require("path");
+const xlsx = require("read-excel-file/node");
 const User = require("../models/users");
+const ErrorLogs = require("../models/errorLogs");
+const { createUserService } = require("../services/userService");
 const { serializeUser } = require("../utils/Auth");
 let {
   validate,
@@ -9,55 +14,13 @@ let {
   mapGenderId,
   mapRoleId,
   mapStreamId,
+  UUID,
 } = require("../utils/helper");
 //? To register the User
 const createUser = async (req, res) => {
   let userDetails = req.body;
-  try {
-    //* Validate register number
-    let registerNumberNotTaken = await validate({
-      regno: userDetails.regno,
-    });
-    if (!registerNumberNotTaken) {
-      return res.status(403).json({
-        message: `Register number already exists.`,
-        success: false,
-      });
-    }
-    //* Validate email
-    let emailNotTaken = await validate({ email: userDetails.email });
-    if (!emailNotTaken) {
-      return res.status(403).json({
-        message: `Email already exists.`,
-        success: false,
-      });
-    }
-    //* Get the hashed password
-    let hashedPassword = await bcrypt.hash(userDetails.password, 8);
-    userDetails.password = hashedPassword;
-    //* Map IDs
-    userDetails.role_id = await mapRoleId(userDetails.role_id);
-    userDetails.gender_id = await mapGenderId(userDetails.gender_id);
-    userDetails.stream_id = await mapStreamId(userDetails.stream_id);
-    if (userDetails.batch_id)
-      userDetails.batch_id = await mapBatchId(userDetails.batch_id.split("-"));
-    userDetails.course_id = await mapCourseId(userDetails.course_id);
-    userDetails.college_id = await mapCollegeId(userDetails.college_id);
-    //* Create new user
-    const newUser = new User({ ...userDetails });
-    await newUser.save();
-    res.status(201).json({
-      message: "New User Created",
-      success: true,
-    });
-  } catch (err) {
-    //! Error in creating user
-    console.log(err);
-    res.status(500).json({
-      message: `unable to create user`,
-      success: false,
-    });
-  }
+  let reponse = await createUserService(userDetails);
+  return res.status(reponse.code).json(reponse);
 };
 const getUser = async (req, res) => {
   try {
@@ -216,7 +179,7 @@ const updateUser = async (req, res) => {
     await User.findByIdAndUpdate(user._id, userDetails);
     res.status(200).json({
       userDetails,
-      message: "New User Created",
+      message: "User updated",
       success: true,
     });
   } catch (err) {
@@ -233,7 +196,7 @@ const deteleUser = async (req, res) => {
     let user = await User.findOne({
       regno: req.params.id,
       deleted_at: null,
-    }).populate({ path: "role_id", model: "Role", select: "name" });
+    }).populate({ path: "role_id", model: "role", select: "name" });
     //! User not found
     if (!user || user.deleted_at)
       return res.status(404).json({
@@ -262,17 +225,58 @@ const deteleUser = async (req, res) => {
     });
   }
 };
-const createAllUsers = async (req, res) => {};
-const getAllUsers = async (req, res) => {};
-const updateAllUsers = async (req, res) => {};
-const deleteAllUsers = async (req, res) => {};
+const createBulkUsers = async (req, res) => {
+  let userDetails = req.user._doc;
+  const file = req.files.excel;
+  const dirCodes = join(__dirname, "/../static", "excel_data");
+  if (!fs.existsSync(dirCodes)) fs.mkdirSync(dirCodes, { recursive: true });
+  const fileName = `${UUID()}.xlsx`;
+  const filePath = join(dirCodes, fileName);
+  file.mv(filePath);
+  const schema = {
+    regno: { prop: "regno", type: String },
+    name: { prop: "name", type: String },
+    email: { prop: "email", type: String },
+    role: { prop: "role_id", type: String },
+    gender: { prop: "gender_id", type: String },
+    stream: { prop: "stream_id", type: String },
+    course: { prop: "course_id", type: String },
+    college: { prop: "college_id", type: String },
+    phone_no: { prop: "phone_no", type: Number },
+    batch: { prop: "batch_id", type: String },
+  };
+  try {
+    let errors = [];
+    let { rows, err } = await xlsx(filePath, { schema });
+    for (let i in rows) {
+      try {
+        await createUserService(rows[i]);
+      } catch (err) {
+        if (err.code === 403 || err.code === 500) errors.push(err.regno);
+      }
+    }
+    if (errors.length !== 0) {
+      let errorLogs = new ErrorLogs({
+        logs: errors,
+        created_by: userDetails._id,
+      });
+      await errorLogs.save();
+    }
+    fs.unlink(filePath, (err) => (err ? console.log(err) : null));
+    res.status(200).json({ errors });
+  } catch (err) {
+    //! Error in creating user
+    res.status(500).json({
+      message: `Error in creating users`,
+    });
+  }
+};
+const getAllUsers = (req, res) => {};
 module.exports = {
   createUser,
   getUser,
   updateUser,
   deteleUser,
-  createAllUsers,
+  createBulkUsers,
   getAllUsers,
-  updateAllUsers,
-  deleteAllUsers,
 };

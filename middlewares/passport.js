@@ -12,7 +12,7 @@ module.exports = (passport) => {
     new Strategy(opts, async (payload, done) => {
       try {
         let user = await User.findById(payload.user_id);
-        (user && !user.deleted_at) ? done(null, { ...user, role: payload.role }) : done(null, false);
+        (user && user.isActive) ? done(null, { ...user, role: payload.role }) : done(null, false);
       } catch (err) {
         done(null, false);
       }
