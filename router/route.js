@@ -47,7 +47,7 @@ router.post(
 
 //* User Delete
 router.post(
-  "/api/v1/user/delete",
+  "/api/v1/user/delete/:id",
   userAuth,
   routeAuth("deteleUser"),
   deteleUser

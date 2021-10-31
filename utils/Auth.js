@@ -4,22 +4,13 @@ const passport = require("passport");
 const { SECRET } = require("../config/index");
 const User = require("../models/users");
 const Role = require("../models/roles");
-//* Helper Function
-let {
-  mapRoleName,
-  mapGenderName,
-  mapStreamName,
-  mapBatchYear,
-  mapCourseName,
-  mapCollegeName,
-} = require("./helper");
 
 //? User Login
 const userLogin = async (userCred, res) => {
   let { regno, password } = userCred;
   //? Check if the regno is in the DB
   const user = await User.findOne({ regno });
-  if (!user) {
+  if (!user || user.deleted_at) {
     //! Register Number not found
     return res.status(404).json({
       message: "Register number not found!",
