@@ -1,7 +1,8 @@
 const { Schema, model } = require("mongoose");
 
 const errorLogsSchema = new Schema({
-  logs: [{ type: String }],
+  errorLogs: [{ type: String }],
+  totalLogs : { type: Number },
   created_by: { type: Schema.Types.ObjectId, ref: "users" },
   created_at: { type: Date, default: Date.now() },
   updated_at: { type: Date, default: null },

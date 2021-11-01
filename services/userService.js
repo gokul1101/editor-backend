@@ -33,17 +33,22 @@ const createUserService = async (userDetails) => {
       )
         suffix = "@ksriet";
       userDetails.password = `${userDetails.regno}${suffix}`;
+      let hashedPassword = await bcrypt.hash(userDetails.password, 8);
+      userDetails.password = hashedPassword;
     }
-    let hashedPassword = await bcrypt.hash(userDetails.password, 8);
-    userDetails.password = hashedPassword;
     //* Map IDs
-    userDetails.role_id = await mapRoleId(userDetails.role_id);
-    userDetails.gender_id = await mapGenderId(userDetails.gender_id);
-    userDetails.stream_id = await mapStreamId(userDetails.stream_id);
+    if(userDetails.role_id)
+      userDetails.role_id = await mapRoleId(userDetails.role_id);
+    if(userDetails.gender_id)
+      userDetails.gender_id = await mapGenderId(userDetails.gender_id);
+    if (userDetails.stream_id)
+      userDetails.stream_id = await mapStreamId(userDetails.stream_id);
     if (userDetails.batch_id)
-      userDetails.batch_id = await mapBatchId(userDetails.batch_id.split("-"));
-    userDetails.course_id = await mapCourseId(userDetails.course_id);
-    userDetails.college_id = await mapCollegeId(userDetails.college_id);
+    userDetails.batch_id = await mapBatchId(userDetails.batch_id.split("-"));
+    if (userDetails.course_id)
+      userDetails.course_id = await mapCourseId(userDetails.course_id);
+    if (userDetails.college_id)
+      userDetails.college_id = await mapCollegeId(userDetails.college_id);
     //* Create new user
     const newUser = new User({ ...userDetails });
     await newUser.save();

@@ -191,7 +191,7 @@ const updateUser = async (req, res) => {
     });
   }
 };
-const deteleUser = async (req, res) => {
+const deleteUser = async (req, res) => {
   try {
     let user = await User.findOne({
       regno: req.params.id,
@@ -228,7 +228,7 @@ const deteleUser = async (req, res) => {
 const createBulkUsers = async (req, res) => {
   let userDetails = req.user._doc;
   const file = req.files.excel;
-  const dirCodes = join(__dirname, "/../static", "excel_data");
+  const dirCodes = join(__dirname, "/../static", "errors");
   if (!fs.existsSync(dirCodes)) fs.mkdirSync(dirCodes, { recursive: true });
   const fileName = `${UUID()}.xlsx`;
   const filePath = join(dirCodes, fileName);
@@ -246,7 +246,8 @@ const createBulkUsers = async (req, res) => {
     batch: { prop: "batch_id", type: String },
   };
   try {
-    let errors = [];
+    let errors = [],
+      errorLogs;
     let { rows, err } = await xlsx(filePath, { schema });
     for (let i in rows) {
       try {
@@ -256,14 +257,15 @@ const createBulkUsers = async (req, res) => {
       }
     }
     if (errors.length !== 0) {
-      let errorLogs = new ErrorLogs({
-        logs: errors,
+      errorLogs = new ErrorLogs({
+        errorLogs: errors,
+        totalLogs: rows.length,
         created_by: userDetails._id,
       });
       await errorLogs.save();
     }
     fs.unlink(filePath, (err) => (err ? console.log(err) : null));
-    res.status(200).json({ errors });
+    res.status(200).json({ errorLogs });
   } catch (err) {
     //! Error in creating user
     res.status(500).json({
@@ -271,12 +273,34 @@ const createBulkUsers = async (req, res) => {
     });
   }
 };
-const getAllUsers = (req, res) => {};
+const getAllUsers = async (req, res) => {
+  try {
+    const { page = 1, limit = 10 } = req.query;
+    let response = {};
+    if(page == 1) {
+      const count = await User.countDocuments();
+      response.modelCount = count;
+    }
+    const users = await User.find({ isActive: true })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+    response.total = users.length;
+    response.users = users;
+    res.status(200).json(response);
+  } catch (err) {
+    //! Error in finding user details
+    console.log(err)
+    res.status(500).json({
+      message: `unable to get user details`,
+      success: false,
+    });
+  }
+};
 module.exports = {
   createUser,
   getUser,
   updateUser,
-  deteleUser,
+  deleteUser,
   createBulkUsers,
   getAllUsers,
 };

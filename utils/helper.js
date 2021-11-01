@@ -71,31 +71,6 @@ const mapCollegeId = async (name) => {
     return Promise.reject(err);
   }
 };
-const mapRoleName = async (id) => {
-  let role = await Role.findById(id);
-  return role.name;
-};
-const mapGenderName = async (id) => {
-  let gender = await Gender.findById(id);
-  return gender.name;
-};
-const mapStreamName = async (id) => {
-  let stream = await Stream.findById(id);
-  return stream.name;
-};
-const mapBatchYear = async (id) => {
-  let batch = await Batch.findById(id);
-  return `${batch.start_year}-${batch.end_year}`;
-};
-const mapCourseName = async (id) => {
-  let course = await Course.findById(id);
-  return course.name;
-};
-const mapCollegeName = async (id) => {
-  let college = await College.findById(id);
-  return college.name;
-};
-
 const mapUserId = async (name) => {
   const user = await User.findOne({ name });
   if (user && !user.deleted_at) return user._id;
@@ -110,11 +85,5 @@ module.exports = {
   mapGenderId,
   mapRoleId,
   mapStreamId,
-  mapRoleName,
-  mapGenderName,
-  mapStreamName,
-  mapBatchYear,
-  mapCourseName,
-  mapCollegeName,
   mapUserId,
 };

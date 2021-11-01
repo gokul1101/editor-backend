@@ -1,9 +1,9 @@
-const common = ["getUser", "updateUser", "getAllContests", "getContest"];
+const common = ["getUser", "updateUser", "getAllContests", "getContest", "compiler"];
 const student = [...common];
 const admin = [
   ...common,
   "createUser",
-  "deteleUser",
+  "deleteUser",
   "createBulkUsers",
   "getAllUsers",
   "createContest",

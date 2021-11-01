@@ -1,0 +1,13 @@
+{
+  "java" : {
+    "nextInt": "Integer.parseInt",
+    "next" : "",
+    "nextLine" : "",
+    "nextLong": "Long.parseLong",
+    "nextDouble": "Double.parseDouble",
+    "nextFloat": "Float.parseFloat",
+    "nextBoolean": "Boolean.parseBoolean",
+    "nextByte": "Byte.parseByte",
+    "nextShort": "Short.parseShort"
+  }
+}

@@ -4,7 +4,7 @@ const {
   createUser,
   getUser,
   updateUser,
-  deteleUser,
+  deleteUser,
   createBulkUsers,
   getAllUsers,
 } = require("../controllers/userController");
@@ -47,8 +47,8 @@ router.post(
 router.post(
   "/api/v1/user/delete/:id",
   userAuth,
-  routeAuth("deteleUser"),
-  deteleUser
+  routeAuth("deleteUser"),
+  deleteUser
 );
 
 //* Multiple user CRUD
@@ -95,6 +95,20 @@ router.post(
   routeAuth("deleteContest"),
   deleteContest
 );
+//* Compiler
+const { generateFile } = require("../utils/tools/generateFile");
+const { executeCode } = require("../utils/tools/executeCode");
+router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), async (req, res) => {
+  const {code, input} = req.body;
+  const formattedCode = code.join("\r\n");
+  try {
+    const filePath = await generateFile(formattedCode, input, "java");
+    const output = await executeCode(filePath, input);
+    res.status(200).send(output);
+  } catch(err) {
+
+  }
+});
 
 //* Quiz
 // router.post("api/v1/quiz/create", userAuth, routeAuth("createQuiz"), createQuiz)
