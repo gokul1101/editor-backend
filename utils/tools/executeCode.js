@@ -16,12 +16,7 @@ const executeCode = (filePath, input) => {
   }
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
-      if (error) {
-        reject(error);
-      }
-      if (stderr) {
-        reject(stderr);
-      }
+      if (error) reject(stderr);
       resolve(stdout);
     });
   });

@@ -228,7 +228,7 @@ const deleteUser = async (req, res) => {
 const createBulkUsers = async (req, res) => {
   let userDetails = req.user._doc;
   const file = req.files.excel;
-  const dirCodes = join(__dirname, "/../static", "errors");
+  const dirCodes = join(__dirname, "/../static", "resources");
   if (!fs.existsSync(dirCodes)) fs.mkdirSync(dirCodes, { recursive: true });
   const fileName = `${UUID()}.xlsx`;
   const filePath = join(dirCodes, fileName);

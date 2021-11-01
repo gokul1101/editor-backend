@@ -14,12 +14,12 @@ const generateFile = async (code, input, lang) => {
     await fs.writeFileSync(filePath, code);
     await fs.writeFileSync(path.join(folderPath, "input.txt"), input);
   } catch(e) {
-    return new Promise((resolve, reject) => {
-      
+    return Promise.reject({
+      status : 500,
+      output : "Server error"
     })
   }
-
-  return filePath;
+  return [folderPath, filePath];
 };
 
 module.exports = {

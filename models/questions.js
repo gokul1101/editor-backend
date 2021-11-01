@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const questionSchema = new Schema({
-  name: { type: String, required: true, unique: true },
+  name: { type: String, unique: true },
   type_id: { type: Schema.Types.ObjectId, ref: "testTypes" },
   contest_id: { type: Schema.Types.ObjectId, ref: "contest" },
   quiz_id: { type: Schema.Types.ObjectId, ref: "quizzes" },
