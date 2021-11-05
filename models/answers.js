@@ -10,7 +10,13 @@ const answersSchema = new Schema({
     correctOption: { type: String, enum: ["A", "B", "C", "D"] },
   },
   testcases: {
-    values: [
+    sample: [
+      {
+        input: { type: String },
+        output: { type: String },
+      },
+    ],
+    hidden: [
       {
         input: { type: String },
         output: { type: String },

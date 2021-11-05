@@ -15,7 +15,7 @@ const {
   deleteContest,
   getAllContests,
 } = require("../controllers/contestController");
-const compiler = require("../services/compiler");
+const compiler = require("../services/compilerService");
 
 //? Public Routes
 //* Login

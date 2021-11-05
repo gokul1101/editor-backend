@@ -44,7 +44,6 @@ const createContest = async (req, res) => {
       .json({ message: "Can't create contest", success: false });
   }
 };
-
 const getContest = async (req, res) => {
   const contest = req.body;
   try {
