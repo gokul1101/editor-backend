@@ -31,7 +31,7 @@ const createContest = async (req, res) => {
         message: ` contest created as ${create_contest}`,
       });
       res
-        .status(200)
+        .status(201)
         .json({ message: "Contest created successfully", success: true });
     }
   } catch (err) {

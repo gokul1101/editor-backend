@@ -118,28 +118,5 @@ router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compiler);
 // router.post("api/v1/answer/update", userAuth, routeAuth("updateAnswer"), updateAnswer)
 // router.post("api/v1/answer/delete", userAuth, routeAuth("deleteAnswer"), deleteAnswer)
 
-//* Batch
-// router.post("api/v1/batch/create", userAuth, routeAuth("createBatch"), createBatch)
-// router.post("api/v1/batch/get", userAuth, routeAuth("getBatch"), getBatch)
-// router.post("api/v1/batch/update", userAuth, routeAuth("updateBatch"), updateBatch)
-// router.post("api/v1/batch/delete", userAuth, routeAuth("deleteBatch"), deleteBatch)
-
-//* Course
-// router.post("api/v1/course/create", userAuth, routeAuth("createCourse"), createCourse)
-// router.post("api/v1/course/get", userAuth, routeAuth("getCourse"), getCourse)
-// router.post("api/v1/course/update", userAuth, routeAuth("updateCourse"), updateCourse)
-// router.post("api/v1/course/delete", userAuth, routeAuth("deleteCourse"), deleteCourse)
-
-//* Stream
-// router.post("api/v1/stream/create", userAuth, routeAuth("createStream"), createStream)
-// router.post("api/v1/stream/get", userAuth, routeAuth("getStream"), getStream)
-// router.post("api/v1/stream/update", userAuth, routeAuth("updateStream"), updateStream)
-// router.post("api/v1/stream/delete", userAuth, routeAuth("deleteStream"), deleteStream)
-
-//* College
-// router.post("api/v1/college/create", userAuth, routeAuth("createCollege"), createCollege)
-// router.post("api/v1/college/get", userAuth, routeAuth("getCollege"), getCollege)
-// router.post("api/v1/college/update", userAuth, routeAuth("updateCollege"), updateCollege)
-// router.post("api/v1/college/delete", userAuth, routeAuth("deleteCollege"), deleteCollege)
 
 module.exports = router;
