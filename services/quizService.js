@@ -14,6 +14,7 @@ const createQuiz = async (quizDetails) => {
       return Promise.resolve({
         code: 201,
         message: `${name} Quiz created.`,
+        newQuiz
       });
     }
   } catch (err) {
@@ -77,4 +78,6 @@ const updateQuiz = async (quizId, quizDetails) => {
 };
 module.exports = {
   createQuiz,
+  getQuiz,
+  updateQuiz
 };
