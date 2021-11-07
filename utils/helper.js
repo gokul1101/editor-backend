@@ -6,6 +6,7 @@ const Stream = require("../models/streams");
 const Batch = require("../models/batches");
 const Course = require("../models/courses");
 const College = require("../models/colleges");
+const Difficult = require("../models/difficulties");
 
 const UUID = () => uuidv4();
 
@@ -76,6 +77,27 @@ const mapUserId = async (name) => {
   if (user && !user.deleted_at) return user._id;
   throw "Invalid user entry";
 };
+
+const mapDifficultyId = async (level) => {
+  try {
+    const difficult = await Difficult.findOne({ level });
+    if (difficult) return Promise.resolve(difficult._id);
+    throw "Invalid difficulty level name found";
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err);
+  }
+};
+const mapDifficultyLevel = async (id) => {
+  try {
+    const difficult = await Difficult.findById(id);
+    if (difficult) return Promise.resolve(difficult.level);
+    throw "Invalid difficulty id found";
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err);
+  }
+};
 module.exports = {
   UUID,
   validate,
@@ -86,4 +108,6 @@ module.exports = {
   mapRoleId,
   mapStreamId,
   mapUserId,
+  mapDifficultyId,
+  mapDifficultyLevel,
 };
