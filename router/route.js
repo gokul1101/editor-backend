@@ -15,6 +15,13 @@ const {
   deleteContest,
   getAllContests,
 } = require("../controllers/contestController");
+
+const {
+  createQuestion,
+  getQuestion,
+  updateQuestion,
+  getAllQuestions,
+} = require("../controllers/questionController");
 const compiler = require("../services/compilerService");
 
 //? Public Routes
@@ -107,9 +114,30 @@ router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compiler);
 // router.post("api/v1/quiz/delete", userAuth, routeAuth("deleteQuiz"), deleteQuiz)
 
 //* Question
-// router.post("api/v1/question/create", userAuth, routeAuth("createQuestion"), createQuestion)
-// router.post("api/v1/question/get", userAuth, routeAuth("getQuestion"), getQuestion)
-// router.post("api/v1/question/update", userAuth, routeAuth("updateQuestion"), updateQuestion)
+router.post(
+  "/api/v1/question/create",
+  userAuth,
+  routeAuth("createQuestion"),
+  createQuestion
+);
+router.post(
+  "/api/v1/question/get",
+  userAuth,
+  routeAuth("getQuestion"),
+  getQuestion
+);
+// router.post(
+//   "/api/v1/question/getAll",
+//   userAuth,
+//   routeAuth("getAllQuestions"),
+//   getAllQuestions
+// );
+router.post(
+  "/api/v1/question/update",
+  userAuth,
+  routeAuth("updateQuestion"),
+  updateQuestion
+);
 // router.post("api/v1/question/delete", userAuth, routeAuth("deleteQuestion"), deleteQuestion)
 
 //* Answer
@@ -117,6 +145,5 @@ router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compiler);
 // router.post("api/v1/answer/get", userAuth, routeAuth("getAnswer"), getAnswer)
 // router.post("api/v1/answer/update", userAuth, routeAuth("updateAnswer"), updateAnswer)
 // router.post("api/v1/answer/delete", userAuth, routeAuth("deleteAnswer"), deleteAnswer)
-
 
 module.exports = router;

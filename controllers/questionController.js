@@ -1,3 +1,4 @@
+const TestType = require("../models/testTypes");
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
 const createQuestion = async (req, res) => {
@@ -87,5 +88,5 @@ const updateQuestion = async (req, res) => {
 module.exports = {
   createQuestion,
   getQuestion,
-  updateQuestion
+  updateQuestion,
 };
