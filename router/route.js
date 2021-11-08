@@ -20,12 +20,20 @@ const {
   createQuestion,
   getQuestion,
   updateQuestion,
-  getAllQuestions,
+  getAllMCQS,
+  getAllChallenges,
 } = require("../controllers/questionController");
 const compiler = require("../services/compilerService");
+const {
+  createQuiz,
+  getQuiz,
+  updateQuiz,
+  getAllQuizzes,
+} = require("../controllers/quizController");
+
 
 //? Public Routes
-//* Login
+//* =============Login=============
 router.post(
   "/api/v1/login",
   async (req, res) => await userLogin(req.body, res)
@@ -35,8 +43,8 @@ router.post(
 //* User registration
 router.post(
   "/api/v1/user/create",
-  // userAuth,
-  // routeAuth("createUser"),
+  userAuth,
+  routeAuth("createUser"),
   createUser
 );
 
@@ -59,7 +67,7 @@ router.post(
   deleteUser
 );
 
-//* Multiple user CRUD
+//* ==============Multiple user CRUD================
 router.post(
   "/api/v1/users/createAll",
   userAuth,
@@ -72,7 +80,7 @@ router.get(
   routeAuth("getAllUsers"),
   getAllUsers
 );
-//* Contest
+//* =============Contest================
 router.post(
   "/api/v1/contest/create",
   userAuth,
@@ -103,17 +111,35 @@ router.post(
   routeAuth("deleteContest"),
   deleteContest
 );
+router.post(
+  "/api/v1/contest/all",
+  userAuth,
+  routeAuth("getAllContests"),
+  getAllContests
+);
 
-//* Compiler
-router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compiler);
+//* ================Quiz================
+router.post(
+  "/api/v1/quiz/create",
+  userAuth,
+  routeAuth("createQuiz"),
+  createQuiz
+);
+router.get("/api/v1/quiz/get/:id", userAuth, routeAuth("getQuiz"), getQuiz);
+router.post(
+  "/api/v1/quiz/update",
+  userAuth,
+  routeAuth("updateQuiz"),
+  updateQuiz
+);
+router.post(
+  "/api/v1/quiz/all",
+  userAuth,
+  routeAuth("getAllQuizzes"),
+  getAllQuizzes
+);
 
-//* Quiz
-// router.post("api/v1/quiz/create", userAuth, routeAuth("createQuiz"), createQuiz)
-// router.post("api/v1/quiz/get", userAuth, routeAuth("getQuiz"), getQuiz)
-// router.post("api/v1/quiz/update", userAuth, routeAuth("updateQuiz"), updateQuiz)
-// router.post("api/v1/quiz/delete", userAuth, routeAuth("deleteQuiz"), deleteQuiz)
-
-//* Question
+//* ==============Question===============
 router.post(
   "/api/v1/question/create",
   userAuth,
@@ -126,24 +152,26 @@ router.post(
   routeAuth("getQuestion"),
   getQuestion
 );
-// router.post(
-//   "/api/v1/question/getAll",
-//   userAuth,
-//   routeAuth("getAllQuestions"),
-//   getAllQuestions
-// );
 router.post(
   "/api/v1/question/update",
   userAuth,
   routeAuth("updateQuestion"),
   updateQuestion
 );
-// router.post("api/v1/question/delete", userAuth, routeAuth("deleteQuestion"), deleteQuestion)
+router.post(
+  "/api/v1/question/all/mcqs",
+  userAuth,
+  routeAuth("getAllMCQS"),
+  getAllMCQS
+);
+router.post(
+  "/api/v1/question/all/challenges",
+  userAuth,
+  routeAuth("getAllChallenges"),
+  getAllChallenges
+);
 
-//* Answer
-// router.post("api/v1/answer/create", userAuth, routeAuth("createAnswer"), createAnswer)
-// router.post("api/v1/answer/get", userAuth, routeAuth("getAnswer"), getAnswer)
-// router.post("api/v1/answer/update", userAuth, routeAuth("updateAnswer"), updateAnswer)
-// router.post("api/v1/answer/delete", userAuth, routeAuth("deleteAnswer"), deleteAnswer)
+//* ==============Compiler===============
+router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compiler);
 
 module.exports = router;

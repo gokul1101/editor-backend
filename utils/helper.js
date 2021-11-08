@@ -7,6 +7,7 @@ const Batch = require("../models/batches");
 const Course = require("../models/courses");
 const College = require("../models/colleges");
 const Difficult = require("../models/difficulties");
+const {Types: {ObjectId}}  = require("mongoose");
 
 const UUID = () => uuidv4();
 
@@ -98,6 +99,9 @@ const mapDifficultyLevel = async (id) => {
     return Promise.reject(err);
   }
 };
+
+const isObjectId = id => ObjectId.isValid(id);
+
 module.exports = {
   UUID,
   validate,
@@ -110,4 +114,5 @@ module.exports = {
   mapUserId,
   mapDifficultyId,
   mapDifficultyLevel,
+  isObjectId
 };

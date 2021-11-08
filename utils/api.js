@@ -1,11 +1,14 @@
 const common = [
   "getUser",
   "updateUser",
-  "getAllContests",
   "getContest",
-  "compiler",
+  "getAllContests",
+  "getQuiz",
+  "getAllQuizzes",
   "getQuestion",
-  "getAllQuestions",
+  "getAllMCQS",
+  "getAllChallenges",
+  "compiler",
 ];
 const student = [...common];
 const admin = [
@@ -19,6 +22,8 @@ const admin = [
   "deleteContest",
   "createQuestion",
   "updateQuestion",
+  "createQuiz",
+  "updateQuiz",
 ];
 
 module.exports = {

@@ -6,19 +6,7 @@ const { mapDifficultyId, mapDifficultyLevel } = require("../utils/helper");
 //IF THIS WILL BE CONTROLLER THEN USE AWAIT ONLY INSTEAD OF PROMISE
 const createChallenge = async (question) => {
   //Format should be clearly defined above controller
-  const {
-    name,
-    type_id,
-    contest_id,
-    quiz_id,
-    statement,
-    descrption,
-    input_format,
-    output_format,
-    contraints,
-    difficulty_id,
-    max_score,
-  } = question;
+  const { name, difficulty_id } = question;
   try {
     //Checking if challenge already exist with same
     const challenge = await Question.findOne({ name });
@@ -30,8 +18,8 @@ const createChallenge = async (question) => {
     } else {
       //Populating id with string
       console.log(question);
-      question.difficulty_id = await mapDifficultyId(question.difficulty_id);
-      const newChallenge = new Question({ ...question });
+      question.difficulty_id = await mapDifficultyId(difficulty_id);
+      const newChallenge = new Question(question);
       await newChallenge.save();
       return Promise.resolve({
         code: 201,
@@ -74,40 +62,8 @@ const getChallenge = async (question) => {
   }
 };
 
-const getAllChallengesWithContestId = async (contest) => {
-  const id = contest._id;
-  try {
-    const contest = await Contest.findById(id);
-    if (!contest || contest.deleted_at) {
-      return Promise.reject({
-        code: 404,
-        message: `contest with given id ${id} is not found`,
-      });
-    } else {
-      const challenges = await Question.find({ contest_id: id });
-      if (challenges) {
-        return Promise.resolve({
-          code: 200,
-          message: `challenges that are available`,
-          challenges,
-        });
-      } else {
-        return Promise.reject({
-          code: 404,
-          message: `Challenges not available`,
-        });
-      }
-    }
-  } catch (err) {
-    return Promise.reject({
-      code: 500,
-      message: `Error in getting challenges for contest id ${id}`,
-    });
-  }
-};
 const updateChallenge = async (question) => {
-  const id = question._id;
-  const { name } = question;
+  const id = question.id;
   try {
     const exist_question = await Question.findById(id);
     if (!exist_question || exist_question.deleted_at) {
@@ -118,14 +74,10 @@ const updateChallenge = async (question) => {
     } else {
       if (question.name) {
         const questionWithNewName = await Question.findOne({
-          name,
+          name: question.name,
           deleted_at: null,
         });
-        if (
-          questionWithNewName &&
-          JSON.stringify(questionWithNewName._id) !==
-            JSON.stringify(exist_question._id)
-        ) {
+        if (questionWithNewName) {
           return Promise.reject({
             code: 403,
             message: `New name for this question already taken`,
@@ -134,18 +86,14 @@ const updateChallenge = async (question) => {
       }
       if (question.difficulty_id)
         question.difficulty_id = await mapDifficultyId(question.difficulty_id);
-      const updated_question = await Question.findOneAndUpdate(
-        {
-          name: exist_question.name,
-          deleted_at: null,
-        },
+      await Question.findByIdAndUpdate(
+        exist_question._id,
         { ...question, update_at: new Date() },
         { new: true }
       );
       return Promise.resolve({
-        code: 201,
+        code: 200,
         message: `Question with id ${id} updated successfully`,
-        question: updated_question,
       });
     }
   } catch (err) {
@@ -155,6 +103,30 @@ const updateChallenge = async (question) => {
     });
   }
 };
+
+const getAllChallengesWithContestId = async (id) => {
+  try {
+    const challenges = await Question.find({ contest_id: id });
+    if (challenges) {
+      return Promise.resolve({
+        code: 200,
+        message: `challenges that are available`,
+        challenges,
+      });
+    } else {
+      return Promise.reject({
+        code: 404,
+        message: `Challenges not available`,
+      });
+    }
+  } catch (err) {
+    return Promise.reject({
+      code: 500,
+      message: `Error in getting challenges for contest id ${id}`,
+    });
+  }
+};
+
 const deleteChallenge = async () => {};
 
 module.exports = {

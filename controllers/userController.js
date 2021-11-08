@@ -19,8 +19,13 @@ let {
 //? To register the User
 const createUser = async (req, res) => {
   let userDetails = req.body;
-  let reponse = await createUserService(userDetails);
-  return res.status(reponse.code).json(reponse);
+  try {
+    let reponse = await createUserService(userDetails);
+    return res.status(reponse.code).json(reponse);
+  } catch(err) {
+    //! Error in creating user
+    return res.status(err.code).send(err.message);
+  }
 };
 const getUser = async (req, res) => {
   try {

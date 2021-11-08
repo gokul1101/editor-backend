@@ -1,5 +1,11 @@
 const Quiz = require("../models/quizzes");
-const createQuiz = async (name) => {
+const { isObjectId } = require("../utils/helper");
+const createQuizService = async (name) => {
+  if (!name)
+    return Promise.reject({
+      code: 405,
+      message: `Client error`,
+    });
   try {
     let quiz = await Quiz.findOne({ name });
     if (quiz) {
@@ -13,33 +19,32 @@ const createQuiz = async (name) => {
       return Promise.resolve({
         code: 201,
         message: `${name} Quiz created.`,
-        newQuiz
+        newQuiz,
       });
     }
   } catch (err) {
     //! Error in creating quiz
+    console.log(err);
     return Promise.reject({
       code: 500,
       message: `${name} Quiz cannot be created`,
     });
   }
 };
-const getQuiz = async (quizDetails) => {
+const getQuizService = async (id) => {
+  if (!isObjectId(id)) {
+    return Promise.reject({
+      code: 404,
+      message: `Quiz not found.`,
+    });
+  }
   try {
-    let quiz;
-    if (quizDetails._id) quiz = await Quiz.findById(quizDetails._id);
-    else if (quizDetails.name)
-      quiz = await Quiz.findOne({ name: quizDetails.name });
+    let quiz = await Quiz.findById(id);
     if (quiz) {
       return Promise.resolve({
         code: 200,
         message: `Quiz has been found.`,
         quiz,
-      });
-    } else {
-      return Promise.reject({
-        code: 404,
-        message: `Quiz not found.`,
       });
     }
   } catch (err) {
@@ -50,18 +55,16 @@ const getQuiz = async (quizDetails) => {
     });
   }
 };
-const updateQuiz = async (quizId, quizDetails) => {
+const updateQuizService = async (id, name) => {
   try {
-    if (quizDetails.name) {
-      let quiz = await Quiz.findOne({ name: quizDetails.name });
-      if (quiz) {
-        return Promise.reject({
-          code: 403,
-          message: `${quizDetails.name} Quiz already exists.`,
-        });
-      }
+    let quiz = await Quiz.findOne({ name });
+    if (quiz) {
+      return Promise.reject({
+        code: 403,
+        message: `${name} Quiz already exists.`,
+      });
     } else {
-      await Quiz.findByIdAndUpdate(quizId, quizDetails);
+      await Quiz.findByIdAndUpdate(id, { name });
       return Promise.resolve({
         code: 200,
         message: "Quiz updated",
@@ -71,12 +74,34 @@ const updateQuiz = async (quizId, quizDetails) => {
     //! Error in updating quiz
     return Promise.reject({
       code: 500,
-      message: `Error in getting Quiz`,
+      message: `Error in updating Quiz`,
+    });
+  }
+};
+const getAllQuizzesWithContestId = async (id) => {
+  try {
+    const Quizzes = await Quiz.find({ contest_id: id });
+    if (!Quizzes) {
+      return Promise.reject({
+        code: 404,
+        message: `Quizzes not available`,
+      });
+    }
+    return Promise.resolve({
+      code: 200,
+      message: `Quizzes that are available`,
+      Quizzes,
+    });
+  } catch (err) {
+    return Promise.reject({
+      code: 500,
+      message: `Error in getting Quizzes with contest id`,
     });
   }
 };
 module.exports = {
-  createQuiz,
-  getQuiz,
-  updateQuiz
+  createQuizService,
+  getQuizService,
+  updateQuizService,
+  getAllQuizzesWithContestId,
 };
