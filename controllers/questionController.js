@@ -87,4 +87,5 @@ const updateQuestion = async (req, res) => {
 module.exports = {
   createQuestion,
   getQuestion,
+  updateQuestion
 };

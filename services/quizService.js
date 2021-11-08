@@ -1,6 +1,5 @@
 const Quiz = require("../models/quizzes");
-const createQuiz = async (quizDetails) => {
-  let name = quizDetails.name;
+const createQuiz = async (name) => {
   try {
     let quiz = await Quiz.findOne({ name });
     if (quiz) {
