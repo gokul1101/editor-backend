@@ -1,15 +1,16 @@
 const TestType = require("../models/testTypes");
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
-const createMCQ = async (questionDetails) => {
+const { isObjectId } = require("../utils/helper");
+const createMCQ = async ({ quiz_id, statement, type, options }) => {
   let question = {
-    quiz_id: questionDetails.quiz_id,
-    statement: questionDetails.statement,
+    quiz_id,
+    statement,
     max_score: 1,
   };
   try {
-    question.type_id = await TestType.findOne({ name: questionDetails.type })
-      ._id;
+    let testType = await TestType.findOne({ name: type });
+    question.type_id = testType._id;
     let newQuestion = new Question(question);
     let answer = {
       question_id: newQuestion._id,
@@ -31,6 +32,12 @@ const createMCQ = async (questionDetails) => {
   }
 };
 const getMCQ = async (questionId) => {
+  if (!isObjectId(questionId)) {
+    return Promise.reject({
+      code: 404,
+      message: `MCQ not found.`,
+    });
+  }
   try {
     let question = await Question.findById(questionId);
     if (!question) {
@@ -39,10 +46,18 @@ const getMCQ = async (questionId) => {
         message: `MCQ not found`,
       });
     } else {
+      let { options } = await Answer.findOne({ question_id: questionId });
+      let mcqOptions = {
+        A: options.A,
+        B: options.B,
+        C: options.C,
+        D: options.D,
+      };
       return Promise.resolve({
         code: 200,
         message: "MCQ is found",
-        question,
+        statement: question.statement,
+        options: mcqOptions,
       });
     }
   } catch (err) {
@@ -56,17 +71,8 @@ const getMCQ = async (questionId) => {
 const updateMCQ = async ({ id, statement, options }) => {
   try {
     if (statement) await Question.findByIdAndUpdate(id, { statement });
-    if (options) {
-      let updateDetails = {};
-      options.A ? (updateDetails.A = options.A) : null;
-      options.B ? (updateDetails.B = options.B) : null;
-      options.C ? (updateDetails.C = options.C) : null;
-      options.D ? (updateDetails.D = options.D) : null;
-      options.correctOption
-        ? (updateDetails.correctOption = options.correctOption)
-        : null;
-        await Answer.findOneAndUpdate({ question_id: id }, updateDetails);
-    }
+    if (options)
+      await Answer.findOneAndUpdate({ question_id: id }, { options });
     return Promise.resolve({
       code: 200,
       message: "Mcq Updated",
@@ -81,7 +87,8 @@ const updateMCQ = async ({ id, statement, options }) => {
 };
 const getAllMcqWithQuizID = async (id) => {
   try {
-    const mcqs = await Question.find({ quiz_id: id });
+    const questions = await Question.find({ quiz_id: id });
+    const mcqs = questions.map(question => question._id)
     return Promise.resolve({
       code: 200,
       message: "MCQs has been found.",

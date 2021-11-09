@@ -3,6 +3,8 @@ const { Schema, model } = require("mongoose");
 const answersSchema = new Schema({
   question_id: { type: Schema.Types.ObjectId, ref: "questions" },
   options: {
+    type: Object,
+    default: null,
     A: { type: String },
     B: { type: String },
     C: { type: String },
@@ -10,6 +12,8 @@ const answersSchema = new Schema({
     correctOption: { type: String, enum: ["A", "B", "C", "D"] },
   },
   testcases: {
+    type: Object,
+    default: null,
     sample: [
       {
         input: { type: String },

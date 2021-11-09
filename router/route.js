@@ -138,7 +138,6 @@ router.post(
   routeAuth("getAllQuizzes"),
   getAllQuizzes
 );
-
 //* ==============Question===============
 router.post(
   "/api/v1/question/create",
@@ -146,8 +145,8 @@ router.post(
   routeAuth("createQuestion"),
   createQuestion
 );
-router.post(
-  "/api/v1/question/get",
+router.get(
+  "/api/v1/question/get/:id",
   userAuth,
   routeAuth("getQuestion"),
   getQuestion
@@ -158,14 +157,14 @@ router.post(
   routeAuth("updateQuestion"),
   updateQuestion
 );
-router.post(
-  "/api/v1/question/all/mcqs",
+router.get(
+  "/api/v1/mcq/all/:id",
   userAuth,
   routeAuth("getAllMCQS"),
   getAllMCQS
 );
 router.post(
-  "/api/v1/question/all/challenges",
+  "/api/v1/challenge/all/:id",
   userAuth,
   routeAuth("getAllChallenges"),
   getAllChallenges

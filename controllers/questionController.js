@@ -44,12 +44,13 @@ const updateQuestion = async (req, res) => {
     model: "testTypes",
     select: "name",
   });
+  let type = question.type_id.name;
   let functions = [updateMCQ, updateChallenge],
     index;
   if (type === "mcq") index = 0;
   else if (type === "problem") index = 1;
   try {
-    let response = await functions[index](question);
+    let response = await functions[index](questionDetails);
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in updating question
