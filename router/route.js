@@ -31,7 +31,6 @@ const {
   getAllQuizzes,
 } = require("../controllers/quizController");
 
-
 //? Public Routes
 //* =============Login=============
 router.post(
@@ -110,12 +109,6 @@ router.post(
   userAuth,
   routeAuth("deleteContest"),
   deleteContest
-);
-router.post(
-  "/api/v1/contest/all",
-  userAuth,
-  routeAuth("getAllContests"),
-  getAllContests
 );
 
 //* ================Quiz================

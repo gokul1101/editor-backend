@@ -8,8 +8,6 @@ const createMCQ = async (questionDetails) => {
     max_score: 1,
   };
   try {
-    question.type_id = await TestType.findOne({ name: questionDetails.type })
-      ._id;
     let newQuestion = new Question(question);
     let answer = {
       question_id: newQuestion._id,
@@ -65,7 +63,7 @@ const updateMCQ = async ({ id, statement, options }) => {
       options.correctOption
         ? (updateDetails.correctOption = options.correctOption)
         : null;
-        await Answer.findOneAndUpdate({ question_id: id }, updateDetails);
+      await Answer.findOneAndUpdate({ question_id: id }, updateDetails);
     }
     return Promise.resolve({
       code: 200,

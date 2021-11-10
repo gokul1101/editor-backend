@@ -1,7 +1,12 @@
 const TestType = require("../models/testTypes");
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
-const { createMCQ, getMCQ, updateMCQ, getAllMcqWithQuizID } = require("../services/mcqService");
+const {
+  createMCQ,
+  getMCQ,
+  updateMCQ,
+  getAllMcqWithQuizID,
+} = require("../services/mcqService");
 const {
   createChallenge,
   getChallenge,
@@ -15,6 +20,9 @@ const createQuestion = async (req, res) => {
   if (questionDetails.type === "mcq") index = 0;
   else if (questionDetails.type === "problem") index = 1;
   try {
+    questionDetails.type_id = (
+      await TestType.findOne({ name: questionDetails.type })
+    )._id;
     let { code, message } = await functions[index](questionDetails);
     res.status(code).send(message);
   } catch (err) {
@@ -82,5 +90,5 @@ module.exports = {
   getQuestion,
   updateQuestion,
   getAllMCQS,
-  getAllChallenges
+  getAllChallenges,
 };

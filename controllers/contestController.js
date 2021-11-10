@@ -49,7 +49,7 @@ const getContest = async (req, res) => {
   try {
     //If contest already exist return success otherwise not found
     const exist_contest = await Contest.findOne({
-      name: contest.name,
+      code: contest.code,
       deleted_at: null,
     });
     if (!exist_contest)

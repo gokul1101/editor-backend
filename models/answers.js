@@ -10,6 +10,8 @@ const answersSchema = new Schema({
     correctOption: { type: String, enum: ["A", "B", "C", "D"] },
   },
   testcases: {
+    type: Object,
+    default: null,
     sample: [
       {
         input: { type: String },
