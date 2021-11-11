@@ -296,8 +296,7 @@ const getAllUsers = async (req, res) => {
     //! Error in finding user details
     console.log(err)
     res.status(500).json({
-      message: `unable to get user details`,
-      success: false,
+      message: `unable to get user details`
     });
   }
 };
