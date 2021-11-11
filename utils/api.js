@@ -24,6 +24,9 @@ const admin = [
   "updateQuestion",
   "createQuiz",
   "updateQuiz",
+  "createTestCase",
+  "updateTestCase",
+  "createMultipleTestCases",
 ];
 
 module.exports = {
