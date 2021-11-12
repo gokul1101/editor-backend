@@ -1,7 +1,6 @@
 const { Schema, model } = require("mongoose");
 
 const submissionSchema = new Schema({
-  question_id: { type: Schema.Types.ObjectId, ref: "question" },
   user_id: { type: Schema.Types.ObjectId, ref: "user" },
   contest_id: { type: Schema.Types.ObjectId, ref: "contest" },
   score: { type: Number, default: 0 },

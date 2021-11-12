@@ -5,8 +5,7 @@ const { isObjectId } = require("../utils/helper");
 const createMCQ = async ({ quiz_id, statement, type, options }) => {
   let question = {
     quiz_id,
-    statement,
-    max_score: 1,
+    statement
   };
   try {
     let newQuestion = new Question(question);
