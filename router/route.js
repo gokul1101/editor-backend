@@ -23,7 +23,6 @@ const {
   getAllMCQS,
   getAllChallenges,
 } = require("../controllers/questionController");
-const compiler = require("../services/compilerService");
 const {
   createQuiz,
   getQuiz,
@@ -34,6 +33,7 @@ const {
   createMultipleTestCases,
   updateTestCase,
 } = require("../controllers/testcaseController");
+const compiler = require("../services/compilerService");
 
 //? Public Routes
 //* =============Login=============
@@ -90,13 +90,13 @@ router.post(
   routeAuth("createContest"),
   createContest
 );
-router.post(
+router.get(
   "/api/v1/contest/get",
   userAuth,
   routeAuth("getContest"),
   getContest
 );
-router.post(
+router.get(
   "/api/v1/contest/getAll",
   userAuth,
   routeAuth("getAllContests"),

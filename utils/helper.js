@@ -7,10 +7,22 @@ const Batch = require("../models/batches");
 const Course = require("../models/courses");
 const College = require("../models/colleges");
 const Difficult = require("../models/difficulties");
-const {Types: {ObjectId}}  = require("mongoose");
+const {
+  Types: { ObjectId },
+} = require("mongoose");
 
 const UUID = () => uuidv4();
-
+const getDuration = (start, end) => {
+  const days = parseInt((end - start) / (1000 * 60 * 60 * 24));
+  const hours = parseInt((Math.abs(end - start) / (1000 * 60 * 60)) % 24);
+  const minutes = parseInt(
+    (Math.abs(end.getTime() - start.getTime()) / (1000 * 60)) % 60
+  );
+  const seconds = parseInt(
+    (Math.abs(end.getTime() - start.getTime()) / 1000) % 60
+  );
+  return `${days}d${hours}h${minutes}m${seconds}s`;
+};
 //* Find user by given data
 const validate = async (data) => {
   try {
@@ -100,10 +112,11 @@ const mapDifficultyLevel = async (id) => {
   }
 };
 
-const isObjectId = id => ObjectId.isValid(id);
+const isObjectId = (id) => ObjectId.isValid(id);
 
 module.exports = {
   UUID,
+  getDuration,
   validate,
   mapBatchId,
   mapCollegeId,
@@ -114,5 +127,5 @@ module.exports = {
   mapUserId,
   mapDifficultyId,
   mapDifficultyLevel,
-  isObjectId
+  isObjectId,
 };

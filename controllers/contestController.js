@@ -1,9 +1,8 @@
 const { success, error } = require("consola");
-const { UUID } = require("../utils/helper");
+const { getDuration, UUID } = require("../utils/helper");
 const Contest = require("../models/contests");
-const { mapUserId } = require("../utils/helper");
 const createContest = async (req, res) => {
-  const contest = req.body;
+  let contest = req.body;
   try {
     //Can we write it as reusable
     //Checking for name of contest was already taken
@@ -15,20 +14,22 @@ const createContest = async (req, res) => {
       return res
         .status(403)
         .json({ message: "Contest name already taken", success: false });
-    //Creating new contest with given details
+    //* Creating new contest with given details
     else {
-      const uuid = UUID().split("-");
-      contest.code = uuid[uuid.length - 1];
-      //Can we handle particular for username existing mistake
-      contest.created_by = await mapUserId(contest.created_by);
-      //start -> Have to remove in future
-      if (contest.start_date) contest.start_date = new Date(contest.start_date);
-      if (contest.end_date) contest.end_date = new Date(contest.end_date);
+      const uuid = UUID().split("-").pop();
+      contest.code = uuid.substr(uuid.length - 6, 6).toUpperCase();
+      //* Start datetime & End datetime of the contest
+      let start = new Date(contest.start_date + " " + contest.start_time);
+      let end = new Date(contest.end_date + " " + contest.end_time);
+      contest.start_date = start;
+      contest.end_date = end;
+      //* Calculating duration
+      contest.duration = getDuration(start, end);
       //** <- end*/
-      const new_contest = new Contest(contest);
-      const create_contest = await new_contest.save();
+      const newContest = new Contest(contest);
+      await newContest.save();
       success({
-        message: ` contest created as ${create_contest}`,
+        message: ` contest created.`,
       });
       res
         .status(201)
@@ -45,19 +46,24 @@ const createContest = async (req, res) => {
   }
 };
 const getContest = async (req, res) => {
-  const contest = req.body;
+  const { id, code } = req.query;
   try {
     //If contest already exist return success otherwise not found
-    const exist_contest = await Contest.findOne({
-      code: contest.code,
-      deleted_at: null,
-    });
-    if (!exist_contest)
-      return res.status(400).json({
-        message: `Contest with given name ${contest.name} is not available`,
-        success: false,
-      });
-    res.status(200).json({ message: exist_contest, success: true });
+    let contest;
+    if (req.user.role === "admin") contest = await Contest.findById(id);
+    else if (req.user.role === "student")
+      contest = await Contest.findOne({ code });
+    if (!contest) return res.status(404).send(`Contest not found`);
+    if (req.user.role === "student") {
+      let now = +new Date();
+      let end_date = +contest.end_date;
+      let start_date = +contest.start_date;
+      //* If the contest was already ended.
+      if (now > end_date) return res.status(403).send(`The contest was expired.`);
+      //* If the contest is not started yet.
+      if (now < start_date) return res.status(403).send(`The contest is not started yet.`);
+    }
+    res.status(200).json({ message: contest, success: true });
   } catch (err) {
     error({
       message: `Unable to find contest \n${err}`,
@@ -69,14 +75,20 @@ const getContest = async (req, res) => {
   }
 };
 const getAllContests = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
   try {
+    let response = {};
+    if (page == 1) {
+      const count = await Contest.countDocuments();
+      response.modelCount = count;
+    }
     //get all contest and return , return nothing if nothing
-    const exist_contests = await Contest.find({ deleted_at: null });
-    if (!exist_contests)
-      return res
-        .status(400)
-        .json({ message: "No contest available", success: false });
-    res.status(200).json({ message: exist_contests, success: true });
+    const contests = await Contest.find({ deleted_at: null })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+    response.total = contests.length;
+    response.contests = contests;
+    res.status(200).json(response);
   } catch (err) {
     error({
       message: `Unable to find any contests \n${err}`,
@@ -88,61 +100,47 @@ const getAllContests = async (req, res) => {
   }
 };
 const updateContest = async (req, res) => {
-  const contest = req.body;
-  //name will be ok ?
-  const { oldname, newname } = contest;
-  delete contest["oldname"];
-  delete contest["newname"];
-  if (contest.start_date) contest.start_date = new Date(contest.start_date);
-  if (contest.end_date) contest.end_date = new Date(contest.end_date);
-  console.log(contest);
+  let updateDetails = req.body;
+  let { id, name, start_date, end_date, start_time, end_time } = updateDetails;
   try {
-    const exist_contest = await Contest.findOne({
-      name: oldname,
-      deleted_at: null,
-    });
-    //Checking contest is available or softly deleted
-    if (!exist_contest)
+    let contest = await Contest.findById(id);
+    if (!contest)
       return res.status(404).json({
-        message: `No contest available to update with name ${oldname}`,
+        message: `Contest not found!!!`,
         success: false,
       });
-    //If name of contest need to be changed check newname is already taken
-    const contestWithNewTitle = await Contest.findOne({
-      name: newname,
-      deleted_at: null,
-    });
-    if (
-      contestWithNewTitle &&
-      JSON.stringify(contestWithNewTitle._id) !==
-        JSON.stringify(exist_contest._id)
-    )
-      return res.status(403).json({
-        message: `Contest name ${newname} already taken`,
-        success: false,
-      });
+    if (name) {
+      let contestNameExists = await Contest.findOne({ name });
+      if (contestNameExists)
+        return res.status(403).send(`Contest name ${name} already taken`);
+      contest.name = name;
+    }
+    if (start_time) contest.start_time = start_time;
+    if (!start_date) {
+      let date = contest.start_date;
+      start_date = `${
+        date.getMonth() + 1
+      }-${date.getDate()}-${date.getFullYear()}`;
+    }
+    contest.start_date = new Date(start_date + " " + contest.start_time);
 
-    // I think it's an option condition do we need ?
-    // else if (exist_contest && !exist_contest.deleted_at) {
-    //updating new contest details
-    const updated_contest = await Contest.findOneAndUpdate(
-      {
-        name: exist_contest.name,
-        deleted_at: null,
-      },
-      { ...contest, update_at: new Date(), name: newname },
-      { new: true }
-    );
-    console.log(updated_contest);
-    res.status(201).json({ message: updated_contest, success: true });
-    // }
+    if (end_time) contest.end_time = end_time;
+    if (!end_date) {
+      let date = contest.end_date;
+      end_date = `${
+        date.getMonth() + 1
+      }-${date.getDate()}-${date.getFullYear()}`;
+    }
+    contest.end_date = new Date(end_date + " " + contest.end_time);
+
+    //* Calculating duration
+    contest.duration = getDuration(contest.start_date, contest.end_date);
+    await contest.save();
+    res.status(200).send("Contest updated.");
   } catch (err) {
-    error({
-      message: `Unable to update contest with name ${oldname} \n${err}`,
-      badge: true,
-    });
+    console.log(err);
     return res.status(500).json({
-      message: `Unable to update a contest with name ${oldname}`,
+      message: `Unable to update a contest.`,
       success: false,
     });
   }
