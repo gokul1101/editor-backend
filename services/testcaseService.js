@@ -1,10 +1,11 @@
+const { findByIdAndUpdate } = require("../models/answers");
 const Answer = require("../models/answers");
 const Question = require("../models/questions");
 const createMultipleTestCasesService = async ({ question_id, testcase }) => {
   const { sample, hidden } = testcase;
   console.log(question_id, sample, hidden);
   if (!sample && !hidden) {
-    return Promise.reject({ code: 400, message: "Invalid testcase found" });
+    return Promise.reject({ code: 400, message: "Invalid testcases found" });
   }
   try {
     const question = await Question.findById(question_id);
@@ -15,10 +16,10 @@ const createMultipleTestCasesService = async ({ question_id, testcase }) => {
       });
     } else {
       const new_testcase = new Answer({
+        question_id,
         testcases: {
           sample,
           hidden,
-          question_id,
         },
       });
       await new_testcase.save();
@@ -55,34 +56,39 @@ const updateTestCaseService = async ({ testcase_id, index, testcase }) => {
       message: "Invalid parameters for updating testcase",
     });
   }
-  let idx = 0;
-  if (hidden) idx = 1;
   try {
-    let updated_response = null;
-    if (idx === 0) {
-      updated_response = await Answer.findByIdAndUpdate(testcase_id, {
-        $set: {
-          "testcases.sample.1": sample,
-        },
-      });
-    } else if (idx === 1) {
-      updated_response = await Answer.findByIdAndUpdate(testcase_id, {
-        $set: {
-          "testcases.hidden.1": hidden,
-        },
-      });
-    }
-    console.log(updated_response);
-    if (!updated_response || updated_response === null) {
+    testcase_id = "618dfce5a7bf60d94e689cfc";
+    let idx = 0;
+    const input = ["sample", "hidden"];
+    if (hidden) idx = 1;
+    //Fetching all testcases
+    const exist_testcases = await Answer.findById(testcase_id);
+    if (!exist_testcases) {
       return Promise.reject({
         code: 404,
         message: `Testcase with id ${testcase_id} not found`,
       });
     } else {
-      return Promise.resolve({
-        code: 201,
-        message: `Testcase with id ${testcase_id} update successfully`,
+      //updating in array
+
+      exist_testcases["testcases"][input[idx]][index] = testcase[input[idx]];
+
+      const updated_result = await Answer.findByIdAndUpdate(testcase_id, {
+        $set: {
+          testcases: exist_testcases["testcases"],
+        },
       });
+      if (!updated_result) {
+        return Promise.reject({
+          code: 403,
+          message: `Error in updating testcase with id ${testcase_id}`,
+        });
+      } else {
+        return Promise.resolve({
+          code: 201,
+          message: `Testcase with id ${testcase_id} update successfully`,
+        });
+      }
     }
   } catch (err) {
     console.log(err);

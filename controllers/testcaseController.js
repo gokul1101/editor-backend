@@ -6,10 +6,12 @@ const {
 
 const createMultipleTestCases = async (req, res) => {
   try {
+    console.log(req.body);
     const response = await createMultipleTestCasesService(req.body);
     res.status(response.code).json({ message: response.message });
   } catch (err) {
-    res.status(err.code).json({ message: err.message });
+    if (err.code) res.status(err.code).json({ message: err.message });
+    else res.status(500).json({ message: "Internal server error" });
   }
 };
 const updateTestCase = async (req, res) => {
