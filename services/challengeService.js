@@ -106,7 +106,11 @@ const updateChallenge = async (question) => {
 
 const getAllChallengesWithContestId = async (id) => {
   try {
-    const challenges = await Question.find({ contest_id: id });
+    const challenges = await Question.find({ contest_id: id }).populate({
+      path: "difficulty_id",
+      model: "difficulty",
+      select: "level",
+    });
     if (challenges) {
       return Promise.resolve({
         code: 200,

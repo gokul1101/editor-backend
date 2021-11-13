@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const contestSchema = new Schema({
   code: { type: String, required: true },
-  name: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
   start_date: { type: Date },
   end_date: { type: Date },
   start_time: { type: String },

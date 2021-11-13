@@ -55,7 +55,7 @@ const getQuizService = async (id) => {
     });
   }
 };
-const updateQuizService = async (id, name) => {
+const updateQuizService = async (id, name, total_mcqs) => {
   try {
     let quiz = await Quiz.findOne({ name });
     if (quiz) {
@@ -64,7 +64,9 @@ const updateQuizService = async (id, name) => {
         message: `${name} Quiz already exists.`,
       });
     } else {
-      await Quiz.findByIdAndUpdate(id, { name });
+      if(name) quiz.name = name;
+      if(total_mcqs) quiz.total_mcqs = total_mcqs;
+      await quiz.save();
       return Promise.resolve({
         code: 200,
         message: "Quiz updated",

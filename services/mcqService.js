@@ -5,7 +5,7 @@ const { isObjectId } = require("../utils/helper");
 const createMCQ = async ({ quiz_id, statement, type, options }) => {
   let question = {
     quiz_id,
-    statement
+    statement,
   };
   try {
     let newQuestion = new Question(question);
@@ -43,7 +43,7 @@ const getMCQ = async (questionId) => {
         message: `MCQ not found`,
       });
     } else {
-      let { options } = await Answer.findOne({ question_id: questionId });
+      let { _id, options } = await Answer.findOne({ question_id: questionId });
       let mcqOptions = {
         A: options.A,
         B: options.B,
@@ -53,8 +53,14 @@ const getMCQ = async (questionId) => {
       return Promise.resolve({
         code: 200,
         message: "MCQ is found",
-        statement: question.statement,
-        options: mcqOptions,
+        question: {
+          id: question._id,
+          statement: question.statement,
+        },
+        answer: {
+          id: _id,
+          options: mcqOptions,
+        },
       });
     }
   } catch (err) {
@@ -65,11 +71,20 @@ const getMCQ = async (questionId) => {
     });
   }
 };
-const updateMCQ = async ({ id, statement, options }) => {
+const updateMCQ = async ({ question_id, answer_id, statement, options }) => {
   try {
-    if (statement) await Question.findByIdAndUpdate(id, { statement });
-    if (options)
-      await Answer.findOneAndUpdate({ question_id: id }, { options });
+    if (statement) await Question.findByIdAndUpdate(question_id, { statement });
+    if (options) {
+      let answer = await Answer.findById(answer_id);
+      options.A ? (answer.options.A = options.A) : null;
+      options.B ? (answer.options.B = options.B) : null;
+      options.C ? (answer.options.C = options.C) : null;
+      options.D ? (answer.options.D = options.D) : null;
+      options.correctOption
+        ? (answer.options.correctOption = options.correctOption)
+        : null;
+      await answer.save();
+    }
     return Promise.resolve({
       code: 200,
       message: "Mcq Updated",
