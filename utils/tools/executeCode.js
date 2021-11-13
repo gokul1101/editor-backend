@@ -3,16 +3,14 @@ const path = require("path");
 const executeCode = (filePath, input) => {
   const [fileId, fileFormat] = path.basename(filePath).split(".");
   let command = ``;
-  switch (fileFormat) {
-    case "c":
-      break;
-    case "java":
+  if (fileFormat === "c") null;
+  else if (fileFormat === "java") {
+    if (input === "")
+      command = `javac ${filePath} && java ${path.dirname(filePath)}`;
+    else
       command = `javac ${filePath} && java -cp ${path.dirname(
         filePath
       )} Main < ${path.join(path.dirname(filePath), "input.txt")}`;
-      break;
-    default:
-      break;
   }
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {

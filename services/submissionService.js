@@ -1,8 +1,9 @@
 const Submission = require("../models/submissions");
 const User = require("../models/users");
 const Contest = require("../models/contests");
+const Answer = require("../models/answers");
 const createSubmissionService = async (submissionDetails) => {
-  let { user_id, contest_id } = submissionDetails;
+  let { user_id, contest_id, quizzes, challenges } = submissionDetails;
   try {
     let user = await User.findById(user_id);
     if (!user)
@@ -16,7 +17,25 @@ const createSubmissionService = async (submissionDetails) => {
         code: 404,
         message: `Contest not found`,
       });
-    let newSubmission = new Submission(submissionDetails);
+    let total_score = 0;
+    quizzes.map((quiz) => {
+      try {
+        const { score } = await quizSubmissionService(quiz);
+        total_score += score;
+      } catch (err) {
+        console.log(err);
+      }
+    });
+    challenges.map((challenge) => {
+      try {
+        const { score } = await challengeSubmissionService(challenge);
+        total_score += score;
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
+    let newSubmission = new Submission({user_id, contest_id, score : total_score});
     await newSubmission.save();
     return Promise.resolve({
       code: 201,
@@ -79,9 +98,26 @@ const getAllSubmissionsService = async (page, limit) => {
     });
   }
 };
-
+const quizSubmissionService = async (quizAnswers) => {
+  const entries = Object.entries(quizAnswers);
+  let score = 0;
+  for (const [question_id, option] of entries) {
+    try {
+      const answer = await Answer.findOne({ question_id });
+      if (option === answer.options.correctOption) score++;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  return Promise.resolve({
+    code: 200,
+    score,
+  });
+};
+const challengeSubmissionService = async () => {};
 module.exports = {
   createSubmissionService,
   getSubmissionsService,
   getAllSubmissionsService,
+  quizSubmissionService,
 };

@@ -15,7 +15,6 @@ const {
   deleteContest,
   getAllContests,
 } = require("../controllers/contestController");
-
 const {
   createQuestion,
   getQuestion,
@@ -167,12 +166,6 @@ router.post(
   getAllChallenges
 );
 //* ==============Testcase==============*//
-// router.post(
-//   "/api/v1/testcase/add",
-//   userAuth,
-//   routeAuth("createTestCase"),
-//   createTestCase
-// );
 router.post(
   "/api/v1/testcase/create",
   userAuth,

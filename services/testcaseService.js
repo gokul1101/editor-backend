@@ -1,26 +1,23 @@
-const { findByIdAndUpdate } = require("../models/answers");
 const Answer = require("../models/answers");
 const Question = require("../models/questions");
 const createMultipleTestCasesService = async ({ question_id, testcase }) => {
   const { sample, hidden } = testcase;
-  console.log(question_id, sample, hidden);
-  if (!sample && !hidden) {
-    return Promise.reject({ code: 400, message: "Invalid testcases found" });
-  }
+  if (!sample && !hidden) 
+    return Promise.reject({ code: 406, message: "Testcases not found" });
   try {
     const question = await Question.findById(question_id);
     if (!question) {
       return Promise.reject({
         code: 404,
-        message: `Question with given id ${question_id} not found`,
+        message: `Question not found`,
       });
     } else {
+      let testcases = {};
+      if(sample) testcases.sample = sample;
+      if(hidden) testcases.hidden = hidden;
       const new_testcase = new Answer({
         question_id,
-        testcases: {
-          sample,
-          hidden,
-        },
+        testcases
       });
       await new_testcase.save();
       return Promise.reject({
@@ -57,7 +54,6 @@ const updateTestCaseService = async ({ testcase_id, index, testcase }) => {
     });
   }
   try {
-    testcase_id = "618dfce5a7bf60d94e689cfc";
     let idx = 0;
     const input = ["sample", "hidden"];
     if (hidden) idx = 1;
@@ -81,12 +77,12 @@ const updateTestCaseService = async ({ testcase_id, index, testcase }) => {
       if (!updated_result) {
         return Promise.reject({
           code: 403,
-          message: `Error in updating testcase with id ${testcase_id}`,
+          message: `Error in updating testcase`,
         });
       } else {
         return Promise.resolve({
           code: 201,
-          message: `Testcase with id ${testcase_id} update successfully`,
+          message: `Testcase update successfully`,
         });
       }
     }
