@@ -87,7 +87,7 @@ const updateChallenge = async (question) => {
       if (question.difficulty_id)
         question.difficulty_id = await mapDifficultyId(question.difficulty_id);
       await Question.findByIdAndUpdate(
-        exist_question._id,
+        id,
         { ...question, update_at: new Date() },
         { new: true }
       );

@@ -21,7 +21,7 @@ const getDuration = (start, end) => {
   const seconds = parseInt(
     (Math.abs(end.getTime() - start.getTime()) / 1000) % 60
   );
-  return `${days}d${hours}h${minutes}m${seconds}s`;
+  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
 };
 //* Find user by given data
 const validate = async (data) => {
@@ -114,6 +114,19 @@ const mapDifficultyLevel = async (id) => {
 
 const isObjectId = (id) => ObjectId.isValid(id);
 
+const setTime = (date, duration) => {
+  let [days, hours, minutes, seconds] = duration.split(" ");
+  days = +(days.slice(0, -1));
+  hours = +(hours.slice(0, -1));
+  minutes = +(minutes.slice(0, -1));
+  seconds = +(seconds.slice(0, -1));
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+  date.setTime(date.getTime() + (minutes * 60 * 1000));
+  date.setTime(date.getTime() + (seconds *  1000));
+  return date;
+}
+
 module.exports = {
   UUID,
   getDuration,
@@ -128,4 +141,5 @@ module.exports = {
   mapDifficultyId,
   mapDifficultyLevel,
   isObjectId,
+  setTime
 };

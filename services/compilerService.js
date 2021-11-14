@@ -1,8 +1,7 @@
 const { generateFile } = require("../utils/tools/generateFile");
 const { executeCode } = require("../utils/tools/executeCode");
 const fs = require("fs");
-const compiler = async (req, res) => {
-    const { code, input } = req.body;
+const compilerService = async (code, input) => {
     const formattedCode = code.join("\r\n");
     let logFolder = "";
     try {
@@ -13,9 +12,15 @@ const compiler = async (req, res) => {
       );
       logFolder = folderPath;
       const output = await executeCode(filePath, input);
-      res.status(200).send(output);
+      return Promise.resolve({
+        code : 200,
+        output
+      });
     } catch (err) {
-      res.status(500).send(err);
+      return Promise.reject({
+        code : 500,
+        err
+      });
     } finally {
       fs.rmdir(logFolder, { recursive: true }, (err) => {
         if (err) console.log(err);
@@ -23,4 +28,4 @@ const compiler = async (req, res) => {
     }
   }
 
-module.exports = compiler
+module.exports = {compilerService}

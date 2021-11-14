@@ -59,9 +59,11 @@ const getContest = async (req, res) => {
       let end_date = +contest.end_date;
       let start_date = +contest.start_date;
       //* If the contest was already ended.
-      if (now > end_date) return res.status(403).send(`The contest was expired.`);
+      if (now > end_date)
+        return res.status(403).send(`The contest was expired.`);
       //* If the contest is not started yet.
-      if (now < start_date) return res.status(403).send(`The contest is not started yet.`);
+      if (now < start_date)
+        return res.status(403).send(`The contest is not started yet.`);
     }
     res.status(200).json({ message: contest, success: true });
   } catch (err) {
@@ -78,10 +80,8 @@ const getAllContests = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   try {
     let response = {};
-    if (page == 1) {
-      const count = await Contest.countDocuments();
-      response.modelCount = count;
-    }
+    const count = await Contest.countDocuments();
+    response.modelCount = count;
     //get all contest and return , return nothing if nothing
     const contests = await Contest.find({ deleted_at: null })
       .limit(limit * 1)

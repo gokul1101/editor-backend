@@ -26,9 +26,9 @@ const getQuiz = async (req, res) => {
   }
 };
 const updateQuiz = async (req, res) => {
-  let { id, name } = req.body;
+  let quiz = req.body;
   try {
-    const response = await updateQuizService(id, name);
+    const response = await updateQuizService(quiz);
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in creating quiz

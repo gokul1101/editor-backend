@@ -5,12 +5,11 @@ const executeCode = (filePath, input) => {
   let command = ``;
   if (fileFormat === "c") null;
   else if (fileFormat === "java") {
-    if (input === "")
-      command = `javac ${filePath} && java ${path.dirname(filePath)}`;
-    else
+    if (input)
       command = `javac ${filePath} && java -cp ${path.dirname(
         filePath
       )} Main < ${path.join(path.dirname(filePath), "input.txt")}`;
+    else command = `javac ${filePath} && java ${path.dirname(filePath)}`;
   }
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {

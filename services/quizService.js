@@ -55,9 +55,9 @@ const getQuizService = async (id) => {
     });
   }
 };
-const updateQuizService = async (id, name, total_mcqs) => {
+const updateQuizService = async ({id, name, total_mcqs, contest_id}) => {
   try {
-    let quiz = await Quiz.findOne({ name });
+    let quiz = await Quiz.findById(id);
     if (quiz) {
       return Promise.reject({
         code: 403,
@@ -66,6 +66,7 @@ const updateQuizService = async (id, name, total_mcqs) => {
     } else {
       if(name) quiz.name = name;
       if(total_mcqs) quiz.total_mcqs = total_mcqs;
+      if(contest_id) quiz.contest_id = contest_id;
       await quiz.save();
       return Promise.resolve({
         code: 200,

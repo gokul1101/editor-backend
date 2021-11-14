@@ -2,6 +2,8 @@ const Submission = require("../models/submissions");
 const User = require("../models/users");
 const Contest = require("../models/contests");
 const Answer = require("../models/answers");
+const Question = require("../models/questions");
+const { compilerService } = require("./compilerService");
 const createSubmissionService = async (submissionDetails) => {
   let { user_id, contest_id, quizzes, challenges } = submissionDetails;
   try {
@@ -18,7 +20,7 @@ const createSubmissionService = async (submissionDetails) => {
         message: `Contest not found`,
       });
     let total_score = 0;
-    quizzes.map((quiz) => {
+    quizzes.map(async (quiz) => {
       try {
         const { score } = await quizSubmissionService(quiz);
         total_score += score;
@@ -26,7 +28,8 @@ const createSubmissionService = async (submissionDetails) => {
         console.log(err);
       }
     });
-    challenges.map((challenge) => {
+    challenges.map(async (challenge) => {
+      challenge.submission = true;
       try {
         const { score } = await challengeSubmissionService(challenge);
         total_score += score;
@@ -35,7 +38,11 @@ const createSubmissionService = async (submissionDetails) => {
       }
     });
 
-    let newSubmission = new Submission({user_id, contest_id, score : total_score});
+    let newSubmission = new Submission({
+      user_id,
+      contest_id,
+      score: total_score,
+    });
     await newSubmission.save();
     return Promise.resolve({
       code: 201,
@@ -76,10 +83,7 @@ const getSubmissionsService = async (submissionDetails) => {
 const getAllSubmissionsService = async (page, limit) => {
   let response = {};
   try {
-    if (page == 1) {
-      const count = await Submission.countDocuments();
-      response.modelCount = count;
-    }
+    response.modelCount = await Submission.countDocuments();
     const submissions = await Submission.find({})
       .limit(limit * 1)
       .skip((page - 1) * limit);
@@ -114,7 +118,70 @@ const quizSubmissionService = async (quizAnswers) => {
     score,
   });
 };
-const challengeSubmissionService = async () => {};
+const challengeSubmissionService = async ({
+  question_id,
+  code,
+  submission,
+}) => {
+  let flag = true,
+    score = 0;
+  try {
+    const { max_score } = await Question.findById(question_id);
+    const { testcases } = await Answer.findOne({ question_id });
+    const totalTestCases = testcases.sample.length + testcases.hidden.length;
+    const sampleTestCaseOutput = testcases.sample.map((testcase) => {
+      try {
+        const { output } = await compilerService(code, testcase.input);
+        if (submission && testcase.output === output) score++;
+        return {
+          expectedOutput: testcase.output,
+          actualOutput: output,
+          errors: false,
+        };
+      } catch ({ output }) {
+        flag = false;
+        console.log(output);
+        return {
+          expectedOutput: testcase.output,
+          actualOutput: output,
+          errors: true,
+        };
+      }
+    });
+    if (!submission && !flag)
+      return Promise.resolve({
+        code: 200,
+        sampleTestCaseOutput,
+      });
+    const hiddenTestCaseOutput = testcases.hidden.map((testcase) => {
+      try {
+        const { output } = await compilerService(code, testcase.input);
+        if (output === testcase.output) {
+          if (submission) score++;
+          return true;
+        } else return false;
+      } catch (err) {
+        console.log(err);
+        return false;
+      }
+    });
+    if (submission) {
+      let total_score = Math.round((score / totalTestCases) * max_score);
+      return Promise.resolve({ score: total_score });
+    }
+    return Promise.resolve({
+      code: 200,
+      sample: sampleTestCaseOutput,
+      hidden: hiddenTestCaseOutput,
+    });
+  } catch (err) {
+    console.log(err);
+    return Promise.reject({
+      code: 500,
+      message: "Error in checking testcases.",
+    });
+  }
+};
 module.exports = {
   createSubmissionService,
   getSubmissionsService,
