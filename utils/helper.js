@@ -27,7 +27,7 @@ const getDuration = (start, end) => {
 const validate = async (data) => {
   try {
     let user = await User.findOne(data);
-    return Promise.resolve(user && user.isActive);
+    return Promise.resolve(user);
   } catch (err) {
     return Promise.reject(err);
   }

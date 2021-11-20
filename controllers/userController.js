@@ -79,7 +79,7 @@ const getUser = async (req, res) => {
       });
     res.status(200).json({
       userDetails,
-      message: "New User Created",
+      message: "User found",
       success: true,
     });
   } catch (err) {
@@ -286,7 +286,7 @@ const getAllUsers = async (req, res) => {
       const count = await User.countDocuments();
       response.modelCount = count;
     }
-    const users = await User.find({ isActive: true })
+    const users = await User.find({ deleted_at: null })
       .limit(limit * 1)
       .skip((page - 1) * limit);
     response.total = users.length;

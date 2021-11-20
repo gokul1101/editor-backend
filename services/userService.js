@@ -37,8 +37,7 @@ const createUserService = async (userDetails) => {
       userDetails.password = hashedPassword;
     }
     //* Map IDs
-    if(userDetails.role_id)
-      userDetails.role_id = await mapRoleId(userDetails.role_id);
+    userDetails.role_id = await mapRoleId("student");
     if(userDetails.gender_id)
       userDetails.gender_id = await mapGenderId(userDetails.gender_id);
     if (userDetails.stream_id)
