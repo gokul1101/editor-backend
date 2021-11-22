@@ -30,7 +30,7 @@ const createUser = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     let user = await User.findOne({
-      regno: req.params.id,
+      regno: req.params.regno,
       deleted_at: null,
     }).populate([
       {
@@ -65,7 +65,7 @@ const getUser = async (req, res) => {
       },
     ]);
     //! User not found
-    if (!user || user.deleted_at)
+    if (!user)
       return res.status(404).json({
         message: `user not found`,
         success: false,
@@ -92,9 +92,9 @@ const getUser = async (req, res) => {
   }
 };
 const updateUser = async (req, res) => {
-  let updateDetails = req.body;
+  let {id, updateDetails} = req.body;
   try {
-    let user = await User.findById(updateDetails._id).populate([
+    let user = await User.findById(id).populate([
       {
         path: "role_id",
         model: "role",
@@ -137,7 +137,7 @@ const updateUser = async (req, res) => {
       let registerNumberNotTaken = await validate({
         regno: updateDetails.regno,
       });
-      if (!registerNumberNotTaken)
+      if (registerNumberNotTaken)
         return res.status(403).json({
           message: `Register number already exists.`,
           success: false,
@@ -146,7 +146,7 @@ const updateUser = async (req, res) => {
     //* Validate email
     if (updateDetails.email) {
       let emailNotTaken = await validate({ email: updateDetails.email });
-      if (!emailNotTaken)
+      if (emailNotTaken)
         return res.status(403).json({
           message: `Email already exists.`,
           success: false,
@@ -158,32 +158,30 @@ const updateUser = async (req, res) => {
         message: `Unauthorized access`,
         success: false,
       });
-    let userDetails = {};
     //* Only admins can change these data
     if (req.user.role === "admin") {
-      if (updateDetails.newPassword) {
-        let hashedPassword = await bcrypt.hash(updateDetails.newPassword, 8);
-        userDetails.password = hashedPassword;
-      }
-      if (updateDetails.regno) userDetails.regno = updateDetails.regno;
+      if (updateDetails.regno) user.regno = updateDetails.regno;
       if (updateDetails.role)
-        userDetails.role_id = await mapRoleId(updateDetails.role);
+      user.role_id = await mapRoleId(updateDetails.role);
     }
-    if (updateDetails.name) userDetails.name = updateDetails.name;
-    if (updateDetails.phone_no) userDetails.phone_no = updateDetails.phone_no;
+    if (updateDetails.password) {
+      let hashedPassword = await bcrypt.hash(updateDetails.password, 8);
+      user.password = hashedPassword;
+    }
+    if (updateDetails.name) user.name = updateDetails.name;
+    if (updateDetails.phone_no) user.phone_no = updateDetails.phone_no;
     if (updateDetails.gender)
-      userDetails.gender_id = await mapGenderId(updateDetails.gender);
+      user.gender_id = await mapGenderId(updateDetails.gender);
     if (updateDetails.stream)
-      userDetails.stream_id = await mapStreamId(updateDetails.stream);
+      user.stream_id = await mapStreamId(updateDetails.stream);
     if (updateDetails.college)
-      userDetails.college_id = await mapCollegeId(updateDetails.college);
+      user.college_id = await mapCollegeId(updateDetails.college);
     if (updateDetails.course)
-      userDetails.course_id = await mapCourseId(updateDetails.course);
+      user.course_id = await mapCourseId(updateDetails.course);
     if (updateDetails.batch)
-      userDetails.batch_id = await mapBatchId(updateDetails.batch);
-    await User.findByIdAndUpdate(user._id, userDetails);
+      user.batch_id = await mapBatchId(updateDetails.batch);
+    await user.save();
     res.status(200).json({
-      userDetails,
       message: "User updated",
       success: true,
     });
@@ -242,13 +240,13 @@ const createBulkUsers = async (req, res) => {
     regno: { prop: "regno", type: String },
     name: { prop: "name", type: String },
     email: { prop: "email", type: String },
-    role: { prop: "role_id", type: String },
-    gender: { prop: "gender_id", type: String },
-    stream: { prop: "stream_id", type: String },
-    course: { prop: "course_id", type: String },
-    college: { prop: "college_id", type: String },
+    role_id: { prop: "role_id", type: String },
+    gender_id: { prop: "gender_id", type: String },
+    stream_id: { prop: "stream_id", type: String },
+    course_id: { prop: "course_id", type: String },
+    college_id: { prop: "college_id", type: String },
     phone_no: { prop: "phone_no", type: Number },
-    batch: { prop: "batch_id", type: String },
+    batch_id: { prop: "batch_id", type: String },
   };
   try {
     let errors = [],
@@ -258,6 +256,7 @@ const createBulkUsers = async (req, res) => {
       try {
         await createUserService(rows[i]);
       } catch (err) {
+        console.log(err)
         if (err.code === 403 || err.code === 500) errors.push(err.regno);
       }
     }
@@ -272,7 +271,8 @@ const createBulkUsers = async (req, res) => {
     fs.unlink(filePath, (err) => (err ? console.log(err) : null));
     res.status(200).json({ errorLogs });
   } catch (err) {
-    //! Error in creating user
+    //! Error in creating user]
+    console.log(err)
     res.status(500).json({
       message: `Error in creating users`,
     });

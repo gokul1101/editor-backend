@@ -1,0 +1,109 @@
+====== LOGIN ======
+POST - http://localhost:5000/api/v1/login
+Request====
+body - {
+   "regno" : "CECS30",
+   "password" : "qwert"
+}
+
+Response====
+{
+  "username": "Sildra",
+  "role": "admin",
+  "email": "dhanush@gmail.com",
+  "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjE3NjNiMmRmMmU1Mjg5YmI2ODhjZTdiIiwicm9sZSI6ImFkbWluIiwicmVnbm8iOiJDRUNTMzAiLCJlbWFpbCI6ImRoYW51c2hAZ21haWwuY29tIiwiaWF0IjoxNjM3NDEzNTgyLCJleHAiOjE2Mzc0NTY3ODJ9.4WJkf81UijcoHLqBw2u6Cm12zcVMCOyIzHwbSmBDwl8",
+  "expiresIn": 12,
+  "message": "You are logged in!",
+  "success": true
+}
+
+====== USER ======
+POST - http://localhost:5000/api/v1/user/create
+Request====
+header : Authorization - token
+body : {
+   "regno" : "1813018",
+   "name" : "Gobinath",
+   "email" : "gobinath@gmail.com",
+   "gender_id" : "male",
+   "stream_id" : "B.E",
+   "course_id" : "Computer Science & Engineering",
+   "college_id" : "KSR College of Engineering",
+   "batch_id" : "2018-2022",
+   "phone_no" : 1234567890
+}
+Response====
+{
+  "code": 201,
+  "message": "New user created.",
+  "regno": "1813018"
+}
+
+GET - http://localhost:5000/api/v1/user/get/:regno
+Request====
+header : Authorization - token
+
+Response====
+{
+  "userDetails": {
+    "_id": "616ff024475b604ae87cc614",
+    "regno": "1813019",
+    "name": "Gokul",
+    "email": "gokuls2781@gmail.com",
+    "role_id": "student",
+    "gender_id": "male",
+    "stream_id": "B.E",
+    "college_id": "KSR College of Engineering",
+    "course_id": "Computer Science & Engineering",
+    "phone_no": 8072939909,
+    "batch_id": "2018-2022"
+  },
+  "message": "User found",
+  "success": true
+}
+
+POST - http://localhost:5000/api/v1/user/update
+Request====
+header : Authorization - token
+body : {
+  "id" : "619903333f31b560f3c7f7b7",
+  "updateDetails" : {
+   "regno" : "1813018",
+   "name" : "Gobinath",
+   "email" : "gobinath@gmail.com",
+   "gender_id" : "male",
+   "stream_id" : "B.E",
+   "course_id" : "Computer Science & Engineering",
+   "college_id" : "KSR College of Engineering",
+   "batch_id" : "2018-2022",
+   "phone_no" : 1234567890
+  }
+}
+Response====
+{
+  "message": "User updated",
+  "success": true
+}
+
+POST - http://localhost:5000/api/v1/users/createAll
+Request====
+header : Authorization - token
+body : {
+  "id" : "619903333f31b560f3c7f7b7",
+  "updateDetails" : {
+   "regno" : "1813018",
+   "name" : "Gobinath",
+   "email" : "gobinath@gmail.com",
+   "gender_id" : "male",
+   "stream_id" : "B.E",
+   "course_id" : "Computer Science & Engineering",
+   "college_id" : "KSR College of Engineering",
+   "batch_id" : "2018-2022",
+   "phone_no" : 1234567890
+  }
+}
+Response====
+{
+  "message": "User updated",
+  "success": true
+}

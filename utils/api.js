@@ -30,5 +30,5 @@ const admin = [
 ];
 
 module.exports = {
-  API: { common, student, admin },
+  API: {student, admin },
 };

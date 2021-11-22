@@ -27,9 +27,9 @@ const getDuration = (start, end) => {
 const validate = async (data) => {
   try {
     let user = await User.findOne(data);
-    return Promise.resolve(user);
+    return user;
   } catch (err) {
-    return Promise.reject(err);
+    console.log(err)
   }
 };
 const mapRoleId = async (name) => {

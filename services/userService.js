@@ -11,9 +11,10 @@ let {
 } = require("../utils/helper");
 const createUserService = async (userDetails) => {
   let regno = userDetails.regno;
+  console.log(regno)
   try {
     //* Validate register number
-    let registerNumberNotTaken = await validate({ regno });
+    let registerNumberNotTaken = await validate({regno});
     if (registerNumberNotTaken) {
       return Promise.reject({
         code: 403,
@@ -58,10 +59,11 @@ const createUserService = async (userDetails) => {
     });
   } catch (err) {
     //! Error in creating user
+    console.log(err)
     return Promise.reject({
       code: 500,
       message: `unable to create user`,
-      regno
+      err
     });
   }
 };

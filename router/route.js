@@ -52,7 +52,11 @@ router.post(
 );
 
 //* User Details
-router.get("/api/v1/user/get/:id", userAuth, routeAuth("getUser"), getUser);
+router.get(
+  "/api/v1/user/get/:regno",
+  userAuth,
+  routeAuth("getUser"),
+  getUser);
 
 //* User Update
 router.post(

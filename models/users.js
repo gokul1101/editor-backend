@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose");
 const userSchema = new Schema({
   regno: { type: String, unique: true },
   name: { type: String },
-  email: { type: String, unique: true },
+  email: { type: String },
   password: { type: String, required: true },
   role_id: { type: Schema.Types.ObjectId, ref: "role" },
   gender_id: { type: Schema.Types.ObjectId, ref: "gender" },
