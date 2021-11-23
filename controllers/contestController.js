@@ -36,10 +36,6 @@ const createContest = async (req, res) => {
         .json({ message: "Contest created successfully", success: true });
     }
   } catch (err) {
-    error({
-      message: `Unable to create contest \n${err}`,
-      badge: true,
-    });
     return res
       .status(500)
       .json({ message: "Can't create contest", success: false });
@@ -65,38 +61,11 @@ const getContest = async (req, res) => {
       if (now < start_date)
         return res.status(403).send(`The contest is not started yet.`);
     }
-    res.status(200).json({ message: contest, success: true });
+    res.status(200).json({ message: contest });
   } catch (err) {
-    error({
-      message: `Unable to find contest \n${err}`,
-      badge: true,
-    });
     return res
       .status(500)
-      .json({ message: "Unable to find contest", success: false });
-  }
-};
-const getAllContests = async (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
-  try {
-    let response = {};
-    const count = await Contest.countDocuments();
-    response.modelCount = count;
-    //get all contest and return , return nothing if nothing
-    const contests = await Contest.find({ deleted_at: null })
-      .limit(limit * 1)
-      .skip((page - 1) * limit);
-    response.total = contests.length;
-    response.contests = contests;
-    res.status(200).json(response);
-  } catch (err) {
-    error({
-      message: `Unable to find any contests \n${err}`,
-      badge: true,
-    });
-    return res
-      .status(500)
-      .json({ message: "Unable to find any contests", success: false });
+      .json({ message: "Unable to find contest" });
   }
 };
 const updateContest = async (req, res) => {
@@ -106,8 +75,7 @@ const updateContest = async (req, res) => {
     let contest = await Contest.findById(id);
     if (!contest)
       return res.status(404).json({
-        message: `Contest not found!!!`,
-        success: false,
+        message: `Contest not found!!!`
       });
     if (name) {
       let contestNameExists = await Contest.findOne({ name });
@@ -183,7 +151,29 @@ const deleteContest = async (req, res) => {
     });
   }
 };
-
+const getAllContests = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+  try {
+    let response = {};
+    const count = await Contest.countDocuments();
+    response.modelCount = count;
+    //get all contest and return , return nothing if nothing
+    const contests = await Contest.find({ deleted_at: null })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+    response.total = contests.length;
+    response.contests = contests;
+    res.status(200).json(response);
+  } catch (err) {
+    error({
+      message: `Unable to find any contests \n${err}`,
+      badge: true,
+    });
+    return res
+      .status(500)
+      .json({ message: "Unable to find any contests", success: false });
+  }
+};
 module.exports = {
   createContest,
   updateContest,

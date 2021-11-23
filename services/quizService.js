@@ -1,5 +1,4 @@
 const Quiz = require("../models/quizzes");
-const { isObjectId } = require("../utils/helper");
 const createQuizService = async (name) => {
   if (!name)
     return Promise.reject({
@@ -18,8 +17,7 @@ const createQuizService = async (name) => {
       newQuiz.save();
       return Promise.resolve({
         code: 201,
-        message: `${name} Quiz created.`,
-        newQuiz,
+        message: `${name} Quiz created.`
       });
     }
   } catch (err) {
@@ -32,21 +30,19 @@ const createQuizService = async (name) => {
   }
 };
 const getQuizService = async (id) => {
-  if (!isObjectId(id)) {
-    return Promise.reject({
-      code: 404,
-      message: `Quiz not found.`,
-    });
-  }
   try {
     let quiz = await Quiz.findById(id);
-    if (quiz) {
-      return Promise.resolve({
-        code: 200,
-        message: `Quiz has been found.`,
-        quiz,
+    if (!quiz) {
+      return Promise.reject({
+        code: 404,
+        message: `Quiz not found.`,
       });
     }
+    return Promise.resolve({
+      code: 200,
+      message: `Quiz has been found.`,
+      quiz,
+    });
   } catch (err) {
     //! Error in getting quiz
     return Promise.reject({
@@ -55,18 +51,18 @@ const getQuizService = async (id) => {
     });
   }
 };
-const updateQuizService = async ({id, name, total_mcqs, contest_id}) => {
+const updateQuizService = async ({ id, name, total_mcqs, contest_id }) => {
   try {
     let quiz = await Quiz.findById(id);
-    if (quiz) {
+    if (!quiz) {
       return Promise.reject({
-        code: 403,
-        message: `${name} Quiz already exists.`,
+        code: 404,
+        message: `${name} Quiz not found.`,
       });
     } else {
-      if(name) quiz.name = name;
-      if(total_mcqs) quiz.total_mcqs = total_mcqs;
-      if(contest_id) quiz.contest_id = contest_id;
+      if (name) quiz.name = name;
+      if (total_mcqs) quiz.total_mcqs = total_mcqs;
+      if (contest_id) quiz.contest_id = contest_id;
       await quiz.save();
       return Promise.resolve({
         code: 200,

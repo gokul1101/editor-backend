@@ -16,7 +16,7 @@ const createQuiz = async (req, res) => {
   }
 };
 const getQuiz = async (req, res) => {
-  let id = req.params.id;
+  let { id } = req.query;
   try {
     const response = await getQuizService(id);
     res.status(response.code).send(response);
@@ -36,7 +36,7 @@ const updateQuiz = async (req, res) => {
   }
 };
 const getAllQuizzes = async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.query;
   try {
     const response = await getAllQuizzesWithContestId(id);
     res.status(response.code).send(response);
@@ -49,5 +49,5 @@ module.exports = {
   createQuiz,
   getQuiz,
   updateQuiz,
-  getAllQuizzes
+  getAllQuizzes,
 };

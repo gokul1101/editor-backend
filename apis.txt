@@ -107,3 +107,202 @@ Response====
   "message": "User updated",
   "success": true
 }
+
+GET - http://localhost:5000/api/v1/users/getAll/?page=1&limit=10
+Request====
+header : Authorization - token
+query - page = 1, limit = 10
+Response====
+{
+  "modelCount": 3,
+  "total": 1,
+  "users": [
+    {
+      "_id": "619c6a284db72b0389151b1a",
+      "regno": "CECS30",
+      "name": "Sildra",
+      "email": "sildra@gmail.com",
+      "password": "$2a$08$F.sftHdR0HdYtP5CykG9j.xxw1/oowo7IHhZHgYPAhSpFgAw35kMa",
+      "role_id": "616fb4cd25e36afa4973810d",
+      "gender_id": "616fb63f73b5bdd8ff296241",
+      "stream_id": "616fb66e73b5bdd8ff296247",
+      "batch_id": "616ff024475b604ae87cc610",
+      "course_id": "616fb7f95f871e16eac7d8d0",
+      "college_id": "616fb6c073b5bdd8ff296251",
+      "phone_no": 8072939909,
+      "created_at": "2021-11-23T04:12:15.791Z",
+      "updated_at": null,
+      "deleted_at": null,
+      "__v": 0
+    }
+  ]
+}
+
+POST - http://localhost:5000/api/v1/contest/create
+Request====
+header : Authorization - token
+body : {
+  "name" : "Armstrong numbers",
+  "start_date" : "11-24-2021",
+  "end_date" : "11-25-2021",
+  "start_time" : "3:30",
+  "end_time" : "13:30"
+}
+Response====
+{
+  "message": "Contest created successfully",
+  "success": true
+}
+
+GET - http://localhost:5000/api/v1/contest/get?id=619c8903e14218efa19b5d4a&code=CESAJH
+Request====
+header : Authorization - token
+query - id = 619c8903e14218efa19b5d4a, code = 3E7FE4
+
+Response====
+{
+  "message": {
+    "_id": "619c8903e14218efa19b5d4a",
+    "code": "3E7FE4",
+    "name": "Armstrong numbers",
+    "start_date": "2021-11-23T22:00:00.000Z",
+    "end_date": "2021-11-25T08:00:00.000Z",
+    "start_time": "3:30",
+    "end_time": "13:30",
+    "duration": "1d 10h 0m 0s",
+    "created_at": "2021-11-23T05:58:44.580Z",
+    "updated_at": null,
+    "deleted_at": null,
+    "__v": 0
+  }
+}
+
+POST - http://localhost:5000/api/v1/contest/update
+Request====
+header : Authorization - token
+body : {
+    "id" : "619c8903e14218efa19b5d4a",
+    "name" : "Armstrong Number",
+    "start_date" : "11-23-2021",
+    "end_date" : "11-23-2021",
+    "start_time" : "12:30",
+    "end_time" : "14:00"
+}
+Response====
+Contest updated.
+
+GET - http://localhost:5000/api/v1/contests/getAll?page=1&limit=10
+Request====
+header : Authorization - token
+query - page = 1, limit = 10
+Response====
+{
+  "modelCount": 3,
+  "total": 1,
+  "users": [
+    {
+      "_id": "619c6a284db72b0389151b1a",
+      "regno": "CECS30",
+      "name": "Sildra",
+      "email": "sildra@gmail.com",
+      "password": "$2a$08$F.sftHdR0HdYtP5CykG9j.xxw1/oowo7IHhZHgYPAhSpFgAw35kMa",
+      "role_id": "616fb4cd25e36afa4973810d",
+      "gender_id": "616fb63f73b5bdd8ff296241",
+      "stream_id": "616fb66e73b5bdd8ff296247",
+      "batch_id": "616ff024475b604ae87cc610",
+      "course_id": "616fb7f95f871e16eac7d8d0",
+      "college_id": "616fb6c073b5bdd8ff296251",
+      "phone_no": 8072939909,
+      "created_at": "2021-11-23T04:12:15.791Z",
+      "updated_at": null,
+      "deleted_at": null,
+      "__v": 0
+    }
+  ]
+}
+
+POST - http://localhost:5000/api/v1/quiz/create
+Request====
+header : Authorization - token
+body : {
+  "name" : "Java Quiz"
+}
+Response====
+{
+  "code": 201,
+  "message": "Java Quiz created."
+}
+
+GET - http://localhost:5000/api/v1/quiz/get?id=619cd9b1ab07a0a917503efd
+Request====
+header : Authorization - token
+query - id = 619cd9b1ab07a0a917503efd
+
+Response====
+{
+  "code": 200,
+  "message": "Quiz has been found.",
+  "quiz": {
+    "_id": "619cd9b1ab07a0a917503efd",
+    "name": "Java Quiz",
+    "total_mcqs": 0,
+    "created_at": "2021-11-23T09:53:17.085Z",
+    "updated_at": null,
+    "deleted_at": null,
+    "__v": 0
+  }
+}
+
+POST - http://localhost:5000/api/v1/quiz/update
+Request====
+header : Authorization - token
+body : {
+    "id" : "619cd9b1ab07a0a917503efd",
+    "name" : "Java"
+}
+Response====
+{
+  "code": 200,
+  "message": "Quiz updated"
+}
+
+GET - http://localhost:5000/api/v1/quiz/all?id=619c8903e14218efa19b5d4a
+Request====
+header : Authorization - token
+query - id = 619c8903e14218efa19b5d4a
+
+Response====
+{
+  "code": 200,
+  "message": "Quizzes that are available",
+  "Quizzes": [
+    {
+      "_id": "619cd9b1ab07a0a917503efd",
+      "name": "Java",
+      "total_mcqs": 0,
+      "created_at": "2021-11-23T09:53:17.085Z",
+      "updated_at": null,
+      "deleted_at": null,
+      "__v": 0,
+      "contest_id": "619c8903e14218efa19b5d4a"
+    }
+  ]
+}
+
+POST - http://localhost:5000/api/v1/question/create
+Request====
+header : Authorization - token
+body : {
+  "type" : "mcq",
+  "quiz_id" : "619cd9b1ab07a0a917503efd",
+  "statement" : "Which method can be used to find the length of a string?",
+  "options" : {
+    "A" : "length()",
+    "B" : "len()",
+    "C" : "getLen()",
+    "D" : "getLength()",
+    "correctOption" : "A"
+  }
+}
+Response====
+MCQ created successfully.

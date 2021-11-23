@@ -56,7 +56,8 @@ router.get(
   "/api/v1/user/get/:regno",
   userAuth,
   routeAuth("getUser"),
-  getUser);
+  getUser
+);
 
 //* User Update
 router.post(
@@ -101,7 +102,7 @@ router.get(
   getContest
 );
 router.get(
-  "/api/v1/contest/getAll",
+  "/api/v1/contests/getAll",
   userAuth,
   routeAuth("getAllContests"),
   getAllContests
@@ -126,14 +127,14 @@ router.post(
   routeAuth("createQuiz"),
   createQuiz
 );
-router.get("/api/v1/quiz/get/:id", userAuth, routeAuth("getQuiz"), getQuiz);
+router.get("/api/v1/quiz/get", userAuth, routeAuth("getQuiz"), getQuiz);
 router.post(
   "/api/v1/quiz/update",
   userAuth,
   routeAuth("updateQuiz"),
   updateQuiz
 );
-router.post(
+router.get(
   "/api/v1/quiz/all",
   userAuth,
   routeAuth("getAllQuizzes"),

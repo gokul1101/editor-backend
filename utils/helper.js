@@ -112,8 +112,6 @@ const mapDifficultyLevel = async (id) => {
   }
 };
 
-const isObjectId = (id) => ObjectId.isValid(id);
-
 const setTime = (date, duration) => {
   let [days, hours, minutes, seconds] = duration.split(" ");
   days = +(days.slice(0, -1));
@@ -140,6 +138,5 @@ module.exports = {
   mapUserId,
   mapDifficultyId,
   mapDifficultyLevel,
-  isObjectId,
   setTime
 };

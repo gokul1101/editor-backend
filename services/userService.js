@@ -11,15 +11,14 @@ let {
 } = require("../utils/helper");
 const createUserService = async (userDetails) => {
   let regno = userDetails.regno;
-  console.log(regno)
   try {
     //* Validate register number
-    let registerNumberNotTaken = await validate({regno});
+    let registerNumberNotTaken = await validate({ regno });
     if (registerNumberNotTaken) {
       return Promise.reject({
         code: 403,
         message: `Register number already exists.`,
-        regno
+        regno,
       });
     }
     //* Get the hashed password
@@ -36,15 +35,20 @@ const createUserService = async (userDetails) => {
       userDetails.password = `${userDetails.regno}${suffix}`;
       let hashedPassword = await bcrypt.hash(userDetails.password, 8);
       userDetails.password = hashedPassword;
+    } else {
+      let hashedPassword = await bcrypt.hash(userDetails.password, 8);
+      userDetails.password = hashedPassword;
     }
     //* Map IDs
-    userDetails.role_id = await mapRoleId("student");
-    if(userDetails.gender_id)
+    if (userDetails.role_id === "admin")
+      userDetails.role_id = await mapRoleId("admin");
+    else userDetails.role_id = await mapRoleId("student");
+    if (userDetails.gender_id)
       userDetails.gender_id = await mapGenderId(userDetails.gender_id);
     if (userDetails.stream_id)
       userDetails.stream_id = await mapStreamId(userDetails.stream_id);
     if (userDetails.batch_id)
-    userDetails.batch_id = await mapBatchId(userDetails.batch_id.split("-"));
+      userDetails.batch_id = await mapBatchId(userDetails.batch_id.split("-"));
     if (userDetails.course_id)
       userDetails.course_id = await mapCourseId(userDetails.course_id);
     if (userDetails.college_id)
@@ -55,15 +59,15 @@ const createUserService = async (userDetails) => {
     return Promise.resolve({
       code: 201,
       message: `New user created.`,
-      regno
+      regno,
     });
   } catch (err) {
     //! Error in creating user
-    console.log(err)
+    console.log(err);
     return Promise.reject({
       code: 500,
       message: `unable to create user`,
-      err
+      err,
     });
   }
 };

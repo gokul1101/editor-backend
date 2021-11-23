@@ -22,7 +22,7 @@ const createUser = async (req, res) => {
   try {
     let reponse = await createUserService(userDetails);
     return res.status(reponse.code).json(reponse);
-  } catch(err) {
+  } catch (err) {
     //! Error in creating user
     return res.status(err.code).send(err.message);
   }
@@ -92,7 +92,7 @@ const getUser = async (req, res) => {
   }
 };
 const updateUser = async (req, res) => {
-  let {id, updateDetails} = req.body;
+  let { id, updateDetails } = req.body;
   try {
     let user = await User.findById(id).populate([
       {
@@ -162,7 +162,7 @@ const updateUser = async (req, res) => {
     if (req.user.role === "admin") {
       if (updateDetails.regno) user.regno = updateDetails.regno;
       if (updateDetails.role)
-      user.role_id = await mapRoleId(updateDetails.role);
+        user.role_id = await mapRoleId(updateDetails.role);
     }
     if (updateDetails.password) {
       let hashedPassword = await bcrypt.hash(updateDetails.password, 8);
@@ -235,7 +235,9 @@ const createBulkUsers = async (req, res) => {
   if (!fs.existsSync(dirCodes)) fs.mkdirSync(dirCodes, { recursive: true });
   const fileName = `${UUID()}.xlsx`;
   const filePath = join(dirCodes, fileName);
-  file.mv(filePath);
+  file.mv(filePath, (err) => {
+    if (err) return res.status(500).send("Error in uploading file.");
+  });
   const schema = {
     regno: { prop: "regno", type: String },
     name: { prop: "name", type: String },
@@ -251,12 +253,13 @@ const createBulkUsers = async (req, res) => {
   try {
     let errors = [],
       errorLogs;
-    let { rows, err } = await xlsx(filePath, { schema });
+      console.log("error");
+      let { rows, err } = await xlsx(filePath, { schema });
+      console.log("error1");
     for (let i in rows) {
       try {
         await createUserService(rows[i]);
       } catch (err) {
-        console.log(err)
         if (err.code === 403 || err.code === 500) errors.push(err.regno);
       }
     }
@@ -268,21 +271,22 @@ const createBulkUsers = async (req, res) => {
       });
       await errorLogs.save();
     }
-    fs.unlink(filePath, (err) => (err ? console.log(err) : null));
     res.status(200).json({ errorLogs });
   } catch (err) {
-    //! Error in creating user]
-    console.log(err)
+    //! Error in creating user
+    console.log(err);
     res.status(500).json({
-      message: `Error in creating users`,
+      message: `Error in creating users, Try again later.`,
     });
+  } finally {
+    fs.unlink(filePath, (err) => (err ? console.log(err) : null));
   }
 };
 const getAllUsers = async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
     let response = {};
-    if(page == 1) {
+    if (page == 1) {
       const count = await User.countDocuments();
       response.modelCount = count;
     }
@@ -294,9 +298,9 @@ const getAllUsers = async (req, res) => {
     res.status(200).json(response);
   } catch (err) {
     //! Error in finding user details
-    console.log(err)
+    console.log(err);
     res.status(500).json({
-      message: `unable to get user details`
+      message: `unable to get user details`,
     });
   }
 };

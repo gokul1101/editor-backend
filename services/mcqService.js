@@ -1,27 +1,27 @@
-const TestType = require("../models/testTypes");
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
 const { isObjectId } = require("../utils/helper");
-const createMCQ = async ({ quiz_id, statement, type, options }) => {
+const createMCQ = async ({ quiz_id, statement, options }) => {
   let question = {
     quiz_id,
     statement,
   };
+  let newQuestion = new Question(question);
+  let answer = {
+    question_id: newQuestion._id,
+    options,
+  };
+  let newAnswer = new Answer(answer);
   try {
-    let newQuestion = new Question(question);
-    let answer = {
-      question_id: newQuestion._id,
-      options,
-    };
-    let newAnswer = new Answer(answer);
     await newQuestion.save();
     await newAnswer.save();
     return Promise.resolve({
       code: 201,
-      message: "MCQ created successfully",
+      message: "MCQ created successfully.",
     });
   } catch (err) {
     //! Error in creating mcq
+    console.log(err)
     return Promise.reject({
       code: 500,
       message: `Error in creating Mcq`,
