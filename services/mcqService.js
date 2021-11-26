@@ -1,6 +1,5 @@
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
-const { isObjectId } = require("../utils/helper");
 const createMCQ = async ({ quiz_id, statement, options }) => {
   let question = {
     quiz_id,
@@ -28,22 +27,16 @@ const createMCQ = async ({ quiz_id, statement, options }) => {
     });
   }
 };
-const getMCQ = async (questionId) => {
-  if (!isObjectId(questionId)) {
-    return Promise.reject({
-      code: 404,
-      message: `MCQ not found.`,
-    });
-  }
+const getMCQ = async (id) => {
   try {
-    let question = await Question.findById(questionId);
+    let question = await Question.findById(id);
     if (!question) {
       return Promise.reject({
         code: 404,
         message: `MCQ not found`,
       });
     } else {
-      let { _id, options } = await Answer.findOne({ question_id: questionId });
+      let { _id, options } = await Answer.findOne({ question_id: id });
       let mcqOptions = {
         A: options.A,
         B: options.B,

@@ -28,9 +28,6 @@ const createContest = async (req, res) => {
       //** <- end*/
       const newContest = new Contest(contest);
       await newContest.save();
-      success({
-        message: ` contest created.`,
-      });
       res
         .status(201)
         .json({ message: "Contest created successfully", success: true });

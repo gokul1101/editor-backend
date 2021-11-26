@@ -10,54 +10,61 @@ const createChallenge = async (question) => {
   try {
     //Checking if challenge already exist with same
     const challenge = await Question.findOne({ name });
-    if (challenge && !challenge.deleted_at) {
+    if (challenge) {
       return Promise.reject({
         code: 403,
         message: `challenge with name ${name} already exist`,
       });
     } else {
-      //Populating id with string
-      console.log(question);
       question.difficulty_id = await mapDifficultyId(difficulty_id);
       const newChallenge = new Question(question);
       await newChallenge.save();
       return Promise.resolve({
         code: 201,
-        message: `challenge with ${name} created successfully`,
+        message: `Challenge created successfully`,
       });
     }
   } catch (err) {
     console.log(err);
     return Promise.reject({
       code: 500,
-      message: `challenge for ${name} cannot be created `,
+      message: `Challenge cannot be created `,
     });
   }
 };
 
-const getChallenge = async (question) => {
-  const id = question._id;
+const getChallenge = async (id) => {
   try {
-    const exist_question = await Question.findById(id);
-    if (!exist_question || exist_question.deleted_at) {
+    const question = await Question.findById(id).populate([
+      {
+        path: "type_id",
+        model: "testTypes",
+        select: "name",
+      },
+      {
+        path: "difficulty_id",
+        model: "difficulty",
+        select: "level",
+      },
+    ]);
+    if (!question) {
       return Promise.reject({
         code: 404,
         message: `Question with id ${id} had not found`,
       });
     } else {
-      exist_question.difficulty = await mapDifficultyLevel(
-        exist_question.difficulty_id
-      );
+      question.difficulty = await mapDifficultyLevel(question.difficulty_id);
       return Promise.resolve({
         code: 200,
         message: `Question found`,
-        question: exist_question,
+        question,
       });
     }
   } catch (err) {
+    console.log(err);
     return Promise.reject({
       code: 500,
-      message: `Can't get the question with id ${id}`,
+      message: `Can't get the question.`,
     });
   }
 };

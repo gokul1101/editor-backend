@@ -148,7 +148,7 @@ router.post(
   createQuestion
 );
 router.get(
-  "/api/v1/question/get/:id",
+  "/api/v1/question/get",
   userAuth,
   routeAuth("getQuestion"),
   getQuestion

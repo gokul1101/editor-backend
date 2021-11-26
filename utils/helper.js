@@ -97,7 +97,7 @@ const mapDifficultyId = async (level) => {
     if (difficult) return Promise.resolve(difficult._id);
     throw "Invalid difficulty level name found";
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return Promise.reject(err);
   }
 };

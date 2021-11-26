@@ -306,3 +306,76 @@ body : {
 }
 Response====
 MCQ created successfully.
+
+POST - http://localhost:5000/api/v1/question/create
+Request====
+header : Authorization - token
+body : {
+  "name" : "Addition",
+  "type" : "problem",
+  "statement" : "Sum of 2 numbers.",
+  "description" : "Find the sum of two numbers a, b?",
+  "input_format" : "1 2",
+  "output_format" : "3",
+  "contraints" : "0 <= a,b <= 10^7",
+  "difficulty_id" : "easy",
+  "max_score" : 5
+}
+Response====
+Challenge created successfully.
+
+GET - http://localhost:5000/api/v1/question/get?id=619cf733e262587cc1c6b6b6
+Request====
+header : Authorization - token
+query - id = 619cf733e262587cc1c6b6b6
+      - type = mcq
+Response====
+{
+  "code": 200,
+  "message": "MCQ is found",
+  "question": {
+    "id": "619cf733e262587cc1c6b6b6",
+    "statement": "Which method can be used to find the length of a string?"
+  },
+  "answer": {
+    "id": "619cf733e262587cc1c6b6b7",
+    "options": {
+      "A": "length()",
+      "B": "len()",
+      "C": "getLen()",
+      "D": "getLength()"
+    }
+  }
+}
+
+GET - http://localhost:5000/api/v1/question/get?id=61a0def8bb86a9bec986c1ba
+Request====
+header : Authorization - token
+query - id = 61a0def8bb86a9bec986c1ba
+      - type = problem
+Response====
+{
+  "code": 200,
+  "message": "Question found",
+  "question": {
+    "_id": "61a0def8bb86a9bec986c1ba",
+    "name": "Addition",
+    "type_id": {
+      "_id": "618917fdcac245267fb65bab",
+      "name": "problem"
+    },
+    "statement": "Sum of 2 numbers.",
+    "input_format": "1 2",
+    "output_format": "3",
+    "contraints": "0 <= a,b <= 10^7",
+    "difficulty_id": {
+      "_id": "616fba9fa9a3ffa5f6b0de01"
+    },
+    "max_score": 5,
+    "created_at": "2021-11-26T13:18:50.764Z",
+    "updated_at": null,
+    "deleted_at": null,
+    "__v": 0
+  }
+}
+

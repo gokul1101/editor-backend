@@ -11,7 +11,7 @@ const questionSchema = new Schema({
   output_format: { type: String },
   contraints: { type: String },
   difficulty_id: { type: Schema.Types.ObjectId, ref: "difficulties" },
-  max_score: { type: Number, default: 0 },
+  max_score: { type: Number},
   created_at: { type: Date, default: Date.now() },
   updated_at: { type: Date, default: null },
   deleted_at: { type: Date, default: null },

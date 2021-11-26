@@ -26,18 +26,18 @@ const createQuestion = async (req, res) => {
     res.status(code).send(message);
   } catch (err) {
     //! Error in creating question
-    return res.status(err.code).send(err.message);
+    console.log("at line 29", err);
+    return res.status(500).json({ message: `Internal server error` });
   }
 };
 const getQuestion = async (req, res) => {
-  let questionId = req.params.id;
-  let type = req.query.type;
+  let { type, id } = req.query;
   let functions = [getMCQ, getChallenge],
     index;
   if (type === "mcq") index = 0;
   else if (type === "problem") index = 1;
   try {
-    let response = await functions[index](questionId);
+    let response = await functions[index](id);
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting question
