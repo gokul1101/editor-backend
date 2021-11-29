@@ -24,14 +24,12 @@ const Login = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
-      console.log(register,password)
       const response = await helperService.login({regno:register,password})
       if(response.success){
         const user = {role:response.role,token:response.token} 
         localStorage.setItem("user", JSON.stringify(user));
         authDispatch({type:'SET_USER',payload:user})
-        // if(user.role === 'Admin') history.push('/')
-        // else history,push('')
+
         props.snackBar("Logged in Succesfully..!!", "success");
       }
     }

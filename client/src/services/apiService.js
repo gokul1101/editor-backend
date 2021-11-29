@@ -6,7 +6,8 @@ const apiService = {
 
     },
     getUserService : async (payload,config) => {
-        return (await axios.get(`${baseURL}/api/v1/user/get/:${payload.regno}`,config))
+        console.log(payload,config)
+        return (await axios.get(`${baseURL}/api/v1/user/get/${payload.regno}`,config)).data
     }
 }
 export default apiService

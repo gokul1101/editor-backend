@@ -3,18 +3,22 @@ import { useContext, useEffect, useState } from "react";
 import Login from "./components/Login/Login";
 import AdminMain from "./components/Admin/Main/Main";
 import Main from "./components/Student/Main/Main";
-import { Redirect, Route, Switch, withRouter ,useHistory} from "react-router-dom";
+import {
+  Redirect,
+  Route,
+  Switch,
+  withRouter,
+} from "react-router-dom";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
-import {AuthProvider,AuthContext} from "./contexts/AuthContext";
+import { AuthProvider, AuthContext } from "./contexts/AuthContext";
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
 const App = () => {
-  const history = useHistory()
   //** Context Consumer */
-  const [authState,authDispatch] = useContext(AuthContext)
+  const [authState, authDispatch] = useContext(AuthContext);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") return;
     setOpen(false);
@@ -24,14 +28,24 @@ const App = () => {
     setMessage(snackMessage);
     setOpen(true);
   };
+  const getUser = () => {
+    
+  }
+  const checkUser = () => {
+    if(localStorage.getItem(token)) getUser()
+  }
   useEffect(() => {
-    const user =  localStorage.getItem("user") && JSON.parse(localStorage.getItem("user"))
-    if(!authState.user && user){
-    localStorage.getItem("user") && authDispatch({type:"SET_USER",payload:user}) 
-    }else {
-      history.push('/login')
-    }
-  },[])
+    
+    // const user =
+    //   localStorage.getItem("user") && JSON.parse(localStorage.getItem("user"));
+    //   console.log(user);
+    // if (!authState.user && user) {
+    //   localStorage.getItem("user") &&
+    //     authDispatch({ type: "SET_USER", payload: user });
+    // } else {
+    //   history.push("/login");
+    // }
+  }, []);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
@@ -52,7 +66,7 @@ const App = () => {
         <Switch>
           <Route path="/login">
             {!authState.user ? (
-              <Login snackBar={snackBar}  />
+              <Login snackBar={snackBar} />
             ) : (
               <Redirect exact to="/" />
             )}
@@ -61,9 +75,9 @@ const App = () => {
             {authState.user ? (
               [
                 authState.user.role === "student" ? (
-                  <Main  snackBar={snackBar} />
+                  <Main snackBar={snackBar} />
                 ) : (
-                  <AdminMain  snackBar={snackBar} />
+                  <AdminMain snackBar={snackBar} />
                 ),
               ]
             ) : (
@@ -76,7 +90,7 @@ const App = () => {
       <div className="breakpoint d-flex" style={{ height: "100vh" }}>
         This page Enables on Tablet
       </div>
-      </>
+    </>
     // </AuthProvider>
   );
 };

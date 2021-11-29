@@ -11,6 +11,9 @@ const AuthReducer = (state,action) => {
     switch(action.type){
         case 'SET_USER':
             return {...state,user:action.payload}
+        case 'SET_USER_DETAILS':
+          const user = {...state['user'],details:action.payload}
+            return {...state,user}
         case 'REMOVE_USER':
             return {...state,user:null}
             default:
@@ -23,13 +26,13 @@ const AuthProvider = (props) => {
     //This can get from prop also
     const [authState, authDispatch] = useReducer(AuthReducer, initialState)
   return (
-    <div>
+    
       <AuthContext.Provider
         value={[authState, authDispatch]}
       >
         {props.children}
       </AuthContext.Provider>
-    </div>
+  
   );
 };
 
