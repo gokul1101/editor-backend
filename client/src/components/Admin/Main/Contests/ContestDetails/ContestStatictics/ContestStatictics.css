@@ -1,0 +1,44 @@
+.statistics-nav > .inner-stat-nav {
+  margin: 1px;
+  padding: 7px;
+}
+.inner-stat-nav {
+  background: #21a366;
+  color: #fff;
+  text-align: center;
+}
+.stats > .stats-detail {
+  text-align: center;
+  padding: 10px;
+}
+.top-participants {
+  color: #21a366;
+  font-size: 22px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.top-scorer span {
+  font-size: 16px;
+  color: #21a366;
+  font-weight: 600;
+}
+.top-scorer {
+  color: #21a366;
+  font-size: 18px;
+  font-weight: 600;
+}
+.score-point {
+  font-weight: 700;
+  margin-top: 2px;
+}
+.top-part {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+.submission-count{
+    color: #21a366;
+    font-size: 20px;
+    font-weight: 700;
+}

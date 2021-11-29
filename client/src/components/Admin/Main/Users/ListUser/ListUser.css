@@ -1,0 +1,46 @@
+.list-user-scroll {
+  overflow-y: scroll;
+  height: 100vh !important;
+}
+.list-table-header {
+  background: #21a366;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  height: 40px;
+  line-height: 36px;
+  margin: 0.6px;
+}
+.list-table-data {
+  background: rgba(112, 223, 117, 0.2);
+  color: rgb(0, 0, 0);
+  font-weight: 400;
+  margin: 0.6px;
+  /* width: 100%; */
+}
+.sort-btn {
+  border: none;
+  color: white;
+  outline: none;
+  box-shadow: none;
+  background: none;
+}
+.sort-btn:focus,
+.sort-btn:hover {
+  outline: none;
+  box-shadow: none;
+}
+.edit-btn {
+  outline: none;
+  box-shadow: none;
+  background: none;
+  border: 1px solid #21a366;
+  border-radius: 5px;
+}
+.delete-btn {
+  outline: none;
+  box-shadow: none;
+  background: none;
+  border: 1px solid red;
+  border-radius: 5px;
+}

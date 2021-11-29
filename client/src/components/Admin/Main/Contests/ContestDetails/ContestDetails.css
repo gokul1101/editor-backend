@@ -1,0 +1,25 @@
+.box {
+    width: fit-content;
+    height: 35px;
+    background-color: #21A366;
+    color: #fff !important;
+    padding: 10px;
+    position: relative;
+    line-height: 1px;
+    font-size: 18px;
+  }
+  .box.arrow-bottom:after {
+    content: " ";
+    position: absolute;
+    left:45%;
+    color: #fff !important;
+    bottom: -12px;
+    border-top: 12px solid #21A366;
+    border-right: 12px solid transparent;
+    border-left: 12px solid transparent;
+    border-bottom: none;
+  }
+  .edit-contest-li,.edit-contest-li:hover{
+      color: #000;
+      text-decoration: none;
+  }
