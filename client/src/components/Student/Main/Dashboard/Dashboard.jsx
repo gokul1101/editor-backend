@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import Male from "../../../Images/man.png";
-import Female from "../../../Images/woman.png";
+
 import HeaderArt from "../../../Images/header-art.svg";
 import ProblemKit from "../../../Images/problem-img.svg";
 import LoopHeader from "../../../Images/Loop start.svg";
@@ -26,7 +26,7 @@ const Dashboard = (props) => {
               <img src={Male} alt="male" height="50" width="50" />
             </div>
             <div className="user-profile d-flex flex-column">
-              <span className="user-name">Dhanush Karthick S</span>
+              <span className="user-name name-title">Dhanush Karthick S</span>
               <span className="register-no">1813015</span>
             </div>
           </div>
@@ -59,13 +59,13 @@ const Dashboard = (props) => {
             </div>
           </div>
           <div
-            className="col-md-4 p-3 d-flex border-header-1"
+            className="col-md-4 p-3 d-flex border-header-1 mt-5"
             style={{
               backgroundImage: `url(${ProblemKit})`,
-              height: "280px",
+              height: "300px",
               backgroundSize: "50% 100%",
               backgroundRepeat: "no-repeat",
-              backgroundColor: "rgb(57, 185, 143)",
+              backgroundColor: "#B0D7C0",
               backgroundPosition: "78% 15%",
             }}
           >
@@ -89,8 +89,8 @@ const Dashboard = (props) => {
         <div className="d-flex align-items-center justify-content-center">
           <div className="col-md-6 d-flex flex-column align-items-center">
             <div className="d-flex flex-column mt-3">
-              <span className="dash-title">Learn, Practice</span>
-              <span className="dash-title">Get Hired</span>
+              <span className="dash-title">Learn, Practice , Get Hired</span>
+            
             </div>
             <div className="d-flex flex-column mt-3">
               <span>Loop providing you a better platform to learn, </span>
@@ -112,28 +112,71 @@ const Dashboard = (props) => {
 
           <div className="col-md-6 d-flex flex-column align-items-center">
             <div className="d-flex flex-column mt-3">
-              <span className="dash-title">Getting too</span>
-              <span className="dash-title">Bored ?</span>
+              <span className="dash-title ml-5">Write Code in repeat mode.</span>
+             
             </div>
             <div className="d-flex flex-column mt-3">
-              <span>Get some knowledge by reading the </span>
-              <span>articles whe you get bored </span>
+              <span>Once the challenge is posted by a faculty </span>
+              <span>complete within the certain period of time  </span>
             </div>
           </div>
         </div>
       </div>
+{/* 
+      <div className="container">
+        <h3 className="text-center card-title">What we do ?</h3>
+            <div className="d-flex flex-wrap justify-content-around">
+                <div className="card what-we-do-card ">
+                    <div className="card img-one  p-4 m-4">
+                       <img src="./images/card-image-1.png" alt=""  class="ml-2 img-fluid" />
+                    </div>
+                    <h6 className="card-title text-align-center">Target</h6>
+                    <p className="text-align-center">Set an target to complete
+                       MCQ’S and problems.</p>
+                </div>
+
+                <div className="card what-we-do-card ">
+                    <div className="card img-one  p-4 m-4">
+                       <img src="./images/card-image-2.png" alt=""  class="ml-2 img-fluid" />
+                    </div>
+                    <h6 className="card-title text-align-center">Schedule</h6>
+                    <p className="text-align-center">Admin will assign you a problem statement.</p>
+                </div>
+
+                <div className="card what-we-do-card ">
+                    <div className="card img-one  p-4 m-4">
+                       <img src="./images/card-image-3.png" alt=""  class="ml-2 img-fluid" />
+                    </div>
+                    <h6 className="card-title text-align-center">Timer</h6>
+                    <p className="text-align-center">Complete the problems in a period of time.</p>
+                </div>
+            </div>
+            
+    </div> */}
+
+
+
+
+
+
+
+
+
+
+
+
       <div className="dashboard-code mt-5">
-        <p className="text-center dash-title-category">COMPILER</p>
+        <p className="text-center dash-title-category">Articles</p>
         <div className="d-flex align-items-center justify-content-center">
           <div className="col-md-6 d-flex flex-column align-items-center">
             <div className="d-flex flex-column mt-3">
-              <span className="dash-title">Learn, Practice</span>
-              <span className="dash-title">Get Hired</span>
+              <span className="dash-title">Are you bored ?</span>
+           
             </div>
-            <div className="d-flex flex-column mt-3">
-              <span>Loop providing you a better platform to learn, </span>
-              <span>practice and preparing for getting </span>
-              <span>offers in the top MNC's</span>
+            <div className="d-flex flex-column mt-4 ml-5">
+              <span>Get some knowlegde by reading the  </span>
+              <span>articles when u get bored. </span>
+              
             </div>
           </div>
           <div className="col-md-6">
@@ -150,12 +193,13 @@ const Dashboard = (props) => {
 
           <div className="col-md-6 d-flex flex-column align-items-center">
             <div className="d-flex flex-column mt-3">
-              <span className="dash-title">Getting too</span>
-              <span className="dash-title">Bored ?</span>
+              <span className="dash-title">Got Confused ?</span>
+           
             </div>
-            <div className="d-flex flex-column mt-3">
-              <span>Get some knowledge by reading the </span>
-              <span>articles whe you get bored </span>
+            <div className="d-flex flex-column mt-3 ml-5">
+              <span>Here it is a a perfect roadmap that will  </span>
+              <span>leads to find a better path as a </span>
+              <span>full stack developer and in many fields</span>
             </div>
           </div>
         </div>
