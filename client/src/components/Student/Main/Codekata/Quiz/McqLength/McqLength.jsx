@@ -131,7 +131,7 @@ const Mcq = (props) => {
             <div className="d-flex">
               <div class="numberCircle ml-3">{currentQuestion + 1}</div>
               <div className="question-up ml-3">
-                <span className="span-question">
+                <span className="span-question font-weight-bolder">
                   {questions[currentQuestion].questionText}
                 </span>
               </div>
@@ -156,7 +156,7 @@ const Mcq = (props) => {
                   }
                 )}
               </div>
-              <div className="d-flex mt-2">
+              <div className=" mt-2">
                 <button
                   className="mr-2 btn-hover pr-1 pl-1 color-11"
                   color="primary"
@@ -188,7 +188,7 @@ const Mcq = (props) => {
                 className="img-fluid mt-2"
               />
               <span className="text-left dash-title-category">Timer</span>
-              <h2 className="timer-text">00.15.00</h2>
+              <h2 className="timer-text">00 : 15 : 00</h2>
               <p>remaining</p>
               <div className="d-flex">
                 <span className="timer-hand mr-2 ml-3">Hours</span>

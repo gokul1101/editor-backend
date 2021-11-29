@@ -61,7 +61,8 @@ const Login = (props) => {
         <div className="forms-cont">
           <div className="signin-signup">
             <form className="sign-in-form" onSubmit={handleSubmit}>
-              <h2 className="title">Student Sign in</h2>
+              <h2 className="title form-title">Student Sign in</h2>
+              <p className="text-muted">Learn , code , repeat</p>
 
               <div className="input-field mb-2">
                 <i className="fas fa-lock"></i>
@@ -118,10 +119,8 @@ const Login = (props) => {
         <div className="panels-cont">
           <div className="panel left-panel">
             <div className="content">
-              <h3>New here ?</h3>
-              <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Debitis, ex ratione. Aliquid!
+              <h3>Are you admin ?</h3>
+              <p>Click here to login with you adminstration ID to create contest for the students.
               </p>
               <button
                 className="btn transparent"
@@ -135,10 +134,8 @@ const Login = (props) => {
           </div>
           <div className="panel right-panel">
             <div className="content">
-              <h3>One of us ?</h3>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-                laboriosam ad deleniti.
+              <h3>Are you Student ?</h3>
+              <p>Click here to login as a student with the help of register number to attend contest .
               </p>
               <button
                 className="btn transparent mt-2 "

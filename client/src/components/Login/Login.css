@@ -396,3 +396,8 @@ form.sign-in-form {
     transform: translate3d(4px, 0, 0);
   }
 }
+
+.form-title{
+  font-weight: 900;
+  color: #0ba360;
+}

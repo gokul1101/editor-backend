@@ -45,9 +45,10 @@ const Quiz = (props) => {
           </div>
         </div>
       </div>
-      <p className="text-left ml-5 dash-title-category">
-        ROOM CODE : {location.id}
+      <p className="text-left ml-5 dash-title-category text-dark">
+        ROOM CODE : <span className="room-code p-2 m-2 text-white">{location.id}</span>
       </p>
+      
       <p className="text-left ml-5 dash-title-category">QUIZZES</p>
       <div className="d-flex flex-wrap align-items-center justify-content-center">
         <div
@@ -90,6 +91,7 @@ const Quiz = (props) => {
               </div> */}
             </div>
           </div>
+          
         </div>
       </div>
       <p className="text-left ml-5 problem-article">PROBLEMS</p>
