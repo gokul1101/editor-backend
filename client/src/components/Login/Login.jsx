@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Login.css";
 import Developer from "../Images/developer.svg";
 import Hello from "../Images/Hello.svg";
+import { AuthContext } from "../../contexts/AuthContext";
+
+
 const Login = (props) => {
+  //** Context Consumer */
+  const [authState, authDispatch] = useContext(AuthContext)
   const [change, setChange] = useState(false);
   const [register, setRegister] = useState("");
   const [password, setPassword] = useState("");
@@ -13,22 +18,24 @@ const Login = (props) => {
   const changeSignin = () => {
     setChange(false);
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem("reg", register);
     localStorage.setItem("role", "student");
-    props.setLogin(true);
+    // props.setLogin(true);
+    authDispatch({type:'SET_USER',isLogin:true})
     props.snackBar("Logged in Succesfully..!!", "success");
   };
 
   const handleAdmin = (e) => {
     e.preventDefault();
     localStorage.setItem("admin", admin);
-    props.setLogin(true);
+    // props.setLogin(true);
+    authDispatch({type:'SET_USER',isLogin:true})
     props.snackBar("Logged Admin Succesfully..!!", "success");
   };
-
+  
   const handleKeypress = (e) => {
     if (e.keyCode === 13) {
       if (change) {
@@ -36,7 +43,7 @@ const Login = (props) => {
       }
     } else handleSubmit();
   };
-
+  
   return (
     <div>
       <div className={change ? "clip-content sign-up-mode" : "clip-content"}>
