@@ -1,7 +1,8 @@
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
-const createMCQ = async ({ quiz_id, statement, options }) => {
+const createMCQ = async ({ type_id, quiz_id, statement, options }) => {
   let question = {
+    type_id,
     quiz_id,
     statement,
   };
@@ -20,7 +21,7 @@ const createMCQ = async ({ quiz_id, statement, options }) => {
     });
   } catch (err) {
     //! Error in creating mcq
-    console.log(err)
+    console.log(err);
     return Promise.reject({
       code: 500,
       message: `Error in creating Mcq`,
@@ -64,19 +65,32 @@ const getMCQ = async (id) => {
     });
   }
 };
-const updateMCQ = async ({ question_id, answer_id, statement, options }) => {
+const updateMCQ = async ({
+  question_id,
+  answer_id,
+  quiz_id,
+  statement,
+  options,
+}) => {
   try {
-    if (statement) await Question.findByIdAndUpdate(question_id, { statement });
+    let question = {};
+    if (statement) question.statement = statement;
+    if (quiz_id) question.quiz_id = quiz_id;
+    if (Object.keys(question).length > 0)
+      await Question.findByIdAndUpdate(question_id, { ...question });
     if (options) {
-      let answer = await Answer.findById(answer_id);
-      options.A ? (answer.options.A = options.A) : null;
-      options.B ? (answer.options.B = options.B) : null;
-      options.C ? (answer.options.C = options.C) : null;
-      options.D ? (answer.options.D = options.D) : null;
+      let updateOptions = {};
+      options.A ? (updateOptions["options.A"] = options.A) : null;
+      options.B ? (updateOptions["options.B"] = options.B) : null;
+      options.C ? (updateOptions["options.C"] = options.C) : null;
+      options.D ? (updateOptions["options.D"] = options.D) : null;
       options.correctOption
-        ? (answer.options.correctOption = options.correctOption)
+        ? (updateOptions["options.correctOption"] = options.correctOption)
         : null;
-      await answer.save();
+
+      await Answer.findByIdAndUpdate(answer_id, {
+        $set: { ...updateOptions },
+      });
     }
     return Promise.resolve({
       code: 200,
@@ -84,16 +98,33 @@ const updateMCQ = async ({ question_id, answer_id, statement, options }) => {
     });
   } catch (err) {
     //! Error in updating mcq
+    console.log(err);
     return Promise.reject({
       code: 500,
       message: `Error in updating Mcq`,
     });
   }
 };
-const getAllMcqWithQuizID = async (id) => {
+const getAllMcqWithQuizID = async (id, page, limit, flag) => {
   try {
-    const questions = await Question.find({ quiz_id: id });
-    const mcqs = questions.map((question) => question._id);
+    let response = {};
+    const count = await Question.countDocuments();
+    response.modelCount = count;
+    const questions = await Question.find({ quiz_id: id })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+    const mcqs = questions.map(async (question) => {
+      try {
+        const answer = await Answer.findOne({ question_id: question._id });
+        if (flag) response.correctOption = answer.correctOption;
+        response.statement = question.statement;
+        delete answer["options"]["correctOption"];
+        response.options = answer.options;
+        return response;
+      } catch (err) {
+        console.log("at getAllMcqWithQuizID ", err);
+      }
+    });
     return Promise.resolve({
       code: 200,
       message: "MCQs has been found.",
@@ -101,6 +132,7 @@ const getAllMcqWithQuizID = async (id) => {
     });
   } catch (err) {
     //! Error in getting mcqs
+    console.log(err);
     return Promise.reject({
       code: 500,
       message: `Error in getting mcqs`,

@@ -369,7 +369,8 @@ Response====
     "output_format": "3",
     "contraints": "0 <= a,b <= 10^7",
     "difficulty_id": {
-      "_id": "616fba9fa9a3ffa5f6b0de01"
+      "_id": "616fba9fa9a3ffa5f6b0de01",
+      "level": "easy"
     },
     "max_score": 5,
     "created_at": "2021-11-26T13:18:50.764Z",
@@ -379,3 +380,39 @@ Response====
   }
 }
 
+POST - http://localhost:5000/api/v1/question/update
+Request====
+header : Authorization - token
+body : {
+ "type" : "mcq"
+ "question_id" : "61a1bd7de191909d8f747de3",
+ "statement" : "Which method can be used to find the length of a string?",
+ "answer_id" : "61a1bd7de191909d8f747de4",
+ "options" : {
+     "A" : "length()",
+     "B" : "len()",
+     "C" : "getLength()",
+     "D" : "getLen()",
+     "correctOption" : "A"
+ }
+}
+Response====
+MCQ updated successfully.
+
+POST - http://localhost:5000/api/v1/question/update
+Request====
+header : Authorization - token
+body : {
+  "id" : "61a0def8bb86a9bec986c1ba",
+  "name" : "Addition",
+  "type" : "problem",
+  "statement" : "Sum of two numbers.",
+  "description" : "Find the sum of two numbers a, b?",
+  "input_format" : "1 2",
+  "output_format" : "3",
+  "contraints" : "0 <= a,b <= 10^7",
+  "difficulty_id" : "easy",
+  "max_score" : 10
+}
+Response====
+Challenge updated successfully.

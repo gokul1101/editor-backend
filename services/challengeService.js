@@ -73,21 +73,20 @@ const updateChallenge = async (question) => {
   const id = question.id;
   try {
     const exist_question = await Question.findById(id);
-    if (!exist_question || exist_question.deleted_at) {
+    if (!exist_question) {
       return Promise.resolve({
         code: 404,
-        message: `Question with id ${id} had not found`,
+        message: `Question not found`,
       });
     } else {
       if (question.name) {
         const questionWithNewName = await Question.findOne({
-          name: question.name,
-          deleted_at: null,
+          name: question.name
         });
         if (questionWithNewName) {
           return Promise.reject({
             code: 403,
-            message: `New name for this question already taken`,
+            message: `Question name not available.`,
           });
         }
       }
@@ -95,18 +94,17 @@ const updateChallenge = async (question) => {
         question.difficulty_id = await mapDifficultyId(question.difficulty_id);
       await Question.findByIdAndUpdate(
         id,
-        { ...question, update_at: new Date() },
-        { new: true }
+        { ...question, update_at: new Date() }
       );
       return Promise.resolve({
         code: 200,
-        message: `Question with id ${id} updated successfully`,
+        message: `Question updated successfully`,
       });
     }
   } catch (err) {
     return Promise.reject({
       code: 500,
-      message: `Can't update the question with id ${id}`,
+      message: `Can't update the question.`,
     });
   }
 };
@@ -138,12 +136,9 @@ const getAllChallengesWithContestId = async (id) => {
   }
 };
 
-const deleteChallenge = async () => {};
-
 module.exports = {
   createChallenge,
   getChallenge,
   getAllChallengesWithContestId,
-  updateChallenge,
-  deleteChallenge,
+  updateChallenge
 };

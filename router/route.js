@@ -160,13 +160,13 @@ router.post(
   updateQuestion
 );
 router.get(
-  "/api/v1/mcq/all/:id",
+  "/api/v1/mcq/all",
   userAuth,
   routeAuth("getAllMCQS"),
   getAllMCQS
 );
 router.post(
-  "/api/v1/challenge/all/:id",
+  "/api/v1/challenge/all",
   userAuth,
   routeAuth("getAllChallenges"),
   getAllChallenges

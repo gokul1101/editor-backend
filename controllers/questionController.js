@@ -16,11 +16,11 @@ const createQuestion = async (req, res) => {
   let questionDetails = req.body;
   let functions = [createMCQ, createChallenge],
     index;
-  if (questionDetails.type === "mcq") index = 0;
-  else if (questionDetails.type === "problem") index = 1;
+  if (questionDetails.type_id === "mcq") index = 0;
+  else if (questionDetails.type_id === "problem") index = 1;
   try {
     questionDetails.type_id = (
-      await TestType.findOne({ name: questionDetails.type })
+      await TestType.findOne({ name: questionDetails.type_id })
     )._id;
     let { code, message } = await functions[index](questionDetails);
     res.status(code).send(message);
@@ -41,17 +41,16 @@ const getQuestion = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting question
+    if(!err.code) {
+      err.code = 500;
+      err.message = `Internal server Error on fetching mcqs`;
+    }
     return res.status(err.code).send(err.message);
   }
 };
 const updateQuestion = async (req, res) => {
   let questionDetails = req.body;
-  let question = await Question.findById(questionDetails.id).populate({
-    path: "type_id",
-    model: "testTypes",
-    select: "name",
-  });
-  let type = question.type_id.name;
+  let { type } = questionDetails;
   let functions = [updateMCQ, updateChallenge],
     index;
   if (type === "mcq") index = 0;
@@ -61,16 +60,26 @@ const updateQuestion = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in updating question
+    console.log(err)
+    if(!err.code) {
+      err.code = 500;
+      err.message = `Internal server Error on updating mcqs`;
+    }
     return res.status(err.code).send(err.message);
   }
 };
 const getAllMCQS = async (req, res) => {
-  const id = req.params.id;
+  const {id, page=1, limit=10} = req.query;
+  let flag = req.user.role === "admin";
   try {
-    const response = await getAllMcqWithQuizID(id);
+    const response = await getAllMcqWithQuizID(id, page, limit,flag);
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting mcqs with quiz id
+    if(!err.code) {
+      err.code = 500;
+      err.message = `Internal server Error on fetching mcqs`;
+    }
     return res.status(err.code).send(err.message);
   }
 };
@@ -81,6 +90,10 @@ const getAllChallenges = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting mcqs with quiz id
+    if(!err.code) {
+      err.code = 500;
+      err.message = `Internal server Error on fetching mcqs`;
+    }
     return res.status(err.code).send(err.message);
   }
 };
