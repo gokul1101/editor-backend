@@ -156,7 +156,7 @@ const Mcq = (props) => {
                   }
                 )}
               </div>
-              <div className="float-right ml-5 mt-2">
+              <div className=" mt-2">
                 <button
                   className="mr-2 btn-hover pr-1 pl-1 color-11"
                   color="primary"
