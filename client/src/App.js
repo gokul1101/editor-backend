@@ -15,7 +15,6 @@ const App = () => {
   const history = useHistory()
   //** Context Consumer */
   const [authState,authDispatch] = useContext(AuthContext)
-  console.log(authState,authDispatch)
   const handleClose = (event, reason) => {
     if (reason === "clickaway") return;
     setOpen(false);
@@ -26,10 +25,9 @@ const App = () => {
     setOpen(true);
   };
   useEffect(() => {
-    console.log(AuthProvider)
-    const user = JSON.parse(localStorage.getItem("user"))
+    const user =  localStorage.getItem("user") && JSON.parse(localStorage.getItem("user"))
     if(!authState.user && user){
-    localStorage.getItem("reg") && authDispatch({type:"SET_USER",payload:user}) 
+    localStorage.getItem("user") && authDispatch({type:"SET_USER",payload:user}) 
     }else {
       history.push('/login')
     }
@@ -62,7 +60,7 @@ const App = () => {
           <Route path="/">
             {authState.user ? (
               [
-                localStorage.getItem("role") === "student" ? (
+                authState.user.role === "student" ? (
                   <Main  snackBar={snackBar} />
                 ) : (
                   <AdminMain  snackBar={snackBar} />

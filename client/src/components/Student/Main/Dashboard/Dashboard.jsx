@@ -1,4 +1,7 @@
 import React, { useContext, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import "./Dashboard.css";
+
 import Male from "../../../Images/man.png";
 import Female from "../../../Images/woman.png";
 import HeaderArt from "../../../Images/header-art.svg";
@@ -7,16 +10,14 @@ import LoopHeader from "../../../Images/Loop start.svg";
 import Img1 from "../../../Images/img-1 (1).svg";
 import Img2 from "../../../Images/img-1 (2).svg";
 import Img3 from "../../../Images/img-1 (3).svg";
-import "./Dashboard.css";
-import { NavLink } from "react-router-dom";
-import { DataContext } from "../../../../Context";
+import { DataContext } from "../../../../contexts/AuthContext";
 const Dashboard = (props) => {
   useEffect(() => {
+    // const { helloFuc } = useContext(DataContext);
     props.setSideToggle(false);
-    helloFuc();
+    // helloFuc();
   });
 
-  const { helloFuc } = useContext(DataContext);
   return (
     <div className="container-fluid dashboard">
       <NavLink to="/profile" exact>

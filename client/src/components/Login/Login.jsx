@@ -3,15 +3,17 @@ import "./Login.css";
 import Developer from "../Images/developer.svg";
 import Hello from "../Images/Hello.svg";
 import { AuthContext } from "../../contexts/AuthContext";
+import helperService from "../../services/helperService";
+import { useHistory } from "react-router";
 
 
 const Login = (props) => {
+  const history = useHistory()
   //** Context Consumer */
   const [authState, authDispatch] = useContext(AuthContext)
   const [change, setChange] = useState(false);
   const [register, setRegister] = useState("");
   const [password, setPassword] = useState("");
-  const [admin, setAdmin] = useState("");
   const changeSignup = () => {
     setChange(true);
   };
@@ -19,29 +21,38 @@ const Login = (props) => {
     setChange(false);
   };
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem("reg", register);
-    localStorage.setItem("role", "student");
-    // props.setLogin(true);
-    authDispatch({type:'SET_USER',isLogin:true})
-    props.snackBar("Logged in Succesfully..!!", "success");
+    try{
+      console.log(register,password)
+      const response = await helperService.login({regno:register,password})
+      if(response.success){
+        const user = {role:response.role,token:response.token} 
+        localStorage.setItem("user", JSON.stringify(user));
+        authDispatch({type:'SET_USER',payload:user})
+        // if(user.role === 'Admin') history.push('/')
+        // else history,push('')
+        props.snackBar("Logged in Succesfully..!!", "success");
+      }
+    }
+    catch(err){
+      console.log(err)
+    }
   };
 
-  const handleAdmin = (e) => {
-    e.preventDefault();
-    localStorage.setItem("admin", admin);
-    // props.setLogin(true);
-    authDispatch({type:'SET_USER',isLogin:true})
-    props.snackBar("Logged Admin Succesfully..!!", "success");
-  };
+  // const handleAdmin = (e) => {
+  //   e.preventDefault();
+  //   localStorage.setItem("admin", admin);
+  //   // props.setLogin(true);
+  //   authDispatch({type:'SET_USER',isLogin:true})
+  //   console.log(authState)
+  //   props.snackBar("Logged Admin Succesfully..!!", "success");
+  // };
   
   const handleKeypress = (e) => {
     if (e.keyCode === 13) {
-      if (change) {
-        handleAdmin();
-      }
-    } else handleSubmit();
+    handleSubmit()
+    }
   };
   
   return (
@@ -72,29 +83,31 @@ const Login = (props) => {
               <button
                 className="btn-hover color-11"
                 onKeyPress={handleKeypress}
-                onClick={handleSubmit}
+                type = "submit"
               >
                 SIGN IN <i className="fas fa-sign-in-alt mr-2 ml-2"></i>
               </button>
             </form>
-            <form action="#" className="sign-up-form" onSubmit={handleAdmin}>
+            <form action="#" className="sign-up-form" onSubmit={handleSubmit}>
               <h2 className="title">Admin Sign in</h2>
               <div className="input-field">
                 <i className="fas fa-user"></i>
                 <input
                   type="text"
                   placeholder="Register no"
-                  onChange={(e) => setAdmin(e.target.value)}
+                  onChange={(e) => setRegister(e.target.value)}
                 />
               </div>
               <div className="input-field">
                 <i className="fas fa-lock"></i>
-                <input type="password" placeholder="Password" />
+                <input type="password" placeholder="Password" 
+                onChange = {(e) => setPassword(e.target.value)}
+                />
               </div>
               <button
                 className="btn-hover color-11 mt-2"
                 onKeyPress={handleKeypress}
-                onClick={handleAdmin}
+                type = "submit"
               >
                 SIGN UP <i className="fas fa-sign-out-alt mr-2 ml-2"></i>
               </button>
