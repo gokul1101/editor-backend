@@ -98,7 +98,7 @@ const Main = (props) => {
                 <NavLink
                   to="/login"
                   onClick={() => {
-                    // props.setLogin(false);
+                    props.setLogin(false);
                     localStorage.clear();
                   }}
                   className="nav-link dash-li"

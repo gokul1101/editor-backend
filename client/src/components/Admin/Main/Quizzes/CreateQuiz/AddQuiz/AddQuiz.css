@@ -1,0 +1,32 @@
+.option-add-quiz {
+  color: #21a366;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 50%;
+  line-height: 28px;
+}
+.answer-add-quiz {
+  height: auto;
+  width: 100%;
+  color: #000;
+  font-size: 18px;
+  text-align: center;
+  background-color: rgba(219, 219, 219, 0.9);
+  border-radius: 20px;
+}
+.add-quiz-question-span {
+  color: #21a366;
+  font-weight: 600;
+  font-size: 18px;
+}
+.edit-add-quiz i {
+  color: #21a366;
+  font-size: 18px;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  border-radius: 30px;
+  text-align: center;
+  line-height: 36px;
+  background-color: rgb(155, 143, 143, 0.2);
+}

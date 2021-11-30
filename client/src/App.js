@@ -1,45 +1,43 @@
 import "./App.css";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "./components/Login/Login";
 import AdminMain from "./components/Admin/Main/Main";
 import Main from "./components/Student/Main/Main";
-import { Redirect, Route, Switch, withRouter ,useHistory} from "react-router-dom";
+import {
+  Redirect,
+  Route,
+  Switch,
+  withRouter,
+  useHistory,
+} from "react-router-dom";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
-import {AuthProvider,AuthContext} from "./contexts/AuthContext";
-
+import DataProvider from "./Context";
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
 const App = () => {
-  const history = useHistory()
-  //** Context Consumer */
-  const [authState,authDispatch] = useContext(AuthContext)
-  console.log(authState,authDispatch)
+  const history = useHistory();
   const handleClose = (event, reason) => {
     if (reason === "clickaway") return;
     setOpen(false);
   };
   const snackBar = (snackMessage, messType) => {
     setSeverity(messType);
+    console.log(history);
     setMessage(snackMessage);
     setOpen(true);
   };
-  useEffect(() => {
-    console.log(AuthProvider)
-    const user = JSON.parse(localStorage.getItem("user"))
-    if(!authState.user && user){
-    localStorage.getItem("reg") && authDispatch({type:"SET_USER",payload:user}) 
-    }else {
-      history.push('/login')
-    }
-  },[])
+  let [login, setLogin] = useState(localStorage.getItem("reg") ? true : false);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
+  // useEffect(() => {
+  //   localStorage.getItem("reg");
+  //   setLogin(true);
+  // }, [login]);
   return (
-    // <AuthProvider snackBar={snackBar}>
-    <>
+    <DataProvider snackBar={snackBar}>
       <div className="App m-0 p-0">
         <Snackbar
           open={open}
@@ -53,19 +51,19 @@ const App = () => {
         </Snackbar>
         <Switch>
           <Route path="/login">
-            {!authState.user ? (
-              <Login snackBar={snackBar}  />
+            {!login ? (
+              <Login snackBar={snackBar} setLogin={setLogin} />
             ) : (
               <Redirect exact to="/" />
             )}
           </Route>
           <Route path="/">
-            {authState.user ? (
+            {login ? (
               [
                 localStorage.getItem("role") === "student" ? (
-                  <Main  snackBar={snackBar} />
+                  <Main setLogin={setLogin} snackBar={snackBar} />
                 ) : (
-                  <AdminMain  snackBar={snackBar} />
+                  <AdminMain setLogin={setLogin} snackBar={snackBar} />
                 ),
               ]
             ) : (
@@ -78,8 +76,7 @@ const App = () => {
       <div className="breakpoint d-flex" style={{ height: "100vh" }}>
         This page Enables on Tablet
       </div>
-      </>
-    // </AuthProvider>
+    </DataProvider>
   );
 };
 

@@ -3,11 +3,15 @@ import React, { createContext, useState } from "react";
 export const DataContext = createContext();
 
 const DataProvider = (props) => {
-  const [state, setstate] = useState({})
+  const helloFuc = () => {
+    console.log("Hello Fuction Triggered");
+  };
   return (
     <div>
       <DataContext.Provider
-        value={[state,setstate]}
+        value={{
+          helloFuc,
+        }}
       >
         {props.children}
       </DataContext.Provider>
