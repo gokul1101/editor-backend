@@ -8,15 +8,18 @@ import {
   Route,
   Switch,
   withRouter,
+  useHistory,
 } from "react-router-dom";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
-import { AuthProvider, AuthContext } from "./contexts/AuthContext";
+import { AuthContext } from "./contexts/AuthContext";
+import axios from "axios";
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
 const App = () => {
+  const history = useHistory();
   //** Context Consumer */
   const [authState, authDispatch] = useContext(AuthContext);
   const handleClose = (event, reason) => {
@@ -28,27 +31,24 @@ const App = () => {
     setMessage(snackMessage);
     setOpen(true);
   };
-  const getUser = () => {
-    
-  }
+  const getUser = () => {};
   const checkUser = () => {
-    if(localStorage.getItem(token)) getUser()
-  }
-  useEffect(() => {
-    
-    // const user =
-    //   localStorage.getItem("user") && JSON.parse(localStorage.getItem("user"));
-    //   console.log(user);
-    // if (!authState.user && user) {
-    //   localStorage.getItem("user") &&
-    //     authDispatch({ type: "SET_USER", payload: user });
-    // } else {
-    //   history.push("/login");
-    // }
-  }, []);
+    // if(localStorage.getItem(token)) getUser()
+  };
+
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
+  const fetchUser = async () => {
+    const response = await axios.get(
+      "http://localhost:5000/api/v1/user/get/1813076",
+      { headers: { Authorization: authState.user.token } }
+    );
+    authDispatch({type:"SET_USER",payload:{...response["data"]["userDetails"]}})
+  };
+  useEffect(() => {
+    if(localStorage.getItem('user')) fetchUser();
+  }, []);
   return (
     // <AuthProvider snackBar={snackBar}>
     <>

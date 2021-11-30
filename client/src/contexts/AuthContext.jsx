@@ -1,16 +1,17 @@
 import React, { createContext, useReducer } from "react";
 
-const initialState = {
+ const initialState = {
     user:null
 }
 // const actions = {
 //     setUser : (user) => {
 //     }
 // }
-const AuthReducer = (state,action) => {
+ const AuthReducer = (state,action) => {
     switch(action.type){
         case 'SET_USER':
-            return {...state,user:action.payload}
+          
+            return {...state,user:{...state.user,...action.payload}}
         case 'SET_USER_DETAILS':
           const user = {...state['user'],details:action.payload}
             return {...state,user}
@@ -24,7 +25,7 @@ const AuthReducer = (state,action) => {
 const AuthContext = createContext(initialState);
 const AuthProvider = (props) => {
     //This can get from prop also
-    const [authState, authDispatch] = useReducer(AuthReducer, initialState)
+    const [authState, authDispatch] = useReducer(props.AuthReducer, props.initialState)
   return (
     
       <AuthContext.Provider
@@ -36,4 +37,4 @@ const AuthProvider = (props) => {
   );
 };
 
-export {AuthProvider,AuthContext};
+export {AuthProvider,AuthContext,initialState,AuthReducer};
