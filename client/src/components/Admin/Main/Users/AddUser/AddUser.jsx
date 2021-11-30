@@ -6,7 +6,24 @@ import "../../../../Student/Main/Dashboard/Dashboard.css";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
+import "./AddUser.css";
+
 const useStyles = makeStyles((theme) => ({
+  root:{
+    border:"1px solid #1E2D64",
+  },
+  fieldColor: {
+    width: "100%",
+    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#03b1fc",
+    },
+    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#03b1fc",
+    },
+    "& .MuiInputLabel-outlined.Mui-focused": {
+      color: "#03b1fc",
+    },
+  },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -20,8 +37,8 @@ const AddUser = () => {
   };
   return (
     <div className="">
-      <p className="text-left dash-title-category pb-2">Add Details *</p>
-      <div className="col p-0" style={{ marginTop: "-20px" }}>
+      <p className="text-left dash-title-category pb-2">Add User *</p>
+      {/* <div className="col p-0" style={{ marginTop: "-20px" }}>
         <div className="hr">
           <hr className="col p-0" />
         </div>
@@ -29,10 +46,18 @@ const AddUser = () => {
           <span>Create user</span>
           <span>Bulk upload Excel file</span>
         </div>
-      </div>
+      </div> */}
       <div className="d-flex">
         <div className="col-md-8 p-2 border m-1">
+        <p className="add-user-titles text-center">Add individual student</p>
           <div className="d-flex mt-2 mb-2">
+          <div className="col-md-6 p-1">
+              <InputReducer
+                placeholder="Name"
+                name="Name"
+                type="text"
+              />
+            </div>
             <div className="col-md-6 p-1">
               <InputReducer
                 placeholder="Register Number"
@@ -40,10 +65,23 @@ const AddUser = () => {
                 type="text"
               />
             </div>
-            <div
+            {/* <div
               className="col-md-6 p-1"
               style={{ position: "relative", left: "-7px", top: "-9px" }}
             >
+              <SelectReducer array={["B.E", "B.Tech"]} name="Stream" />
+            </div> */}
+          </div>
+          <div
+            className="d-flex mt-2 mb-2"
+            style={{ position: "relative", left: "-7px" }}
+          >
+            <div
+              className="col-md-6 p-1">
+              <SelectReducer array={["KSRCT", "KSRCE", "KSRIET"]} name="College Name" />
+            </div>
+            <div
+              className="col-md-6 p-1">
               <SelectReducer array={["B.E", "B.Tech"]} name="Stream" />
             </div>
           </div>
@@ -57,14 +95,40 @@ const AddUser = () => {
                 name="Course name"
               />
             </div>
-            <div className="col-md-6 p-1">
-              <SelectReducer
-                array={["KSRCT", "KSRCE", "KSRIET"]}
-                name="Stream"
+            <div className="col-md-6 p-1 ml-2 mt-2">
+              <InputReducer
+                placeholder="Email"
+                name="Email"
+                type="email"
               />
             </div>
           </div>
-          <div className="d-flex mt-3 mb-2">
+          <div className="d-flex mt-2 mb-2">
+          <div className="col-md-6 p-1">
+              <InputReducer
+                placeholder="Old Password"
+                name="Old Password"
+                type="password"
+              />
+            </div>
+            <div className="col-md-6 p-1">
+              <InputReducer
+                placeholder="New Password"
+                name="New password"
+                type="password"
+              />
+            </div>
+          </div>
+          <div className="d-flex mt-2 mb-2">
+          <div className="col-md-6 p-1">
+              <InputReducer
+                placeholder="Phone number"
+                name="Phone number"
+                type="number"
+              />
+            </div>
+          </div>
+          {/* <div className="d-flex mt-3 mb-2">
             <div className="col-md-4 p-1">
               <TextField
                 id="date"
@@ -89,12 +153,13 @@ const AddUser = () => {
                 }}
               />
             </div>
-          </div>
+          </div> */}
           <button className="loop-btn mt-3 pr-2 pl-2 ml-3">
             <i className="fas fa-plus pr-2 pl-2"></i>Create user
           </button>
         </div>
         <div className="col-md-4 p-2 border m-1">
+        <p className="add-user-titles text-center">Bulk upload through excel file</p>
           <DropFileInput onFileChange={onFileChange} />
         </div>
       </div>
