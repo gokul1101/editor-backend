@@ -3,19 +3,25 @@ import { useContext, useEffect, useState } from "react";
 import Login from "./components/Login/Login";
 import AdminMain from "./components/Admin/Main/Main";
 import Main from "./components/Student/Main/Main";
-import { Redirect, Route, Switch, withRouter ,useHistory} from "react-router-dom";
+import {
+  Redirect,
+  Route,
+  Switch,
+  withRouter,
+  useHistory,
+} from "react-router-dom";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
-import {AuthProvider,AuthContext} from "./contexts/AuthContext";
+import { AuthContext } from "./contexts/AuthContext";
+import axios from "axios";
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
 const App = () => {
-  const history = useHistory()
+  const history = useHistory();
   //** Context Consumer */
-  const [authState,authDispatch] = useContext(AuthContext)
-  console.log(authState,authDispatch)
+  const [authState, authDispatch] = useContext(AuthContext);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") return;
     setOpen(false);
@@ -25,18 +31,24 @@ const App = () => {
     setMessage(snackMessage);
     setOpen(true);
   };
-  useEffect(() => {
-    console.log(AuthProvider)
-    const user = JSON.parse(localStorage.getItem("user"))
-    if(!authState.user && user){
-    localStorage.getItem("reg") && authDispatch({type:"SET_USER",payload:user}) 
-    }else {
-      history.push('/login')
-    }
-  },[])
+  const getUser = () => {};
+  const checkUser = () => {
+    // if(localStorage.getItem(token)) getUser()
+  };
+
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
+  const fetchUser = async () => {
+    const response = await axios.get(
+      "http://localhost:5000/api/v1/user/get/1813076",
+      { headers: { Authorization: authState.user.token } }
+    );
+    authDispatch({type:"SET_USER",payload:{...response["data"]["userDetails"]}})
+  };
+  useEffect(() => {
+    if(localStorage.getItem('user')) fetchUser();
+  }, []);
   return (
     // <AuthProvider snackBar={snackBar}>
     <>
@@ -54,7 +66,7 @@ const App = () => {
         <Switch>
           <Route path="/login">
             {!authState.user ? (
-              <Login snackBar={snackBar}  />
+              <Login snackBar={snackBar} />
             ) : (
               <Redirect exact to="/" />
             )}
@@ -62,10 +74,10 @@ const App = () => {
           <Route path="/">
             {authState.user ? (
               [
-                localStorage.getItem("role") === "student" ? (
-                  <Main  snackBar={snackBar} />
+                authState.user.role === "student" ? (
+                  <Main snackBar={snackBar} />
                 ) : (
-                  <AdminMain  snackBar={snackBar} />
+                  <AdminMain snackBar={snackBar} />
                 ),
               ]
             ) : (
@@ -78,7 +90,7 @@ const App = () => {
       <div className="breakpoint d-flex" style={{ height: "100vh" }}>
         This page Enables on Tablet
       </div>
-      </>
+    </>
     // </AuthProvider>
   );
 };

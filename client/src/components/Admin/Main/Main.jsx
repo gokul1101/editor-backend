@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, {  useContext, useState } from "react";
 import LoopLogo from "../../Images/Loop1.jpg";
 import { NavLink, Route, Redirect, Switch } from "react-router-dom";
 import "../../Student/Main/Main.css";
@@ -13,7 +13,9 @@ import Quizzes from "./Quizzes/Quizzes";
 import Challenges from "./Challenges/Challenges";
 import CreateQuiz from "./Quizzes/CreateQuiz/CreateQuiz";
 import AddQuiz from "./Quizzes/CreateQuiz/AddQuiz/AddQuiz";
+import {AuthContext} from '../../../contexts/AuthContext'
 const Main = (props) => {
+  const [,authDispatch] = useContext(AuthContext)
   const [sideToggle, setSideToggle] = useState(false);
   return (
     <div className="container-fluid p-0">
@@ -99,6 +101,7 @@ const Main = (props) => {
                   to="/login"
                   onClick={() => {
                     // props.setLogin(false);
+                    authDispatch({type:'REMOVE_USER',payload:null})
                     localStorage.clear();
                   }}
                   className="nav-link dash-li"

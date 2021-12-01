@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { NavLink, Route, Redirect, Switch } from "react-router-dom";
 import "./Main.css";
 import LoopLogo from "../../Images/Loop1.jpg";
@@ -12,7 +12,9 @@ import Quiz from "./Codekata/Quiz/Quiz";
 import Mcq from "./Codekata/Quiz/McqLength/McqLength";
 import Profile from "./Profile/Profile";
 import Programs from "./Codekata/Programs/Programs";
+import { AuthContext } from "../../../contexts/AuthContext";
 const Main = (props) => {
+  const [,authDispatch] = useContext(AuthContext) 
   const [sideToggle, setSideToggle] = useState(false);
   return (
     <div className="conatiner-fluid w-100">
@@ -95,12 +97,13 @@ const Main = (props) => {
                 to="/login"
                 onClick={() => {
                   // props.setLogin(false);
+                  authDispatch({type:"REMOVE_USER",payload:null})
                   localStorage.clear();
                 }}
                 className="nav-link dash-li"
               >
                 <i className="fas fa-sign-out-alt pr-4 pl-4 dash-icon shake"></i>
-                <span className="hide-span">Logout</span>
+                <span className="hide-span" >Logout</span>
                 <span className="tooltip">Logout</span>
               </NavLink>
             </li>
@@ -140,16 +143,16 @@ const Main = (props) => {
                 />
               </Route>
             </Route>
-            <Route path="/articles">
+            <Route path="/articles" exact>
               <Articles setSideToggle={setSideToggle} />
             </Route>
-            <Route path="/roadmap">
+            <Route path="/roadmap" exact>
               <Roadmap setSideToggle={setSideToggle} />
             </Route>
-            <Route path="/compiler">
+            <Route path="/compiler" exact>
               <Compiler setSideToggle={setSideToggle} />
             </Route>
-            <Route path="/profile">
+            <Route path="/profile" exact>
               <Profile setSideToggle={setSideToggle} />
             </Route>
             <Route exact path="/" render={() => <Redirect to="/dashboard" />} />

@@ -2,12 +2,24 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
+import {
+  AuthProvider,
+  AuthContext,
+  initialState,
+  AuthReducer,
+} from "./contexts/AuthContext";
 
 ReactDOM.render(
   <BrowserRouter>
-   <AuthProvider >
-    <App />
+    <AuthProvider
+      initialState={
+        localStorage.getItem("user")
+          ? {user:JSON.parse(localStorage.getItem("user"))}
+          : initialState
+      }
+      AuthReducer={AuthReducer}
+    >
+      <App />
     </AuthProvider>
   </BrowserRouter>,
   document.getElementById("root")

@@ -32,8 +32,17 @@ const createUser = async (req, res) => {
   }
 };
 const getUser = async (req, res) => {
+  let {user} = req;
+  console.log(user)
+  const {id, regno} = req.params;
   try {
-    let user = await User.findOne({
+    
+    // let user;
+    // if(String(id) === String(user._id) || regno === user.regno) {
+    //   user
+    // }
+      // res.status(200).json(user);
+    user = await User.findOne({
       regno: req.params.regno,
       deleted_at: null,
     }).populate([
