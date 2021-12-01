@@ -8,18 +8,16 @@ import {
   Route,
   Switch,
   withRouter,
-  useHistory,
 } from "react-router-dom";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { AuthContext } from "./contexts/AuthContext";
-import axios from "axios";
+import helperService from "./services/helperService";
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
 const App = () => {
-  const history = useHistory();
   //** Context Consumer */
   const [authState, authDispatch] = useContext(AuthContext);
   const handleClose = (event, reason) => {
@@ -31,23 +29,29 @@ const App = () => {
     setMessage(snackMessage);
     setOpen(true);
   };
-  const getUser = () => {};
-  const checkUser = () => {
-    // if(localStorage.getItem(token)) getUser()
-  };
+  // const getUser = () => {};
+  // const checkUser = () => {
+  //   // if(localStorage.getItem(token)) getUser()
+  // };
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
   const fetchUser = async () => {
-    const response = await axios.get(
-      "http://localhost:5000/api/v1/user/get/1813076",
-      { headers: { Authorization: authState.user.token } }
-    );
-    authDispatch({type:"SET_USER",payload:{...response["data"]["userDetails"]}})
-  };
-  useEffect(() => {
-    if(localStorage.getItem('user')) fetchUser();
+    try{
+    const response = await helperService.getUser({},{headers:{'Authorization':authState.user.token}})
+      if(response.status === 200){
+        authDispatch({type:"SET_USER_DETAILS",payload:response.data})
+      }
+    }catch(err){
+       if(err.status === 401){
+          localStorage.clear()
+       }
+    };
+  }
+    useEffect(async () => {
+      if(localStorage.getItem('user') && !authState.user.regno ) await fetchUser();
+      console.log("At app.js useEffect => ",authState)
   }, []);
   return (
     // <AuthProvider snackBar={snackBar}>
@@ -74,7 +78,8 @@ const App = () => {
           <Route path="/">
             {authState.user ? (
               [
-                authState.user.role === "student" ? (
+                
+                authState.user.role && authState.user.role == "student"  ? (
                   <Main snackBar={snackBar} />
                 ) : (
                   <AdminMain snackBar={snackBar} />

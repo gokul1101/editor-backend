@@ -16,24 +16,22 @@ import model from '../../../../services/model'
 const Dashboard = (props) => {
   let user = model.user; 
   const [authState,authDispatch] = useContext(AuthContext)
-  const fetchUser = async () => {
-    try{
-      //Need of regNo in global
-      const response = await helperService.getUser({regno:1813076},{headers:{'Authorization':authState.user.token}})
-      if(response.success){
-        authDispatch({type:"SET_USER_DETAILS",payload:{...response.userDetails}})
-      }
-    }catch(err){
-      console.log(err)
-    }
-  }
+  // const fetchUser = async () => {
+  //   try{
+  //     //Need of regNo in global
+  //     console.log(authState)
+      
+  //     //SnackBar Should be show
+  //   }
+  // }
   useEffect(() => {
     // const { helloFuc } = useContext(DataContext);
-    if(!authState.user.details)fetchUser()
+    // console.log("at line 36 inside dashboard",authState)
+    // if(!authState.user.regno) fetchUser()
+    console.log('inside student dashboard ',authState)
     props.setSideToggle(false);
     // helloFuc();
   },[]);
-   console.log(user)
   return (
     <div className="container-fluid dashboard">
       <NavLink to="/profile" exact>
@@ -43,8 +41,8 @@ const Dashboard = (props) => {
               <img src={Male} alt="male" height="50" width="50" />
             </div>
             <div className="user-profile d-flex flex-column">
-              <span className="user-name name-title">{authState.user && authState.user.details && authState.user.details.name}</span>
-              <span className="register-no">{authState.user && authState.user.details && authState.user.details.regno}</span>
+              <span className="user-name name-title">{authState.user && authState.user.name}</span>
+              <span className="register-no">{authState.user && authState.user.regno}</span>
             </div>
           </div>
         </div>
@@ -53,7 +51,7 @@ const Dashboard = (props) => {
         <div className="d-flex">
           <div className="col-md-7">
             <p className="header-title mt-1">
-              <span className="dash-greet">Welcome</span> {authState.user && authState.user.details && authState.user.details.name} ..!
+              <span className="dash-greet">Welcome</span> {authState.user &&  authState.user.name} ..!
             </p>
             <div className="d-flex border-header mt-3 align-items-center justify-">
               <div className="col-md-7 d-flex flex-column pl-4">
