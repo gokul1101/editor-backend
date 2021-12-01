@@ -1,6 +1,6 @@
 import { TextField } from "@material-ui/core";
 import React, { useEffect } from "react";
-import InputReducer from "../../../../Reducer/InputReducer";
+import InputReducer from "../../../../../Reducer/InputReducer";
 import "./CreateChallenge.css";
 const CreateChallenge = (props) => {
   const [tags, setTags] = React.useState(props.tags);
