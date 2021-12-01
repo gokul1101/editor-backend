@@ -8,6 +8,7 @@ import {
   Route,
   Switch,
   withRouter,
+  useHistory,
 } from "react-router-dom";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -18,8 +19,14 @@ const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
 const App = () => {
-  //** Context Consumer */
-  const [authState, authDispatch] = useContext(AuthContext);
+  const history = useHistory();
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [severity, setSeverity] = useState("");
+
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("user"));
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") return;
     setOpen(false);
@@ -29,32 +36,25 @@ const App = () => {
     setMessage(snackMessage);
     setOpen(true);
   };
-  // const getUser = () => {};
-  // const checkUser = () => {
-  //   // if(localStorage.getItem(token)) getUser()
-  // };
-
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  const [severity, setSeverity] = useState("");
-  const fetchUser = async () => {
-    try{
-    const response = await helperService.getUser({},{headers:{'Authorization':authState.user.token}})
-      if(response.status === 200){
-        authDispatch({type:"SET_USER_DETAILS",payload:response.data})
+  const getUser = async () => {
+    try {
+      const { status, data } = await helperService.getUser(
+        {},
+        { headers: { Authorization: token } }
+      );
+      if (status === 200) {
+        console.log(data);
+        setUser({ ...data });
       }
-    }catch(err){
-       if(err.status === 401){
-          localStorage.clear()
-       }
-    };
-  }
-    useEffect(async () => {
-      if(localStorage.getItem('user') && !authState.user.regno ) await fetchUser();
-      console.log("At app.js useEffect => ",authState)
-  }, []);
+    } catch ({ status, message }) {
+      if (status === 401) {
+        localStorage.clear();
+        history.push("/login");
+      }
+      console.log(message);
+    }
+  };
   return (
-    // <AuthProvider snackBar={snackBar}>
     <>
       <div className="App m-0 p-0">
         <Snackbar
@@ -69,25 +69,19 @@ const App = () => {
         </Snackbar>
         <Switch>
           <Route path="/login">
-            {!authState.user ? (
-              <Login snackBar={snackBar} />
-            ) : (
+            {token ? (
               <Redirect exact to="/" />
+            ) : (
+              <Login snackBar={snackBar} setToken={setToken} />
             )}
           </Route>
           <Route path="/">
-            {authState.user ? (
-              [
-                
-                authState.user.role && authState.user.role == "student"  ? (
-                  <Main snackBar={snackBar} />
-                ) : (
-                  <AdminMain snackBar={snackBar} />
-                ),
-              ]
+            {localStorage.getItem("role") === "student" ? (
+              <Main snackBar={snackBar} getUser={getUser} />
+            ) : localStorage.getItem("role") === "admin" ? (
+              <AdminMain snackBar={snackBar} getUser={getUser} />
             ) : (
-              // <AdminMain setLogin={setLogin} snackBar={snackBar} />
-              <Redirect exact to="/login" />
+              (localStorage.clear(), (<Redirect to="/login" />))
             )}
           </Route>
         </Switch>

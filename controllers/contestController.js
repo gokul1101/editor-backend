@@ -46,23 +46,23 @@ const getContest = async (req, res) => {
     if (req.user.role === "admin") contest = await Contest.findById(id);
     else if (req.user.role === "student")
       contest = await Contest.findOne({ code });
-    if (!contest) return res.status(404).send(`Contest not found`);
+    if (!contest) return res.status(404).json({message:`Contest not found`,success:false});
     if (req.user.role === "student") {
       let now = +new Date();
       let end_date = +contest.end_date;
       let start_date = +contest.start_date;
       //* If the contest was already ended.
       if (now > end_date)
-        return res.status(403).send(`The contest was expired.`);
+        return res.status(403).json({message:`The contest was expired.`,success:false});
       //* If the contest is not started yet.
       if (now < start_date)
-        return res.status(403).send(`The contest is not started yet.`);
+        return res.status(403).json({message:`The contest is not started yet.`,success:false});
     }
-    res.status(200).json({ message: contest });
+    res.status(200).json({ message: contest,success:true });
   } catch (err) {
     return res
       .status(500)
-      .json({ message: "Unable to find contest" });
+      .json({ message: "Unable to find contest" ,success:false});
   }
 };
 const updateContest = async (req, res) => {

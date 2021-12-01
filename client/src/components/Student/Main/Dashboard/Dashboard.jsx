@@ -15,7 +15,7 @@ import helperService from "../../../../services/helperService";
 import model from '../../../../services/model'
 const Dashboard = (props) => {
   let user = model.user; 
-  const [authState,authDispatch] = useContext(AuthContext)
+  // const [authState,authDispatch] = useContext(AuthContext)
   // const fetchUser = async () => {
   //   try{
   //     //Need of regNo in global
@@ -28,7 +28,6 @@ const Dashboard = (props) => {
     // const { helloFuc } = useContext(DataContext);
     // console.log("at line 36 inside dashboard",authState)
     // if(!authState.user.regno) fetchUser()
-    console.log('inside student dashboard ',authState)
     props.setSideToggle(false);
     // helloFuc();
   },[]);
@@ -41,8 +40,8 @@ const Dashboard = (props) => {
               <img src={Male} alt="male" height="50" width="50" />
             </div>
             <div className="user-profile d-flex flex-column">
-              <span className="user-name name-title">{authState.user && authState.user.name}</span>
-              <span className="register-no">{authState.user && authState.user.regno}</span>
+              {/* <span className="user-name name-title">{authState.user && authState.user.name}</span>
+              <span className="register-no">{authState.user && authState.user.regno}</span> */}
             </div>
           </div>
         </div>
@@ -51,7 +50,7 @@ const Dashboard = (props) => {
         <div className="d-flex">
           <div className="col-md-7">
             <p className="header-title mt-1">
-              <span className="dash-greet">Welcome</span> {authState.user &&  authState.user.name} ..!
+              {/* <span className="dash-greet">Welcome</span> {authState.user &&  authState.user.name} ..! */}
             </p>
             <div className="d-flex border-header mt-3 align-items-center justify-">
               <div className="col-md-7 d-flex flex-column pl-4">
