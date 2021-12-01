@@ -1,5 +1,5 @@
 import "./App.css";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "./components/Login/Login";
 import AdminMain from "./components/Admin/Main/Main";
 import Main from "./components/Student/Main/Main";
@@ -28,6 +28,7 @@ const App = () => {
   };
   const snackBar = (snackMessage, messType) => {
     setSeverity(messType);
+    console.log(history);
     setMessage(snackMessage);
     setOpen(true);
   };
@@ -50,8 +51,7 @@ const App = () => {
     if(localStorage.getItem('user')) fetchUser();
   }, []);
   return (
-    // <AuthProvider snackBar={snackBar}>
-    <>
+    <DataProvider snackBar={snackBar}>
       <div className="App m-0 p-0">
         <Snackbar
           open={open}
@@ -72,7 +72,7 @@ const App = () => {
             )}
           </Route>
           <Route path="/">
-            {authState.user ? (
+            {login ? (
               [
                 authState.user.role === "student" ? (
                   <Main snackBar={snackBar} />
@@ -90,8 +90,7 @@ const App = () => {
       <div className="breakpoint d-flex" style={{ height: "100vh" }}>
         This page Enables on Tablet
       </div>
-    </>
-    // </AuthProvider>
+    </DataProvider>
   );
 };
 
