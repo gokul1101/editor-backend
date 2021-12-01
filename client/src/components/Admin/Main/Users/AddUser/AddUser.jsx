@@ -15,13 +15,13 @@ const useStyles = makeStyles((theme) => ({
   fieldColor: {
     width: "100%",
     "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#03b1fc",
+      borderColor: "#00511B",
     },
     "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#03b1fc",
+      borderColor: "#00511B",
     },
     "& .MuiInputLabel-outlined.Mui-focused": {
-      color: "#03b1fc",
+      color: "#00511B",
     },
   },
   textField: {
@@ -53,6 +53,7 @@ const AddUser = () => {
           <div className="d-flex mt-2 mb-2">
           <div className="col-md-6 p-1">
               <InputReducer
+                className={classes.fieldColor}
                 placeholder="Name"
                 name="Name"
                 type="text"
@@ -60,6 +61,7 @@ const AddUser = () => {
             </div>
             <div className="col-md-6 p-1">
               <InputReducer
+                className={classes.fieldColor}
                 placeholder="Register Number"
                 name="Register Number"
                 type="number"
@@ -72,31 +74,28 @@ const AddUser = () => {
               <SelectReducer array={["B.E", "B.Tech"]} name="Stream" />
             </div> */}
           </div>
-          <div
-            className="d-flex mt-2 mb-2"
-            style={{ position: "relative", left: "-7px" }}
-          >
+          <div className="d-flex mt-2 mb-2">
             <div
               className="col-md-6 p-1">
-              <SelectReducer array={["KSRCT", "KSRCE", "KSRIET"]} name="College Name" />
+              <SelectReducer className={classes.fieldColor} array={["B.E", "B.Tech"]} name="Stream" />
             </div>
-            <div
-              className="col-md-6 p-1">
-              <SelectReducer array={["B.E", "B.Tech"]} name="Stream" />
-            </div>
-          </div>
-          <div
-            className="d-flex mt-2 mb-2"
-            style={{ position: "relative", left: "-7px" }}
-          >
             <div className="col-md-6 p-1">
               <SelectReducer
+                className={classes.fieldColor}
                 array={["CSE", "IT", "CIVIL"]}
                 name="Course name"
               />
             </div>
-            <div className="col-md-6 p-1 ml-2 mt-2">
+          </div>
+          <div
+            className="d-flex mt-2 mb-2" >
+           <div
+              className="col-md-6 p-1">
+              <SelectReducer className={classes.fieldColor} array={["KSRCT", "KSRCE", "KSRIET"]} name="College Name" />
+            </div>
+            <div className="col-md-6 p-1">
               <InputReducer
+                className={classes.fieldColor}
                 placeholder="Email"
                 name="Email"
                 type="email"
@@ -106,6 +105,7 @@ const AddUser = () => {
           <div className="d-flex mt-2 mb-2">
           <div className="col-md-6 p-1">
               <InputReducer
+                className={classes.fieldColor}
                 placeholder="Old Password"
                 name="Old Password"
                 type="password"
@@ -113,6 +113,7 @@ const AddUser = () => {
             </div>
             <div className="col-md-6 p-1">
               <InputReducer
+                className={classes.fieldColor}
                 placeholder="New Password"
                 name="New password"
                 type="password"
@@ -122,13 +123,14 @@ const AddUser = () => {
           <div className="d-flex mt-2 mb-2">
           <div className="col-md-6 p-1">
               <InputReducer
+                className={classes.fieldColor}
                 placeholder="Phone number"
                 name="Phone number"
                 type="number"
               />
             </div>
           </div>
-          {/* <div className="d-flex mt-3 mb-2">
+          <div className="d-flex mt-3 mb-2">
             <div className="col-md-4 p-1">
               <TextField
                 id="date"
@@ -151,9 +153,9 @@ const AddUser = () => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-              />
+                />
             </div>
-          </div> */}
+          </div>
           <button className="loop-btn mt-3 pr-2 pl-2 ml-3">
             <i className="fas fa-plus pr-2 pl-2"></i>Create user
           </button>
