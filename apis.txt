@@ -39,7 +39,7 @@ Response====
   "regno": "1813018"
 }
 
-GET - http://localhost:5000/api/v1/user/get/:regno
+GET - http://localhost:5000/api/v1/user/get?regno=1813019
 Request====
 header : Authorization - token
 

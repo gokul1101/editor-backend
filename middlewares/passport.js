@@ -46,7 +46,7 @@ module.exports = (passport) => {
         ]);
         user = serializeUser(user);
         //Role is not needed to replace
-        (user && !user.deleted_at) ? done(null, { ...user, role: payload.role }) : done(null, false);
+        (user && !user.deleted_at) ? done(null, { ...user }) : done(null, false);
       } catch (err) {
         done(null, false);
       }
