@@ -5,44 +5,18 @@ const baseURL = "http://localhost:5000"
 const helperService = {
 
     login : async (payload) => {
-        try{
-        const {status,data} =  (await axios.post(`${baseURL}/api/v1/login`,payload))
-        console.log(status,data)
-        // if(response) return response
-        if(status === 200){
-            return Promise.resolve({
-                status,
-                message:data.message,
-                data
-            })
-        }
-        }
-        catch(err){
-            console.log(err.response)
-            return Promise.reject({
-                status : err.response.status,
-                message:err.response.data
-              })
-        }
+        const response =  (await axios.post(`${baseURL}/api/v1/login`,payload)).data
+        if(response) return response
     },
     getUser : async (payload,config) => {
-        try{
-        const {status,data} = await axios.get(`${baseURL}/api/v1/user/get`,config)
-        if(status === 200 ){
-            return Promise.resolve({
-                status : 200,
-                message :data.message,
-                data : data.userDetails 
-            })
-        }
-        }
-        catch(err){
-            // console.log(err.response.status)
-            return Promise.reject({
-                status : err.response.status,
-                message:err.response.data
-              })
-        }
+        console.log(payload)
+        let url = `${baseURL}/api/v1/user/get`;
+        if(payload.id)
+            url += `?id=${payload.id}`;
+        else if(payload.regno)
+            url += `?regno=${payload.regno}`;
+        const response = (await axios.get(url,config)).data
+        if(response) return response
     }
 }
 export default helperService

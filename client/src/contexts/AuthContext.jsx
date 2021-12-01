@@ -13,7 +13,7 @@ import React, { createContext, useReducer } from "react";
           
             return {...state,user:{...state.user,...action.payload}}
         case 'SET_USER_DETAILS':
-          const user = {...state['user'],...action.payload}
+          const user = {...state['user'],details:action.payload}
             return {...state,user}
         case 'REMOVE_USER':
             return {...state,user:null}

@@ -43,11 +43,11 @@ const getContest = async (req, res) => {
   try {
     //If contest already exist return success otherwise not found
     let contest;
-    if (req.user.role === "admin") contest = await Contest.findById(id);
-    else if (req.user.role === "student")
+    if (req.user.role_id === "admin") contest = await Contest.findById(id);
+    else if (req.user.role_id === "student")
       contest = await Contest.findOne({ code });
     if (!contest) return res.status(404).send(`Contest not found`);
-    if (req.user.role === "student") {
+    if (req.user.role_id === "student") {
       let now = +new Date();
       let end_date = +contest.end_date;
       let start_date = +contest.start_date;

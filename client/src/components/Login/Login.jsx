@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Login.css";
 import Developer from "../Images/developer.svg";
 import Hello from "../Images/Hello.svg";
-<<<<<<< HEAD
 import { AuthContext } from "../../contexts/AuthContext";
 import helperService from "../../services/helperService";
 import { useHistory } from "react-router";
@@ -12,9 +11,6 @@ const Login = (props) => {
   const history = useHistory()
   //** Context Consumer */
   const [authState, authDispatch] = useContext(AuthContext)
-=======
-const Login = (props) => {
->>>>>>> 3e675fa862a44d7d1666a6d6a704249eee07150e
   const [change, setChange] = useState(false);
   const [register, setRegister] = useState("");
   const [password, setPassword] = useState("");
@@ -24,17 +20,16 @@ const Login = (props) => {
   const changeSignin = () => {
     setChange(false);
   };
-<<<<<<< HEAD
   
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
       const response = await helperService.login({regno:register,password})
-      if(response.status === 200){
-        console.log(response)
-        const user = {role:response.data.role,token:response.data.token} 
-        localStorage.setItem("user", JSON.stringify(user.token));
+      if(response.success){
+        const user = {role:response.role,token:response.token} 
+        localStorage.setItem("user", JSON.stringify(user));
         authDispatch({type:'SET_USER',payload:user})
+
         props.snackBar("Logged in Succesfully..!!", "success");
       }
     }
@@ -52,30 +47,12 @@ const Login = (props) => {
   //   props.snackBar("Logged Admin Succesfully..!!", "success");
   // };
   
-=======
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    localStorage.setItem("reg", register);
-    localStorage.setItem("role", "student");
-    props.setLogin(true);
-    props.snackBar("Logged in Succesfully..!!", "success");
-  };
-
-  const handleAdmin = (e) => {
-    e.preventDefault();
-    localStorage.setItem("admin", admin);
-    props.setLogin(true);
-    props.snackBar("Logged Admin Succesfully..!!", "success");
-  };
-
->>>>>>> 3e675fa862a44d7d1666a6d6a704249eee07150e
   const handleKeypress = (e) => {
     if (e.keyCode === 13) {
     handleSubmit()
     }
   };
-
+  
   return (
     <div>
       <div className={change ? "clip-content sign-up-mode" : "clip-content"}>

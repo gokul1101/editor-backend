@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import codekata from "../../../Images/codekata.svg";
 import "./Codekata.css";
 import { useHistory } from "react-router-dom";
-import {AuthContext} from '../../../../contexts/AuthContext'
 const Codekata = (props) => {
-  const [authState] = useContext(AuthContext)
   const history = useHistory();
   const [code, setCode] = useState("");
   const submitCode = (e) => {
@@ -21,7 +19,7 @@ const Codekata = (props) => {
       <div className="d-flex align-items-center justify-content-center">
         <div className="col-md-6 d-flex flex-column">
           <p className="header-title mt-1">
-            <span className="dash-greet">Welcome</span> {authState.user.name} ..!
+            <span className="dash-greet">Welcome</span> GOKUL S ..!
           </p>
           <span>Your code goes here.. 👇🏻</span>
           <div id="divOuter" className="mt-3 mb-3">

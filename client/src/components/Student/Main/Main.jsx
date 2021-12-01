@@ -14,7 +14,7 @@ import Profile from "./Profile/Profile";
 import Programs from "./Codekata/Programs/Programs";
 import { AuthContext } from "../../../contexts/AuthContext";
 const Main = (props) => {
-  const [authState,authDispatch] = useContext(AuthContext) 
+  const [,authDispatch] = useContext(AuthContext) 
   const [sideToggle, setSideToggle] = useState(false);
   return (
     <div className="conatiner-fluid w-100">
@@ -96,12 +96,8 @@ const Main = (props) => {
               <NavLink
                 to="/login"
                 onClick={() => {
-<<<<<<< HEAD
                   // props.setLogin(false);
                   authDispatch({type:"REMOVE_USER",payload:null})
-=======
-                  props.setLogin(false);
->>>>>>> 3e675fa862a44d7d1666a6d6a704249eee07150e
                   localStorage.clear();
                 }}
                 className="nav-link dash-li"
@@ -117,11 +113,11 @@ const Main = (props) => {
               style={{ background: "#39B98F", color: "#fff" }}
               className="mr-2"
             >
-              {authState.user.name.substring(0,1)}
+              D
             </Avatar>
             <div className="d-flex flex-column footer-span">
-              <span className="user-name">{authState.user.name}</span>
-              <span className="register-no">{authState.user.regno}</span>
+              <span className="user-name">Dhanush karthick S</span>
+              <span className="register-no">1813015</span>
             </div>
           </div>
         </div>

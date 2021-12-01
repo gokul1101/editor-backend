@@ -55,7 +55,7 @@ const userLogin = async (userCred, res) => {
 const userAuth = passport.authenticate("jwt", { session: false });
 const { API } = require("./api");
 const routeAuth = (controller) => (req, res, next) => {
-  API[req.user.role].find((api) => api === controller)
+  API[req.user.role_id].find((api) => api === controller)
     ? next()
     : res.status(401).json({
         message: `Unauthorized`,
