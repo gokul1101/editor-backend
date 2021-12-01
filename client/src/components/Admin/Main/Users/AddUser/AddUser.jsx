@@ -62,7 +62,7 @@ const AddUser = () => {
               <InputReducer
                 placeholder="Register Number"
                 name="Register Number"
-                type="text"
+                type="number"
               />
             </div>
             {/* <div
