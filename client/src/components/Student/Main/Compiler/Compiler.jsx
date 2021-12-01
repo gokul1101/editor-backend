@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/ext-language_tools";
@@ -21,7 +21,9 @@ import Male from "../../../Images/man.png";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 import ComImg from "../../../Images/Loop1.jpg";
+import { AuthContext } from "../../../../contexts/AuthContext";
 const Compiler = (props) => {
+  const [authState] = useContext(AuthContext)
   const themes = [
     "xcode",
     "monokai",
@@ -85,8 +87,8 @@ const Compiler = (props) => {
               <img src={Male} alt="male" height="50" width="50" />
             </div>
             <div className="user-profile d-flex flex-column">
-              <span className="user-name">Dhanush Karthick S</span>
-              <span className="register-no">1813015</span>
+              <span className="user-name">{authState.user.name}</span>
+              <span className="register-no">{authState.user.regno}</span>
             </div>
           </div>
         </div>

@@ -30,11 +30,11 @@ const Login = (props) => {
     e.preventDefault();
     try{
       const response = await helperService.login({regno:register,password})
-      if(response.success){
-        const user = {role:response.role,token:response.token} 
-        localStorage.setItem("user", JSON.stringify(user));
+      if(response.status === 200){
+        console.log(response)
+        const user = {role:response.data.role,token:response.data.token} 
+        localStorage.setItem("user", JSON.stringify(user.token));
         authDispatch({type:'SET_USER',payload:user})
-
         props.snackBar("Logged in Succesfully..!!", "success");
       }
     }

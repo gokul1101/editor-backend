@@ -53,7 +53,7 @@ router.post(
 
 //* User Details
 router.get(
-  "/api/v1/user/get/:regno",
+  "/api/v1/user/get",
   userAuth,
   routeAuth("getUser"),
   getUser

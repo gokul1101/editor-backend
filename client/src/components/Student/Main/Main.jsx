@@ -14,7 +14,7 @@ import Profile from "./Profile/Profile";
 import Programs from "./Codekata/Programs/Programs";
 import { AuthContext } from "../../../contexts/AuthContext";
 const Main = (props) => {
-  const [,authDispatch] = useContext(AuthContext) 
+  const [authState,authDispatch] = useContext(AuthContext) 
   const [sideToggle, setSideToggle] = useState(false);
   return (
     <div className="conatiner-fluid w-100">
@@ -117,11 +117,11 @@ const Main = (props) => {
               style={{ background: "#39B98F", color: "#fff" }}
               className="mr-2"
             >
-              D
+              {authState.user.name.substring(0,1)}
             </Avatar>
             <div className="d-flex flex-column footer-span">
-              <span className="user-name">Dhanush karthick S</span>
-              <span className="register-no">1813015</span>
+              <span className="user-name">{authState.user.name}</span>
+              <span className="register-no">{authState.user.regno}</span>
             </div>
           </div>
         </div>

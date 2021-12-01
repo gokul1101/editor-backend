@@ -5,12 +5,44 @@ const baseURL = "http://localhost:5000"
 const helperService = {
 
     login : async (payload) => {
-        const response =  (await axios.post(`${baseURL}/api/v1/login`,payload)).data
-        if(response) return response
+        try{
+        const {status,data} =  (await axios.post(`${baseURL}/api/v1/login`,payload))
+        console.log(status,data)
+        // if(response) return response
+        if(status === 200){
+            return Promise.resolve({
+                status,
+                message:data.message,
+                data
+            })
+        }
+        }
+        catch(err){
+            console.log(err.response)
+            return Promise.reject({
+                status : err.response.status,
+                message:err.response.data
+              })
+        }
     },
     getUser : async (payload,config) => {
-        const response = (await axios.get(`${baseURL}/api/v1/user/get/${payload.regno}`,config)).data
-        if(response) return response
+        try{
+        const {status,data} = await axios.get(`${baseURL}/api/v1/user/get`,config)
+        if(status === 200 ){
+            return Promise.resolve({
+                status : 200,
+                message :data.message,
+                data : data.userDetails 
+            })
+        }
+        }
+        catch(err){
+            // console.log(err.response.status)
+            return Promise.reject({
+                status : err.response.status,
+                message:err.response.data
+              })
+        }
     }
 }
 export default helperService
