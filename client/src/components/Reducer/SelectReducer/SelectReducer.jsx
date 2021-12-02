@@ -19,7 +19,7 @@ const SelectReducer = (props) => {
 
   return (
     <div>
-      <FormControl variant="outlined" className={classes.formControl}>
+      <FormControl variant="outlined" className={classes.formControl, props.className} >
         <InputLabel id="demo-simple-select-outlined-label">
           {props.name}
         </InputLabel>

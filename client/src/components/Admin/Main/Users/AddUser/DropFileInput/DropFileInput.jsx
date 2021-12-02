@@ -100,17 +100,13 @@ const DropFileInput = (props) => {
               </div>
             </div>
           ))}
-          <div className="d-flex align-items-center justify-content-center mt-3">
-            <button className="loop-btn pr-2 pl-2">
-              <i className="fas fa-upload pr-2 pl-2"></i>Download Sample file
-            </button>
-          </div>
+          
           <div className="d-flex align-items-center justify-content-center mt-3">
             <button className="loop-btn pr-2 pl-2">
               <i className="fas fa-upload pr-2 pl-2"></i>Upload Excel file
             </button>
           </div>
-          <div className="d-flex align-items-end justify-content-end mt-3">
+          <div className="d-flex align-items-end justify-content-end mt-3 p-2">
             <a className="log-file">
               <span
                 class="badge badge-pill badge-secondary"
@@ -181,8 +177,13 @@ const DropFileInput = (props) => {
           </div>
         </div>
       ) : (
-        <div className="drop-file-preview__item mt-2 d-flex align-items-center justify-content-center">
+        <div className="drop-file-preview__item mt-2 d-flex flex-column align-items-center justify-content-center">
           No file choosen. Excel file only be uploaded.
+          <div className="d-flex align-items-center justify-content-center mt-3">
+            <button className="loop-btn pr-2 pl-2 mt-2 mb-2">
+              <i className="fas fa-upload pr-2 pl-2"></i>Download Sample file
+            </button>
+          </div>
         </div>
       )}
     </>

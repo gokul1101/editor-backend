@@ -2,7 +2,7 @@ import InputReducer from "../../../../Reducer/InputReducer";
 import "./CreateContest.css";
 const CreateContest = () => {
   return (
-    <div className="container" style={{ marginTop: "120px" }}>
+    <div className="container-fluid mt-5">
       <div className="d-flex flex-column">
         <p className="text-left dash-title-category pb-2">Create Contest</p>
         <span className="create-con-text mt-1">

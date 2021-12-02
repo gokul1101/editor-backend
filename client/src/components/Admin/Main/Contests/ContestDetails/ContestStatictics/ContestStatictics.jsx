@@ -65,7 +65,7 @@ const ContestStatictics = (props) => {
     },
   ];
   return (
-    <div className="container-fluid w-100">
+    <div className="container-fluid w-100 mt-5">
       <div className="d-flex">
         <div className="col-md-9 d-flex flex-column border">
           <div className="statistics-nav d-flex justify-content-center mt-3 mb-2 w-100">
