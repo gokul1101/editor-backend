@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,useContext,useEffect } from "react";
 import { NavLink, Route, Redirect, Switch } from "react-router-dom";
 import "./Main.css";
 import LoopLogo from "../../Images/Loop1.jpg";
@@ -12,11 +12,13 @@ import Quiz from "./Codekata/Quiz/Quiz";
 import Mcq from "./Codekata/Quiz/McqLength/McqLength";
 import Profile from "./Profile/Profile";
 import Programs from "./Codekata/Programs/Programs";
+import { AuthContext } from "../../../contexts/AuthContext";
 const Main = (props) => {
+  const [authState,authDispatch] = useContext(AuthContext) 
   const [sideToggle, setSideToggle] = useState(false);
-  useEffect(() => {
-    props.getUser();
-  }, []);
+  useEffect(()=>{
+    if(localStorage.getItem("user") && !authState.user.regno) props.fetchUser()
+  },[])
   return (
     <div className="conatiner-fluid w-100">
       <div className="d-flex">
@@ -97,22 +99,14 @@ const Main = (props) => {
               <NavLink
                 to="/login"
                 onClick={() => {
-<<<<<<< HEAD
                   // props.setLogin(false);
-<<<<<<< HEAD
-                  // authDispatch({type:"REMOVE_USER",payload:null})
-=======
                   authDispatch({type:"REMOVE_USER",payload:null})
-=======
-                  props.setLogin(false);
->>>>>>> 3e675fa862a44d7d1666a6d6a704249eee07150e
->>>>>>> 1e507eede137b0e85ba2d6818783ea0878e5a7b5
                   localStorage.clear();
                 }}
                 className="nav-link dash-li"
               >
                 <i className="fas fa-sign-out-alt pr-4 pl-4 dash-icon shake"></i>
-                <span className="hide-span">Logout</span>
+                <span className="hide-span" >Logout</span>
                 <span className="tooltip">Logout</span>
               </NavLink>
             </li>
@@ -122,11 +116,11 @@ const Main = (props) => {
               style={{ background: "#39B98F", color: "#fff" }}
               className="mr-2"
             >
-              {/* {authState.user.name && authState.user.name.substring(0,1)} */}
+              {authState.user?.name?.substring(0,1)}
             </Avatar>
             <div className="d-flex flex-column footer-span">
-              {/* <span className="user-name">{authState.user.name}</span>
-              <span className="register-no">{authState.user.regno}</span> */}
+              <span className="user-name">{authState.user?.name}</span>
+              <span className="register-no">{authState.user?.regno}</span>
             </div>
           </div>
         </div>

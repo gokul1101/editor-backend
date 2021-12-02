@@ -1,33 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import codekata from "../../../Images/codekata.svg";
 import "./Codekata.css";
 import { useHistory } from "react-router-dom";
-import {AuthContext} from '../../../../contexts/AuthContext'
-import {ContestContext} from '../../../../contexts/ContestContext'
-import helperService from '../../../../services/helperService'
+import { AuthContext } from "../../../../contexts/AuthContext";
 const Codekata = (props) => {
-  // const [authState] = useContext(AuthContext)
-  const [contestState,contestDispatch] = useContext(ContestContext)
+  const [authState,] = useContext(AuthContext)
   const history = useHistory();
   const [code, setCode] = useState("");
-  const fetchContest = async () => {
-    try{
-      const response = await helperService.getContestWithCode(code)
-      if(response.status === 200){
-        // contestDispatch()
-        history.push(`/codekata/${code}`);
-      }
-    }
-    catch(err){
-      console.log(err)
-    }
-
-  }
   const submitCode = (e) => {
     e.preventDefault();
     if (code.length < 6)
       props.snackBar("Your code is wrong!! Ckeck your code", "error");
-    else fetchContest()
+    else history.push(`/codekata/${code}`);
   };
   useEffect(() => {
     props.setSideToggle(false);
@@ -37,7 +21,7 @@ const Codekata = (props) => {
       <div className="d-flex align-items-center justify-content-center">
         <div className="col-md-6 d-flex flex-column">
           <p className="header-title mt-1">
-            {/* <span className="dash-greet">Welcome</span> {authState.user.name} ..! */}
+            <span className="dash-greet">Welcome</span> {authState?.user?.name} ..!
           </p>
           <span>Your code goes here.. 👇🏻</span>
           <div id="divOuter" className="mt-3 mb-3">

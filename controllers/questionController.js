@@ -70,7 +70,7 @@ const updateQuestion = async (req, res) => {
 };
 const getAllMCQS = async (req, res) => {
   const {id, page=1, limit=10} = req.query;
-  let flag = req.user.role === "admin";
+  let flag = req.user.role_id === "admin";
   try {
     const response = await getAllMcqWithQuizID(id, page, limit,flag);
     res.status(response.code).send(response);

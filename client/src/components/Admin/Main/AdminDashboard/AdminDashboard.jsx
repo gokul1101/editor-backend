@@ -19,7 +19,6 @@ const AdminDashboard = () => {
                 height="80"
                 width="80"
                 className="img-fluid "
-                alt=""
               />
             </div>
           </div>
@@ -32,7 +31,6 @@ const AdminDashboard = () => {
             </div>
             <div className="img-start">
               <img
-              alt=""
                 src="https://cdn-icons-png.flaticon.com/512/3141/3141839.png"
                 height="80"
                 width="80"
@@ -49,7 +47,6 @@ const AdminDashboard = () => {
             </div>
             <div className="img-start">
               <img
-              alt=""
                 src="https://cdn-icons-png.flaticon.com/512/3874/3874088.png"
                 height="80"
                 width="80"

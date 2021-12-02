@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Login from "./components/Login/Login";
 import AdminMain from "./components/Admin/Main/Main";
 import Main from "./components/Student/Main/Main";
@@ -13,6 +13,7 @@ import {
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { AuthContext } from "./contexts/AuthContext";
+import axios from "axios";
 import helperService from "./services/helperService";
 
 const Alert = (props) => {
@@ -20,41 +21,47 @@ const Alert = (props) => {
 };
 const App = () => {
   const history = useHistory();
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  const [severity, setSeverity] = useState("");
-
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("user"));
-
+  //** Context Consumer */
+  const [authState, authDispatch] = useContext(AuthContext);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") return;
     setOpen(false);
   };
   const snackBar = (snackMessage, messType) => {
     setSeverity(messType);
-    console.log(history);
     setMessage(snackMessage);
     setOpen(true);
   };
-  const getUser = async () => {
+  const checkUser = () => {
+    // if(localStorage.getItem(token)) getUser()
+  };
+
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [severity, setSeverity] = useState("");
+  const fetchUser = async () => {
     try {
+      console.log("inside fetchUser");
       const { status, data } = await helperService.getUser(
         {},
-        { headers: { Authorization: token } }
+        { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        console.log(data);
-        setUser({ ...data });
+        authDispatch({
+          type: "SET_USER",
+          payload: { ...data["userDetails"] },
+        });
       }
-    } catch ({ status, message }) {
-      if (status === 401) {
-        localStorage.clear();
-        history.push("/login");
+    } catch (err) {
+      if (err.status === 401) {
+        console.log(err.data);
+        <Redirect to ="/login" />
       }
-      console.log(message);
     }
   };
+  // useEffect(() => {
+  //   if (localStorage.getItem("user")) fetchUser();
+  // }, []);
   return (
     <>
       <div className="App m-0 p-0">
@@ -70,19 +77,24 @@ const App = () => {
         </Snackbar>
         <Switch>
           <Route path="/login">
-            {token ? (
-              <Redirect exact to="/" />
+            {!authState.user ? (
+              <Login snackBar={snackBar} />
             ) : (
-              <Login snackBar={snackBar} setToken={setToken} />
+              <Redirect exact to="/" />
             )}
           </Route>
           <Route path="/">
-            {localStorage.getItem("role") === "student" ? (
-              <Main snackBar={snackBar} getUser={getUser} />
-            ) : localStorage.getItem("role") === "admin" ? (
-              <AdminMain snackBar={snackBar} getUser={getUser} />
+            {authState.user ? (
+              [
+                authState.user.role === "student" ? (
+                  <Main snackBar={snackBar} fetchUser={fetchUser} />
+                ) : (
+                  <AdminMain snackBar={snackBar} />
+                ),
+              ]
             ) : (
-              (localStorage.clear(), (<Redirect to="/login" />))
+              // <AdminMain setLogin={setLogin} snackBar={snackBar} />
+              <Redirect exact to="/login" />
             )}
           </Route>
         </Switch>
@@ -91,6 +103,7 @@ const App = () => {
         This page Enables on Tablet
       </div>
     </>
+    // </AuthProvider>
   );
 };
 

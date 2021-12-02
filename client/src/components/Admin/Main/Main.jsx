@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import LoopLogo from "../../Images/Loop1.jpg";
 import { NavLink, Route, Redirect, Switch } from "react-router-dom";
 import "../../Student/Main/Main.css";
@@ -12,11 +12,13 @@ import Quizzes from "./Quizzes/Quizzes";
 import Challenges from "./Challenges/Challenges";
 import CreateQuiz from "./Quizzes/CreateQuiz/CreateQuiz";
 import AddQuiz from "./Quizzes/CreateQuiz/AddQuiz/AddQuiz";
+import {AuthContext} from '../../../contexts/AuthContext'
 const Main = (props) => {
+  const [authState,authDispatch] = useContext(AuthContext)
   const [sideToggle, setSideToggle] = useState(false);
-  useEffect(() => {
-    props.getUser();
-  }, []);
+  // useEffect(() => {
+  //   props.getUser();
+  // }, []);
   return (
     <div className="container-fluid p-0">
       <div className="d-flex">
@@ -100,16 +102,9 @@ const Main = (props) => {
                 <NavLink
                   to="/login"
                   onClick={() => {
-<<<<<<< HEAD
-                    // props.setLogin(false);
-<<<<<<< HEAD
-                    // authDispatch({type:'REMOVE_USER',payload:null})
-=======
+ 
                     authDispatch({type:'REMOVE_USER',payload:null})
-=======
-                    props.setLogin(false);
->>>>>>> 3e675fa862a44d7d1666a6d6a704249eee07150e
->>>>>>> 1e507eede137b0e85ba2d6818783ea0878e5a7b5
+
                     localStorage.clear();
                   }}
                   className="nav-link dash-li"

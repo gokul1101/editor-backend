@@ -1,93 +1,48 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Login.css";
 import Developer from "../Images/developer.svg";
 import Hello from "../Images/Hello.svg";
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 import { AuthContext } from "../../contexts/AuthContext";
->>>>>>> 1e507eede137b0e85ba2d6818783ea0878e5a7b5
 import helperService from "../../services/helperService";
+import { useHistory } from "react-router";
+
 
 const Login = (props) => {
-<<<<<<< HEAD
-=======
   const history = useHistory()
   //** Context Consumer */
   const [authState, authDispatch] = useContext(AuthContext)
-=======
-const Login = (props) => {
->>>>>>> 3e675fa862a44d7d1666a6d6a704249eee07150e
->>>>>>> 1e507eede137b0e85ba2d6818783ea0878e5a7b5
   const [change, setChange] = useState(false);
   const [register, setRegister] = useState("");
   const [password, setPassword] = useState("");
-
   const changeSignup = () => {
     setChange(true);
   };
   const changeSignin = () => {
     setChange(false);
   };
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
   
->>>>>>> 1e507eede137b0e85ba2d6818783ea0878e5a7b5
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { status, data } = await helperService.login({
-        regno: register,
-        password,
-      });
-      if (status === 200) {
-        localStorage.setItem("user", JSON.stringify(data.token));
-        localStorage.setItem("role", data.role);
-        props.setToken(data.token);
+    try{
+      const {status,data,message} = await helperService.login({regno:register,password})
+      if(data.success){
+        const user = {role:data.role,token:data.token} 
+        localStorage.setItem("user", JSON.stringify(user));
+        authDispatch({type:'SET_USER',payload:user})
+        props.snackBar("Logged in Succesfully..!!", "success");
       }
-    } catch (err) {
-      console.log(err);
+    }
+    catch(err){
+      console.log(err)
     }
   };
-<<<<<<< HEAD
-=======
 
-  // const handleAdmin = (e) => {
-  //   e.preventDefault();
-  //   localStorage.setItem("admin", admin);
-  //   // props.setLogin(true);
-  //   authDispatch({type:'SET_USER',isLogin:true})
-  //   console.log(authState)
-  //   props.snackBar("Logged Admin Succesfully..!!", "success");
-  // };
-  
-=======
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    localStorage.setItem("reg", register);
-    localStorage.setItem("role", "student");
-    props.setLogin(true);
-    props.snackBar("Logged in Succesfully..!!", "success");
-  };
-
-  const handleAdmin = (e) => {
-    e.preventDefault();
-    localStorage.setItem("admin", admin);
-    props.setLogin(true);
-    props.snackBar("Logged Admin Succesfully..!!", "success");
-  };
-
->>>>>>> 3e675fa862a44d7d1666a6d6a704249eee07150e
->>>>>>> 1e507eede137b0e85ba2d6818783ea0878e5a7b5
   const handleKeypress = (e) => {
     if (e.keyCode === 13) {
-      handleSubmit();
+    handleSubmit()
     }
   };
-
+  
   return (
     <div>
       <div className={change ? "clip-content sign-up-mode" : "clip-content"}>
@@ -117,7 +72,7 @@ const Login = (props) => {
               <button
                 className="btn-hover color-11"
                 onKeyPress={handleKeypress}
-                type="submit"
+                type = "submit"
               >
                 SIGN IN <i className="fas fa-sign-in-alt mr-2 ml-2"></i>
               </button>
@@ -134,16 +89,14 @@ const Login = (props) => {
               </div>
               <div className="input-field">
                 <i className="fas fa-lock"></i>
-                <input
-                  type="password"
-                  placeholder="Password"
-                  onChange={(e) => setPassword(e.target.value)}
+                <input type="password" placeholder="Password" 
+                onChange = {(e) => setPassword(e.target.value)}
                 />
               </div>
               <button
                 className="btn-hover color-11 mt-2"
                 onKeyPress={handleKeypress}
-                type="submit"
+                type = "submit"
               >
                 SIGN UP <i className="fas fa-sign-out-alt mr-2 ml-2"></i>
               </button>
@@ -155,9 +108,7 @@ const Login = (props) => {
           <div className="panel left-panel">
             <div className="content">
               <h3>Are you admin ?</h3>
-              <p>
-                Click here to login with you adminstration ID to create contest
-                for the students.
+              <p>Click here to login with you adminstration ID to create contest for the students.
               </p>
               <button
                 className="btn transparent"
@@ -172,9 +123,7 @@ const Login = (props) => {
           <div className="panel right-panel">
             <div className="content">
               <h3>Are you Student ?</h3>
-              <p>
-                Click here to login as a student with the help of register
-                number to attend contest .
+              <p>Click here to login as a student with the help of register number to attend contest .
               </p>
               <button
                 className="btn transparent mt-2 "

@@ -33,7 +33,7 @@ const CreateQuiz = () => {
             </div>
           </div>
           <div className="col-md-6 d-flex">
-            <img src={LoopHeader} alt="" className="img-fluid" />
+            <img src={LoopHeader} className="img-fluid" />
           </div>
         </div>
       </div>

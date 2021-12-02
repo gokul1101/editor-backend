@@ -32,6 +32,7 @@ const createUser = async (req, res) => {
   }
 };
 const getUser = async (req, res) => {
+  // console.log(req,user)
   let { user } = req;
   let userDetails = user;
   const { id, regno } = req.query;
@@ -39,7 +40,7 @@ const getUser = async (req, res) => {
 
     if (id || regno) {
       if (id) {
-        user = User.findById(id).populate([
+        user = await User.findById(id).populate([
           {
             path: "role_id",
             model: "role",
@@ -73,7 +74,7 @@ const getUser = async (req, res) => {
         ]);
       }
       if (regno) {
-        user = User.findOne({ regno }).populate([
+        user = await User.findOne({ regno }).populate([
           {
             path: "role_id",
             model: "role",
@@ -106,9 +107,10 @@ const getUser = async (req, res) => {
           },
         ]);
       }
-      userDetails = serializeUser(user);
+      if(user)
+        userDetails = serializeUser(user);
     }
-    console.log(user)
+    console.log(userDetails)
     //! User not found
     if (!user)
       return res.status(404).json({
@@ -116,7 +118,7 @@ const getUser = async (req, res) => {
         success: false,
       });
     //! Student cannot access admin data
-    if (req.user.role === "student" && userDetails.role_id === "admin")
+    if (req.user.role_id === "student" && userDetails.role_id === "admin")
       return res.status(401).json({
         message: `Unauthorized access`,
         success: false,
@@ -197,13 +199,13 @@ const updateUser = async (req, res) => {
         });
     }
     //! Student cannot access admin data
-    if (req.user.role === "student" && user.role.name === "admin")
+    if (req.user.role_id === "student" && user.role.name === "admin")
       return res.status(401).json({
         message: `Unauthorized access`,
         success: false,
       });
     //* Only admins can change these data
-    if (req.user.role === "admin") {
+    if (req.user.role_id === "admin") {
       if (updateDetails.regno) user.regno = updateDetails.regno;
       if (updateDetails.role)
         user.role_id = await mapRoleId(updateDetails.role);
@@ -251,7 +253,7 @@ const deleteUser = async (req, res) => {
         success: false,
       });
     //! Student cannot access admin data
-    if (req.user.role === "student" && user.role_id.name === "admin")
+    if (req.user.role_id === "student" && user.role_id.name === "admin")
       return res.status(401).json({
         message: `Unauthorized access`,
         success: false,
