@@ -7,8 +7,8 @@ import ContestStatictics from "./ContestStatictics/ContestStatictics";
 import CreateContest from "../CreateContest/CreateContest";
 const ContestDetails = () => {
   return (
-    <div style={{ marginTop: '40px' }}>
-      <ul class="container list-group d-flex flex-row pt-2 pb-2 mt-3 mb-3 border">
+    <div style={{ marginTop: '40px' }} className="p-4">
+      <ul class="container-fluid list-group d-flex flex-row pt-2 pb-2 mt-3 mb-3 border">
         <li class="list-group-item user-group-pill">
           <NavLink
             exact
