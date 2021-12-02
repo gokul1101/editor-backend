@@ -214,9 +214,11 @@
   height: 300px;
   width: 300px;
 }
-
-.room-code{
+.quiz-instruct,
+.general-instruction {
+  color: #39b98f;
+  font-weight: 600;
+}
+.room-code {
   background-color: rgb(7, 71, 7);
 }
-
-

@@ -1,7 +1,7 @@
 .question-outoff span {
   font-size: 16px;
 }
-.Quiz-question-container{
+.Quiz-question-container {
   height: 120vh;
 }
 hr {
@@ -25,7 +25,7 @@ hr {
   font-weight: 500;
   font-size: 14px;
   text-align: center;
-  line-height: 28px;
+  line-height: 32px;
 }
 .que-path,
 .correct {
@@ -53,11 +53,6 @@ hr {
   font-size: 18px;
   font-weight: 500;
 }
-/* .option-1:focus {
-  background-color: #39b98f;
-  color: #fff;
-  outline: none;
-} */
 .option-1,
 .correct-option {
   width: 48%;
@@ -114,4 +109,10 @@ hr {
   border-bottom-color: transparent;
   border-left-color: transparent;
   transform: rotate(35deg);
+}
+@media (max-width: 1024px) {
+  .option-1,
+  .correct-option {
+    width: 100%;
+  }
 }

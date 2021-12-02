@@ -75,12 +75,6 @@ const Mcq = (props) => {
     //   setShowScore(true);
     // }
   };
-  const handlePrevious = () => {
-    const nextQuetions = currentQuestion - 1;
-    if (nextQuetions < questions.length && currentQuestion !== 0) {
-      setCurrentQuestion(nextQuetions);
-    }
-  };
 
   const answerHandler = (ans) => {
     console.log(ans);
@@ -156,24 +150,16 @@ const Mcq = (props) => {
                   }
                 )}
               </div>
-              <div className=" mt-2">
-                <button
-                  className="mr-2 btn-hover pr-1 pl-1 color-11"
-                  color="primary"
-                  variant="contained"
-                  onClick={handlePrevious}
-                >
-                  Previous
-                </button>
-                <button
-                  className="mr-2 btn-hover pr-1 pl-1 color-11"
-                  color="primary"
-                  variant="contained"
-                  onClick={handleNext}
-                >
-                  Next
-                </button>
-              </div>
+            </div>
+            <div className="mt-2 d-flex justify-content-end mr-4">
+              <button
+                className="mr-2 btn-hover pr-1 pl-1 color-11"
+                color="primary"
+                variant="contained"
+                onClick={handleNext}
+              >
+                Next
+              </button>
             </div>
           </div>
         </div>
