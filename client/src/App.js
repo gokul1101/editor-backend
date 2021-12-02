@@ -32,29 +32,29 @@ const App = () => {
     setMessage(snackMessage);
     setOpen(true);
   };
-  const getUser = () => {};
-  const checkUser = () => {
-    // if(localStorage.getItem(token)) getUser()
-  };
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
   const fetchUser = async () => {
-    const response = await axios.get(
-      await helperService.getUser(
+    try {
+      const { status, data } = await helperService.getUser(
         {},
         { headers: { Authorization: authState.user.token } }
-      )
-    );
-    authDispatch({
-      type: "SET_USER",
-      payload: { ...response["data"]["userDetails"] },
-    });
+      );
+      if (status === 200) {
+        authDispatch({
+          type: "SET_USER",
+          payload: { ...data["userDetails"] },
+        });
+      }
+    } catch (err) {
+      if (err.status === 401) {
+        console.log(err.data);
+        <Redirect to ="/login" />
+      }
+    }
   };
-  useEffect(() => {
-    if (localStorage.getItem("user")) fetchUser();
-  }, []);
   return (
     <>
       <div className="App m-0 p-0">
@@ -80,7 +80,7 @@ const App = () => {
             {authState.user ? (
               [
                 authState.user.role === "student" ? (
-                  <Main snackBar={snackBar} />
+                  <Main snackBar={snackBar} fetchUser={fetchUser} />
                 ) : (
                   <AdminMain snackBar={snackBar} />
                 ),

@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState,useContext,useEffect } from "react";
 import { NavLink, Route, Redirect, Switch } from "react-router-dom";
 import "./Main.css";
 import LoopLogo from "../../Images/Loop1.jpg";
@@ -14,8 +14,11 @@ import Profile from "./Profile/Profile";
 import Programs from "./Codekata/Programs/Programs";
 import { AuthContext } from "../../../contexts/AuthContext";
 const Main = (props) => {
-  const [,authDispatch] = useContext(AuthContext) 
+  const [authState,authDispatch] = useContext(AuthContext) 
   const [sideToggle, setSideToggle] = useState(false);
+  useEffect(()=>{
+    if(localStorage.getItem("user") && !authState.user.regno) props.fetchUser()
+  },[])
   return (
     <div className="conatiner-fluid w-100">
       <div className="d-flex">
@@ -113,11 +116,11 @@ const Main = (props) => {
               style={{ background: "#39B98F", color: "#fff" }}
               className="mr-2"
             >
-              D
+              {authState.user?.name?.substring(0,1)}
             </Avatar>
             <div className="d-flex flex-column footer-span">
-              <span className="user-name">Dhanush karthick S</span>
-              <span className="register-no">1813015</span>
+              <span className="user-name">{authState.user?.name}</span>
+              <span className="register-no">{authState.user?.regno}</span>
             </div>
           </div>
         </div>

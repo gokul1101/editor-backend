@@ -18,7 +18,6 @@ const Login = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (register === "") {
       props.snackBar("Register number field is empty.", "error");
       return;
@@ -51,16 +50,19 @@ const Login = (props) => {
       return;
     }
     try {
-      const response = await helperService.login({ regno: register, password });
-      if (response.success) {
-        const user = { role: response.role, token: response.token };
+      const { status, data, message } = await helperService.login({
+        regno: register,
+        password,
+      });
+      if (status === 200) {
+        const user = { role: data.role, token: data.token };
         localStorage.setItem("user", JSON.stringify(user));
         authDispatch({ type: "SET_USER", payload: user });
-        props.snackBar("Logged in Succesfully..!!", "success");
+        props.snackBar(message, "success");
       }
     } catch (err) {
-      console.log(err);
-      props.snackBar("Error in logging in..!!", "error");
+      if (!err.status) props.snackBar("Network Error", "error");
+      else props.snackBar(err.message, "error");
     }
   };
 

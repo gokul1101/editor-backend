@@ -32,6 +32,7 @@ const createUser = async (req, res) => {
   }
 };
 const getUser = async (req, res) => {
+  // console.log(req,user)
   let { user } = req;
   let userDetails = user;
   const { id, regno } = req.query;
@@ -109,7 +110,7 @@ const getUser = async (req, res) => {
       if(user)
         userDetails = serializeUser(user);
     }
-    
+    console.log(userDetails)
     //! User not found
     if (!user)
       return res.status(404).json({
