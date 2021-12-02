@@ -1,9 +1,15 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "./components/Login/Login";
 import AdminMain from "./components/Admin/Main/Main";
 import Main from "./components/Student/Main/Main";
-import { Redirect, Route, Switch, withRouter } from "react-router-dom";
+import {
+  Redirect,
+  Route,
+  Switch,
+  withRouter,
+  useHistory,
+} from "react-router-dom";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import DataProvider from "./Context";
@@ -11,12 +17,14 @@ const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
 const App = () => {
+  const history = useHistory();
   const handleClose = (event, reason) => {
     if (reason === "clickaway") return;
     setOpen(false);
   };
   const snackBar = (snackMessage, messType) => {
     setSeverity(messType);
+    console.log(history);
     setMessage(snackMessage);
     setOpen(true);
   };
@@ -24,6 +32,10 @@ const App = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
+  // useEffect(() => {
+  //   localStorage.getItem("reg");
+  //   setLogin(true);
+  // }, [login]);
   return (
     <DataProvider snackBar={snackBar}>
       <div className="App m-0 p-0">

@@ -11,12 +11,7 @@
   margin: 15px;
   display: inline-block;
   position: relative;
-  background: linear-gradient(
-    to right,
-    #f1f2b5,
-    #135058
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  transition: cubic-bezier(0.075, 0.82, 0.165, 1) !important;
+  /* background: linear-gradient(to right, #f1f2b5, #135058); */
 }
 
 .text_hovering_card_content {

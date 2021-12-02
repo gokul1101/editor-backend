@@ -13,6 +13,7 @@ import Quizzes from "./Quizzes/Quizzes";
 import Challenges from "./Challenges/Challenges";
 import CreateQuiz from "./Quizzes/CreateQuiz/CreateQuiz";
 import AddQuiz from "./Quizzes/CreateQuiz/AddQuiz/AddQuiz";
+import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
 const Main = (props) => {
   const [sideToggle, setSideToggle] = useState(false);
   return (
@@ -147,7 +148,12 @@ const Main = (props) => {
               </Route>
             </Route>
             <Route path="/challenges">
-              <Challenges />
+              <Route path="/challenges/challenges-dashboard">
+                <ChallengeDashboard />
+              </Route>
+              <Route path="/challenges" exact>
+                <Challenges />
+              </Route>
             </Route>
             <Route
               exact
