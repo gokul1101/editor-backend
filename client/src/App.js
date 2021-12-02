@@ -1,5 +1,5 @@
 import "./App.css";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "./components/Login/Login";
 import AdminMain from "./components/Admin/Main/Main";
 import Main from "./components/Student/Main/Main";
@@ -33,6 +33,7 @@ const App = () => {
   };
   const snackBar = (snackMessage, messType) => {
     setSeverity(messType);
+    console.log(history);
     setMessage(snackMessage);
     setOpen(true);
   };
@@ -90,7 +91,6 @@ const App = () => {
         This page Enables on Tablet
       </div>
     </>
-    // </AuthProvider>
   );
 };
 

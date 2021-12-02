@@ -1,10 +1,24 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import Developer from "../Images/developer.svg";
 import Hello from "../Images/Hello.svg";
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+import { AuthContext } from "../../contexts/AuthContext";
+>>>>>>> 1e507eede137b0e85ba2d6818783ea0878e5a7b5
 import helperService from "../../services/helperService";
 
 const Login = (props) => {
+<<<<<<< HEAD
+=======
+  const history = useHistory()
+  //** Context Consumer */
+  const [authState, authDispatch] = useContext(AuthContext)
+=======
+const Login = (props) => {
+>>>>>>> 3e675fa862a44d7d1666a6d6a704249eee07150e
+>>>>>>> 1e507eede137b0e85ba2d6818783ea0878e5a7b5
   const [change, setChange] = useState(false);
   const [register, setRegister] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +29,12 @@ const Login = (props) => {
   const changeSignin = () => {
     setChange(false);
   };
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+  
+>>>>>>> 1e507eede137b0e85ba2d6818783ea0878e5a7b5
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -32,6 +51,37 @@ const Login = (props) => {
       console.log(err);
     }
   };
+<<<<<<< HEAD
+=======
+
+  // const handleAdmin = (e) => {
+  //   e.preventDefault();
+  //   localStorage.setItem("admin", admin);
+  //   // props.setLogin(true);
+  //   authDispatch({type:'SET_USER',isLogin:true})
+  //   console.log(authState)
+  //   props.snackBar("Logged Admin Succesfully..!!", "success");
+  // };
+  
+=======
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    localStorage.setItem("reg", register);
+    localStorage.setItem("role", "student");
+    props.setLogin(true);
+    props.snackBar("Logged in Succesfully..!!", "success");
+  };
+
+  const handleAdmin = (e) => {
+    e.preventDefault();
+    localStorage.setItem("admin", admin);
+    props.setLogin(true);
+    props.snackBar("Logged Admin Succesfully..!!", "success");
+  };
+
+>>>>>>> 3e675fa862a44d7d1666a6d6a704249eee07150e
+>>>>>>> 1e507eede137b0e85ba2d6818783ea0878e5a7b5
   const handleKeypress = (e) => {
     if (e.keyCode === 13) {
       handleSubmit();

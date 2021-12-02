@@ -7,7 +7,8 @@
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "cd client && npm start",
-    "dev": "concurrently \"npm start\"  \"npm run client\""
+    "dev": "concurrently \"npm start\"  \"npm run client\"",
+    "seed:local" : "node generator/seed.js"
   },
   "keywords": [],
   "author": "",

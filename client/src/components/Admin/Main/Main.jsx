@@ -100,8 +100,16 @@ const Main = (props) => {
                 <NavLink
                   to="/login"
                   onClick={() => {
+<<<<<<< HEAD
                     // props.setLogin(false);
+<<<<<<< HEAD
                     // authDispatch({type:'REMOVE_USER',payload:null})
+=======
+                    authDispatch({type:'REMOVE_USER',payload:null})
+=======
+                    props.setLogin(false);
+>>>>>>> 3e675fa862a44d7d1666a6d6a704249eee07150e
+>>>>>>> 1e507eede137b0e85ba2d6818783ea0878e5a7b5
                     localStorage.clear();
                   }}
                   className="nav-link dash-li"
