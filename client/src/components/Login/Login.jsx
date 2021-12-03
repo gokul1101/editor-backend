@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import Developer from "../Images/developer.svg";
 import Hello from "../Images/Hello.svg";
+import CustomButton from "../Reducer/CustomButton/CustomButton";
 const Login = (props) => {
   const [change, setChange] = useState(false);
   const [register, setRegister] = useState("");
@@ -63,13 +64,13 @@ const Login = (props) => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <button
+              <CustomButton
                 className="btn-hover color-11"
                 onKeyPress={handleKeypress}
                 onClick={handleSubmit}
               >
                 SIGN IN <i className="fas fa-sign-in-alt mr-2 ml-2"></i>
-              </button>
+              </CustomButton>
             </form>
             <form action="#" className="sign-up-form" onSubmit={handleAdmin}>
               <h2 className="title">Admin Sign in</h2>
@@ -85,13 +86,13 @@ const Login = (props) => {
                 <i className="fas fa-lock"></i>
                 <input type="password" placeholder="Password" />
               </div>
-              <button
+              <CustomButton
                 className="btn-hover color-11 mt-2"
                 onKeyPress={handleKeypress}
                 onClick={handleAdmin}
               >
                 SIGN UP <i className="fas fa-sign-out-alt mr-2 ml-2"></i>
-              </button>
+              </CustomButton>
             </form>
           </div>
         </div>
@@ -100,32 +101,40 @@ const Login = (props) => {
           <div className="panel left-panel">
             <div className="content">
               <h3>Are you admin ?</h3>
-              <p>Click here to login with you adminstration ID to create contest for the students.
+              <p>
+                Click here to login with you adminstration ID to create contest
+                for the students.
               </p>
-              <button
+              <CustomButton
                 className="btn transparent"
                 id="sign-up-btn"
-                onClick={changeSignup}
+                onClickHandler={changeSignup}
               >
-                Sign up
-              </button>
+                Sign in
+              </CustomButton>
             </div>
-            <img src={Hello} className="image img-fluid" alt="" />
+            <img src={Hello} className="image img-fluid" alt="admin-signin" />
           </div>
           <div className="panel right-panel">
             <div className="content">
               <h3>Are you Student ?</h3>
-              <p>Click here to login as a student with the help of register number to attend contest .
+              <p>
+                Click here to login as a student with the help of register
+                number to attend contest .
               </p>
-              <button
+              <CustomButton
                 className="btn transparent mt-2 "
                 id="sign-in-btn"
-                onClick={changeSignin}
+                onClickHandler={changeSignin}
               >
                 Sign in
-              </button>
+              </CustomButton>
             </div>
-            <img src={Developer} className="image img-fluid" alt="" />
+            <img
+              src={Developer}
+              className="image img-fluid"
+              alt="student-signin"
+            />
           </div>
         </div>
       </div>

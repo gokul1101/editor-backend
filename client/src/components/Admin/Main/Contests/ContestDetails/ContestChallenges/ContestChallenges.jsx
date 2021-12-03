@@ -45,7 +45,7 @@ const ContestChallenges = () => {
       </div>
       <div className="create-con">
         {/* <Link to="/contests/create-contest"> */}
-        <button className="p-2 mt-3">
+        <button className="p-2 mt-3" onClick ={handleClickOpen}>
           <i className="fas fa-plus pr-2 pl-2"></i>ADD CHALLENGES
         </button>
         {/* </Link> */}
