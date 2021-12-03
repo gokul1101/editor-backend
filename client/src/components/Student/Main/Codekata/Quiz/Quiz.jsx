@@ -20,7 +20,7 @@ const Quiz = (props) => {
 
   useEffect(() => {
     props.setSideToggle(true);
-  });
+  },[]);
 
   const returnBack = () => {
     history.goBack();

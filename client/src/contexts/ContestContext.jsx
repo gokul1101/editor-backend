@@ -6,7 +6,11 @@ const initialState = {
 const ContestReducer = (state, action) => {
   switch (action.type) {
     case "SET_CONTEST":
-      return { ...state, ...action.payload};
+      return { ...state, contest: { ...state, ...action.payload } };
+    case "SET_CONTEST_QUIZZES":
+      return { ...state, contest: { ...state, ...action.payload } };
+    case "REMOVE_CONTEST":
+      return { ...state, contest: null };
     default:
       return state;
   }
@@ -15,8 +19,8 @@ const ContestReducer = (state, action) => {
 const ContestContext = createContext(initialState);
 const ContestProvider = (props) => {
   const [contestState, contestDispatch] = useReducer(
-    props.ContestReducer,
-    props.initialState
+    ContestReducer,
+    initialState
   );
   return (
     <ContestContext.Provider value={[contestState, contestDispatch]}>

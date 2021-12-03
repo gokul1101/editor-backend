@@ -1,4 +1,3 @@
-import { Redirect } from "react-router";
 import axios from "axios";
 const baseURL = "http://localhost:5000";
 
@@ -64,10 +63,9 @@ const helperService = {
         });
       }
     } catch (err) {
-        console.log(err)
       return Promise.reject({
         status: err.response.status,
-        data: err.response.data,
+        message: err.response.data,
       });
     }
   },

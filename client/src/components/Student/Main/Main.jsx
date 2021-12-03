@@ -1,4 +1,4 @@
-import React, { useState,useContext,useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { NavLink, Route, Redirect, Switch } from "react-router-dom";
 import "./Main.css";
 import LoopLogo from "../../Images/Loop1.jpg";
@@ -13,12 +13,14 @@ import Mcq from "./Codekata/Quiz/McqLength/McqLength";
 import Profile from "./Profile/Profile";
 import Programs from "./Codekata/Programs/Programs";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { ContestProvider } from "../../../contexts/ContestContext";
 const Main = (props) => {
-  const [authState,authDispatch] = useContext(AuthContext) 
+  const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle, setSideToggle] = useState(false);
-  useEffect(()=>{
-    if(localStorage.getItem("user") && !authState.user.regno) props.fetchUser()
-  },[])
+  useEffect(() => {
+    if (localStorage.getItem("user") && !authState.user.regno)
+      props.fetchUser();
+  }, []);
   return (
     <div className="conatiner-fluid w-100">
       <div className="d-flex">
@@ -100,13 +102,13 @@ const Main = (props) => {
                 to="/login"
                 onClick={() => {
                   // props.setLogin(false);
-                  authDispatch({type:"REMOVE_USER",payload:null})
+                  authDispatch({ type: "REMOVE_USER", payload: null });
                   localStorage.clear();
                 }}
                 className="nav-link dash-li"
               >
                 <i className="fas fa-sign-out-alt pr-4 pl-4 dash-icon shake"></i>
-                <span className="hide-span" >Logout</span>
+                <span className="hide-span">Logout</span>
                 <span className="tooltip">Logout</span>
               </NavLink>
             </li>
@@ -116,7 +118,7 @@ const Main = (props) => {
               style={{ background: "#39B98F", color: "#fff" }}
               className="mr-2"
             >
-              {authState.user?.name?.substring(0,1)}
+              {authState.user?.name?.substring(0, 1)}
             </Avatar>
             <div className="d-flex flex-column footer-span">
               <span className="user-name">{authState.user?.name}</span>
@@ -130,21 +132,24 @@ const Main = (props) => {
               <Dashboard setSideToggle={setSideToggle} />
             </Route>
             <Route path="/codekata">
-              <Route path="/codekata/:id/mcq" exact>
-                <Mcq setSideToggle={setSideToggle} />
-              </Route>
-              <Route path="/codekata/:id/program" exact>
-                <Programs setSideToggle={setSideToggle} />
-              </Route>
-              <Route path="/codekata/:id" exact>
-                <Quiz setSideToggle={setSideToggle} />
-              </Route>
-              <Route path="/codekata" exact>
-                <Codekata
-                  snackBar={props.snackBar}
-                  setSideToggle={setSideToggle}
-                />
-              </Route>
+              <ContestProvider>
+                <Route path="/codekata/:id/mcq" exact>
+                  <Mcq setSideToggle={setSideToggle} />
+                </Route>
+                <Route path="/codekata/:id/program" exact>
+                  <Programs setSideToggle={setSideToggle} />
+                </Route>
+                <Route path="/codekata/:id" exact>
+                  <Quiz setSideToggle={setSideToggle} />
+                </Route>
+                <Route path="/codekata" exact>
+                  <Codekata
+                    unauthorized={props.unauthorized}
+                    snackBar={props.snackBar}
+                    setSideToggle={setSideToggle}
+                  />
+                </Route>
+              </ContestProvider>
             </Route>
             <Route path="/articles" exact>
               <Articles setSideToggle={setSideToggle} />
