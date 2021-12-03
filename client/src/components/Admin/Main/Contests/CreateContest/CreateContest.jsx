@@ -2,7 +2,7 @@ import InputReducer from "../../../../Reducer/InputReducer";
 import "./CreateContest.css";
 const CreateContest = () => {
   return (
-    <div className="container-fluid mt-5">
+    <div className="container mt-5">
       <div className="d-flex flex-column">
         <p className="text-left dash-title-category pb-2">Create Contest</p>
         <span className="create-con-text mt-1">
@@ -15,7 +15,7 @@ const CreateContest = () => {
           get started by providing the initail details of the contest{" "}
         </span>
       </div>
-      
+
       <div className="d-flex flex-column mt-4">
         <div className="d-flex mt-1 mb-3">
           <span className="contest-line-height mr-2">
@@ -42,35 +42,33 @@ const CreateContest = () => {
           </div>
           <span className="contest-line-height mr-2">at</span>
           <div className="col-md-4">
-            <InputReducer
-              placeholder="Ends at"
-              name="Ends at"
-              type="text"
-            />
+            <InputReducer placeholder="Ends at" name="Ends at" type="text" />
           </div>
-          <span className="info-circle mr-2 mt-3"><i className="fas fa-info-circle"></i></span>
+          <span className="info-circle mr-2 mt-3">
+            <i className="fas fa-info-circle"></i>
+          </span>
         </div>
         <div className="d-flex">
           <span className="contest-line-height mr-5">
             Ends at <span className="contest-star">*</span>
           </span>
           <div className="col-md-4">
-            <InputReducer
-              placeholder="Ends at"
-              name="Ends at"
-              type="text"
-            />
+            <InputReducer placeholder="Ends at" name="Ends at" type="text" />
           </div>
           <span className="contest-line-height mr-2">at</span>
           <div className="col-md-4">
-            <InputReducer
-              placeholder="Ends at"
-              name="Ends at"
-              type="text"
-            />
+            <InputReducer placeholder="Ends at" name="Ends at" type="text" />
           </div>
-          <span className="info-circle mr-2 mt-3"><i className="fas fa-info-circle"></i></span>
+          <span className="info-circle mr-2 mt-3">
+            <i className="fas fa-info-circle"></i>
+          </span>
         </div>
+      </div>
+
+      <div className="create-con mt-3 float-right">
+          <button className="p-2">
+            <i className="fas fa-plus pr-2 pl-2"></i>CREATE CONTEST
+          </button>
       </div>
     </div>
   );

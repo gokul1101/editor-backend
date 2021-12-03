@@ -104,6 +104,9 @@ const TestCase = () => {
           />
         </DialogContentText>
         <DialogActions>
+          <Button onClick={handleClose} color="primary" variant="contained">
+            ADD TESTCASE
+          </Button>
           <Button onClick={handleClose} color="primary">
             CLOSE
           </Button>

@@ -109,6 +109,47 @@ const Quiz = (props) => {
                 </div>
               </div>
             </div>
+            <div
+              className="dcard mr-5 mb-5 d-flex align-items-center justify-content-center ml-5"
+              onClick={routeQuestion}
+            >
+              <div className="trigger"></div>
+              <div className="trigger"></div>
+              <div className="trigger"></div>
+              <div className="trigger"></div>
+              <div className="trigger"></div>
+              <div className="trigger"></div>
+              <div className="trigger"></div>
+              <div className="trigger"></div>
+              <div className="trigger"></div>
+              <div className="card">
+                <img
+                  src={QuizImage}
+                  className="img-fluid"
+                  alt="Quiz-image"
+                  height="150px"
+                  width="150px"
+                  style={{
+                    position: "absolute",
+                    transform: "translate(50%,-115%)",
+                  }}
+                />
+                <div className="frame">
+                  <div className="d-flex flex-column ml-4 mt-2 pt-0">
+                    <span className="quiz-warm-span">Python warmup MCQ's</span>
+                    <span>
+                      No. of questions : <b>10</b>
+                    </span>
+                  </div>
+                  {/* <i className="fas fa-play" onClick={routeQuestion} style={{position:'relative',top:'-100px',zIndex:999}}></i> */}
+                  {/* <div className="play-div" onClick={routeQuestion}>
+                <div className="play" >
+                  <div className="me"></div>
+                </div>
+              </div> */}
+                </div>
+              </div>
+            </div>
           </div>
           <p className="text-left ml-5 problem-article">PROBLEMS</p>
           <div className="d-flex flex-wrap">

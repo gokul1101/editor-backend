@@ -27,7 +27,7 @@ const ChallengeDashboard = () => {
               to="/challenges/challenges-dashboard/create-testcase"
               activeClassName="active-user-pill"
             >
-              <i className="fas fa-clipboard-list pr-2 pl-1"></i> Create
+              <i className="fas fa-clipboard-list pr-2 pl-1"></i>
               TestCase
             </NavLink>
           </li>
