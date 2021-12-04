@@ -34,6 +34,7 @@ const {
 } = require("../controllers/testcaseController");
 const {compilerService} = require("../services/compilerService");
 const { getErrorLogs } = require("../controllers/errorLogsController");
+const { compile } = require("../controllers/compileController");
 
 //? Public Routes
 //* =============Login=============
@@ -185,7 +186,8 @@ router.post(
   updateTestCase
 );
 //* ==============Compiler===============*//
-router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compilerService);
+// router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compilerService);
+router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compile);
 
 //* =============== Error Logs =========== *//
 router.get("/api/v1/errorLogs", userAuth, routeAuth("errorLogs"), getErrorLogs)

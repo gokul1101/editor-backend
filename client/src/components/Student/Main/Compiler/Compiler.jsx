@@ -1,4 +1,4 @@
-import React, { useEffect ,useContext} from "react";
+import React, { useEffect, useContext } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/ext-language_tools";
@@ -22,8 +22,9 @@ import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 import ComImg from "../../../Images/Loop1.jpg";
 import { AuthContext } from "../../../../contexts/AuthContext";
+import helperService from "../../../../services/helperService";
 const Compiler = (props) => {
-  const [authState,] = useContext(AuthContext)
+  const [authState] = useContext(AuthContext);
   const themes = [
     "xcode",
     "monokai",
@@ -32,9 +33,28 @@ const Compiler = (props) => {
     "textmate",
     "one_dark",
   ];
-  const languages = ["c", "java"];
+  const languages = ["java"];
   const [themeName, setThemeName] = React.useState("nord_dark");
   const [language, setLanguage] = React.useState("java");
+  const [input, setInput] = React.useState(
+    sessionStorage.getItem("compile")
+      ? JSON.parse(sessionStorage.getItem("compile"))?.input
+      : ""
+  );
+  const javaTemplate = `class Main {
+    //Class Name Should Be Main
+    public static void main(String args[]) {
+      System.out.println("Welcome to Loop");
+    }
+  }`;
+  const [output, setOutput] = React.useState("");
+  const [code, setCode] = React.useState(
+    sessionStorage.getItem("compile")
+      ? JSON.parse(sessionStorage.getItem("compile"))?.code
+      : javaTemplate
+  );
+
+  // const [compilerInput, setCompilerInput] = React.useState("");
   const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -49,6 +69,7 @@ const Compiler = (props) => {
 
   useEffect(() => {
     props.setSideToggle(true);
+    return () => props.setSideToggle(false);
   });
 
   const returnBack = () => {
@@ -62,7 +83,21 @@ const Compiler = (props) => {
   const handleLanguage = (event) => {
     setLanguage(event.target.value);
   };
-
+  const compile = async () => {
+    try {
+      sessionStorage.setItem("compile",JSON.stringify({code,input}))
+      const { status, data } = await helperService.compile(
+        { code, input },
+        { headers: { Authorization: authState?.user?.token } }
+      );
+      if (status === 200) {
+        console.log(data);
+        setOutput(data);
+      }
+    } catch (err) {
+      setOutput(err.data);
+    }
+  };
   return (
     <div className="container-fluid p-0 compiler-container">
       <div className="d-flex">
@@ -104,19 +139,12 @@ const Compiler = (props) => {
             mode={language}
             theme={themeName}
             name="Editor"
-            onChange={(value) => console.log(value)}
+            onChange={(value) => setCode(value)}
             fontSize={20}
             showPrintMargin={false}
             showGutter={true}
             highlightActiveLine={true}
-            value={`public class MyClass {
-    public static void main(String args[]) {
-        int x=10;
-        int y=25;
-        int z=x+y;
-        System.out.println("Sum of x+y = " + z);
-    }
-}`}
+            value={code}
             setOptions={{
               enableBasicAutocompletion: true,
               enableLiveAutocompletion: true,
@@ -179,12 +207,15 @@ const Compiler = (props) => {
               multiline
               rows={6}
               variant="outlined"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
             />
             <div className="d-flex align-items-end justify-content-end border-bottom">
               <Button
                 variant="outlined"
                 className="w-25 mt-3 mb-3 pr-2 pl-2"
                 color="primary"
+                onClick={compile}
               >
                 COMPILE
               </Button>
@@ -197,11 +228,11 @@ const Compiler = (props) => {
                 multiline
                 rows={10}
                 variant="outlined"
+                value={output}
               />
             </div>
           </div>
         </div>
-        
       </div>
     </div>
   );
