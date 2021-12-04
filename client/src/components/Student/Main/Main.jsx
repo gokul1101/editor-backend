@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { NavLink, Route, Redirect, Switch } from "react-router-dom";
 import "./Main.css";
 import LoopLogo from "../../Images/Loop1.jpg";
@@ -12,8 +12,14 @@ import Quiz from "./Codekata/Quiz/Quiz";
 import Mcq from "./Codekata/Quiz/McqLength/McqLength";
 import Profile from "./Profile/Profile";
 import Programs from "./Codekata/Programs/Programs";
+import { AuthContext } from "../../../contexts/AuthContext";
 const Main = (props) => {
+  const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle, setSideToggle] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem("user") && !authState.user.regno)
+      props.fetchUser();
+  }, []);
   return (
     <div className="conatiner-fluid w-100">
       <div className="d-flex">
@@ -94,7 +100,8 @@ const Main = (props) => {
               <NavLink
                 to="/login"
                 onClick={() => {
-                  props.setLogin(false);
+                  // props.setLogin(false);
+                  authDispatch({ type: "REMOVE_USER", payload: null });
                   localStorage.clear();
                 }}
                 className="nav-link dash-li"
@@ -110,11 +117,11 @@ const Main = (props) => {
               style={{ background: "#39B98F", color: "#fff" }}
               className="mr-2"
             >
-              D
+              {authState.user?.name?.substring(0, 1)}
             </Avatar>
             <div className="d-flex flex-column footer-span">
-              <span className="user-name">Dhanush karthick S</span>
-              <span className="register-no">1813015</span>
+              <span className="user-name">{authState.user?.name}</span>
+              <span className="register-no">{authState.user?.regno}</span>
             </div>
           </div>
         </div>
@@ -123,36 +130,45 @@ const Main = (props) => {
             <Route path="/dashboard" exact>
               <Dashboard setSideToggle={setSideToggle} />
             </Route>
-            <Route path="/codekata">
-              <Route path="/codekata/:id/mcq" exact>
-                <Mcq setSideToggle={setSideToggle} />
-              </Route>
-              <Route path="/codekata/:id/program" exact>
-                <Programs setSideToggle={setSideToggle} />
-              </Route>
-              <Route path="/codekata/:id" exact>
-                <Quiz setSideToggle={setSideToggle} />
-              </Route>
-              <Route path="/codekata" exact>
+            
+            <Route path="/articles" exact>
+              <Articles setSideToggle={setSideToggle} />
+            </Route>
+            <Route path="/roadmap" exact>
+              <Roadmap setSideToggle={setSideToggle} />
+            </Route>
+            <Route path="/compiler" exact>
+              <Compiler setSideToggle={setSideToggle} />
+            </Route>
+            <Route path="/profile" exact>
+              <Profile setSideToggle={setSideToggle} />
+            </Route>
+            <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+            <Route path="/codekata" exact>
                 <Codekata
                   snackBar={props.snackBar}
                   setSideToggle={setSideToggle}
                 />
               </Route>
-            </Route>
-            <Route path="/articles">
-              <Articles setSideToggle={setSideToggle} />
-            </Route>
-            <Route path="/roadmap">
-              <Roadmap setSideToggle={setSideToggle} />
-            </Route>
-            <Route path="/compiler">
-              <Compiler setSideToggle={setSideToggle} />
-            </Route>
-            <Route path="/profile">
-              <Profile setSideToggle={setSideToggle} />
-            </Route>
-            <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+            {authState?.contest ? (
+                [
+                  <>
+                    <Route path="/codekata/:id/mcq" exact>
+                      <Mcq setSideToggle={setSideToggle} />
+                    </Route>
+                    <Route path="/codekata/:id/program" exact>
+                      <Programs setSideToggle={setSideToggle} />
+                    </Route>
+                    <Route path="/codekata/:id" exact>
+                      <Quiz setSideToggle={setSideToggle} />
+                    </Route>
+                  </>,
+                ]
+              ) 
+              : (
+
+                <Redirect to="/codekata"/>
+              )}
           </Switch>
         </div>
       </div>

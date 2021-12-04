@@ -24,7 +24,7 @@ const createUser = async (req, res) => {
     return res.status(reponse.code).json(reponse);
   } catch (err) {
     //! Error in creating user
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on creating user`;
     }
@@ -32,51 +32,93 @@ const createUser = async (req, res) => {
   }
 };
 const getUser = async (req, res) => {
+  // console.log(req,user)
+  let { user } = req;
+  let userDetails = user;
+  const { id, regno } = req.query;
   try {
-    let user = await User.findOne({
-      regno: req.params.regno,
-      deleted_at: null,
-    }).populate([
-      {
-        path: "role_id",
-        model: "role",
-        select: "name",
-      },
-      {
-        path: "gender_id",
-        model: "gender",
-        select: "name",
-      },
-      {
-        path: "stream_id",
-        model: "stream",
-        select: "name",
-      },
-      {
-        path: "course_id",
-        model: "course",
-        select: "name",
-      },
-      {
-        path: "college_id",
-        model: "college",
-        select: "name",
-      },
-      {
-        path: "batch_id",
-        model: "batch",
-        select: "start_year end_year",
-      },
-    ]);
+
+    if (id || regno) {
+      if (id) {
+        user = await User.findById(id).populate([
+          {
+            path: "role_id",
+            model: "role",
+            select: "name",
+          },
+          {
+            path: "gender_id",
+            model: "gender",
+            select: "name",
+          },
+          {
+            path: "stream_id",
+            model: "stream",
+            select: "name",
+          },
+          {
+            path: "course_id",
+            model: "course",
+            select: "name",
+          },
+          {
+            path: "college_id",
+            model: "college",
+            select: "name",
+          },
+          {
+            path: "batch_id",
+            model: "batch",
+            select: "start_year end_year",
+          },
+        ]);
+      }
+      if (regno) {
+        user = await User.findOne({ regno }).populate([
+          {
+            path: "role_id",
+            model: "role",
+            select: "name",
+          },
+          {
+            path: "gender_id",
+            model: "gender",
+            select: "name",
+          },
+          {
+            path: "stream_id",
+            model: "stream",
+            select: "name",
+          },
+          {
+            path: "course_id",
+            model: "course",
+            select: "name",
+          },
+          {
+            path: "college_id",
+            model: "college",
+            select: "name",
+          },
+          {
+            path: "batch_id",
+            model: "batch",
+            select: "start_year end_year",
+          },
+        ]);
+      }
+      if(user)
+        userDetails = serializeUser(user);
+    }
+    console.log(userDetails)
     //! User not found
     if (!user)
       return res.status(404).json({
         message: `user not found`,
         success: false,
       });
-    let userDetails = serializeUser(user);
     //! Student cannot access admin data
-    if (req.user.role === "student" && userDetails.role_id === "admin")
+    if (req.user.role_id === "student" && userDetails.role_id === "admin")
       return res.status(401).json({
         message: `Unauthorized access`,
         success: false,
@@ -157,13 +199,13 @@ const updateUser = async (req, res) => {
         });
     }
     //! Student cannot access admin data
-    if (req.user.role === "student" && user.role.name === "admin")
+    if (req.user.role_id === "student" && user.role.name === "admin")
       return res.status(401).json({
         message: `Unauthorized access`,
         success: false,
       });
     //* Only admins can change these data
-    if (req.user.role === "admin") {
+    if (req.user.role_id === "admin") {
       if (updateDetails.regno) user.regno = updateDetails.regno;
       if (updateDetails.role)
         user.role_id = await mapRoleId(updateDetails.role);
@@ -211,7 +253,7 @@ const deleteUser = async (req, res) => {
         success: false,
       });
     //! Student cannot access admin data
-    if (req.user.role === "student" && user.role_id.name === "admin")
+    if (req.user.role_id === "student" && user.role_id.name === "admin")
       return res.status(401).json({
         message: `Unauthorized access`,
         success: false,
@@ -257,9 +299,9 @@ const createBulkUsers = async (req, res) => {
   try {
     let errors = [],
       errorLogs;
-      console.log("error");
-      let { rows, err } = await xlsx(filePath, { schema });
-      console.log("error1");
+    console.log("error");
+    let { rows, err } = await xlsx(filePath, { schema });
+    console.log("error1");
     for (let i in rows) {
       try {
         await createUserService(rows[i]);

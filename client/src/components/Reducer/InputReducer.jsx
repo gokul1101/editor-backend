@@ -13,6 +13,7 @@ const InputReducer = (props) => {
       placeholder={props.placeholder}
       name={props.name}
       type={props.type}
+      onChange = {(e) => props.onClickHandler(e.target.value)}
     />
   );
 };

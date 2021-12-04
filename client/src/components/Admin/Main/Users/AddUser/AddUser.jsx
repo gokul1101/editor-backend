@@ -6,8 +6,6 @@ import "../../../../Student/Main/Dashboard/Dashboard.css";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
-import "./AddUser.css";
-
 const useStyles = makeStyles((theme) => ({
   root:{
     border:"1px solid #1E2D64",
@@ -37,8 +35,8 @@ const AddUser = () => {
   };
   return (
     <div className="">
-      <p className="text-left dash-title-category pb-2">Add User *</p>
-      {/* <div className="col p-0" style={{ marginTop: "-20px" }}>
+      <p className="text-left dash-title-category pb-2">Add Details *</p>
+      <div className="col p-0" style={{ marginTop: "-20px" }}>
         <div className="hr">
           <hr className="col p-0" />
         </div>
@@ -46,10 +44,9 @@ const AddUser = () => {
           <span>Create user</span>
           <span>Bulk upload Excel file</span>
         </div>
-      </div> */}
+      </div>
       <div className="d-flex">
         <div className="col-md-8 p-2 border m-1">
-        <p className="add-user-titles text-center">Add individual student</p>
           <div className="d-flex mt-2 mb-2">
           <div className="col-md-6 p-1">
               <InputReducer
@@ -64,15 +61,15 @@ const AddUser = () => {
                 className={classes.fieldColor}
                 placeholder="Register Number"
                 name="Register Number"
-                type="number"
+                type="text"
               />
             </div>
-            {/* <div
+            <div
               className="col-md-6 p-1"
               style={{ position: "relative", left: "-7px", top: "-9px" }}
             >
               <SelectReducer array={["B.E", "B.Tech"]} name="Stream" />
-            </div> */}
+            </div> 
           </div>
           <div className="d-flex mt-2 mb-2">
             <div
@@ -161,7 +158,6 @@ const AddUser = () => {
           </button>
         </div>
         <div className="col-md-4 p-2 border m-1">
-        <p className="add-user-titles text-center">Bulk upload through excel file</p>
           <DropFileInput onFileChange={onFileChange} />
         </div>
       </div>

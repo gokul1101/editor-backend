@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -69,7 +69,7 @@ const DropFileInput = (props) => {
         onDrop={onDrop}
       >
         <div className="drop-file-input__label">
-          <img src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png" alt=""/>
+          <img src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png" />
           <p>Drag & Drop your files here</p>
         </div>
         <input
@@ -87,7 +87,7 @@ const DropFileInput = (props) => {
               key={index}
               className="drop-file-preview__item d-flex w-100 align-items-center justify-content-center"
             >
-              <img src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png" alt="" />
+              <img src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png" />
               <div className="drop-file-preview__item__info d-flex flex-column">
                 <span>{item.name}</span>
                 <div className="d-flex justify-content-between">

@@ -1,15 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { useHistory, Redirect } from "react-router-dom";
+import { AuthContext } from "../../../../contexts/AuthContext";
+import helperService from "../../../../services/helperService";
 import codekata from "../../../Images/codekata.svg";
 import "./Codekata.css";
-import { useHistory } from "react-router-dom";
 const Codekata = (props) => {
+  const [authState,authDispatch] = useContext(AuthContext);
   const history = useHistory();
   const [code, setCode] = useState("");
-  const submitCode = (e) => {
+  const submitCode = async (e) => {
     e.preventDefault();
-    if (code.length < 6)
+    if (code.length !== 6){
       props.snackBar("Your code is wrong!! Ckeck your code", "error");
-    else history.push(`/codekata/${code}`);
+      return;
+    }
+    try {
+      const {status, data} = await helperService.getContestWithCode(
+        {code},
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 200) {
+        authDispatch({
+          type: "SET_CONTEST",
+          payload: { ...data.message },
+        });
+        history.push(`/codekata/${code}`);
+      }
+    } catch (err) {
+      if (err.status === 401) {
+        <Redirect to ="/login" />
+      }
+      if(err.data)
+        props.snackBar(err.data.message, "error");
+      
+    }
   };
   useEffect(() => {
     props.setSideToggle(false);
@@ -19,7 +43,8 @@ const Codekata = (props) => {
       <div className="d-flex align-items-center justify-content-center">
         <div className="col-md-6 d-flex flex-column">
           <p className="header-title mt-1">
-            <span className="dash-greet">Welcome</span> GOKUL S ..!
+            <span className="dash-greet">Welcome</span> {authState?.user?.name}{" "}
+            ..!
           </p>
           <span>Your code goes here.. 👇🏻</span>
           <div id="divOuter" className="mt-3 mb-3">

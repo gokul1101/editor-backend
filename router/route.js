@@ -46,14 +46,14 @@ router.post(
 //* User registration
 router.post(
   "/api/v1/user/create",
-  userAuth,
-  routeAuth("createUser"),
+  // userAuth,
+  // routeAuth("createUser"),
   createUser
 );
 
 //* User Details
 router.get(
-  "/api/v1/user/get/:regno",
+  "/api/v1/user/get",
   userAuth,
   routeAuth("getUser"),
   getUser

@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import LoopLogo from "../../Images/Loop1.jpg";
 import { NavLink, Route, Redirect, Switch } from "react-router-dom";
 import "../../Student/Main/Main.css";
@@ -6,7 +6,6 @@ import "./Main.css";
 import AdminDashboard from "./AdminDashboard/AdminDashboard";
 import Contests from "./Contests/Contests";
 import Users from "./Users/Users";
-import Leaderboard from "./Leaderboard/Leaderboard";
 import CreateContest from "./Contests/CreateContest/CreateContest";
 import ContestDetails from "./Contests/ContestDetails/ContestDetails";
 import Quizzes from "./Quizzes/Quizzes";
@@ -14,8 +13,13 @@ import Challenges from "./Challenges/Challenges";
 import CreateQuiz from "./Quizzes/CreateQuiz/CreateQuiz";
 import AddQuiz from "./Quizzes/CreateQuiz/AddQuiz/AddQuiz";
 import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
+import { AuthContext } from "../../../contexts/AuthContext";
 const Main = (props) => {
+  const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle, setSideToggle] = useState(false);
+  // useEffect(() => {
+  //   props.getUser();
+  // }, []);
   return (
     <div className="container-fluid p-0">
       <div className="d-flex">
@@ -99,7 +103,8 @@ const Main = (props) => {
                 <NavLink
                   to="/login"
                   onClick={() => {
-                    props.setLogin(false);
+                    authDispatch({ type: "REMOVE_USER", payload: null });
+
                     localStorage.clear();
                   }}
                   className="nav-link dash-li"

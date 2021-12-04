@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Login from "./components/Login/Login";
 import AdminMain from "./components/Admin/Main/Main";
 import Main from "./components/Student/Main/Main";
@@ -12,32 +12,51 @@ import {
 } from "react-router-dom";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
-import DataProvider from "./Context";
+import { AuthContext } from "./contexts/AuthContext";
+import axios from "axios";
+import helperService from "./services/helperService";
+
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
 const App = () => {
   const history = useHistory();
+  //** Context Consumer */
+  const [authState, authDispatch] = useContext(AuthContext);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") return;
     setOpen(false);
   };
   const snackBar = (snackMessage, messType) => {
     setSeverity(messType);
-    console.log(history);
     setMessage(snackMessage);
     setOpen(true);
   };
-  let [login, setLogin] = useState(localStorage.getItem("reg") ? true : false);
+
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  // useEffect(() => {
-  //   localStorage.getItem("reg");
-  //   setLogin(true);
-  // }, [login]);
+  const fetchUser = async () => {
+    try {
+      const { status, data } = await helperService.getUser(
+        {},
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 200) {
+        authDispatch({
+          type: "SET_USER",
+          payload: { ...data["userDetails"] },
+        });
+      }
+    } catch (err) {
+      if (err.status === 401) {
+        console.log(err.data);
+        <Redirect to ="/login" />
+      }
+    }
+  };
   return (
-    <DataProvider snackBar={snackBar}>
+    <>
       <div className="App m-0 p-0">
         <Snackbar
           open={open}
@@ -51,19 +70,19 @@ const App = () => {
         </Snackbar>
         <Switch>
           <Route path="/login">
-            {!login ? (
-              <Login snackBar={snackBar} setLogin={setLogin} />
+            {!authState.user ? (
+              <Login snackBar={snackBar} />
             ) : (
               <Redirect exact to="/" />
             )}
           </Route>
           <Route path="/">
-            {login ? (
+            {authState.user ? (
               [
-                localStorage.getItem("role") === "student" ? (
-                  <Main setLogin={setLogin} snackBar={snackBar} />
+                authState.user.role === "student" ? (
+                  <Main snackBar={snackBar} fetchUser={fetchUser} />
                 ) : (
-                  <AdminMain setLogin={setLogin} snackBar={snackBar} />
+                  <AdminMain snackBar={snackBar} />
                 ),
               ]
             ) : (
@@ -76,7 +95,8 @@ const App = () => {
       <div className="breakpoint d-flex" style={{ height: "100vh" }}>
         This page Enables on Tablet
       </div>
-    </DataProvider>
+    </>
+    // </AuthProvider>
   );
 };
 
