@@ -33,25 +33,38 @@ const Compiler = (props) => {
     "textmate",
     "one_dark",
   ];
-  const languages = ["java"];
+  const languages = ["c", "java"];
   const [themeName, setThemeName] = React.useState("nord_dark");
-  const [language, setLanguage] = React.useState("java");
+  const [language, setLanguage] = React.useState(
+    sessionStorage.getItem("compile")
+      ? JSON.parse(sessionStorage.getItem("compile"))?.lang
+      : "java"
+  );
   const [input, setInput] = React.useState(
     sessionStorage.getItem("compile")
       ? JSON.parse(sessionStorage.getItem("compile"))?.input
       : ""
   );
-  const javaTemplate = `class Main {
-    //Class Name Should Be Main
-    public static void main(String args[]) {
-      System.out.println("Welcome to Loop");
-    }
-  }`;
+  const template = {
+    c: `#include<stdio.h>
+  int main(){
+  printf("Welcome to Loop")
+  return 0;
+  }
+`,
+    java: `class Main {
+//Class Name Should Be Main
+public static void main(String args[]) {
+System.out.println("Welcome to Loop");
+}
+}`,
+  };
+
   const [output, setOutput] = React.useState("");
   const [code, setCode] = React.useState(
     sessionStorage.getItem("compile")
       ? JSON.parse(sessionStorage.getItem("compile"))?.code
-      : javaTemplate
+      : template.java
   );
 
   // const [compilerInput, setCompilerInput] = React.useState("");
@@ -82,12 +95,17 @@ const Compiler = (props) => {
 
   const handleLanguage = (event) => {
     setLanguage(event.target.value);
+    setCode(template[event.target.value]);
+    sessionStorage.removeItem("compile");
   };
   const compile = async () => {
     try {
-      sessionStorage.setItem("compile",JSON.stringify({code,input}))
+      sessionStorage.setItem(
+        "compile",
+        JSON.stringify({ code, input, lang: language })
+      );
       const { status, data } = await helperService.compile(
-        { code, input },
+        { code, input, lang: language },
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 200) {

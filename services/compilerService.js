@@ -1,7 +1,7 @@
 const { generateFile } = require("../utils/tools/generateFile");
 const { executeCode } = require("../utils/tools/executeCode");
 const fs = require("fs");
-const compilerService = async (code, input) => {
+const compilerService = async (code, input, lang) => {
   // const formattedCode = code.join("\r\n");
   const formattedCode = code;
   let logFolder = "";
@@ -9,7 +9,7 @@ const compilerService = async (code, input) => {
     const [folderPath, filePath] = await generateFile(
       formattedCode,
       input,
-      "java"
+      lang
     );
     logFolder = folderPath;
     const output = await executeCode(filePath, input);
