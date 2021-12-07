@@ -24,7 +24,7 @@ const CreateContest = () => {
 
       <div className="d-flex flex-column mt-4">
         <div className="d-flex mt-1 mb-3">
-          <span className="contest-line-height mr-2">
+          <span className="contest-line-height col-md-2">
             Contest name <span className="contest-star">*</span>
           </span>
           <div className="col-md-4">
@@ -34,12 +34,11 @@ const CreateContest = () => {
               type="text"
               value={name}
               onClickHandler={(e) => setName(e)}
-
             />
           </div>
         </div>
         <div className="d-flex mt-2 mb-3">
-          <span className="contest-line-height mr-5">
+          <span className="contest-line-height col-md-2">
             Date <span className="contest-star">*</span>
           </span>
           <div className="col-md-4">
@@ -48,7 +47,7 @@ const CreateContest = () => {
               name="Starts at"
               type="text"
               value={date.start_date}
-              onClickHandler={(e) => setDate({...date,start_date:e})}
+              onClickHandler={(e) => setDate({ ...date, start_date: e })}
             />
           </div>
           <span className="contest-line-height mr-2">at</span>
@@ -58,7 +57,7 @@ const CreateContest = () => {
               name="Ends at"
               type="text"
               value={date.end_date}
-              onClickHandler={(e) => setDate({...date,end_date:e})}
+              onClickHandler={(e) => setDate({ ...date, end_date: e })}
             />
           </div>
           <span className="info-circle mr-2 mt-3">
@@ -66,7 +65,7 @@ const CreateContest = () => {
           </span>
         </div>
         <div className="d-flex">
-          <span className="contest-line-height mr-5">
+          <span className="contest-line-height col-md-2">
             Time <span className="contest-star">*</span>
           </span>
           <div className="col-md-4">
@@ -75,7 +74,7 @@ const CreateContest = () => {
               name="Ends at"
               type="text"
               value={time.start_time}
-              onClickHandler={(e) => setTime({...time,start_time:e})}
+              onClickHandler={(e) => setTime({ ...time, start_time: e })}
             />
           </div>
           <span className="contest-line-height mr-2">at</span>
@@ -85,7 +84,7 @@ const CreateContest = () => {
               name="Ends at"
               type="text"
               value={time.end_time}
-              onClickHandler={(e) => setTime({...time,end_time:e})}
+              onClickHandler={(e) => setTime({ ...time, end_time: e })}
             />
           </div>
           <span className="info-circle mr-2 mt-3">

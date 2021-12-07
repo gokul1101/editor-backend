@@ -2,7 +2,6 @@ import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import "./ContestDetails.css";
 import ContestChallenges from "./ContestChallenges/ContestChallenges";
 import ContestQuizzes from "./ContestQuizzes/ContestQuizzes";
-import ContestEdit from "./ContestEdit/ContestEdit";
 import ContestStatictics from "./ContestStatictics/ContestStatictics";
 import CreateContest from "../CreateContest/CreateContest";
 const ContestDetails = () => {

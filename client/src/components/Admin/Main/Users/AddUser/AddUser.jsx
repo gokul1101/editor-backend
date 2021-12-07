@@ -34,7 +34,7 @@ const AddUser = () => {
     console.log(files);
   };
   return (
-    <div className="">
+    <div className="container">
       <p className="text-left dash-title-category pb-2">Add Details *</p>
       <div className="col p-0" style={{ marginTop: "-20px" }}>
         <div className="hr">

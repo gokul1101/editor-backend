@@ -5,7 +5,7 @@ import AddUser from "./AddUser/AddUser";
 import ListUser from "./ListUser/ListUser";
 const Users = () => {
   return (
-    <div className="container add-user-container">
+    <div className="container-fluid add-user-container">
       <ul class="list-group d-flex align-items-center justify-content-center flex-row p-2 mt-3 mb-3">
         <li class="list-group-item user-group-pill">
           <NavLink
@@ -28,7 +28,7 @@ const Users = () => {
           </NavLink>
         </li>
       </ul>
-      <div className="container">
+      <div className="container-fluid">
         <Switch>
           <Route path="/users/add-user" exact>
             <AddUser />

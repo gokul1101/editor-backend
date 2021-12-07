@@ -132,50 +132,52 @@ const ListUser = (props) => {
   return (
     <>
       <div className="container-fluid mt-5">
-        <div
-          className="d-flex flex-column "
-          id="style-default"
-          style={{ width: "60vw", overflowX: "scroll" }}
-        >
-          <div className="force-overflow">
-            <div className="d-flex">
-              <div className="col-3 list-table-header">
-                Register number
-                <button onClick={onSortChange} className="sort-btn pl-3">
-                  <i className={`fas fa-${sortTypes[currentSort].class}`} />
-                </button>
-              </div>
-              <div className="col-3 list-table-header">Stream</div>
-              <div className="col-3 list-table-header">Course</div>
-              <div className="col-3 list-table-header">College</div>
-              <div className="col-3 list-table-header">Phone Number</div>
-              <div className="col-3 list-table-header">Name</div>
+        <div className="d-flex flex-column" id="style-default">
+          {/* <div className="force-overflow"> */}
+          <div
+            className="d-flex col-md-8 p-0"
+            style={{ overflowX: "scroll", overflowY: "hidden" }}
+          >
+            <div className="col-md-3 list-table-header">
+              Register number
+              <button onClick={onSortChange} className="sort-btn pl-3">
+                <i className={`fas fa-${sortTypes[currentSort].class}`} />
+              </button>
             </div>
+            <div className="col-md-3 list-table-header">Stream</div>
+            <div className="col-md-3 list-table-header">Course</div>
+            <div className="col-md-3 list-table-header">College</div>
+            <div className="col-md-3 list-table-header">Phone Number</div>
+            <div className="col-md-3 list-table-header">Name</div>
+          </div>
+          <div
+            className="d-flex"
+            style={{ overflowX: "scroll" }}
+          >
             {[...tableData].sort(sortTypes[currentSort].fn).map((p) => {
               return (
                 <>
-                  <div className="position-relative">
-                    <div className="d-flex">
-                      <div className="col-3 list-table-data p-2">
-                        {p.register_number}
-                      </div>
-                      <div className="col-3 list-table-data p-2">
-                        {p.stream}
-                      </div>
-                      <div className="col-3 list-table-data p-2">
-                        {p.course}
-                      </div>
-                      <div className="col-3 list-table-data p-2">
-                        {p.college}
-                      </div>
-                      <div className="col-3 list-table-data p-2">{p.batch}</div>
-                      <div className="col-3 list-table-data p-2">{p.batch}</div>
+                  <div className="d-flex col-md-8 p-0">
+                    <div className="col-md-3 list-table-data p-2">
+                      {p.register_number}
+                    </div>
+                    <div className="col-md-3 list-table-data p-2">
+                      {p.stream}
+                    </div>
+                    <div className="col-md-3 list-table-data p-2">
+                      {p.course}
+                    </div>
+                    <div className="col-md-3 list-table-data p-2">
+                      {p.college}
+                    </div>
+                    <div className="col-md-3 list-table-data p-2">
+                      {p.batch}
+                    </div>
+                    <div className="col-md-3 list-table-data p-2">
+                      {p.batch}
                     </div>
                   </div>
-                  <div
-                    className="d-flex position-absolute pr-3"
-                    style={{ left: "85%", marginTop: "-35px" }}
-                  >
+                  <div className="d-flex pr-3 col-md-4">
                     <button className="pr-4 pl-4 mr-2 edit-btn">Edit</button>
                     <button className="pr-4 pl-4 delete-btn" disabled>
                       Delete
@@ -186,6 +188,7 @@ const ListUser = (props) => {
             })}
           </div>
         </div>
+        {/* </div> */}
         <div className="mt-3 mb-5">
           <Pagination
             className="float-right"
