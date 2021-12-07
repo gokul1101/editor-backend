@@ -5,6 +5,7 @@ const sessionSchema = new Schema({
   contest_id : { type: Schema.Types.ObjectId, ref: "contests", required: true },
   starts_at: { type: Date },
   ends_at: { type: Date },
+  created_at: { type: Date, default: Date.now() },
   updated_at: { type: Date, default: null },
   deleted_at: { type: Date, default: null },
 });

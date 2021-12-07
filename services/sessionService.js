@@ -9,14 +9,14 @@ const createSessionService = async ({ user_id, contest_id }) => {
     //* If the contest was already ended.
     if (now > end_date) {
       return Promise.reject({
-        code: 403,
+        status: 403,
         message: "The contest was expired.",
       });
     }
     //* If the contest is not started yet.
     if (now < start_date) {
       return Promise.reject({
-        code: 403,
+        status: 403,
         message: "The contest is not started yet.",
       });
     }
@@ -26,23 +26,20 @@ const createSessionService = async ({ user_id, contest_id }) => {
     let newSession = new Session({ user_id, contest_id, starts_at, ends_at });
     await newSession.save();
     return Promise.resolve({
-      code: 201,
+      status: 201,
       message: "Session create successfully.",
     });
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: "Error in creating session.",
     });
   }
 };
 const getSessionService = async (sessionDetails) => {
   try {
-    let session = await Session.findOne(sessionDetails).populate({
-      path: "contest_id",
-      model: "contest",
-    });
+    let session = await Session.findOne(sessionDetails);
     if (!session)
       return Promise.reject({
         code: 404,

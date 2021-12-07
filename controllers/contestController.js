@@ -1,7 +1,7 @@
 const { success, error } = require("consola");
-const { getDuration, UUID } = require("../utils/helper");
 const Contest = require("../models/contests");
 const { createContestService, updateContestService, getContestService } = require("../services/contestService");
+const { getSessionService } = require("../services/sessionService");
 const createContest = async (req, res) => {
   let contest = req.body;
   try {
@@ -10,7 +10,7 @@ const createContest = async (req, res) => {
   } catch (err) {
     if(!err.code) {
       err.code = 500;
-      err.message = `Internal server Error on getting session`;
+      err.message = `Internal server Error on creating contest`;
     }
     res.status(err.code).send(err.message);
   }
@@ -21,10 +21,39 @@ const getContest = async (req, res) => {
     let { status, message } = await getContestService(id, code, req.user.role_id);
     res.status(status).send({ message });
   } catch (err) {
+    if(!err.status) {
+      err.status = 500;
+      err.message = `Internal server Error on getting contest`;
+    }
+    res.status(err.status).send(err.message);
+  }
+};
+const getContestForDashboard = async (req, res) => {
+  const { id, user_id, code } = req.query;
+  try {
+    let { status, contest } = await getContestService(id, code, req.user.role_id);
+    if(status === 200) {
+      let session = await getSessionService({user_id, contest_id : contest._id});
+      if(session) {
+        let now = +new Date();
+        let end_date = +session.ends_at;
+        if (now > end_date) {
+          return Promise.reject({
+            status: 403,
+            message: "Your session was expired.",
+          });
+        }
+      } else { 
+        session = await createContestService({user_id, contest_id : contest._id});
+        
+      }
+    }
+    res.status(status).send({ message });
+  } catch (err) {
     console.log(err)
     if(!err.status) {
       err.status = 500;
-      err.message = `Internal server Error on getting session`;
+      err.message = `Internal server Error on getting contest`;
     }
     res.status(err.status).send(err.message);
   }
@@ -38,7 +67,7 @@ const updateContest = async (req, res) => {
     console.log(err);
     if(!err.code) {
       err.code = 500;
-      err.message = `Internal server Error on getting session`;
+      err.message = `Internal server Error on update contest`;
     }
     res.status(err.code).send(err.message);
   }
@@ -89,7 +118,7 @@ const getAllContests = async (req, res) => {
   } catch (err) {
     if(!err.code) {
       err.code = 500;
-      err.message = `Internal server Error on getting session`;
+      err.message = `Internal server Error on deleting contest`;
     }
     res.status(err.code).send(err.message);
   }

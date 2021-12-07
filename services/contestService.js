@@ -32,6 +32,7 @@ const createContestService = async (contest) => {
       return Promise.resolve({
         code: 201,
         message: "Contest created successfully",
+        contestCode : contest.code
       });
     }
   } catch (err) {
@@ -73,12 +74,11 @@ const getContestService = async (id, code, role_id) => {
         });
       }
     }
-    return Promise.resolve({
-      code: 200,
-      message: contest,
+    return Promise.resolve({ 
+      status: 200,
+      contest,
     });
   } catch (err) {
-      console.log(err)
     return Promise.reject({
       status: 500,
       message: "Unable to find contest.",
