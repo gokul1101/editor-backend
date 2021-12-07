@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "./Dashboard.css";
-
 import Male from "../../../Images/man.png";
 import DashImg1 from "../../../Images/card-image-1.png";
 import DashImg2 from "../../../Images/card-image-2.png";
@@ -14,8 +13,8 @@ import Img2 from "../../../Images/img-1 (2).svg";
 import Img3 from "../../../Images/img-1 (3).svg";
 import { AuthContext } from "../../../../contexts/AuthContext";
 const Dashboard = (props) => {
-  const [authState,authDispatch] = useContext(AuthContext)
-  
+  const [authState, authDispatch] = useContext(AuthContext);
+
   return (
     <div className="container-fluid dashboard">
       <NavLink to="/profile" exact>
@@ -25,32 +24,42 @@ const Dashboard = (props) => {
               <img src={Male} alt="male" height="50" width="50" />
             </div>
             <div className="user-profile d-flex flex-column">
-              <span className="user-name name-title">{authState?.user?.name}</span>
+              <span className="user-name name-title">
+                {authState?.user?.name}
+              </span>
               <span className="register-no">{authState?.user?.regno}</span>
             </div>
           </div>
         </div>
       </NavLink>
       <div className="header-dashboard mt-5">
-        <div className="d-flex">
+        <div className="d-flex flex-column">
           <div className="col-md-7">
             <p className="header-title mt-1">
-              <span className="dash-greet">Welcome</span> {authState?.user?.name} ..!
+              <span className="dash-greet">Welcome</span>{" "}
+              {authState?.user?.name} ..!
             </p>
-            <div className="d-flex border-header mt-3 align-items-center justify-">
-              <div className="col-md-7 d-flex flex-column pl-4">
-                <span className="header-article">Become a</span>
-                <span className="header-article">Full Stack</span>
-                <span className="header-article mb-3">Web Developer</span>
-                <NavLink to="/articles">
-                  <span className="span-arrow">
-                    <i className="fas fa-arrow-circle-right"></i> Learn more..
-                  </span>
-                </NavLink>
+          </div>
+          <div className="d-flex">
+            <div className="col-md-7 border-header d-flex flex-column pl-4 mr-3">
+              <div className="d-flex">
+                <div className="banner-stack col-md-6 d-flex flex-column justify-content-center">
+                  <span className="header-article">Become a</span>
+                  <span className="header-article">Full Stack</span>
+                  <span className="header-article mb-3">Web Developer</span>
+                  <NavLink to="/articles">
+                    <span className="span-arrow">
+                      <i className="fas fa-arrow-circle-right"></i> Learn more..
+                    </span>
+                  </NavLink>
+                </div>
+                <div className="banner-stack-img col-md-6">
+                  <img src={LoopHeader} className="img-fluid" />
+                </div>
               </div>
             </div>
             <div
-              className="col-md-4 p-3 d-flex border-header-1 mt-5"
+              className="col-md-4 d-flex border-header-1 mt-2"
               style={{
                 backgroundImage: `url(${ProblemKit})`,
                 height: "300px",
@@ -75,6 +84,7 @@ const Dashboard = (props) => {
             </div>
           </div>
         </div>
+
         <div className="mt-5 mb-5">
           <h3 class="text-center card-title">What we do ?</h3>
           <div class="d-flex flex-wrap justify-content-center mt-5">

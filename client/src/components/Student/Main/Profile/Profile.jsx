@@ -69,10 +69,11 @@ const Profile = (props) => {
             <SelectReducer
               array={["KSRCT", "KSRCE", "KSRIET"]}
               name="College name"
+              className="w-100"
             />
           </div>
           <div className="col-md-6">
-            <SelectReducer array={["B.E", "B.Tech"]} name="Stream" />
+            <SelectReducer array={["B.E", "B.Tech"]} className="w-100" name="Stream" />
           </div>
         </div>
         <div
@@ -80,7 +81,7 @@ const Profile = (props) => {
           style={{ position: "relative", left: "-7px" }}
         >
           <div className="col-md-6">
-            <SelectReducer array={["CSE", "IT", "CIVIL"]} name="Course name" />
+            <SelectReducer array={["CSE", "IT", "CIVIL"]} className="w-100" name="Course name" />
           </div>
         </div>
         <div className="d-flex pl-3 mt-2">

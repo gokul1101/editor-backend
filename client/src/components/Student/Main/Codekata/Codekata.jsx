@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useHistory, Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import helperService from "../../../../services/helperService";
 import codekata from "../../../Images/codekata.svg";
@@ -8,6 +8,10 @@ const Codekata = (props) => {
   const [authState,authDispatch] = useContext(AuthContext);
   const history = useHistory();
   const [code, setCode] = useState("");
+
+  useEffect(() => {
+    props.setSideToggle(false);
+  }, []);
   const submitCode = async (e) => {
     e.preventDefault();
     if (code.length !== 6){
@@ -27,17 +31,12 @@ const Codekata = (props) => {
         history.push(`/codekata/${code}`);
       }
     } catch (err) {
-      if (err.status === 401) {
-        <Redirect to ="/login" />
-      }
+      if (err.status === 401) props.unauthorized(err.data);      
       if(err.data)
         props.snackBar(err.data.message, "error");
       
     }
   };
-  useEffect(() => {
-    props.setSideToggle(false);
-  });
   return (
     <div className="container h-100" style={{ marginTop: "150px" }}>
       <div className="d-flex align-items-center justify-content-center">

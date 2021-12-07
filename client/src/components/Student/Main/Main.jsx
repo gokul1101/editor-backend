@@ -13,6 +13,7 @@ import Mcq from "./Codekata/Quiz/McqLength/McqLength";
 import Profile from "./Profile/Profile";
 import Programs from "./Codekata/Programs/Programs";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { ContestProvider } from "../../../contexts/ContestContext";
 const Main = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle, setSideToggle] = useState(false);
@@ -130,7 +131,6 @@ const Main = (props) => {
             <Route path="/dashboard" exact>
               <Dashboard setSideToggle={setSideToggle} />
             </Route>
-
             <Route path="/articles" exact>
               <Articles setSideToggle={setSideToggle} />
             </Route>

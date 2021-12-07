@@ -1,5 +1,5 @@
 import "./App.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Login from "./components/Login/Login";
 import AdminMain from "./components/Admin/Main/Main";
 import Main from "./components/Student/Main/Main";
@@ -13,7 +13,6 @@ import {
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { AuthContext } from "./contexts/AuthContext";
-import axios from "axios";
 import helperService from "./services/helperService";
 
 const Alert = (props) => {
@@ -23,6 +22,9 @@ const App = () => {
   const history = useHistory();
   //** Context Consumer */
   const [authState, authDispatch] = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [severity, setSeverity] = useState("");
   const handleClose = (event, reason) => {
     if (reason === "clickaway") return;
     setOpen(false);
@@ -32,10 +34,14 @@ const App = () => {
     setMessage(snackMessage);
     setOpen(true);
   };
-
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  const [severity, setSeverity] = useState("");
+  const unauthorized = (message) => {
+    snackBar(message, "error");
+    localStorage.clear();
+    authDispatch({
+      type: "REMOVE_USER",
+    });
+    history.push("/login");
+  };
   const fetchUser = async () => {
     try {
       const { status, data } = await helperService.getUser(
@@ -49,10 +55,8 @@ const App = () => {
         });
       }
     } catch (err) {
-      if (err.status === 401) {
-        console.log(err.data);
-        <Redirect to ="/login" />
-      }
+      if (err.status === 401) unauthorized(err.data);
+      else snackBar(err.data, "error");
     }
   };
   return (
@@ -80,13 +84,12 @@ const App = () => {
             {authState.user ? (
               [
                 authState.user.role === "student" ? (
-                  <Main snackBar={snackBar} fetchUser={fetchUser} />
+                  <Main snackBar={snackBar} unauthorized={unauthorized} fetchUser={fetchUser} />
                 ) : (
                   <AdminMain snackBar={snackBar} />
                 ),
               ]
             ) : (
-              // <AdminMain setLogin={setLogin} snackBar={snackBar} />
               <Redirect exact to="/login" />
             )}
           </Route>

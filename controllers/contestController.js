@@ -1,117 +1,75 @@
 const { success, error } = require("consola");
-const { getDuration, UUID } = require("../utils/helper");
 const Contest = require("../models/contests");
+const { createContestService, updateContestService, getContestService } = require("../services/contestService");
+const { getSessionService } = require("../services/sessionService");
 const createContest = async (req, res) => {
   let contest = req.body;
   try {
-    //Can we write it as reusable
-    //Checking for name of contest was already taken
-    const exist_contest = await Contest.findOne({
-      name: contest.name,
-      deleted_at: null,
-    });
-    if (exist_contest)
-      return res
-        .status(403)
-        .json({ message: "Contest name already taken", success: false });
-    //* Creating new contest with given details
-    else {
-      const uuid = UUID().split("-").pop();
-      contest.code = uuid.substr(uuid.length - 6, 6).toUpperCase();
-      //* Start datetime & End datetime of the contest
-      let start = new Date(contest.start_date + " " + contest.start_time);
-      let end = new Date(contest.end_date + " " + contest.end_time);
-      contest.start_date = start;
-      contest.end_date = end;
-      //* Calculating duration
-      contest.duration = getDuration(start, end);
-      //** <- end*/
-      const newContest = new Contest(contest);
-      await newContest.save();
-      res
-        .status(201)
-        .json({ message: "Contest created successfully", success: true });
-    }
+    let { code, message } = await createContestService(contest);
+    res.status(code).send({ message });
   } catch (err) {
-    return res
-      .status(500)
-      .json({ message: "Can't create contest", success: false });
+    if(!err.code) {
+      err.code = 500;
+      err.message = `Internal server Error on creating contest`;
+    }
+    res.status(err.code).send(err.message);
   }
 };
 const getContest = async (req, res) => {
   const { id, code } = req.query;
   try {
-    //If contest already exist return success otherwise not found
-    let contest;
-    if (req.user.role_id === "admin") contest = await Contest.findById(id);
-    else if (req.user.role_id === "student")
-      contest = await Contest.findOne({ code });
-    if (!contest) return res.status(404).send(`Contest not found`);
-    if (req.user.role_id === "student") {
-      let now = +new Date();
-      let end_date = +contest.end_date;
-      let start_date = +contest.start_date;
-      //* If the contest was already ended.
-      if (now > end_date)
-        return res
-          .status(403)
-          .json({ message: `The contest was expired.`, success: false });
-      //* If the contest is not started yet.
-      if (now < start_date)
-        return res
-          .status(403)
-          .json({ message: `The contest is not started yet.`, success: false });
-    }
-    res.status(200).json({ message: contest, success: true });
+    let { status, message } = await getContestService(id, code, req.user.role_id);
+    res.status(status).send({ message });
   } catch (err) {
-    return res
-      .status(500)
-      .json({ message: "Unable to find contest", success: false });
+    if(!err.status) {
+      err.status = 500;
+      err.message = `Internal server Error on getting contest`;
+    }
+    res.status(err.status).send(err.message);
+  }
+};
+const getContestForDashboard = async (req, res) => {
+  const { id, user_id, code } = req.query;
+  try {
+    let { status, contest } = await getContestService(id, code, req.user.role_id);
+    if(status === 200) {
+      let session = await getSessionService({user_id, contest_id : contest._id});
+      if(session) {
+        let now = +new Date();
+        let end_date = +session.ends_at;
+        if (now > end_date) {
+          return Promise.reject({
+            status: 403,
+            message: "Your session was expired.",
+          });
+        }
+      } else { 
+        session = await createContestService({user_id, contest_id : contest._id});
+        
+      }
+    }
+    res.status(status).send({ message });
+  } catch (err) {
+    console.log(err)
+    if(!err.status) {
+      err.status = 500;
+      err.message = `Internal server Error on getting contest`;
+    }
+    res.status(err.status).send(err.message);
   }
 };
 const updateContest = async (req, res) => {
   let updateDetails = req.body;
-  let { id, name, start_date, end_date, start_time, end_time } = updateDetails;
   try {
-    let contest = await Contest.findById(id);
-    if (!contest)
-      return res.status(404).json({
-        message: `Contest not found!!!`,
-      });
-    if (name) {
-      let contestNameExists = await Contest.findOne({ name });
-      if (contestNameExists)
-        return res.status(403).send(`Contest name ${name} already taken`);
-      contest.name = name;
-    }
-    if (start_time) contest.start_time = start_time;
-    if (!start_date) {
-      let date = contest.start_date;
-      start_date = `${
-        date.getMonth() + 1
-      }-${date.getDate()}-${date.getFullYear()}`;
-    }
-    contest.start_date = new Date(start_date + " " + contest.start_time);
-
-    if (end_time) contest.end_time = end_time;
-    if (!end_date) {
-      let date = contest.end_date;
-      end_date = `${
-        date.getMonth() + 1
-      }-${date.getDate()}-${date.getFullYear()}`;
-    }
-    contest.end_date = new Date(end_date + " " + contest.end_time);
-
-    //* Calculating duration
-    contest.duration = getDuration(contest.start_date, contest.end_date);
-    await contest.save();
-    res.status(200).send("Contest updated.");
+    let { code, message } = await updateContestService(updateDetails);
+    res.status(code).send({ message });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
-      message: `Unable to update a contest.`,
-      success: false,
-    });
+    if(!err.code) {
+      err.code = 500;
+      err.message = `Internal server Error on update contest`;
+    }
+    res.status(err.code).send(err.message);
   }
 };
 const deleteContest = async (req, res) => {
@@ -155,24 +113,14 @@ const deleteContest = async (req, res) => {
 const getAllContests = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   try {
-    let response = {};
-    const count = await Contest.countDocuments();
-    response.modelCount = count;
-    //get all contest and return , return nothing if nothing
-    const contests = await Contest.find({ deleted_at: null })
-      .limit(limit * 1)
-      .skip((page - 1) * limit);
-    response.total = contests.length;
-    response.contests = contests;
-    res.status(200).json(response);
+    let { code, message } = await updateContestService(page, limit);
+    res.status(code).send({ message });
   } catch (err) {
-    error({
-      message: `Unable to find any contests \n${err}`,
-      badge: true,
-    });
-    return res
-      .status(500)
-      .json({ message: "Unable to find any contests", success: false });
+    if(!err.code) {
+      err.code = 500;
+      err.message = `Internal server Error on deleting contest`;
+    }
+    res.status(err.code).send(err.message);
   }
 };
 module.exports = {

@@ -7,8 +7,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles((theme) => ({
-  root:{
-    border:"1px solid #1E2D64",
+  root: {
+    border: "1px solid #1E2D64",
   },
   fieldColor: {
     width: "100%",
@@ -48,7 +48,7 @@ const AddUser = () => {
       <div className="d-flex">
         <div className="col-md-8 p-2 border m-1">
           <div className="d-flex mt-2 mb-2">
-          <div className="col-md-6 p-1">
+            <div className="col-md-6 p-1">
               <InputReducer
                 className={classes.fieldColor}
                 placeholder="Name"
@@ -64,17 +64,14 @@ const AddUser = () => {
                 type="text"
               />
             </div>
-            <div
-              className="col-md-6 p-1"
-              style={{ position: "relative", left: "-7px", top: "-9px" }}
-            >
-              <SelectReducer array={["B.E", "B.Tech"]} name="Stream" />
-            </div> 
           </div>
           <div className="d-flex mt-2 mb-2">
-            <div
-              className="col-md-6 p-1">
-              <SelectReducer className={classes.fieldColor} array={["B.E", "B.Tech"]} name="Stream" />
+            <div className="col-md-6 p-1">
+              <SelectReducer
+                className={classes.fieldColor}
+                array={["B.E", "B.Tech"]}
+                name="Stream"
+              />
             </div>
             <div className="col-md-6 p-1">
               <SelectReducer
@@ -84,11 +81,13 @@ const AddUser = () => {
               />
             </div>
           </div>
-          <div
-            className="d-flex mt-2 mb-2" >
-           <div
-              className="col-md-6 p-1">
-              <SelectReducer className={classes.fieldColor} array={["KSRCT", "KSRCE", "KSRIET"]} name="College Name" />
+          <div className="d-flex mt-2 mb-2">
+            <div className="col-md-6 p-1">
+              <SelectReducer
+                className={classes.fieldColor}
+                array={["KSRCT", "KSRCE", "KSRIET"]}
+                name="College Name"
+              />
             </div>
             <div className="col-md-6 p-1">
               <InputReducer
@@ -100,7 +99,7 @@ const AddUser = () => {
             </div>
           </div>
           <div className="d-flex mt-2 mb-2">
-          <div className="col-md-6 p-1">
+            <div className="col-md-6 p-1">
               <InputReducer
                 className={classes.fieldColor}
                 placeholder="Old Password"
@@ -118,7 +117,7 @@ const AddUser = () => {
             </div>
           </div>
           <div className="d-flex mt-2 mb-2">
-          <div className="col-md-6 p-1">
+            <div className="col-md-6 p-1">
               <InputReducer
                 className={classes.fieldColor}
                 placeholder="Phone number"
@@ -150,7 +149,7 @@ const AddUser = () => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                />
+              />
             </div>
           </div>
           <button className="loop-btn mt-3 pr-2 pl-2 ml-3">

@@ -4,6 +4,7 @@ import { useParams, useHistory } from "react-router-dom";
 import "./Quiz.css";
 import QuizImage from "../../../../Images/Quiz.png";
 import ProblemImage from "../../../../Images/problem.png";
+import Timer from "../Timer/Timer";
 // import QuizUndraw from "../../../Images/Quiz undraw.svg";
 
 const Quiz = (props) => {
@@ -20,7 +21,7 @@ const Quiz = (props) => {
 
   useEffect(() => {
     props.setSideToggle(true);
-  });
+  }, []);
 
   const returnBack = () => {
     history.goBack();
@@ -36,7 +37,9 @@ const Quiz = (props) => {
         <div className="d-flex align-items-center justify-content-center pt-4">
           <div className="timer d-flex pr-2 pl-2">
             <i class="fas fa-clock clock-icon mr-2"></i>
-            <span className="timer-clock">: 8</span>
+            <span className="timer-clock d-flex">
+              : <Timer />
+            </span>
           </div>
         </div>
         <div className="user-info position-relative">

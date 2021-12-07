@@ -222,49 +222,6 @@ const Programs = (props) => {
                   <i className="fas fa-code pr-2 pl-2"></i>RUN CODE
                 </button>
               </div>
-              {/* <Backdrop
-                className={classes.backdrop}
-                open={open}
-                onClick={handleClose}
-              >
-                <div>
-                  <Dialog
-                    fullWidth
-                    maxWidth="sm"
-                    open={open}
-                    //   onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogTitle id="alert-dialog-title">
-                      {"Settings "}
-                    </DialogTitle>
-                    <div className="d-flex flex-column p-2">
-                      <div className="col-md-12 pl-0">
-                        <SelectReducer
-                          array={[
-                            "xcode",
-                            "monokai",
-                            "github",
-                            "nord_dark",
-                            "textmate",
-                            "one_dark",
-                          ]}
-                          name="Select theme"
-                          handleSelect={handleChange}
-                          value={themeName}
-                        />
-                        <SelectReducer
-                          array={["c", "java"]}
-                          name="Select language"
-                          handleSelect={handleLanguage}
-                          value={language}
-                        />
-                      </div>
-                    </div>
-                  </Dialog>
-                </div>
-              </Backdrop> */}
             </div>
           </div>
         </div>

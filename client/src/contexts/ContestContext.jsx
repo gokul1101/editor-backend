@@ -6,7 +6,11 @@ const initialState = {
 const ContestReducer = (state, action) => {
   switch (action.type) {
     case "SET_CONTEST":
-      return { ...state, ...action.payload};
+      return { ...state, contest: { ...state, ...action.payload } };
+    case "SET_CONTEST_QUIZZES":
+      return { ...state, contest: { ...state, ...action.payload } };
+    case "REMOVE_CONTEST":
+      return { ...state, contest: null };
     default:
       return state;
   }

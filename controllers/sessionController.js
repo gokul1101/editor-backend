@@ -1,11 +1,14 @@
 const createSession = async (req, res) => {
   const { user_id, contest_id } = req.body;
   try {
-    const { code, message } = await createSessionService(user_id, contest_id);
+    const { code, message } = await createSessionService({
+      user_id,
+      contest_id,
+    });
     res.status(code).send(message);
   } catch (err) {
     console.log(err);
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on creating session`;
     }
@@ -15,11 +18,11 @@ const createSession = async (req, res) => {
 const getSession = async (req, res) => {
   const { user_id, contest_id } = req.body;
   try {
-    const { code, message } = await getSessionService(user_id, contest_id);
+    const { code, message } = await getSessionService({ user_id, contest_id });
     res.status(code).send(message);
   } catch (err) {
     console.log(err);
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on getting session`;
     }
@@ -33,7 +36,7 @@ const getAllSessions = async (req, res) => {
     res.status(code).send(message);
   } catch (err) {
     console.log(err);
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on getting sessions`;
     }

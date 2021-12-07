@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./McqLength.css";
 import { useParams, useHistory } from "react-router-dom";
-import Timer from "../../../../../Images/timer.png";
+import TimerImg from "../../../../../Images/timer.png";
 import Male from "../../../../../Images/man.png";
+import Timer from "../../../Codekata/Timer/Timer";
+
 const Mcq = (props) => {
   const location = useParams();
   const history = useHistory();
@@ -12,6 +14,7 @@ const Mcq = (props) => {
   const returnBack = () => {
     history.goBack();
   };
+
   let [currentQuestion, setCurrentQuestion] = useState(0);
   const [status, setStatus] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState("");
@@ -167,14 +170,16 @@ const Mcq = (props) => {
           <div className="d-flex flex-column">
             <div className="d-flex flex-column quizzes align-items-center justify-content-center mt-2 mb-2 p-3">
               <img
-                src={Timer}
+                src={TimerImg}
                 alt="timer"
                 height="100"
                 width="100"
                 className="img-fluid mt-2"
               />
               <span className="text-left dash-title-category">Timer</span>
-              <h2 className="timer-text">00 : 15 : 00</h2>
+              <h2 className="timer-text">
+                <Timer />
+              </h2>
               <p>remaining</p>
               <div className="d-flex">
                 <span className="timer-hand mr-2 ml-3">Hours</span>
@@ -182,16 +187,19 @@ const Mcq = (props) => {
                 <span className="timer-hand mr-2">Seconds</span>
               </div>
             </div>
-            <div className="d-flex mt-2 mb-2 p-3 flex-column align-items-center quizzes">
+            <div
+              className="d-flex mt-2 mb-2 p-3 flex-column align-items-center quizzes"
+              style={{ height: "300px", overflowY: "scroll" }}
+            >
               <span className="span-question mt-2 mb-3">Question Path</span>
               <div className="d-flex flex-wrap">
-                {Array.apply(0, Array(questions.length)).map(function (x, i) {
+                {Array.apply(0, Array(500)).map(function (x, i) {
                   return (
                     <button
                       className={`${
                         currentQuestion === i
-                          ? `correct ml-3 mb-2`
-                          : `que-path ml-3 mb-3`
+                          ? `correct ml-3 mb-2 text-center`
+                          : `que-path ml-3 mb-3 text-center`
                       }`}
                       onClick={() => questionChange(i)}
                     >
@@ -200,6 +208,16 @@ const Mcq = (props) => {
                   );
                 })}
               </div>
+            </div>
+            <div className="d-flex justify-content-end mt-2">
+              <button
+                className="mr-2 btn-hover pr-1 pl-1 color-11"
+                color="primary"
+                variant="contained"
+                onClick={handleNext}
+              >
+                SUBMIT QUIZ
+              </button>
             </div>
           </div>
         </div>
