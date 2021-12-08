@@ -1,0 +1,37 @@
+.timer {
+    padding: 4rem 0 0 0;
+    height: auto;
+    width: 100%;
+    text-align: center;
+  }
+  
+  /* #clockdiv {
+    background-color: #c31432;
+    font-family: sans-serif;
+    display: inline-block;
+    font-weight: 100;
+    text-align: center;
+    border:none;
+  }
+  #clockdiv > div {
+    
+    border-radius: 3px;
+    display: inline-block;
+    font-size: 40px;
+  }
+  #clockdiv div > span {
+    padding: 15px;
+    border-radius: 3px;
+    font-family: "Orbitron", sans-serif;
+    background: linear-gradient(to right, #d81737, #f8b500);
+    color: transparent;
+    -webkit-background-clip: text;
+    display: inline-block;
+  }
+  .smalltext {
+    padding-top: 5px;
+    font-size: 15px;
+    background: linear-gradient(to right, #c31432, #f8b500);
+    color: transparent;
+    -webkit-background-clip: text;
+  } */

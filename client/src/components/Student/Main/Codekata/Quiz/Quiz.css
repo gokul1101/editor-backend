@@ -222,3 +222,8 @@
 .room-code {
   background-color: rgb(7, 71, 7);
 }
+
+.ques-count{
+  color: #0ba360;
+  font-weight: bolder;
+}

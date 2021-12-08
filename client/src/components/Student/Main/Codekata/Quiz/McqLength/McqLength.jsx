@@ -111,7 +111,7 @@ const Mcq = (props) => {
           <p className="text-left problem-article">Python warmup MCQ's</p>
           <div className="col p-0">
             <div className="col question-outoff p-0">
-              <span className="question-order">
+              <span className="question-order p-2 bg-dark text-white">
                 Question {currentQuestion + 1}/{questions.length}
               </span>
             </div>
@@ -119,7 +119,7 @@ const Mcq = (props) => {
               <hr className="co p-0l" />
             </div>
             <div className="col question-outoff p-0 mb-3">
-              <span>
+              <span className="text-muted">
                 Note: Choosen answer boxes are turned into Green color
               </span>
             </div>
@@ -134,16 +134,17 @@ const Mcq = (props) => {
               </div>
             </div>
             <div className="d-flex flex-column align-items-center justify-content-center mt-3">
-              <div className="d-flex p-2 w-100 flex-wrap">
+              <div className="d-flex p-2 w-100 individual-question flex-wrap">
                 {Object.values(questions[currentQuestion].answerOptions).map(
                   (answerOptions, id) => {
                     return (
                       <button
+                    
                         key={id}
                         className={`${
                           status && selectedAnswer === answerOptions
                             ? `correct-option text-left pr-2 pl-3 pt-2 pb-2 m-2`
-                            : `option-1 text-left pr-2 pl-3 pt-2 pb-2 m-2`
+                            : `option-1 text-left pr-2 pl-3 pt-2 pb-2 m-2 individual-options`
                         }`}
                         onClick={() => answerHandler(answerOptions)}
                       >
@@ -180,11 +181,11 @@ const Mcq = (props) => {
               <h2 className="timer-text">
                 <Timer />
               </h2>
-              <p>remaining</p>
+              <p className="font-weight-bolder">remaining</p>
               <div className="d-flex">
-                <span className="timer-hand mr-2 ml-3">Hours</span>
-                <span className="timer-hand mr-2">Minutes</span>
-                <span className="timer-hand mr-2">Seconds</span>
+                <span className="timer-hand mr-2 ml-3 font-weight-bolder">Hours</span>
+                <span className="timer-hand mr-2 font-weight-bolder">Minutes</span>
+                <span className="timer-hand mr-2 font-weight-bolder">Seconds</span>
               </div>
             </div>
             <div

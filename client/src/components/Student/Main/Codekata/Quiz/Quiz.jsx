@@ -62,13 +62,13 @@ const Quiz = (props) => {
           </p>
         </div>
         <div className="create-con">
-          <button className="p-2">
-            <i className="fas fa-rocket pr-2 pl-2"></i>SUBMIT
+          <button className="p-3">
+            <i className="fas fa-rocket pr-1 pl-1"></i>SUBMIT
           </button>
         </div>
       </div>
       <div className="d-flex">
-        <div className="col-md-8">
+        <div className="col-md-7">
           <p className="text-left ml-5 dash-title-category">QUIZZES</p>
           <div className="d-flex flex-wrap">
             <div
@@ -100,7 +100,7 @@ const Quiz = (props) => {
                   <div className="d-flex flex-column ml-4 mt-2 pt-0">
                     <span className="quiz-warm-span">Python warmup MCQ's</span>
                     <span>
-                      No. of questions : <b>10</b>
+                      No. of questions : <b className="ques-count">10</b>
                     </span>
                   </div>
                   {/* <i className="fas fa-play" onClick={routeQuestion} style={{position:'relative',top:'-100px',zIndex:999}}></i> */}
@@ -141,7 +141,7 @@ const Quiz = (props) => {
                   <div className="d-flex flex-column ml-4 mt-2 pt-0">
                     <span className="quiz-warm-span">Python warmup MCQ's</span>
                     <span>
-                      No. of questions : <b>10</b>
+                      No. of questions : <b className="ques-count">10</b>
                     </span>
                   </div>
                   {/* <i className="fas fa-play" onClick={routeQuestion} style={{position:'relative',top:'-100px',zIndex:999}}></i> */}
@@ -184,7 +184,7 @@ const Quiz = (props) => {
                   <div className="d-flex flex-column ml-4 mt-2 pt-2">
                     <span className="quiz-blue-span">Python warmup MCQ's</span>
                     <span>
-                      No. of que : <b>10</b>
+                      No. of questions : <b className="ques-count">10</b>
                     </span>
                   </div>
                   <div className="">
@@ -223,7 +223,7 @@ const Quiz = (props) => {
                   <div className="d-flex flex-column ml-4 mt-2 pt-2">
                     <span className="quiz-blue-span">Python warmup MCQ's</span>
                     <span>
-                      No. of que : <b>10</b>
+                      No. of questions : <b className="ques-count">10</b>
                     </span>
                   </div>
                   <div className="">
@@ -236,7 +236,7 @@ const Quiz = (props) => {
             </div>
           </div>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-5">
           <div class="tab-content p-2" id="pills-tabContent">
             <div className="d-flex mt-2">
               <h5 className="quiz-instruct mr-2">

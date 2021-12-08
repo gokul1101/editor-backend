@@ -106,3 +106,17 @@
 .select-theme {
   margin-bottom: 6px;
 }
+
+.problem-title-head{
+  color: black;
+  font-weight: bolder;
+}
+
+.problem-state,.ip,.op{
+  color: #05a04b;
+}
+.color-highlight{
+  color: #05a04b;
+  font-size: 18px;
+}
+
