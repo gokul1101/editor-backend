@@ -51,7 +51,7 @@ const helperService = {
     }
   },
   getContestWithCode: async (payload, config) => {
-    let url = `${baseURL}/api/v1/contest/get`;
+    let url = `${baseURL}/api/v1/contest/dashboard`;
     if (payload.id) url += `?id=${payload.id}`;
     else if (payload.code) url += `?code=${payload.code}`;
     try {

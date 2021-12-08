@@ -14,6 +14,7 @@ const {
   updateContest,
   deleteContest,
   getAllContests,
+  getContestForDashboard,
 } = require("../controllers/contestController");
 const {
   createQuestion,
@@ -100,6 +101,11 @@ router.get(
   userAuth,
   routeAuth("getContest"),
   getContest
+);
+router.get(
+  "/api/v1/contest/dashboard",
+  userAuth,
+  getContestForDashboard
 );
 router.get(
   "/api/v1/contests/getAll",
