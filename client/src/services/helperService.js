@@ -69,5 +69,36 @@ const helperService = {
       });
     }
   },
+  createContest : async (payload,config) => {
+    try{
+      const {data,status} = await axios.post(`${baseURL}/api/v1/contest/create`,payload,config)
+    }
+    catch(err){
+      console.log(err)
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+ compile: async (payload,config) => {
+    try{
+      const {data,status} = await axios.post(`${baseURL}/api/v1/compiler`,payload,config)
+      if(status === 200) {
+        return Promise.resolve({
+          status,
+          data
+        })
+      }
+    }
+    catch(err){
+      console.log(err)
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  
 };
 export default helperService;

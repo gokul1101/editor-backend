@@ -98,14 +98,8 @@ const Programs = (props) => {
                     aria-controls="pills-submissions"
                     aria-selected="false"
                   >
-                    Submissions
+                    TestCase
                   </a>
-                </li>
-                <li>
-                  <i
-                    className="fas fa-cog ml-2 mt-2"
-                    onClick={handleToggle}
-                  ></i>
                 </li>
               </ul>
               <div class="tab-content p-2" id="pills-tabContent">
@@ -192,6 +186,8 @@ const Programs = (props) => {
                       </p>
                     </div>
                   </div>
+                  {/* /TESTCASE/ */}
+                  <div></div>
                 </div>
                 <div
                   class="tab-pane fade"
@@ -199,55 +195,33 @@ const Programs = (props) => {
                   role="tabpanel"
                   aria-labelledby="pills-submissions-tab"
                 >
-                  Submissions
+                  TestCase
                 </div>
               </div>
             </div>
             <div className="col-md-8 p-0 d-flex flex-column">
+              <div className="w-100 mt-3 mb-2">
+                <SelectReducer
+                  array={[
+                    "xcode",
+                    "monokai",
+                    "github",
+                    "nord_dark",
+                    "textmate",
+                    "one_dark",
+                  ]}
+                  name="Select theme"
+                  handleSelect={handleChange}
+                  value={themeName}
+                  className="w-50 float-right"
+                />
+              </div>
               <Editor language={language} themeName={themeName} />
-              <Backdrop
-                className={classes.backdrop}
-                open={open}
-                onClick={handleClose}
-              >
-                <div>
-                  <Dialog
-                    fullWidth
-                    maxWidth="sm"
-                    open={open}
-                    //   onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogTitle id="alert-dialog-title">
-                      {"Settings "}
-                    </DialogTitle>
-                    <div className="d-flex flex-column p-2">
-                      <div className="col-md-12 pl-0">
-                        <SelectReducer
-                          array={[
-                            "xcode",
-                            "monokai",
-                            "github",
-                            "nord_dark",
-                            "textmate",
-                            "one_dark",
-                          ]}
-                          name="Select theme"
-                          handleSelect={handleChange}
-                          value={themeName}
-                        />
-                        <SelectReducer
-                          array={["c", "java"]}
-                          name="Select language"
-                          handleSelect={handleLanguage}
-                          value={language}
-                        />
-                      </div>
-                    </div>
-                  </Dialog>
-                </div>
-              </Backdrop>
+              <div className="create-con mt-1 d-flex justify-content-end">
+                <button className="p-2">
+                  <i className="fas fa-code pr-2 pl-2"></i>RUN CODE
+                </button>
+              </div>
             </div>
           </div>
         </div>

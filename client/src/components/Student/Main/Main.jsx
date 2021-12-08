@@ -131,26 +131,6 @@ const Main = (props) => {
             <Route path="/dashboard" exact>
               <Dashboard setSideToggle={setSideToggle} />
             </Route>
-            <Route path="/codekata">
-              <ContestProvider>
-                <Route path="/codekata/:id/mcq" exact>
-                  <Mcq setSideToggle={setSideToggle} />
-                </Route>
-                <Route path="/codekata/:id/program" exact>
-                  <Programs setSideToggle={setSideToggle} />
-                </Route>
-                <Route path="/codekata/:id" exact>
-                  <Quiz setSideToggle={setSideToggle} />
-                </Route>
-                <Route path="/codekata" exact>
-                  <Codekata
-                    unauthorized={props.unauthorized}
-                    snackBar={props.snackBar}
-                    setSideToggle={setSideToggle}
-                  />
-                </Route>
-              </ContestProvider>
-            </Route>
             <Route path="/articles" exact>
               <Articles setSideToggle={setSideToggle} />
             </Route>
@@ -164,6 +144,29 @@ const Main = (props) => {
               <Profile setSideToggle={setSideToggle} />
             </Route>
             <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+            <Route path="/codekata" exact>
+              <Codekata
+                snackBar={props.snackBar}
+                setSideToggle={setSideToggle}
+              />
+            </Route>
+            {authState?.contest ? (
+              [
+                <>
+                  <Route path="/codekata/:id/mcq" exact>
+                    <Mcq setSideToggle={setSideToggle} />
+                  </Route>
+                  <Route path="/codekata/:id/program" exact>
+                    <Programs setSideToggle={setSideToggle} />
+                  </Route>
+                  <Route path="/codekata/:id" exact>
+                    <Quiz setSideToggle={setSideToggle} />
+                  </Route>
+                </>,
+              ]
+            ) : (
+              <Redirect to="/codekata" />
+            )}
           </Switch>
         </div>
       </div>

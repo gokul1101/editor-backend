@@ -16,6 +16,7 @@
   color: rgb(0, 0, 0);
   font-weight: 400;
   margin: 0.6px;
+  /* min-width: 191px; */
   /* width: 100%; */
 }
 .sort-btn {

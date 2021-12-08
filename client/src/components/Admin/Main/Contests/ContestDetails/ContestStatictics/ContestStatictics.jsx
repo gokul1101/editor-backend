@@ -65,7 +65,7 @@ const ContestStatictics = (props) => {
     },
   ];
   return (
-    <div className="container-fluid w-100">
+    <div className="container-fluid w-100 mt-5">
       <div className="d-flex">
         <div className="col-md-9 d-flex flex-column border">
           <div className="statistics-nav d-flex justify-content-center mt-3 mb-2 w-100">
@@ -102,7 +102,7 @@ const ContestStatictics = (props) => {
                   <button className="correct">1</button>
                 </div>
                 <div className="col-md-6 top-scorer">Dhanush Karthick</div>
-                <div className="col-md-4 d-flex justify-content-between">
+                <div className="col-md-4 d-flex justify-content-between align-items-center">
                   <img src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
                   <span className="score-point">1029</span>
                 </div>
@@ -112,9 +112,9 @@ const ContestStatictics = (props) => {
                   <button className="correct">2</button>
                 </div>
                 <div className="col-md-6 top-scorer">Dhanush Karthick</div>
-                <div className="col-md-4 d-flex justify-content-between">
+                <div className="col-md-4 d-flex justify-content-between align-items-center">
                   <img src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
-                  <span className="score-point">103</span>
+                  <span className="score-point">102</span>
                 </div>
               </div>
               <div className="d-flex mt-2 mb-2">
@@ -122,7 +122,7 @@ const ContestStatictics = (props) => {
                   <button className="correct">3</button>
                 </div>
                 <div className="col-md-6 top-scorer">Dhanush Karthick</div>
-                <div className="col-md-4 d-flex justify-content-between">
+                <div className="col-md-4 d-flex justify-content-between align-items-center">
                   <img src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
                   <span className="score-point">10</span>
                 </div>

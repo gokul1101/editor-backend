@@ -81,6 +81,7 @@
   border: none;
   box-shadow: none;
   height: 38px;
+  width: 250px;
   background-color: #21a366;
   color: #fff;
   border-radius: 4px;
@@ -92,9 +93,10 @@
   box-shadow: none;
 }
 .badge-pill {
-  height: 25px;
-  width: 70px;
+  height: 30px;
+  width: 80px;
   font-size: 14px;
+  padding: 6px;
 }
 .log-file {
   cursor: pointer;

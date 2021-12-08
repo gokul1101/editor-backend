@@ -7,6 +7,21 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    border: "1px solid #1E2D64",
+  },
+  fieldColor: {
+    width: "100%",
+    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#00511B",
+    },
+    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#00511B",
+    },
+    "& .MuiInputLabel-outlined.Mui-focused": {
+      color: "#00511B",
+    },
+  },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -19,7 +34,7 @@ const AddUser = () => {
     console.log(files);
   };
   return (
-    <div className="">
+    <div className="container">
       <p className="text-left dash-title-category pb-2">Add Details *</p>
       <div className="col p-0" style={{ marginTop: "-20px" }}>
         <div className="hr">
@@ -35,32 +50,79 @@ const AddUser = () => {
           <div className="d-flex mt-2 mb-2">
             <div className="col-md-6 p-1">
               <InputReducer
+                className={classes.fieldColor}
+                placeholder="Name"
+                name="Name"
+                type="text"
+              />
+            </div>
+            <div className="col-md-6 p-1">
+              <InputReducer
+                className={classes.fieldColor}
                 placeholder="Register Number"
                 name="Register Number"
                 type="text"
               />
             </div>
-            <div
-              className="col-md-6 p-1"
-              style={{ position: "relative", left: "-7px", top: "-9px" }}
-            >
-              <SelectReducer array={["B.E", "B.Tech"]} name="Stream" />
-            </div>
           </div>
-          <div
-            className="d-flex mt-2 mb-2"
-            style={{ position: "relative", left: "-7px" }}
-          >
+          <div className="d-flex mt-2 mb-2">
             <div className="col-md-6 p-1">
               <SelectReducer
-                array={["CSE", "IT", "CIVIL"]}
-                name="Course name"
+                className={classes.fieldColor}
+                array={["B.E", "B.Tech"]}
+                name="Stream"
               />
             </div>
             <div className="col-md-6 p-1">
               <SelectReducer
+                className={classes.fieldColor}
+                array={["CSE", "IT", "CIVIL"]}
+                name="Course name"
+              />
+            </div>
+          </div>
+          <div className="d-flex mt-2 mb-2">
+            <div className="col-md-6 p-1">
+              <SelectReducer
+                className={classes.fieldColor}
                 array={["KSRCT", "KSRCE", "KSRIET"]}
-                name="Stream"
+                name="College Name"
+              />
+            </div>
+            <div className="col-md-6 p-1">
+              <InputReducer
+                className={classes.fieldColor}
+                placeholder="Email"
+                name="Email"
+                type="email"
+              />
+            </div>
+          </div>
+          <div className="d-flex mt-2 mb-2">
+            <div className="col-md-6 p-1">
+              <InputReducer
+                className={classes.fieldColor}
+                placeholder="Old Password"
+                name="Old Password"
+                type="password"
+              />
+            </div>
+            <div className="col-md-6 p-1">
+              <InputReducer
+                className={classes.fieldColor}
+                placeholder="New Password"
+                name="New password"
+                type="password"
+              />
+            </div>
+          </div>
+          <div className="d-flex mt-2 mb-2">
+            <div className="col-md-6 p-1">
+              <InputReducer
+                className={classes.fieldColor}
+                placeholder="Phone number"
+                name="Phone number"
+                type="number"
               />
             </div>
           </div>

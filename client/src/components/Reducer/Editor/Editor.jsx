@@ -15,7 +15,7 @@ const Editor = (props) => {
   return (
     <div>
       <AceEditor
-        height="100vh"
+        height="83vh"
         width="100%"
         placeholder="Your code goes here.."
         mode={props.language}

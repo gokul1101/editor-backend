@@ -1,15 +1,27 @@
 import React from "react";
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import './ContestQuizzes.css'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@material-ui/core";
+import InputReducer from "../../../../../Reducer/InputReducer";
 const ContestQuizzes = () => {
     const eventArr = [
         { name: "November challenge 2021" },
         { name: "Java challenge 2021" },
         { name: "Python challenge 2021" },
     ];
-    return (
-        <div className="container">
-            <div className="d-flex flex-column" style={{ marginTop: '40px' }}>
+                
+  const [open, setOpen] = React.useState(false);
+
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const addQuiz = () => {
+    console.log("Quiz Added");
+  };
+  return (
+    <div className="container mt-5">
+    <div className="d-flex flex-column" style={{ marginTop: '40px' }}>
                 <p className="text-left dash-title-category pb-2">Quiz Challenges</p>
                 <span className="create-con-text mt-1">
                     Add quiz to the challenge to the contest by selecting quiz challenge from our library or create
@@ -28,9 +40,36 @@ const ContestQuizzes = () => {
                 </button>
                 {/* </Link> */}
             </div>
-
-            <div className="challenge-chips d-flex flex-wrap border p-2 mt-4">
-                {eventArr.length > 0 ?
+      <Dialog
+        open={open}
+        // TransitionComponent={Transition}
+        keepMounted
+        fullWidth
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+          {"Create contest quiz"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            <div className="d-flex">
+              <label>Create Quiz</label>
+              <InputReducer />
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={addQuiz} color="primary" variant="contained">
+            ADD
+          </Button>
+          <Button onClick={handleClose} color="primary">
+            CLOSE
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <div className="challenge-chips d-flex flex-wrap border p-2 mt-4">
+      {eventArr.length > 0 ?
                     eventArr.map((e) => {
                         return (
                             <div className="create-con">
@@ -41,12 +80,11 @@ const ContestQuizzes = () => {
                             </div>
                         )
                     })
-                    : <span>No changes have been made yet</span>}
-
-
-            </div>
-        </div>
-    )
-}
+                    : <span>No changes have been made yet</span>
+                }
+      </div>
+    </div>
+  );
+};
 
 export default ContestQuizzes;

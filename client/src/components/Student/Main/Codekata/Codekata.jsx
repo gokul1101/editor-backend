@@ -1,13 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../../../contexts/AuthContext";
-import { ContestContext } from "../../../../contexts/ContestContext";
 import helperService from "../../../../services/helperService";
 import codekata from "../../../Images/codekata.svg";
 import "./Codekata.css";
 const Codekata = (props) => {
-  const [authState] = useContext(AuthContext);
-  const [, contestDispatch] = useContext(ContestContext);
+  const [authState,authDispatch] = useContext(AuthContext);
   const history = useHistory();
   const [code, setCode] = useState("");
 
@@ -26,7 +24,7 @@ const Codekata = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        contestDispatch({
+        authDispatch({
           type: "SET_CONTEST",
           payload: { ...data.message },
         });
