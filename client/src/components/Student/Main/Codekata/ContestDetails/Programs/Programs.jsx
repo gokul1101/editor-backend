@@ -5,8 +5,8 @@ import Backdrop from "@material-ui/core/Backdrop";
 import { makeStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import SelectReducer from "../../../../Reducer/SelectReducer/SelectReducer";
-import Editor from "../../../../Reducer/Editor/Editor";
+import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
+import Editor from "../../../../../Reducer/Editor/Editor";
 const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,

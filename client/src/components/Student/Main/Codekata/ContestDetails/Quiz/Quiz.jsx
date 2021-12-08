@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import "./McqLength.css";
+import "./Quiz.css";
 import { useParams, useHistory } from "react-router-dom";
 import TimerImg from "../../../../../Images/timer.png";
 import Male from "../../../../../Images/man.png";
-import Timer from "../../../Codekata/Timer/Timer";
+import Timer from "../../Timer/Timer";
 
-const Mcq = (props) => {
+const Quiz = (props) => {
   const location = useParams();
   const history = useHistory();
   useEffect(() => {
@@ -226,4 +226,4 @@ const Mcq = (props) => {
   );
 };
 
-export default Mcq;
+export default Quiz;

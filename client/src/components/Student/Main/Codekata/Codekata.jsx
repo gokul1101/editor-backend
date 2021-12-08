@@ -19,22 +19,22 @@ const Codekata = (props) => {
       return;
     }
     try {
-      const {status, data} = await helperService.getContestWithCode(
+      const {status, data : {contest}} = await helperService.getContestWithCode(
         {code},
         { headers: { Authorization: authState.user.token } }
-      );
+      );      
       if (status === 200) {
         authDispatch({
           type: "SET_CONTEST",
-          payload: { ...data.message },
+          payload: { ...contest },
         });
         history.push(`/codekata/${code}`);
       }
     } catch (err) {
+      console.log(err);
       if (err.status === 401) props.unauthorized(err.data);      
-      if(err.data)
-        props.snackBar(err.data.message, "error");
-      
+      if(err)
+        props.snackBar(err.message, "error");      
     }
   };
   return (

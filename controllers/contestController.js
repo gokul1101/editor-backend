@@ -7,23 +7,25 @@ const {
   createContestService,
   updateContestService,
   getContestService,
+  getAllContestService,
 } = require("../services/contestService");
 const { getAllQuizzesWithContestId } = require("../services/quizService");
 const {
   getSessionService,
   createSessionService,
 } = require("../services/sessionService");
+
 const createContest = async (req, res) => {
   let contest = req.body;
   try {
     let { code, message } = await createContestService(contest);
     res.status(code).send({ message });
-  } catch (err) {
-    if (!err.code) {
-      err.code = 500;
-      err.message = `Internal server Error on creating contest`;
+  } catch ({code, status, message}) {
+    if (!code && !status) {
+      code = 500;
+      message = `Internal server Error on creating contest`;
     }
-    res.status(err.code).send(err.message);
+    res.status(status? status : code).send(message);
   }
 };
 const getContest = async (req, res) => {
@@ -35,12 +37,12 @@ const getContest = async (req, res) => {
       req.user.role_id
     );
     res.status(status).send({ message });
-  } catch (err) {
-    if (!err.status) {
-      err.status = 500;
-      err.message = `Internal server Error on getting contest`;
+  } catch ({code, status, message}) {
+    if (!code && !status) {
+      code = 500;
+      message = `Internal server Error on getting contest`;
     }
-    res.status(err.status).send(err.message);
+    res.status(status? status : code).send(message);
   }
 };
 const getContestForDashboard = async (req, res) => {
@@ -90,7 +92,7 @@ const getContestForDashboard = async (req, res) => {
     res.status(status).send({ contest: response });
   } catch ({ status, code, message }) {
     console.log(message);
-    if (!status || !code) {
+    if (!status && !code) {
       status = 500;
       message = `Internal server Error on getting contest`;
     }
@@ -152,7 +154,7 @@ const deleteContest = async (req, res) => {
 const getAllContests = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   try {
-    let { code, message } = await updateContestService(page, limit);
+    let { code, message } = await getAllContestService(page, limit);
     res.status(code).send({ message });
   } catch (err) {
     if (!err.code) {
