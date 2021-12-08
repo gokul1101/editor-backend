@@ -1,6 +1,6 @@
 const { success, error } = require("consola");
 const Contest = require("../models/contests");
-const { createContestService, updateContestService, getContestService } = require("../services/contestService");
+const { createContestService, updateContestService, getContestService,getAllContestService } = require("../services/contestService");
 const { getSessionService } = require("../services/sessionService");
 const createContest = async (req, res) => {
   let contest = req.body;
@@ -113,7 +113,7 @@ const deleteContest = async (req, res) => {
 const getAllContests = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   try {
-    let { code, message } = await updateContestService(page, limit);
+    let { code, message } = await getAllContestService(page, limit);
     res.status(code).send({ message });
   } catch (err) {
     if(!err.code) {
@@ -123,6 +123,8 @@ const getAllContests = async (req, res) => {
     res.status(err.code).send(err.message);
   }
 };
+
+
 module.exports = {
   createContest,
   updateContest,

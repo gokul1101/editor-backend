@@ -17,9 +17,9 @@ import { AuthContext } from "../../../contexts/AuthContext";
 const Main = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle, setSideToggle] = useState(false);
-  // useEffect(() => {
-  //   props.getUser();
-  // }, []);
+  useEffect(() => {
+    props.fetchUser();
+  }, []);
   return (
     <div className="container-fluid p-0">
       <div className="d-flex">
@@ -132,13 +132,13 @@ const Main = (props) => {
             </Route>
             <Route path="/contests">
               <Route path="/contests/create-contest" exact>
-                <CreateContest />
+                <CreateContest title = "Create Contest"/>
               </Route>
-              <Route path="/contests/details">
+              <Route path="/contests/:id">
                 <ContestDetails />
               </Route>
               <Route path="/contests" exact>
-                <Contests />
+                <Contests  />
               </Route>
             </Route>
             <Route path="/quizzes">

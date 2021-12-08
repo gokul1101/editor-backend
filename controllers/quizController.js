@@ -6,13 +6,13 @@ const {
 } = require("../services/quizService");
 
 const createQuiz = async (req, res) => {
-  let { name } = req.body;
+  let { name, contest_id } = req.body;
   try {
-    const response = await createQuizService(name);
+    const response = await createQuizService(name, contest_id);
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in creating quiz
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on creating quiz`;
     }
@@ -26,7 +26,7 @@ const getQuiz = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting quiz
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on getting quiz`;
     }
@@ -40,7 +40,7 @@ const updateQuiz = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in updating quiz
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on updating quiz`;
     }
@@ -54,7 +54,7 @@ const getAllQuizzes = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting quizzes with contest id
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error getting quizzes with contest id`;
     }

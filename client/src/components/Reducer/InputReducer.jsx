@@ -12,6 +12,7 @@ const InputReducer = (props) => {
       className={`w-100 ${props.className}`}
       placeholder={props.placeholder}
       name={props.name}
+      value = {props.value}
       type={props.type}
       onChange = {(e) => props.onClickHandler(e.target.value)}
     />

@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Contests.css";
 import { Link } from "react-router-dom";
+import helperService from "../../../../services/helperService";
+import { AuthContext } from "../../../../contexts/AuthContext";
 const Contests = () => {
-  const eventArr = [
-    { name: "November challenge 2021" },
-    { name: "Java challenge 2021" },
-    { name: "Python challenge 2021" },
-  ];
+  const [authState, authDispatch] = useContext(AuthContext);
+  const [eventArr, setEventArr] = useState([]);
+  const fetchContests = async () => {
+    try {
+      const { status, data } = await helperService.getAllContests(
+        {},
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 200) {
+        // console.log(data);
+        setEventArr(data.message.contests);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    fetchContests();
+  }, []);
+  const setContest = (contest) => {
+    authDispatch({ type: "SET_CONTEST", payload: { ...contest } });
+  };
   return (
     <div
       className="container-fluid"
@@ -42,18 +61,26 @@ const Contests = () => {
         </div>
         <div className="d-flex flex-column">
           {eventArr.map((event) => {
+            console.log(event);
             return (
               <div className="d-flex mt-2 mb-2">
                 <div className="col-md-3 d-flex justify-content-between text-center upcoming-task">
                   <i class="fas fa-link text-left mt-2"></i>
-                  <Link to="/contests/details">
+                  <Link
+                    to={`/contests/${event._id}`}
+                    onClick={() => setContest(event)}
+                  >
                     <span>{event.name}</span>
                   </Link>
                 </div>
-                <div className="col-md-3 text-center">30/11/2021 9.00pm</div>
-                <div className="col-md-3 text-center">30/11/2021 9.00pm</div>
+                <div className="col-md-3 text-center">{`${new Date(
+                  event.start_date
+                ).toLocaleString()} `}</div>
+                <div className="col-md-3 text-center">{`${new Date(
+                  event.end_date
+                ).toLocaleString()} `}</div>
                 <div className="col-md-3 text-center">
-                  <span>2.30 hr</span>
+                  <span>{event.duration}</span>
                 </div>
               </div>
             );
@@ -69,7 +96,7 @@ const Contests = () => {
         <div className="d-flex border-top border-bottom mt-2 p-2 mb-2">
           <div className="col-md-3 text-center content-nav-title">Title</div>
           <div className="col-md-3 text-center content-nav-title">
-            Started at 90000000
+            Started at
           </div>
           <div className="col-md-2 text-center content-nav-title">
             <i className="fas fa-users"></i>
@@ -87,10 +114,12 @@ const Contests = () => {
                   <i class="fas fa-link text-left mt-2"></i>
                   <span>{event.name}</span>
                 </div>
-                <div className="col-md-3 text-center">30/11/2021 9.00pm</div>
+                <div className="col-md-3 text-center">{`${new Date(
+                  event.start_date
+                ).toLocaleString()} `}</div>
                 <div className="col-md-2 text-center">180</div>
                 <div className="col-md-2 text-center">
-                  <span>2.30 hr</span>
+                  <span>{event.duration}</span>
                 </div>
                 <div className="col-md-2 text-center">
                   <i className="fas fa-times" style={{ color: "red" }}></i>

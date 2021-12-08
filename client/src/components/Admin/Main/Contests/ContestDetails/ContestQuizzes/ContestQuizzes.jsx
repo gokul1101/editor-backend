@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import "./ContestQuizzes.css";
 import Dialog from "@material-ui/core/Dialog";
@@ -9,18 +9,54 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { Button } from "@material-ui/core";
 import InputReducer from "../../../../../Reducer/InputReducer";
+import helperService from "../../../../../../services/helperService";
+import { AuthContext } from "../../../../../../contexts/AuthContext";
+import { useParams } from "react-router-dom";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const ContestQuizzes = () => {
-  const eventArr = [
-    { name: "November challenge 2021" },
-    { name: "Java challenge 2021" },
-    { name: "Python challenge 2021" },
-  ];
-
+  const { id } = useParams();
+  const [authState, authDispatch] = useContext(AuthContext);
+  const [quizName, setQuizName] = useState("");
   const [open, setOpen] = React.useState(false);
-
+  const [quizzArr, setQuizzArr] = useState([]);
+  const createQuizz = async () => {
+    try {
+      const {
+        status,
+        data: { quiz },
+      } = await helperService.createQuizz(
+        { name: quizName, contest_id: id },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 201) {
+        // TODO:
+        console.log(quiz);
+        // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
+        setQuizzArr((existing) => [...existing, quiz]);
+        setOpen(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchQuizzes = async () => {
+    try {
+      const { status, data } = await helperService.getQuizzes(
+        { id },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 200) {
+        // TODO:
+        // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
+        setQuizzArr(data.Quizzes);
+        setOpen(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -28,9 +64,9 @@ const ContestQuizzes = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const addQuiz = () => {
-    console.log("Quiz Added");
-  };
+  useEffect(() => {
+    fetchQuizzes();
+  }, []);
   return (
     <div className="container mt-5">
       <div className="d-flex flex-column" style={{ marginTop: "40px" }}>
@@ -47,7 +83,7 @@ const ContestQuizzes = () => {
       </div>
       <div className="create-con" onClick={handleClickOpen}>
         {/* <Link to="/contests/create-contest"> */}
-        <button className="p-2 mt-3">
+        <button className="p-2 mt-3" onClick={handleClickOpen}>
           <i className="fas fa-plus pr-2 pl-2"></i>ADD CHALLENGES
         </button>
         {/* </Link> */}
@@ -67,12 +103,12 @@ const ContestQuizzes = () => {
           <DialogContentText id="alert-dialog-slide-description">
             <div className="d-flex">
               <label>Create Quiz</label>
-              <InputReducer />
+              <InputReducer value={quizName} onClickHandler={setQuizName} />
             </div>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={addQuiz} color="primary" variant="contained">
+          <Button onClick={createQuizz} color="primary" variant="contained">
             ADD
           </Button>
           <Button onClick={handleClose} color="primary">
@@ -81,8 +117,8 @@ const ContestQuizzes = () => {
         </DialogActions>
       </Dialog>
       <div className="challenge-chips d-flex flex-wrap border p-2 mt-4">
-        {eventArr.length > 0 ? (
-          eventArr.map((e) => {
+        {quizzArr.length > 0 ? (
+          quizzArr.map((e) => {
             return (
               <div className="create-con">
                 <div className="p-2 mr-2 ml-2 quizzes-chip">
