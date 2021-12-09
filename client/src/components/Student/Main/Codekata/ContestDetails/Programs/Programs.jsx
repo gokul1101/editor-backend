@@ -4,13 +4,13 @@ import { useHistory, useParams } from "react-router-dom";
 import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
 import Editor from "../../../../../Reducer/Editor/Editor";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
-
+import Testcase from "./Testcase/Testcase";
 const Programs = (props) => {
   let history = useHistory();
   const { questionId } = useParams();
   const [authState] = useContext(AuthContext);
   const [challenge, setChallenge] = useState({});
-  let [difficulty, setDifficulty] = useState("")
+  let [difficulty, setDifficulty] = useState("");
   useEffect(() => {
     props.setSideToggle(true);
   });
@@ -100,7 +100,9 @@ const Programs = (props) => {
                     <div
                       className={`problem-badge-${difficulty} d-flex align-items-center justify-content-center mr-2`}
                     >
-                      <span className={`badge-${difficulty}`}>{difficulty.toUpperCase()}</span>
+                      <span className={`badge-${difficulty}`}>
+                        {difficulty.toUpperCase()}
+                      </span>
                     </div>
                   </div>
                   <div className="d-flex flex-wrap mt-2">
@@ -117,14 +119,16 @@ const Programs = (props) => {
                       <span className="badge-company">IONIXX</span>
                     </div>
                   </div>
-                  <div className="problem-statement text-justify mt-2">
+                  <div className="problem-statement text-justify mt-3">
                     <p>
                       Given two lists of integer a and b sorted in ascending
                       order, merge them into one large sorted list.
                     </p>
                   </div>
                   <div className="constraints mb-2">
-                    <span className="constraints-title">Constrainst :</span>
+                    <span className="constraints-title font-weight-bolder color-highlight">
+                      Constrains :
+                    </span>
                     <div className="constraints-content d-flex flex-column mt-2">
                       <span className="mt-2">
                         <i class="fas fa-circle constraints-dot mr-2"></i>
@@ -149,18 +153,30 @@ const Programs = (props) => {
                     </div>
                   </div>
                   <div className="problem-input d-flex flex-column mt-4 mb-2">
-                    <span className="constraints-title mb-2">Example :</span>
+                    <span className="constraints-title mb-2 font-weight-bolder color-highlight">
+                      Example :
+                    </span>
                     <div className="example-input mt-2">
-                      <span>Input : </span> <br />a = [5, 10, 15] , b = [2, 3,
-                      5]
+                      <span className="font-weight-bolder color-highlight">
+                        Input :{" "}
+                      </span>{" "}
+                      <br />
+                      <p className="mt-2 font-weight-bolder">
+                        a = [5, 10, 15] , b = [2, 3, 5]
+                      </p>
                     </div>
                     <div className="example-output mt-2">
-                      <span>output : </span> <br />
-                      [5, 10, 15]
+                      <span className="font-weight-bolder color-highlight">
+                        output :{" "}
+                      </span>{" "}
+                      <br />
+                      <p className="mt-2 font-weight-bolder"> [5, 10, 15]</p>
                     </div>
                   </div>
                   <div className="hints mt-2 d-flex flex-column">
-                    <span className="constraints-title">Hints :</span>
+                    <span className="constraints-title font-weight-bolder color-highlight">
+                      Hints :
+                    </span>
                     <div className="problem-statement text-justify mt-2">
                       <p>
                         The idea is to use Merge function of Merge sort. Create
@@ -181,7 +197,7 @@ const Programs = (props) => {
                   role="tabpanel"
                   aria-labelledby="pills-submissions-tab"
                 >
-                  TestCase
+                  <Testcase />
                 </div>
               </div>
             </div>
@@ -210,8 +226,11 @@ const Programs = (props) => {
                 />
               </div>
               <Editor language={language} themeName={themeName} />
-              <div className="create-con mt-1 d-flex justify-content-end">
+              <div className="create-con mt-3 d-flex justify-content-end">
                 <button className="p-2">
+                  <i class="fas fa-check pr-2 pl-2"></i>SUBMIT
+                </button>
+                <button className="p-2 ml-2">
                   <i className="fas fa-code pr-2 pl-2"></i>RUN CODE
                 </button>
               </div>

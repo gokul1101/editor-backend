@@ -18,6 +18,6 @@ files.forEach((data) => {
       );
     } catch (err) {
       console.log(`Cannot import documents into the database ${DB_NAME}`);
-      console.err(err);
+      console.log(err);
     }
 });
