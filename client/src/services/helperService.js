@@ -64,8 +64,8 @@ const helperService = {
       }
     } catch (err) {
       return Promise.reject({
-        status: err.response.status,
-        message: err.response.data,
+        status: err?.response?.status,
+        message: err?.response?.data,
       });
     }
   },

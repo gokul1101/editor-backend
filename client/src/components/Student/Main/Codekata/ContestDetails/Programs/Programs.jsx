@@ -31,6 +31,7 @@ const Programs = (props) => {
   const handleLanguage = (event) => setLanguage(event.target.value);
   return (
     <>
+    {console.log(challenge)}
       <div className="container-fluid" id={challenge?._id}>
         <div className="problem-header p-2 d-flex border-bottom border-left">
           <div className="problem-title d-flex">
@@ -105,42 +106,23 @@ const Programs = (props) => {
                       </span>
                     </div>
                   </div>
-                  <div className="d-flex flex-wrap mt-2">
-                    <div className="problem-badge-company d-flex align-items-center justify-content-center mr-2">
-                      <span className="badge-company">VIRTUSA</span>
-                    </div>
-                    <div className="problem-badge-company d-flex align-items-center justify-content-center mr-2">
-                      <span className="badge-company">KAAR</span>
-                    </div>
-                    <div className="problem-badge-company d-flex align-items-center justify-content-center mr-2">
-                      <span className="badge-company">CRATOFLOW</span>
-                    </div>
-                    <div className="problem-badge-company d-flex align-items-center justify-content-center mr-2">
-                      <span className="badge-company">IONIXX</span>
-                    </div>
-                  </div>
                   <div className="problem-statement text-justify mt-3">
                     <p>
-                      Given two lists of integer a and b sorted in ascending
-                      order, merge them into one large sorted list.
+                      {challenge?.statement}
                     </p>
                   </div>
                   <div className="constraints mb-2">
                     <span className="constraints-title font-weight-bolder color-highlight">
-                      Constrains :
+                      Constraints :
                     </span>
                     <div className="constraints-content d-flex flex-column mt-2">
                       <span className="mt-2">
                         <i class="fas fa-circle constraints-dot mr-2"></i>
                         <span className="constraints-highlight pr-2 pl-2 mr-1">
-                          0 &lt; n &lt; 200,000
-                        </span>{" "}
-                        where n is the length of{" "}
-                        <span className="constraints-highlight pr-2 pl-2 ml-1">
-                          a
+                          {challenge?.constraints}
                         </span>
                       </span>
-                      <span className="mt-2">
+                      {/* <span className="mt-2">
                         <i class="fas fa-circle constraints-dot mr-2"></i>
                         <span className="constraints-highlight pr-2 pl-2 mr-1">
                           0 &lt; m &lt; 200,000
@@ -149,7 +131,7 @@ const Programs = (props) => {
                         <span className="constraints-highlight pr-2 pl-2 ml-1">
                           b
                         </span>
-                      </span>
+                      </span> */}
                     </div>
                   </div>
                   <div className="problem-input d-flex flex-column mt-4 mb-2">
@@ -162,7 +144,7 @@ const Programs = (props) => {
                       </span>{" "}
                       <br />
                       <p className="mt-2 font-weight-bolder">
-                        a = [5, 10, 15] , b = [2, 3, 5]
+                        {challenge?.input_format}
                       </p>
                     </div>
                     <div className="example-output mt-2">
@@ -170,7 +152,7 @@ const Programs = (props) => {
                         output :{" "}
                       </span>{" "}
                       <br />
-                      <p className="mt-2 font-weight-bolder"> [5, 10, 15]</p>
+                      <p className="mt-2 font-weight-bolder">{challenge?.output_format}</p>
                     </div>
                   </div>
                   <div className="hints mt-2 d-flex flex-column">
@@ -179,12 +161,7 @@ const Programs = (props) => {
                     </span>
                     <div className="problem-statement text-justify mt-2">
                       <p>
-                        The idea is to use Merge function of Merge sort. Create
-                        an array arr3[] of size n1 + n2. Simultaneously traverse
-                        arr1[] and arr2[]. Pick smaller of current elements in
-                        arr1[] and arr2[], copy this smaller element to next
-                        position in arr3[] and move ahead in arr3[] and the
-                        array whose element is picked.
+                       {challenge?.description}
                       </p>
                     </div>
                   </div>
@@ -202,28 +179,36 @@ const Programs = (props) => {
               </div>
             </div>
             <div className="col-md-8 p-0 d-flex flex-column">
-              <div className="w-100 d-flex mt-3 mb-2">
-                <SelectReducer
-                  array={["c", "java"]}
-                  name="Select theme"
-                  handleSelect={handleLanguage}
-                  value={language}
-                  className="w-50"
-                />
-                <SelectReducer
-                  array={[
-                    "xcode",
-                    "monokai",
-                    "github",
-                    "nord_dark",
-                    "textmate",
-                    "one_dark",
-                  ]}
-                  name="Select theme"
-                  handleSelect={handleChange}
-                  value={themeName}
-                  className="w-50"
-                />
+              <div className="w-100 d-flex flex-row-reverse mt-3 mb-2">
+                <div className="w-25 mx-2">
+                  <SelectReducer
+                    array={["c", "java"]}
+                    name="Select language"
+                    handleSelect={handleLanguage}
+                    value={language}
+                    size="small"
+                    defaultValue={language}
+                    className="w-100"
+                    />
+                </div>
+                <div className="w-25 mx-2">
+                  <SelectReducer
+                    array={[
+                      "xcode",
+                      "monokai",
+                      "github",
+                      "nord_dark",
+                      "textmate",
+                      "one_dark",
+                    ]}
+                    name="Select theme"
+                    handleSelect={handleChange}
+                    value={themeName}
+                    size="small"
+                    className="w-100"
+                    defaultValue={themeName}
+                  />
+                </div>
               </div>
               <Editor language={language} themeName={themeName} />
               <div className="create-con mt-3 d-flex justify-content-end">
