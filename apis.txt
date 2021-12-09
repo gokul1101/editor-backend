@@ -293,7 +293,7 @@ POST - http://localhost:5000/api/v1/question/create
 Request====
 header : Authorization - token
 body : {
-  "type" : "mcq",
+  "type_id" : "mcq",
   "quiz_id" : "619cd9b1ab07a0a917503efd",
   "statement" : "Which method can be used to find the length of a string?",
   "options" : {

@@ -14,7 +14,7 @@ const ChallengeDashboard = () => {
             <NavLink
               exact
               className="user-navlink pr-3 pl-3 m-2"
-              to="/challenges/challenges-dashboard/create-challenge"
+              to="/challenges/dashboard/create-challenge"
               activeClassName="active-user-pill"
             >
               <i className="fas fa-plus pr-1 pl-1"></i> Create Challenge
@@ -24,7 +24,7 @@ const ChallengeDashboard = () => {
             <NavLink
               exact
               className="user-navlink pr-3 pl-3 m-2"
-              to="/challenges/challenges-dashboard/create-testcase"
+              to="/challenges/dashboard/create-testcase"
               activeClassName="active-user-pill"
             >
               <i className="fas fa-clipboard-list pr-2 pl-1"></i>
@@ -35,7 +35,7 @@ const ChallengeDashboard = () => {
         <div className="container p-0">
           <Switch>
             <Route
-              path="/challenges/challenges-dashboard/create-challenge"
+              path="/challenges/dashboard/create-challenge"
               exact
             >
               <CreateChallenge
@@ -44,16 +44,16 @@ const ChallengeDashboard = () => {
               />
             </Route>
             <Route
-              path="/challenges/challenges-dashboard/create-testcase"
+              path="/challenges/dashboard/create-testcase"
               exact
             >
               <TestCase />
             </Route>
             <Route
               exact
-              path="/challenges/challenges-dashboard"
+              path="/challenges/dashboard"
               render={() => (
-                <Redirect to="/challenges/challenges-dashboard/create-challenge" />
+                <Redirect to="/challenges/dashboard/create-challenge" />
               )}
             />
           </Switch>

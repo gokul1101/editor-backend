@@ -16,8 +16,6 @@
   color: rgb(0, 0, 0);
   font-weight: 400;
   margin: 0.6px;
-  /* min-width: 191px; */
-  /* width: 100%; */
 }
 .sort-btn {
   border: none;
@@ -31,7 +29,9 @@
   outline: none;
   box-shadow: none;
 }
-.edit-btn {
+.edit-btn,
+.edit-btn:focus,
+.edit-btn:hover {
   outline: none;
   box-shadow: none;
   background: none;
@@ -44,4 +44,5 @@
   background: none;
   border: 1px solid red;
   border-radius: 5px;
+  color: red;
 }

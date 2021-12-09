@@ -4,6 +4,8 @@ import ContestChallenges from "./ContestChallenges/ContestChallenges";
 import ContestQuizzes from "./ContestQuizzes/ContestQuizzes";
 import ContestStatictics from "./ContestStatictics/ContestStatictics";
 import CreateContest from "../CreateContest/CreateContest";
+import ChallengeDashboard from "../../Challenges/ChallengeDashboard/ChallengeDashboard";
+import Challenges from "../../Challenges/Challenges";
 const ContestDetails = () => {
   const { id } = useParams();
   return (
@@ -58,16 +60,23 @@ const ContestDetails = () => {
           <Route path={`/contests/:id/quizzes`} exact>
             <ContestQuizzes />
           </Route>
-          <Route path={`/contests/:id/challenges`} exact>
+          <Route path={`/contests/:id/challenges`} >
+            <Route path = "/contests/:id/challenges" exact>
             <ContestChallenges />
+            </Route>
+            <Route path="/contests/:id/challenges/create" exact>
+            <ChallengeDashboard />
+          </Route>
           </Route>
           <Route path={`/contests/:id/statistics`} exact>
             <ContestStatictics />
           </Route>
-          <Route
+
+
+          {/* <Route
             path={`/contests/:id`}
             render={() => <Redirect to={`/contests/${id}/edit`} />}
-          />
+          /> */}
         </Switch>
       </div>
     </div>

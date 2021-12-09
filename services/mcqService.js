@@ -18,6 +18,7 @@ const createMCQ = async ({ type_id, quiz_id, statement, options }) => {
     return Promise.resolve({
       code: 201,
       message: "MCQ created successfully.",
+      mcq: { statement: newQuestion.statement, options: newAnswer.options },
     });
   } catch (err) {
     //! Error in creating mcq
@@ -113,18 +114,17 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
     const questions = await Question.find({ quiz_id: id })
       .limit(limit * 1)
       .skip((page - 1) * limit);
-    const mcqs = questions.map(async (question) => {
-      try {
-        const answer = await Answer.findOne({ question_id: question._id });
-        if (flag) response.correctOption = answer.correctOption;
-        response.statement = question.statement;
-        delete answer["options"]["correctOption"];
-        response.options = answer.options;
-        return response;
-      } catch (err) {
-        console.log("at getAllMcqWithQuizID ", err);
-      }
-    });
+    let mcqs = [];
+    for (let i = 0; i < questions.length; i++) {
+      let mcq = {
+        statement: questions[i].statement,
+      };
+      const answer = await Answer.findOne({ question_id: questions[i]._id });
+      mcq.options = { ...answer.options };
+      if (!flag) delete mcq["options"]["correctOption"];
+      mcqs.push(mcq);
+    }
+    console.log(mcqs);
     return Promise.resolve({
       code: 200,
       message: "MCQs has been found.",

@@ -32,7 +32,7 @@ const Login = (props) => {
         return;
       }
     } else if (change) {
-      console.log(register)
+      console.log(register);
       if (!/^\w{6}/.test(register)) {
         props.snackBar(
           "Register number should contain only 6 characters.",
@@ -67,7 +67,9 @@ const Login = (props) => {
       else props.snackBar(err.message, "error");
     }
   };
-  React.useEffect(()=>{console.log(change)},[change])
+  React.useEffect(() => {
+    console.log(change);
+  }, [change]);
   const handleKeypress = (e) => {
     if (e.keyCode === 13) {
       handleSubmit();
@@ -131,7 +133,7 @@ const Login = (props) => {
                 onKeyPress={handleKeypress}
                 type="submit"
               >
-                SIGN UP <i className="fas fa-sign-out-alt mr-2 ml-2"></i>
+                SIGN IN <i className="fas fa-sign-out-alt mr-2 ml-2"></i>
               </CustomButton>
             </form>
           </div>
