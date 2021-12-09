@@ -15,7 +15,7 @@ const Editor = (props) => {
   return (
     <div>
       <AceEditor
-        height="83vh"
+        height="78vh"
         width="100%"
         placeholder="Your code goes here.."
         mode={props.language}
@@ -26,12 +26,8 @@ const Editor = (props) => {
         showPrintMargin={false}
         showGutter={true}
         highlightActiveLine={true}
-        value={`public class MyClass {
+        value={`public class Main {
     public static void main(String args[]) {
-        int x=10;
-        int y=25;
-        int z=x+y;
-        System.out.println("Sum of x+y = " + z);
     }
 }`}
         setOptions={{

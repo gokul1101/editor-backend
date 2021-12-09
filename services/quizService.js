@@ -80,8 +80,8 @@ const updateQuizService = async ({ id, name, total_mcqs, contest_id }) => {
 };
 const getAllQuizzesWithContestId = async (id) => {
   try {
-    const Quizzes = await Quiz.find({ contest_id: id });
-    if (!Quizzes) {
+    const quizzes = await Quiz.find({ contest_id: id });
+    if (!quizzes) {
       return Promise.reject({
         code: 404,
         message: `Quizzes not available`,
@@ -90,7 +90,7 @@ const getAllQuizzesWithContestId = async (id) => {
     return Promise.resolve({
       code: 200,
       message: `Quizzes that are available`,
-      Quizzes,
+      quizzes,
     });
   } catch (err) {
     return Promise.reject({

@@ -51,7 +51,7 @@ const helperService = {
     }
   },
   getContestWithCode: async (payload, config) => {
-    let url = `${baseURL}/api/v1/contest/get`;
+    let url = `${baseURL}/api/v1/contest/dashboard`;
     if (payload.id) url += `?id=${payload.id}`;
     else if (payload.code) url += `?code=${payload.code}`;
     try {
@@ -64,8 +64,8 @@ const helperService = {
       }
     } catch (err) {
       return Promise.reject({
-        status: err.response.status,
-        message: err.response.data,
+        status: err?.response?.status,
+        message: err?.response?.data,
       });
     }
   },

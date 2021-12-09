@@ -194,25 +194,14 @@ const Dashboard = (props) => {
             </div>
           </div>
         </div>
-        <div className="dashboard-footer container">
-          <div className="d-flex flex-column p-4">
-            <span className="mt-2 mb-2">
-              <strong>Any Queries contact us...</strong>
-            </span>
-            <div className="d-flex align-items-center justify-content-center">
-              <div className="col-md-10">
-                <input
-                  className="form-control dash-footer-input pl-4"
-                  placeholder="Your feedback"
-                />
+              <div className="footer-link d-flex justify-content-between  mt-3">
+              <div>
+                <p className="font-weight-bolder">Copyrights reserved to Loop @ 2022</p>
               </div>
-              <div className="col-md-2 p-0">
-                <div className="create-con">
-                  <button className="p-2">SUBMIT</button>
-                </div>
+              <div className="d-flex">
+              <NavLink className="text-muted" to="">Privacy Policy |</NavLink>
+              <NavLink className="text-muted" to="">Terms & Conditions</NavLink>
               </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

@@ -5,10 +5,9 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
 const SelectReducer = (props) => {
-  console.log(props)
   return (
     <div>
-      <FormControl variant="outlined"  className={props.className}>
+      <FormControl variant="outlined" size={props.size? props.size : "medium"} className={props.className}>
         <InputLabel id="demo-simple-select-outlined-label">
           {props.name}
         </InputLabel>
@@ -17,6 +16,7 @@ const SelectReducer = (props) => {
           id="demo-simple-select-outlined"
           value={props.themeName}
           onChange={props.handleSelect}
+          defaultValue={props.defaultValue}
           label={props.name}
         >
           {props.array.map((item, id) => {

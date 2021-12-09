@@ -312,7 +312,7 @@ Request====
 header : Authorization - token
 body : {
   "name" : "Addition",
-  "type" : "problem",
+  "type_id" : "problem",
   "statement" : "Sum of 2 numbers.",
   "description" : "Find the sum of two numbers a, b?",
   "input_format" : "1 2",

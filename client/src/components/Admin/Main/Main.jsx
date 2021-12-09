@@ -15,7 +15,7 @@ import AddQuiz from "./Quizzes/CreateQuiz/AddQuiz/AddQuiz";
 import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
 import { AuthContext } from "../../../contexts/AuthContext";
 const Main = (props) => {
-  const [authState, authDispatch] = useContext(AuthContext);
+  const [, authDispatch] = useContext(AuthContext);
   const [sideToggle, setSideToggle] = useState(false);
   useEffect(() => {
     props.fetchUser();

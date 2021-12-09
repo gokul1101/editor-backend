@@ -7,13 +7,12 @@ import Dashboard from "./Dashboard/Dashboard";
 import Codekata from "./Codekata/Codekata";
 import Articles from "./Articles/Articles";
 import Roadmap from "./Roadmap/Roadmap";
-import Compiler from "./Compiler/Compiler";
-import Quiz from "./Codekata/Quiz/Quiz";
-import Mcq from "./Codekata/Quiz/McqLength/McqLength";
 import Profile from "./Profile/Profile";
-import Programs from "./Codekata/Programs/Programs";
+import Compiler from "./Compiler/Compiler";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { ContestProvider } from "../../../contexts/ContestContext";
+import Programs from "./Codekata/ContestDetails/Programs/Programs";
+import Quiz from "./Codekata/ContestDetails/Quiz/Quiz";
+import ContestDetails from "./Codekata/ContestDetails/ContestDetails";
 const Main = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle, setSideToggle] = useState(false);
@@ -153,14 +152,14 @@ const Main = (props) => {
             {authState?.contest ? (
               [
                 <>
-                  <Route path="/codekata/:id/mcq" exact>
-                    <Mcq setSideToggle={setSideToggle} />
+                  <Route path="/codekata/:id/quiz/:questionId" exact>
+                    <Quiz setSideToggle={setSideToggle} />
                   </Route>
-                  <Route path="/codekata/:id/program" exact>
+                  <Route path="/codekata/:id/problem/:questionId" exact>
                     <Programs setSideToggle={setSideToggle} />
                   </Route>
                   <Route path="/codekata/:id" exact>
-                    <Quiz setSideToggle={setSideToggle} />
+                    <ContestDetails setSideToggle={setSideToggle} />
                   </Route>
                 </>,
               ]

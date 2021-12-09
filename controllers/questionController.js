@@ -52,7 +52,7 @@ const getQuestion = async (req, res) => {
 };
 const updateQuestion = async (req, res) => {
   let questionDetails = req.body;
-  let { type } = questionDetails;
+  let { type } = req.query;
   let functions = [updateMCQ, updateChallenge],
     index;
   if (type === "mcq") index = 0;

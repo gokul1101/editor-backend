@@ -14,7 +14,7 @@ hr {
   width: 100%;
 }
 .question-outoff .question-order {
-  color: #39b98f;
+  color: #00511B;
 }
 .numberCircle {
   border-radius: 50%;
@@ -33,7 +33,7 @@ hr {
   width: 35px;
   padding: 5px;
   height: 35px;
-  background: #81ffd5;
+  background: #B0D7C0;
   color: #000;
   font-weight: 500;
   font-size: 14px;
@@ -49,9 +49,10 @@ hr {
 .quizzes {
   border: 1px solid #ccc;
   border-radius: 18px;
+  
 }
 .span-question {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 500;
 }
 .option-1,
@@ -60,7 +61,7 @@ hr {
   height: fit-content;
   border: none !important;
   border-radius: 10px;
-  background: rgba(90, 209, 144, 0.2);
+  background: #B0D7C0;
   font-size: 16px;
   font-weight: 500;
   outline: none;
@@ -70,7 +71,7 @@ hr {
   outline: none;
 }
 .correct-option {
-  background-color: #39b98f;
+  background-color: #00511B;
   color: #fff;
   outline: none !important;
 }
@@ -117,3 +118,6 @@ hr {
     width: 100%;
   }
 }
+
+
+

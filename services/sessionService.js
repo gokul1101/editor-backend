@@ -1,5 +1,6 @@
 const Session = require("../models/sessions");
 const Contest = require("../models/contests");
+const {setTime} = require("../utils/helper")
 const createSessionService = async ({ user_id, contest_id }) => {
   try {
     let contest = await Contest.findById(contest_id);
@@ -28,6 +29,7 @@ const createSessionService = async ({ user_id, contest_id }) => {
     return Promise.resolve({
       status: 201,
       message: "Session create successfully.",
+      newSession
     });
   } catch (err) {
     console.log(err);
