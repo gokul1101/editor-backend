@@ -14,6 +14,7 @@ const {
 } = require("../services/challengeService");
 const createQuestion = async (req, res) => {
   let questionDetails = req.body;
+  console.log(questionDetails)
   let functions = [createMCQ, createChallenge],
     index;
   if (questionDetails.type_id === "mcq") index = 0;
@@ -23,8 +24,8 @@ const createQuestion = async (req, res) => {
       await TestType.findOne({ name: questionDetails.type_id })
     )._id;
     let { code, message,mcq } = await functions[index](questionDetails);
-    console.log(mcq)
-    res.status(code).json({message,mcq});
+    if(mcq) return res.status(code).json({message,mcq});
+    res.status(code).send(message);
   } catch (err) {
     //! Error in creating question
     console.log("at line 29", err);
@@ -85,7 +86,7 @@ const getAllMCQS = async (req, res) => {
   }
 };
 const getAllChallenges = async (req, res) => {
-  const id = req.params.id;
+  const {id} = req.query;
   try {
     const response = await getAllChallengesWithContestId(id);
     res.status(response.code).send(response);

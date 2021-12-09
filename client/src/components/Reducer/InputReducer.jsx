@@ -12,7 +12,7 @@ const InputReducer = (props) => {
       id={props.id ? props.id : "outlined-basic"}
       label={props.label}
       fullWidth={props.fullWidth}
-      multiline={props.multiline}
+      multiline={props.multiline ? true : false}
       variant="outlined"
       className={`w-100 ${props.className}`}
       placeholder={props.placeholder}

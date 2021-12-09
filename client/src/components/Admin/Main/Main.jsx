@@ -154,7 +154,6 @@ const Main = (props) => {
                 <Quizzes />
               </Route>
             </Route>
-            
             <Route
               exact
               path="/"

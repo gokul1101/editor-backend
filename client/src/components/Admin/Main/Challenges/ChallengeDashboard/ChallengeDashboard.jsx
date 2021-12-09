@@ -7,8 +7,8 @@ const ChallengeDashboard = () => {
     console.log(tags);
   };
   return (
-    <div>
-      <div className="challenge-container">
+    <>
+      <div className="challenge-container h-auto">
         <ul class="list-group d-flex align-items-center justify-content-center flex-row p-2 mt-3 mb-3">
           <li class="list-group-item user-group-pill">
             <NavLink
@@ -34,19 +34,13 @@ const ChallengeDashboard = () => {
         </ul>
         <div className="container p-0">
           <Switch>
-            <Route
-              path="/challenges/dashboard/create-challenge"
-              exact
-            >
+            <Route path="/challenges/dashboard/create-challenge" exact>
               <CreateChallenge
                 selectedTags={selectedTags}
                 tags={["Wipro", "Virtusa"]}
               />
             </Route>
-            <Route
-              path="/challenges/dashboard/create-testcase"
-              exact
-            >
+            <Route path="/challenges/dashboard/create-testcase" exact>
               <TestCase />
             </Route>
             <Route
@@ -59,7 +53,7 @@ const ChallengeDashboard = () => {
           </Switch>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
