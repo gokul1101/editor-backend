@@ -11,7 +11,7 @@ import { Button } from "@material-ui/core";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import helperService from "../../../../../../services/helperService";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -123,7 +123,12 @@ const ContestQuizzes = () => {
               <div className="create-con">
                 <div className="p-2 mr-2 ml-2 quizzes-chip">
                   <DeleteOutlineIcon />
-                  <span className="pl-2">{e.name}</span>
+                  <Link
+                    style={{ color: "white" }}
+                    to={`/quizzes/${e._id}/add-question`}
+                  >
+                    <span className="pl-2">{e.name}</span>
+                  </Link>
                 </div>
               </div>
             );

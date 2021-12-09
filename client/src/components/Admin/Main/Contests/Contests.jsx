@@ -67,7 +67,7 @@ const Contests = () => {
                 <div className="col-md-3 d-flex justify-content-between text-center upcoming-task">
                   <i class="fas fa-link text-left mt-2"></i>
                   <Link
-                    to={`/contests/${event._id}`}
+                    to={`/contests/${event._id}/edit`}
                     onClick={() => setContest(event)}
                   >
                     <span>{event.name}</span>

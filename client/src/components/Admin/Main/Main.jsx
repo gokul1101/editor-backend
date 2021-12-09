@@ -74,7 +74,7 @@ const Main = (props) => {
                 <span className="tooltip">Contests</span>
               </NavLink>
             </li>
-            <li className="nav-item dash-item mb-2 color-11">
+            {/* <li className="nav-item dash-item mb-2 color-11">
               <NavLink
                 activeClassName="active-class color-11"
                 to="/quizzes"
@@ -95,7 +95,7 @@ const Main = (props) => {
                 <span className="hide-span">Challenges</span>
                 <span className="tooltip">Challenges</span>
               </NavLink>
-            </li>
+            </li> */}
           </ul>
           <div className="sidebar-footer d-flex align-items-center justify-content-center position-relative">
             <ul className="nav flex-column w-100 side-ul">
@@ -131,35 +131,30 @@ const Main = (props) => {
               <Users />
             </Route>
             <Route path="/contests">
+              <Switch>
               <Route path="/contests/create-contest" exact>
                 <CreateContest title = "Create Contest"/>
               </Route>
-              <Route path="/contests/:id">
+              <Route path="/contests/:id" >
                 <ContestDetails />
               </Route>
               <Route path="/contests" exact>
                 <Contests  />
               </Route>
+              </Switch>
             </Route>
             <Route path="/quizzes">
               <Route path="/quizzes/create-quiz">
                 <CreateQuiz />
               </Route>
-              <Route path="/quizzes/add-quiz">
+              <Route path={`/quizzes/:id/add-question`}>
                 <AddQuiz />
               </Route>
               <Route path="/quizzes" exact>
                 <Quizzes />
               </Route>
             </Route>
-            <Route path="/challenges">
-              <Route path="/challenges/challenges-dashboard">
-                <ChallengeDashboard />
-              </Route>
-              <Route path="/challenges" exact>
-                <Challenges />
-              </Route>
-            </Route>
+            
             <Route
               exact
               path="/"
