@@ -11,9 +11,6 @@ const Quiz = (props) => {
   useEffect(() => {
     props.setSideToggle(true);
   });
-  const returnBack = () => {
-    history.goBack();
-  };
 
   let [currentQuestion, setCurrentQuestion] = useState(0);
   const [status, setStatus] = useState(false);
@@ -87,7 +84,7 @@ const Quiz = (props) => {
   return (
     <div className="container-fluid p-0 Quiz-question-container">
       <div className="d-flex">
-        <div class="back-btn mr-auto mt-3 ml-4" onClick={returnBack}>
+        <div class="back-btn mr-auto mt-3 ml-4" onClick={() => history.goBack()}>
           <div class="triangle"></div>
           <div class="halfcircle"></div>
         </div>

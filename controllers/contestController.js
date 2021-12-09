@@ -164,6 +164,8 @@ const getAllContests = async (req, res) => {
     res.status(err.code).send(err.message);
   }
 };
+
+
 module.exports = {
   createContest,
   updateContest,

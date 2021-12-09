@@ -110,7 +110,6 @@ const getUser = async (req, res) => {
       if(user)
         userDetails = serializeUser(user);
     }
-    console.log(userDetails)
     //! User not found
     if (!user)
       return res.status(404).json({

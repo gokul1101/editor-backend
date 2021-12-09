@@ -152,10 +152,10 @@ const Main = (props) => {
             {authState?.contest ? (
               [
                 <>
-                  <Route path="/codekata/:id/quiz/:quesion_id" exact>
+                  <Route path="/codekata/:id/quiz/:questionId" exact>
                     <Quiz setSideToggle={setSideToggle} />
                   </Route>
-                  <Route path="/codekata/:id/program/:question_id" exact>
+                  <Route path="/codekata/:id/problem/:questionId" exact>
                     <Programs setSideToggle={setSideToggle} />
                   </Route>
                   <Route path="/codekata/:id" exact>

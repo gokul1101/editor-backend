@@ -86,7 +86,7 @@ const App = () => {
                 authState.user.role === "student" ? (
                   <Main snackBar={snackBar} unauthorized={unauthorized} fetchUser={fetchUser} />
                 ) : (
-                  <AdminMain snackBar={snackBar} />
+                  <AdminMain snackBar={snackBar} fetchUser={fetchUser}/>
                 ),
               ]
             ) : (

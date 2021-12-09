@@ -69,36 +69,106 @@ const helperService = {
       });
     }
   },
-  createContest : async (payload,config) => {
-    try{
-      const {data,status} = await axios.post(`${baseURL}/api/v1/contest/create`,payload,config)
-    }
-    catch(err){
-      console.log(err)
-      return Promise.reject({
-        status: err.response.status,
-        data: err.response.data,
-      });
-    }
-  },
- compile: async (payload,config) => {
-    try{
-      const {data,status} = await axios.post(`${baseURL}/api/v1/compiler`,payload,config)
-      if(status === 200) {
+  getAllContests: async (payload, config) => {
+    try {
+      const { data, status } = await axios.get(
+        `${baseURL}/api/v1/contests/getAll`,
+        config
+      );
+      if (status === 200) {
         return Promise.resolve({
           status,
-          data
-        })
+          data,
+        });
       }
-    }
-    catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
       });
     }
   },
-  
+  createContest: async (payload, config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/contest/create`,
+        payload,
+        config
+      );
+      return Promise.resolve({
+        status,
+        data,
+      });
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  createQuizz: async (payload, config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/quiz/create`,
+        payload,
+        config
+      );
+      if (status === 201) {
+        return Promise.resolve({
+          data,
+          status,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  getQuizzes: async ({ id }, config) => {
+    try {
+      const { data, status } = await axios.get(
+        `${baseURL}/api/v1/quiz/all?id=${id}`,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          data,
+          status,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  compile: async (payload, config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/compiler`,
+        payload,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
 };
 export default helperService;

@@ -1,65 +1,51 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Programs.css";
-import { useHistory } from "react-router";
-import Backdrop from "@material-ui/core/Backdrop";
-import { makeStyles } from "@material-ui/core/styles";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import { useHistory, useParams } from "react-router-dom";
 import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
 import Editor from "../../../../../Reducer/Editor/Editor";
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
+import { AuthContext } from "../../../../../../contexts/AuthContext";
+
 const Programs = (props) => {
-  const classes = useStyles();
+  let history = useHistory();
+  const { questionId } = useParams();
+  const [authState] = useContext(AuthContext);
+  const [challenge, setChallenge] = useState({});
+  let [difficulty, setDifficulty] = useState("")
   useEffect(() => {
     props.setSideToggle(true);
   });
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
+  const findChallenge = () => {
+    const problem = authState?.contest?.challenges?.find(
+      (problem) => problem._id === questionId
+    );
+    setChallenge(problem);
+    setDifficulty(problem?.difficulty_id.level);
   };
-  const handleToggle = () => {
-    setOpen(!open);
-  };
-  let history = useHistory();
-  const returnBack = () => {
-    history.goBack();
-  };
+  useEffect(() => {
+    findChallenge();
+  }, []);
   const [themeName, setThemeName] = React.useState("nord_dark");
   const [language, setLanguage] = React.useState("java");
-  const handleChange = (event) => {
-    setThemeName(event.target.value);
-  };
+  const handleChange = (event) => setThemeName(event.target.value);
 
-  const handleLanguage = (event) => {
-    setLanguage(event.target.value);
-  };
+  const handleLanguage = (event) => setLanguage(event.target.value);
   return (
-    <div>
-      <div className="container-fluid">
+    <>
+      <div className="container-fluid" id={challenge?._id}>
         <div className="problem-header p-2 d-flex border-bottom border-left">
           <div className="problem-title d-flex">
-            <div class="back-btn mt-1 ml-2 mr-2" onClick={returnBack}>
+            <div
+              class="back-btn mt-1 ml-2 mr-2"
+              onClick={() => history.goBack()}
+            >
               <div class="triangle"></div>
               <div class="halfcircle"></div>
             </div>
-            <span className="problem-title-head">Array of hope</span>
+            {/* <span className="problem-title-head">Array of hope</span> */}
           </div>
-          <div className="d-flex align-items-center ml-3 mr-auto">
-            <div className="problem-badge-easy d-flex align-items-center justify-content-center mr-2">
-              <span className="badge-easy">EASY</span>
-            </div>
-            <div className="problem-badge-medium d-flex align-items-center justify-content-center mr-2">
-              <span className="badge-medium">MEDIUM</span>
-            </div>
-            <div className="problem-badge-difficult d-flex align-items-center justify-content-center mr-2">
-              <span className="badge-difficult">DIFFICULT</span>
-            </div>
-          </div>
+          {/* <div className="d-flex align-items-center ml-3 mr-auto">
+            
+          </div> */}
           <div className="d-flex align-items-center justify-content-center">
             <div className="timer d-flex pr-2 pl-2">
               <i class="fas fa-clock clock-icon mr-2"></i>
@@ -110,11 +96,11 @@ const Programs = (props) => {
                   aria-labelledby="pills-problem-tab"
                 >
                   <div className="d-flex mt-2">
-                    <h5 className="problem-state mr-2">
-                      Merging two Sorted Lists
-                    </h5>
-                    <div className="problem-badge-medium d-flex align-items-center justify-content-center mr-2">
-                      <span className="badge-medium">MEDIUM</span>
+                    <h5 className="problem-state mr-2">{challenge?.name}</h5>
+                    <div
+                      className={`problem-badge-${difficulty} d-flex align-items-center justify-content-center mr-2`}
+                    >
+                      <span className={`badge-${difficulty}`}>{difficulty.toUpperCase()}</span>
                     </div>
                   </div>
                   <div className="d-flex flex-wrap mt-2">
@@ -200,7 +186,14 @@ const Programs = (props) => {
               </div>
             </div>
             <div className="col-md-8 p-0 d-flex flex-column">
-              <div className="w-100 mt-3 mb-2">
+              <div className="w-100 d-flex mt-3 mb-2">
+                <SelectReducer
+                  array={["c", "java"]}
+                  name="Select theme"
+                  handleSelect={handleLanguage}
+                  value={language}
+                  className="w-50"
+                />
                 <SelectReducer
                   array={[
                     "xcode",
@@ -213,7 +206,7 @@ const Programs = (props) => {
                   name="Select theme"
                   handleSelect={handleChange}
                   value={themeName}
-                  className="w-50 float-right"
+                  className="w-50"
                 />
               </div>
               <Editor language={language} themeName={themeName} />
@@ -226,7 +219,7 @@ const Programs = (props) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

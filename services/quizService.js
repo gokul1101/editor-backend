@@ -1,5 +1,5 @@
 const Quiz = require("../models/quizzes");
-const createQuizService = async (name) => {
+const createQuizService = async (name, contest_id) => {
   if (!name)
     return Promise.reject({
       code: 405,
@@ -13,11 +13,12 @@ const createQuizService = async (name) => {
         message: `${name} Quiz already exists.`,
       });
     } else {
-      const newQuiz = new Quiz({ name });
+      const newQuiz = new Quiz({ name, contest_id });
       newQuiz.save();
       return Promise.resolve({
         code: 201,
-        message: `${name} Quiz created.`
+        message: `${name} Quiz created.`,
+        quiz: newQuiz,
       });
     }
   } catch (err) {

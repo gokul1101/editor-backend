@@ -11,7 +11,7 @@ import ContestCard from "./ContestCard/ContestCard";
 const ContestDetails = (props) => {
   const { id } = useParams();
   const history = useHistory();
-  const [authState, authDispatch] = useContext(AuthContext);
+  const [authState, ] = useContext(AuthContext);
 
   const routeQuestion = (question_id, type) => {
     history.push(`/codekata/${id}/${type}/${question_id}`);

@@ -3,32 +3,29 @@ import React from "react";
 const ContestCard = ({ image, question, routeQuestion }) => {
   return (
     <div
-      className="dcard mr-5 mb-5 d-flex align-items-center justify-content-center ml-5"
-      onClick={() => routeQuestion(question._id)}
-    >
-      <div className="trigger"></div>
-      <div className="trigger"></div>
-      <div className="trigger"></div>
-      <div className="trigger"></div>
-      <div className="trigger"></div>
-      <div className="trigger"></div>
-      <div className="trigger"></div>
-      <div className="trigger"></div>
-      <div className="trigger"></div>
+      className="dcard mr-5 mb-5 position-relative d-flex align-items-center justify-content-center ml-5"
+      onClick={() => routeQuestion(question._id, (question.type_id? "problem" : "quiz"))}
       
-      <div className="card">
+    >
+      <div className="trigger position-absolute d-block"></div>
+      <div className="trigger position-absolute d-block"></div>
+      <div className="trigger position-absolute d-block"></div>
+      <div className="trigger position-absolute d-block"></div>
+      <div className="trigger position-absolute d-block"></div>
+      <div className="trigger position-absolute d-block"></div>
+      <div className="trigger position-absolute d-block"></div>
+      <div className="trigger position-absolute d-block"></div>
+      <div className="trigger position-absolute d-block"></div>
+      
+      <div className={`card position-relative ${question.type_id? "card-blue" : "card-green"}`}>
         <img
           src={image}
-          className="img-fluid"
+          className="question-card-image position-absolute img-fluid"
           alt="image"
           height="150px"
           width="150px"
-          style={{
-            position: "absolute",
-            transform: "translate(50%,-115%)",
-          }}
         />
-        <div className="frame">
+        <div className="frame position-absolute bg-white text-dark">
           <div className="d-flex flex-column ml-4 mt-2 pt-0">
             <span
               className={`question-name-span ${
