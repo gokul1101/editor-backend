@@ -8,10 +8,12 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { Button } from "@material-ui/core";
 import InputReducer from "../../../../../Reducer/InputReducer";
+import { NavLink, useParams } from "react-router-dom";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const ContestChallenges = () => {
+  const {id} = useParams()
   const eventArr = [
     { name: "November challenge 2021" },
     { name: "Java challenge 2021" },
@@ -46,11 +48,11 @@ const ContestChallenges = () => {
         <span className="create-con-text">drop to the desired location </span>
       </div>
       <div className="create-con" onClick={handleClickOpen}>
-        {/* <Link to="/contests/create-contest"> */}
+        <NavLink to={`/contests/${id}/challenges/create`}>
         <button className="p-2 mt-3">
           <i className="fas fa-plus pr-2 pl-2"></i>ADD CHALLENGES
         </button>
-        {/* </Link> */}
+        </NavLink>
       </div>
       <Dialog
         open={open}

@@ -5,7 +5,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
 const SelectReducer = (props) => {
-
+  console.log(props)
   return (
     <div>
       <FormControl variant="outlined"  className={props.className}>

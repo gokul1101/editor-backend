@@ -9,81 +9,116 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Pagination from "@material-ui/lab/Pagination";
 import "./ListUser.css";
-// const useStyles = makeStyles({
-//   table: {
-//     minWidth: 650,
-//   },
-// });
 const tableData = [
   {
-    register_number: 1813015,
-    course: "MECH",
+    reg_no: 1813015,
+    name: "Dhanush",
+    email: "dhanush@gmail.com",
+    gender: "Male",
     stream: "B.E",
-    college: "KSRCT",
-    batch: "2018-2012",
-  },
-  {
-    register_number: 1813016,
-    course: "ECE",
-    stream: "B.E",
+    batch: "2011 - 5415",
+    course: "Computer Science and Engineering",
     college: "KSRCE",
-    batch: "2018-2012",
+    phone: 3764376762,
   },
   {
-    register_number: 1813017,
-    course: "IT",
+    reg_no: 1813015,
+    name: "Dhanush",
+    email: "dhanush@gmail.com",
+    gender: "Male",
     stream: "B.E",
-    college: "KSRIET",
-    batch: "2018-2012",
-  },
-  {
-    register_number: 1813018,
-    course: "CSE",
-    stream: "B.E",
-    college: "KSRCT",
-    batch: "2018-2012",
-  },
-  {
-    register_number: 1813019,
-    course: "EEE",
-    stream: "B.E",
+    batch: "2011 - 5415",
+    course: "Computer Science and Engineering",
     college: "KSRCE",
-    batch: "2018-2012",
+    phone: 3764376762,
   },
   {
-    register_number: 1813016,
-    course: "IT",
+    reg_no: 1813015,
+    name: "Dhanush",
+    email: "dhanush@gmail.com",
+    gender: "Male",
     stream: "B.E",
-    college: "KSRIET",
-    batch: "2018-2012",
-  },
-  {
-    register_number: 1813018,
-    course: "CSE",
-    stream: "B.E",
-    college: "KSRCT",
-    batch: "2018-2012",
-  },
-  {
-    register_number: 1813019,
-    course: "EEE",
-    stream: "B.E",
+    batch: "2011 - 5415",
+    course: "Computer Science and Engineering",
     college: "KSRCE",
-    batch: "2018-2012",
+    phone: 3764376762,
   },
   {
-    register_number: 1813016,
-    course: "IT",
+    reg_no: 1813015,
+    name: "Dhanush",
+    email: "dhanush@gmail.com",
+    gender: "Male",
     stream: "B.E",
-    college: "KSRIET",
-    batch: "2018-2012",
+    batch: "2011 - 5415",
+    course: "Computer Science and Engineering",
+    college: "KSRCE",
+    phone: 3764376762,
   },
   {
-    register_number: 1813016,
-    course: "IT",
+    reg_no: 1813015,
+    name: "Dhanush",
+    email: "dhanush@gmail.com",
+    gender: "Male",
     stream: "B.E",
-    college: "KSRIET",
-    batch: "2018-2012",
+    batch: "2011 - 5415",
+    course: "Computer Science and Engineering",
+    college: "KSRCE",
+    phone: 3764376762,
+  },
+  {
+    reg_no: 1813015,
+    name: "Dhanush",
+    email: "dhanush@gmail.com",
+    gender: "Male",
+    stream: "B.E",
+    batch: "2011 - 5415",
+    course: "Computer Science and Engineering",
+    college: "KSRCE",
+    phone: 3764376762,
+  },
+  {
+    reg_no: 1813015,
+    name: "Dhanush",
+    email: "dhanush@gmail.com",
+    gender: "Female",
+    stream: "B.E",
+    batch: "2011 - 5415",
+    course: "Computer Science and Engineering",
+    college: "KSRCE",
+    phone: 3764376762,
+  },
+  {
+    reg_no: 1813015,
+    name: "Dhanush",
+    email: "dhanush@gmail.com",
+    gender: "Male",
+    stream: "B.E",
+    batch: "2011 - 5415",
+    course: "Computer Science and Engineering",
+    college: "KSRCE",
+    phone: 3764376762,
+  },
+  {
+    reg_no: 1813015,
+    name: "Dhanush",
+    email: "dhanush@gmail.com",
+    gender: "Male",
+    stream: "B.E",
+    batch: "2011 - 5415",
+    course: "Computer Science and Engineering",
+    college: "KSRCE",
+    phone: 3764376762,
+  },
+  {
+    reg_no: 1813015,
+    name: "Dhanush",
+    email: "dhanush@gmail.com",
+    gender: "Male",
+    stream: "B.E",
+    batch: "2011 - 5415",
+    course: "Computer Science and Engineering",
+    college: "KSRCE",
+    phone: 3764376762,
   },
 ];
 const ListUser = (props) => {
@@ -104,36 +139,132 @@ const ListUser = (props) => {
   //     loadPosts();
   //   }, [page]);
   //   const classes = useStyles();
-  const sortTypes = {
-    up: {
-      class: "sort-up",
-      fn: (a, b) => a.register_number - b.register_number,
-    },
-    down: {
-      class: "sort-down",
-      fn: (a, b) => b.register_number - a.register_number,
-    },
-    default: {
-      class: "sort",
-      fn: (a, b) => a,
-    },
-  };
+  // const sortTypes = {
+  //   up: {
+  //     class: "sort-up",
+  //     fn: (a, b) => a.register_number - b.register_number,
+  //   },
+  //   down: {
+  //     class: "sort-down",
+  //     fn: (a, b) => b.register_number - a.register_number,
+  //   },
+  //   default: {
+  //     class: "sort",
+  //     fn: (a, b) => a,
+  //   },
+  // };
 
-  const [currentSort, setCurrentSort] = useState("default");
-  const onSortChange = () => {
-    let nextSort;
+  // const [currentSort, setCurrentSort] = useState("default");
+  // const onSortChange = () => {
+  //   let nextSort;
 
-    if (currentSort === "down") nextSort = "up";
-    else if (currentSort === "up") nextSort = "default";
-    else if (currentSort === "default") nextSort = "down";
+  //   if (currentSort === "down") nextSort = "up";
+  //   else if (currentSort === "up") nextSort = "default";
+  //   else if (currentSort === "default") nextSort = "down";
 
-    setCurrentSort(nextSort);
-  };
+  //   setCurrentSort(nextSort);
+  // };
+
   return (
     <>
-      <div className="container-fluid mt-5">
+      <div className="container-fluid">
+        <div className="d-flex">
+          <div
+            className="col-md-9 d-flex flex-column"
+            style={{ overflowX: "auto" }}
+          >
+            <div className="d-flex">
+              <div className="col-md-1 list-table-header text-center">
+                Reg no
+              </div>
+              <div className="col-md-3 list-table-header text-center">Name</div>
+              <div className="col-md-3 list-table-header text-center">
+                Email
+              </div>
+              <div className="col-md-1 list-table-header text-center">
+                Gender
+              </div>
+              <div className="col-md-1 list-table-header text-center">
+                Stream
+              </div>
+              <div className="col-md-2 list-table-header text-center">
+                Batch
+              </div>
+              <div className="col-md-3 list-table-header text-center">
+                Course
+              </div>
+              <div className="col-md-3 list-table-header text-center">
+                College
+              </div>
+              <div className="col-md-2 list-table-header text-center">
+                Phone Number
+              </div>
+            </div>
+            {tableData.map((e) => {
+              return (
+                <div className="d-flex">
+                  <div className="col-md-1 list-table-data text-center">
+                    {e.reg_no}
+                  </div>
+                  <div className="col-md-3 list-table-data text-center">
+                    {e.name}
+                  </div>
+                  <div className="col-md-3 list-table-data text-center">
+                    {e.email}
+                  </div>
+                  <div className="col-md-1 list-table-data text-center">
+                    {e.gender}
+                  </div>
+                  <div className="col-md-1 list-table-data text-center">
+                    {e.stream}
+                  </div>
+                  <div className="col-md-2 list-table-data text-center">
+                    {e.batch}
+                  </div>
+                  <div className="col-md-3 list-table-data text-center">
+                    {e.course}
+                  </div>
+                  <div className="col-md-3 list-table-data text-center">
+                    {e.college}
+                  </div>
+                  <div className="col-md-2 list-table-data text-center">
+                    {e.phone}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="col-md-3 ">
+            <div className="d-flex flex-column">
+              <div className="col-md-12 list-table-header text-center">
+                EDIT
+              </div>
+              {tableData.map((e) => {
+                return (
+                  <>
+                    <div className="col-md-12 p-0 d-flex p-2 mt-1 align-items-center justify-content-center">
+                      <button className="pr-4 pl-4 mr-2 edit-btn">Edit</button>
+                      <button className="pr-4 pl-4 delete-btn" disabled>
+                        Delete
+                      </button>
+                    </div>
+                  </>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default ListUser;
+
+/*  
+<div className="container-fluid mt-5">
         <div className="d-flex flex-column" id="style-default">
-          {/* <div className="force-overflow"> */}
+          
           <div
             className="d-flex col-md-8 p-0"
             style={{ overflowX: "scroll", overflowY: "hidden" }}
@@ -188,9 +319,9 @@ const ListUser = (props) => {
             })}
           </div>
         </div>
-        {/* </div> */}
+        
         <div className="mt-3 mb-5">
-          <Pagination
+          <P agination
             className="float-right"
             count={13}
             variant="text"
@@ -199,8 +330,5 @@ const ListUser = (props) => {
           />
         </div>
       </div>
-    </>
-  );
-};
 
-export default ListUser;
+*/

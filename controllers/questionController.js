@@ -22,8 +22,9 @@ const createQuestion = async (req, res) => {
     questionDetails.type_id = (
       await TestType.findOne({ name: questionDetails.type_id })
     )._id;
-    let { code, message } = await functions[index](questionDetails);
-    res.status(code).send(message);
+    let { code, message,mcq } = await functions[index](questionDetails);
+    console.log(mcq)
+    res.status(code).json({message,mcq});
   } catch (err) {
     //! Error in creating question
     console.log("at line 29", err);
