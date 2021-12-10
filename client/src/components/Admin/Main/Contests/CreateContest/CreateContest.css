@@ -14,3 +14,12 @@
   color: blue;
   /* background-color: blue !important; */
 }
+
+.bg-input-change{
+  border: 1px solid green;
+}
+
+.bg-input-change:focus{
+  border: 1px solid green !important;
+}
+
