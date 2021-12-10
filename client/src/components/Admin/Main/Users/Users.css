@@ -26,3 +26,18 @@
   height: 100vh;
   overflow-y: scroll;
 }
+
+.nav-button{
+  padding: 8px;
+  height: 50px !important;
+  width: 160px;
+  border: 1px solid #21a366 !important;
+
+}
+
+.drop-button{
+  border: 1px solid #0b7e55 !important;
+  background-color: none;
+  width: 160px;
+  height: 50px;
+}

@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import helperService from "../../../../../services/helperService";
 import InputReducer from "../../../../Reducer/InputReducer";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import "./CreateContest.css";
 const CreateContest = (props) => {
-  const [authState, authDispatch] = useContext(AuthContext);
+  const [authState, ] = useContext(AuthContext);
   const [name, setName] = useState(authState?.contest?.name);
   const [date, setDate] = useState({
     start_date: authState?.contest?.start_date,
@@ -14,7 +14,6 @@ const CreateContest = (props) => {
     start_time: authState?.contest?.start_time,
     end_time: authState?.contest?.end_time,
   });
-  // const [name,setName] = useState("");
   const getContest = async () => {
     try {
       const resposne = await helperService.createContest(
@@ -27,6 +26,7 @@ const CreateContest = (props) => {
         },
         { headers: { Authorization: authState.user.token } }
       );
+      console.log(resposne)
     } catch (error) {
       console.log(error);
       // props.snackBar(error.error,"error")
@@ -55,6 +55,7 @@ const CreateContest = (props) => {
           </span>
           <div className="col-md-4">
             <InputReducer
+            className="bg-input-change"
               placeholder="Contest name"
               name="Contest name"
               type="text"
@@ -119,7 +120,7 @@ const CreateContest = (props) => {
         </div>
       </div>
 
-      <div className="create-con mt-3 float-right">
+      <div className="create-con mt-5 float-right">
         <button className="p-2" onClick={getContest}>
           <i className="fas fa-plus pr-2 pl-2"></i>
           {props?.title?.toUpperCase()}

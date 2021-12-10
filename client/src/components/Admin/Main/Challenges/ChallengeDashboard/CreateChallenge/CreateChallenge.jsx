@@ -181,17 +181,6 @@ const CreateChallenge = (props) => {
             />
           </div>
         </div>
-
-        <div className="my-5">
-          <button
-            className="float-right mt-3 mb-5 btn-hover pr-1 pl-1 color-11"
-            color="primary"
-            variant="contained"
-            onClick={props?.title ? updateChallenge : createChallenge}
-          >
-            {props?.title ? props?.title.toUpperCase() : "CREATE CHALLENGE"}
-          </button>
-        </div>
         {/* <div className="d-flex mt-2 mb-5">
           <span className="contest-line-height mr-2 col-md-3">
             Tags <span className="contest-star">*</span>

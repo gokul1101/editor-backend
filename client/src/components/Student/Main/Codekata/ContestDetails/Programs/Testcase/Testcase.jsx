@@ -78,7 +78,7 @@ const Testcase = () => {
             <Typography classname="test-case-heading">
 
 
-              <button className='btn btn-success'><i class="fas fa-check-circle"></i></button>
+              <button className='btn btn-success'><i className="fas fa-check-circle"></i></button>
               <span className='ml-3'>Test Case 2</span>
             </Typography>
           </AccordionSummary>
@@ -92,7 +92,7 @@ const Testcase = () => {
           <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
             <Typography classname="test-case-heading">
 
-              <button className='btn btn-success'><i class="fas fa-check-circle"></i></button>
+              <button className='btn btn-success'><i className="fas fa-check-circle"></i></button>
               <span className='ml-3'>Test Case 3</span>
             </Typography>
           </AccordionSummary>
@@ -106,7 +106,7 @@ const Testcase = () => {
           <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
             <Typography classname="test-case-heading">
 
-              <button className='btn btn-danger'><i class="fas fa-times-circle"></i></button>
+              <button className='btn btn-danger'><i className="fas fa-times-circle"></i></button>
               <span className='ml-3'>Test Case 4</span>
             </Typography>
           </AccordionSummary>
@@ -128,12 +128,12 @@ const Testcase = () => {
         <Accordion square expanded={expanded === 'panel5'}>
           <AccordionSummary aria-controls="panel5d-content" id="panel5d-header" className=''>
             <Typography className="test-case-heading w-100 mr-auto">
-              <button className='btn btn-danger'><i class="fas fa-times-circle"></i></button>
+              <button className='btn btn-danger'><i className="fas fa-times-circle"></i></button>
               <span className='ml-3 text-dark'>Test Case 1</span>
             </Typography>
 
             <div className='lock-icon p-2 float-right'>
-              <i class="fas fa-lock"></i>
+              <i className="fas fa-lock"></i>
             </div>
 
 
@@ -147,12 +147,12 @@ const Testcase = () => {
         <Accordion square expanded={expanded === 'panel6'}>
           <AccordionSummary aria-controls="panel6d-content" id="panel6d-header">
           <Typography className="test-case-heading w-100 mr-auto">
-              <button className='btn btn-danger'><i class="fas fa-times-circle"></i></button>
+              <button className='btn btn-danger'><i className="fas fa-times-circle"></i></button>
               <span className='ml-3 text-dark'>Test Case 2</span>
             </Typography>
 
             <div className='lock-icon p-2 float-right'>
-              <i class="fas fa-lock"></i>
+              <i className="fas fa-lock"></i>
             </div>
 
           </AccordionSummary>

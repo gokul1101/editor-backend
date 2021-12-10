@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, Route, Switch, Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Challenges = () => {
   return (
@@ -19,17 +19,17 @@ const Challenges = () => {
           </Link>
         </div>
       </div>
-      <div class="text_hovering_cards text_hovering_cards-1 d-flex flex-wrap align-items-center justify-content-center m-1">
-        <div class="text_hovering_card text_hovering_card">
-          <div class="text_hovering_card_content">
+      <div className="text_hovering_cards text_hovering_cards-1 d-flex flex-wrap align-items-center justify-content-center m-1">
+        <div className="text_hovering_card text_hovering_card">
+          <div className="text_hovering_card_content">
             <section>
-              <span class="section_left">
+              <span className="section_left">
                 <h3>November Challenge 2019</h3>
                 <h5>Lorem Ipsum is simply dummy text to the heaven...</h5>
               </span>
-              <span class="section_right">
-                <Link to="/challenges/challenges-dashboard/create-challenge" class="card_but">
-                  <i class="fa fa-pen"></i>
+              <span className="section_right">
+                <Link to="/challenges/challenges-dashboard/create-challenge" className="card_but">
+                  <i className="fa fa-pen"></i>
                 </Link>
               </span>
             </section>

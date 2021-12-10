@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import "./Quizzes.css";
 const Quizzes = () => {
@@ -20,63 +20,63 @@ const Quizzes = () => {
           </Link>
         </div>
       </div>
-      <div class="text_hovering_cards d-flex flex-wrap align-items-center justify-content-center m-1">
-        <div class="text_hovering_card">
-          <div class="text_hovering_card_content">
+      <div className="text_hovering_cards d-flex flex-wrap align-items-center justify-content-center m-1">
+        <div className="text_hovering_card">
+          <div className="text_hovering_card_content">
             <section>
-              <span class="section_left">
+              <span className="section_left">
                 <h3>November Challenge 2019</h3>
                 <h5>Lorem Ipsum is simply dummy text to the heaven...</h5>
               </span>
-              <span class="section_right">
-                <a class="card_but">
-                  <i class="fa fa-pen"></i>
-                </a>
+              <span className="section_right">
+                <NavLink className="card_but">
+                  <i className="fa fa-pen"></i>
+                </NavLink>
               </span>
             </section>
           </div>
         </div>
-        <div class="text_hovering_card">
-          <div class="text_hovering_card_content">
+        <div className="text_hovering_card">
+          <div className="text_hovering_card_content">
             <section>
-              <span class="section_left">
+              <span className="section_left">
                 <h3>Java Challenge 2019</h3>
                 <h5>Lorem Ipsum is simply dummy text to the heaven...</h5>
               </span>
-              <span class="section_right">
-                <a href="#" class="card_but">
-                  <i class="fa fa-pen"></i>
-                </a>
+              <span className="section_right">
+                <NavLink className="card_but">
+                  <i className="fa fa-pen"></i>
+                </NavLink>
               </span>
             </section>
           </div>
         </div>
-        <div class="text_hovering_card">
-          <div class="text_hovering_card_content">
+        <div className="text_hovering_card">
+          <div className="text_hovering_card_content">
             <section>
-              <span class="section_left">
+              <span className="section_left">
                 <h3>Python Challenge 2019</h3>
                 <h5>Lorem Ipsum is simply dummy text to the heaven...</h5>
               </span>
-              <span class="section_right">
-                <a href="#" class="card_but">
-                  <i class="fa fa-pen"></i>
-                </a>
+              <span className="section_right">
+                <NavLink className="card_but">
+                  <i className="fa fa-pen"></i>
+                </NavLink>
               </span>
             </section>
           </div>
         </div>
-        <div class="text_hovering_card">
-          <div class="text_hovering_card_content">
+        <div className="text_hovering_card">
+          <div className="text_hovering_card_content">
             <section>
-              <span class="section_left">
+              <span className="section_left">
                 <h3>November Challenge 2019 November Challenge 2019</h3>
                 <h5>Lorem Ipsum is simply dummy text to the heaven...</h5>
               </span>
-              <span class="section_right">
-                <a href="#" class="card_but">
-                  <i class="fa fa-pen"></i>
-                </a>
+              <span className="section_right">
+                <NavLink className="card_but">
+                  <i className="fa fa-pen"></i>
+                </NavLink>
               </span>
             </section>
           </div>

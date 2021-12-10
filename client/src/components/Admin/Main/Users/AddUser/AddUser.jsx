@@ -34,15 +34,15 @@ const AddUser = () => {
     console.log(files);
   };
   return (
-    <div className="container">
+    <div className="container-fluid">
       <p className="text-left dash-title-category pb-2">Add Details *</p>
       <div className="col p-0" style={{ marginTop: "-20px" }}>
         <div className="hr">
           <hr className="col p-0" />
         </div>
         <div className="d-flex justify-content-between question-outoff p-0 mb-3 w-100">
-          <span>Create user</span>
-          <span>Bulk upload Excel file</span>
+          <span className="text-muted">Create user as a individual data \ or through the bulk upload</span>
+          <span className="text-info font-weight-bolder">Bulk upload Excel file</span>
         </div>
       </div>
       <div className="d-flex">
@@ -98,24 +98,7 @@ const AddUser = () => {
               />
             </div>
           </div>
-          <div className="d-flex mt-2 mb-2">
-            <div className="col-md-6 p-1">
-              <InputReducer
-                className={classes.fieldColor}
-                placeholder="Old Password"
-                name="Old Password"
-                type="password"
-              />
-            </div>
-            <div className="col-md-6 p-1">
-              <InputReducer
-                className={classes.fieldColor}
-                placeholder="New Password"
-                name="New password"
-                type="password"
-              />
-            </div>
-          </div>
+          
           <div className="d-flex mt-2 mb-2">
             <div className="col-md-6 p-1">
               <InputReducer

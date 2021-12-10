@@ -1,4 +1,3 @@
-import { TextField } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
@@ -153,7 +152,7 @@ const AddQuiz = () => {
         </div>
         <div className="create-con mt-4 clearfix">
           <button className="p-2 float-right" onClick={createQuestion}>
-            ADD QUIZ<i class="fas fa-plus pr-2 pl-3"></i>
+            ADD QUIZ<i className="fas fa-plus pr-2 pl-3"></i>
           </button>
         </div>
       </div>
@@ -162,8 +161,8 @@ const AddQuiz = () => {
           <div className="respective-question-badge col-md-4 mt-2 mb-2 p-3">
             <div className="d-flex flex-column">
               <div className="edit-add-quiz p-2 d-flex align-items-end justify-content-end">
-                <i class="fas fa-edit mr-2 ml-2"></i>
-                <i class="fas fa-trash mr-2 ml-2"></i>
+                <i className="fas fa-edit mr-2 ml-2"></i>
+                <i className="fas fa-trash mr-2 ml-2"></i>
               </div>
               <div className="d-flex">
                 <span className="add-quiz-question-span mt-2 mb-2">
