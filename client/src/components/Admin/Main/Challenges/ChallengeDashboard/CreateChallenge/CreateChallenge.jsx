@@ -102,7 +102,7 @@ const CreateChallenge = (props) => {
             <InputReducer />
           </div>
         </div>
-        <div className="d-flex mt-2 mb-5">
+        {/* <div className="d-flex mt-2 mb-5">
           <span className="contest-line-height mr-2 col-md-3">
             Tags <span className="contest-star">*</span>
           </span>
@@ -130,7 +130,7 @@ const CreateChallenge = (props) => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -117,7 +117,7 @@ const ContestQuizzes = () => {
         </DialogActions>
       </Dialog>
       <div className="challenge-chips d-flex flex-wrap border p-2 mt-4">
-        {quizzArr.length > 0 ? (
+        {quizzArr?.length > 0 ? (
           quizzArr.map((e) => {
             return (
               <div className="create-con">

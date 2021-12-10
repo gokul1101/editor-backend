@@ -12,77 +12,77 @@ import "./ListUser.css";
 const tableData = [
   {
     reg_no: 1813015,
-    name: "Dhanush",
+    name: "Dhanush Kaarthick  ",
     email: "dhanush@gmail.com",
     gender: "Male",
     stream: "B.E",
-    batch: "2011 - 5415",
+    batch: "2018-2022",
     course: "Computer Science and Engineering",
     college: "KSRCE",
     phone: 3764376762,
   },
   {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
+    reg_no: 1813016,
+    name: "Dhusanthan R",
+    email: "dhusanthanr1999g@gmail.com",
     gender: "Female",
     stream: "B.E",
-    batch: "2011 - 5415",
+    batch: "2018 - 2022",
+    course: "Computer Science and Engineering",
+    college: "KSRCE",
+    phone: 3764376762,
+  },
+  {
+    reg_no: 1813017,
+    name: "Gajendhiran M",
+    email: "gajendhiranmohan@gmail.com",
+    gender: "Male",
+    stream: "B.E",
+    batch: "2018 - 2022",
+    course: "Computer Science and Engineering",
+    college: "KSRCE",
+    phone: 3764376762,
+  },
+  {
+    reg_no: 1813018,
+    name: "Gobinath S",
+    email: "gobigobi@gmail.com",
+    gender: "Male",
+    stream: "B.E",
+    batch: "2018 - 2022",
+    course: "Computer Science and Engineering",
+    college: "KSRCE",
+    phone: 3764376762,
+  },
+  {
+    reg_no: 1813019,
+    name: "Gokul S",
+    email: "gokul@gmail.com",
+    gender: "Male",
+    stream: "B.E",
+    batch: "2018 - 2022",
+    course: "Computer Science and Engineering",
+    college: "KSRCE",
+    phone: 3764376762,
+  },
+  {
+    reg_no: 1813046,
+    name: "Nanthakumar B",
+    email: "codingnanthu@gmail.com",
+    gender: "Male",
+    stream: "B.E",
+    batch: "2018 - 2022",
+    course: "Computer Science and Engineering",
+    college: "KSRCE",
+    phone: 3764376762,
+  },
+  {
+    reg_no: 1813076,
+    name: " Vasanthan P",
+    email: "vasausa@gmail.com",
+    gender: "Female",
+    stream: "B.E",
+    batch: "2018 - 2022",
     course: "Computer Science and Engineering",
     college: "KSRCE",
     phone: 3764376762,
@@ -168,13 +168,46 @@ const ListUser = (props) => {
   return (
     <>
       <div className="container-fluid">
+
+
+
+        <div className="d-flex justify-content-between p-3 m-3">
+          <div>
+              <div className="filter d-flex">
+              <i className="fas fa-filter mt-3"></i>
+              <h6 className="ml-4 font-weight-bolder mt-3 highlight-textz ">Filter By : </h6>  
+              <div className="dropdown mx-3">
+                  <button className="drop-button dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Ascending
+                  </button>
+                  <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a className="dropdown-item" >Desending</a>
+                    <a className="dropdown-item" >Random</a>
+                  </div>
+          </div>
+              </div>            
+          </div>
+          <div className="d-flex">
+          <div className="form-group has-search">
+    <span className="fa fa-search form-control-feedback"></span>
+    <input type="text" className="form-control" placeholder="Search"/>
+  </div>
+  
+              <div>
+              <button className="pr-4 pl-4 mr-2 d-load-btn ml-3"><i class="fas fa-download"></i><span className="ml-2 font-weight-bolder">Download Details</span></button>
+                </div>      
+          </div>
+        </div>
+
+
+
         <div className="d-flex">
           <div
             className="col-md-9 d-flex flex-column"
             style={{ overflowX: "auto" }}
           >
             <div className="d-flex">
-              <div className="col-md-1 list-table-header text-center">
+              <div className="col-md-1 list-table-header text-center ">
                 Reg no
               </div>
               <div className="col-md-3 list-table-header text-center">Name</div>
@@ -203,31 +236,31 @@ const ListUser = (props) => {
             {tableData.map((e) => {
               return (
                 <div className="d-flex">
-                  <div className="col-md-1 list-table-data text-center">
+                  <div className="col-md-1 list-table-data text-center data">
                     {e.reg_no}
                   </div>
-                  <div className="col-md-3 list-table-data text-center">
+                  <div className="col-md-3 list-table-data text-center data">
                     {e.name}
                   </div>
-                  <div className="col-md-3 list-table-data text-center">
+                  <div className="col-md-3 list-table-data text-center data">
                     {e.email}
                   </div>
-                  <div className="col-md-1 list-table-data text-center">
+                  <div className="col-md-1 list-table-data text-center data">
                     {e.gender}
                   </div>
-                  <div className="col-md-1 list-table-data text-center">
+                  <div className="col-md-1 list-table-data text-center data">
                     {e.stream}
                   </div>
-                  <div className="col-md-2 list-table-data text-center">
+                  <div className="col-md-2 list-table-data text-center data">
                     {e.batch}
                   </div>
-                  <div className="col-md-3 list-table-data text-center">
+                  <div className="col-md-3 list-table-data text-center data">
                     {e.course}
                   </div>
-                  <div className="col-md-3 list-table-data text-center">
+                  <div className="col-md-3 list-table-data text-center data">
                     {e.college}
                   </div>
-                  <div className="col-md-2 list-table-data text-center">
+                  <div className="col-md-2 list-table-data text-center data">
                     {e.phone}
                   </div>
                 </div>
@@ -237,15 +270,16 @@ const ListUser = (props) => {
           <div className="col-md-3 ">
             <div className="d-flex flex-column">
               <div className="col-md-12 list-table-header text-center">
-                EDIT
+                EDIT / DELETE
               </div>
               {tableData.map((e) => {
                 return (
                   <>
                     <div className="col-md-12 p-0 d-flex p-2 mt-1 align-items-center justify-content-center">
-                      <button className="pr-4 pl-4 mr-2 edit-btn">Edit</button>
+                      <button className="pr-4 pl-4 mr-2 edit-btn "><i class="fas fa-pencil-alt"></i><span className="ml-2">Edit</span></button>
                       <button className="pr-4 pl-4 delete-btn" disabled>
-                        Delete
+                      <i class="fas fa-trash"></i>
+                        <span className="ml-2">Delete</span>
                       </button>
                     </div>
                   </>
