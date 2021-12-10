@@ -46,3 +46,37 @@
   border-radius: 5px;
   color: red;
 }
+
+
+.d-load-btn{
+ height: 40px;
+ background-color: #B0D7C0;
+}
+
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
+
+.highlight-text{
+  color: #21a366;
+}
+/* 
+.data:nth-of-type(odd) {
+  background-color: #B0D7C0;
+}
+      
+  .data:nth-of-type(even) {
+  background-color:#fff;
+  } */

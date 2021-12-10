@@ -89,6 +89,8 @@ const ContestQuizzes = () => {
         {/* </Link> */}
       </div>
       <Dialog
+            
+
         open={open}
         TransitionComponent={Transition}
         keepMounted
@@ -96,7 +98,7 @@ const ContestQuizzes = () => {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">
+        <DialogTitle id="alert-dialog-slide-title" className="text-highlight">
           {"Create contest quiz"}
         </DialogTitle>
         <DialogContent>
@@ -105,10 +107,11 @@ const ContestQuizzes = () => {
               <label>Create Quiz</label>
               <InputReducer value={quizName} onClickHandler={setQuizName} />
             </div>
+            <p className="text-muted mt-3">Note : Should contain a valid quiz name , Please don't use previous names</p>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={createQuizz} color="primary" variant="contained">
+          <Button onClick={createQuizz} className="btn btn-sucess bb-2" variant="contained">
             ADD
           </Button>
           <Button onClick={handleClose} color="primary">
@@ -117,7 +120,7 @@ const ContestQuizzes = () => {
         </DialogActions>
       </Dialog>
       <div className="challenge-chips d-flex flex-wrap border p-2 mt-4">
-        {quizzArr.length > 0 ? (
+        {quizzArr?.length > 0 ? (
           quizzArr.map((e) => {
             return (
               <div className="create-con">

@@ -55,6 +55,7 @@ const CreateContest = (props) => {
           </span>
           <div className="col-md-4">
             <InputReducer
+            className="bg-input-change"
               placeholder="Contest name"
               name="Contest name"
               type="text"
@@ -119,7 +120,7 @@ const CreateContest = (props) => {
         </div>
       </div>
 
-      <div className="create-con mt-3 float-right">
+      <div className="create-con mt-5 float-right">
         <button className="p-2" onClick={getContest}>
           <i className="fas fa-plus pr-2 pl-2"></i>
           {props?.title?.toUpperCase()}
