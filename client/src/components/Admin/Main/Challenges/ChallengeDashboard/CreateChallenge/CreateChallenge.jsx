@@ -2,44 +2,58 @@ import { TextField } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useContext } from "react";
 import { useState } from "react";
-import { Redirect, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import helperService from "../../../../../../services/helperService";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import "./CreateChallenge.css";
 const CreateChallenge = (props) => {
-  const [authState,] = useContext(AuthContext)
+  const [authState,] = useContext(AuthContext);
   const history = useHistory();
-  const {id} = useParams()
-  const [challenge,setChallenge] = useState({
-    name: "",
-    type_id: "problem",
-    contest_id : id,
-    statement: "",
-    description: "",
-    input_format: "",
-    output_format: "",
-    contraints: "",
-    difficulty_id: "easy",
-    max_score: 0,
-  });
+  const { id } = useParams();
+  const [challenge, setChallenge] = useState({});
   const createChallenge = async () => {
-    try{
-      const {data,status} = await helperService.createChallenge({...challenge},{headers:{Authorization:authState.user.token}})
-      if(status === 201){
-        history.push(`contests/${id}/challenges`)
+    try {
+      const { status } = await helperService.createChallenge(
+        { ...challenge },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 201) {
+        history.push(`/contests/${id}/challenges`);
       }
+    } catch (err) {
+      console.log(err);
     }
-    catch(err){
-      console.log(err)
+  };
+  const updateChallenge = async () => {
+    console.log("Update clicked...");
+  };
+  useEffect( () => {
+    setChallenge({
+      name: authState?.challenge?.name,
+      type_id: "problem",
+      contest_id: authState?.challenge?._id,
+      statement: authState?.challenge?.statement,
+      description: authState?.challenge?.description,
+      input_format: authState?.challenge?.input_format,
+      output_format: authState?.challenge?.output_format,
+      constraints: authState?.challenge?.constraints,
+      difficulty_id: authState?.challenge?.difficulty_id.name,
+      max_score: authState?.challenge?.max_score,
+    })
+    return () => {
+      setChallenge({});
     }
-  }
+  },[authState])
+  
   return (
     <div
       className="container-fluid"
       style={{ overflowY: "scroll", height: "100vh" }}
     >
-      <p className="text-left dash-title-category pb-2">Create Challenges</p>
+      <p className="text-left dash-title-category pb-2">
+        {props?.title ? props?.title : "Create Challenge"}
+      </p>
       <div className="d-flex flex-column mb-5">
         <div className="d-flex mt-2 mb-2">
           <span className="contest-line-height mr-2 col-md-3">
@@ -50,8 +64,13 @@ const CreateChallenge = (props) => {
               label="Challenge name"
               name="Challenge name"
               type="text"
-              value = {challenge.name}
-              onClickHandler = {value => setChallenge({...challenge,name:value})}
+              value={authState?.challenge?.name}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onClickHandler={(value) =>
+                setChallenge({ ...challenge, name: value })
+              }
             />
           </div>
         </div>
@@ -67,8 +86,13 @@ const CreateChallenge = (props) => {
               multiline
               rows={10}
               variant="outlined"
-              value = {challenge.description}
-              onClickHandler = {value => setChallenge({...challenge,description:value})}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={challenge.description}
+              onClickHandler={(value) =>
+                setChallenge({ ...challenge, description: value })
+              }
             />
           </div>
         </div>
@@ -84,8 +108,13 @@ const CreateChallenge = (props) => {
               multiline
               rows={10}
               variant="outlined"
-              value = {challenge.statement}
-              onClickHandler = {value => setChallenge({...challenge,statement:value})}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={challenge.statement}
+              onClickHandler={(value) =>
+                setChallenge({ ...challenge, statement: value })
+              }
             />
           </div>
         </div>
@@ -100,9 +129,14 @@ const CreateChallenge = (props) => {
               label="Enter Input format"
               multiline
               rows={7}
+              InputLabelProps={{
+                shrink: true,
+              }}
               variant="outlined"
-              value = {challenge.input_format}
-              onClickHandler = {value => setChallenge({...challenge,input_format:value})}
+              value={challenge.input_format}
+              onClickHandler={(value) =>
+                setChallenge({ ...challenge, input_format: value })
+              }
             />
           </div>
         </div>
@@ -117,9 +151,14 @@ const CreateChallenge = (props) => {
               label="Enter Output format"
               multiline
               rows={7}
+              InputLabelProps={{
+                shrink: true,
+              }}
               variant="outlined"
-              value = {challenge.output_format}
-              onClickHandler = {value => setChallenge({...challenge,output_format:value})}
+              value={challenge.output_format}
+              onClickHandler={(value) =>
+                setChallenge({ ...challenge, output_format: value })
+              }
             />
           </div>
         </div>
@@ -128,12 +167,17 @@ const CreateChallenge = (props) => {
             Constraints <span className="contest-star">*</span>
           </span>
           <div className="col-md-7">
-            <InputReducer 
-            fullWidth 
-            id="outlined-multiline-static" 
-            multiline 
-            value = {challenge.contraints}
-            onClickHandler = {value => setChallenge({...challenge,contraints:value})}
+            <InputReducer
+              fullWidth
+              id="outlined-multiline-static"
+              multiline
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={challenge.constraints}
+              onClickHandler={(value) =>
+                setChallenge({ ...challenge, constraints: value })
+              }
             />
           </div>
         </div>
@@ -143,9 +187,9 @@ const CreateChallenge = (props) => {
             className="float-right mt-3 mb-5 btn-hover pr-1 pl-1 color-11"
             color="primary"
             variant="contained"
-            onClick = {createChallenge}
+            onClick={props?.title ? updateChallenge : createChallenge}
           >
-            CREATE CHALLENGE
+            {props?.title ? props?.title.toUpperCase() : "CREATE CHALLENGE"}
           </button>
         </div>
         {/* <div className="d-flex mt-2 mb-5">

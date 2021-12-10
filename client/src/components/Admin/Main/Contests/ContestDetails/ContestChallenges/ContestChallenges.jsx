@@ -8,7 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { Button } from "@material-ui/core";
 import InputReducer from "../../../../../Reducer/InputReducer";
-import { NavLink, useParams } from "react-router-dom";
+import { Link, NavLink, useParams } from "react-router-dom";
 import { useState } from "react";
 import helperService from "../../../../../../services/helperService";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
@@ -16,14 +16,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const ContestChallenges = () => {
-  const [authState,] = useContext(AuthContext)
+  const [authState,authDispatch] = useContext(AuthContext)
   const { id } = useParams();
   const [challenges,setChallenges] = useState([])
   const fetchChallenges = async () => {
     try{
       const {data,status} = await helperService.getChallenges({id},{headers:{Authorization:authState.user.token}})
       if(status === 200){
-        console.log(data)
+        setChallenges(data.challenges)
       } 
     }
     catch(err){
@@ -45,7 +45,8 @@ const ContestChallenges = () => {
   };
   useEffect(() => {
     fetchChallenges()
-  }, [])
+    authDispatch({ type: "REMOVE_CHALLENGE" });
+  },[])
   return (
     <div className="container mt-5">
       <div className="d-flex flex-column" style={{ marginTop: "40px" }}>
@@ -96,10 +97,10 @@ const ContestChallenges = () => {
         </DialogActions>
       </Dialog>
       <div className="challenge-chips d-flex flex-wrap border p-2 mt-4">
-        {challenges.length > 0 ? (
-          challenges.map((e) => {
+        {challenges?.length > 0 ? (
+          challenges.map((challenge) => {
             return (
-              <div className="create-con">
+              <div className="create-con" key = {challenge._id}>
                 <div
                   className="p-2 mr-2 ml-2 quizzes-chip"
                   style={{
@@ -109,7 +110,9 @@ const ContestChallenges = () => {
                   }}
                 >
                   <DeleteOutlineIcon />
-                  <span className="pl-2">{e.name}</span>
+                  <Link to={`/challenges/${challenge._id}`} style={{color:"white"}}>
+                  <span className="pl-2">{challenge.name}</span>
+                  </Link>
                 </div>
               </div>
             );

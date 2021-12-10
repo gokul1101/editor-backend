@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -9,6 +9,12 @@ import { green } from "@material-ui/core/colors";
 import { Button, FormControlLabel, TextField } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import InputReducer from "../../../../../Reducer/InputReducer";
+import helperService from "../../../../../../services/helperService";
+import { useContext } from "react";
+import { AuthContext } from "../../../../../../contexts/AuthContext";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -22,6 +28,15 @@ const GreenCheckbox = withStyles({
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
 const TestCase = () => {
+  const [authState] = useContext(AuthContext);
+  const [testcases, setTestcases] = useState({
+    sample: [],
+    hidden: [],
+  });
+  const [testcase, setTestcase] = useState({
+    input_foramt: "",
+    output_foramt: "",
+  });
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -37,6 +52,31 @@ const TestCase = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const addTestcase = () => {
+    if (checked) {
+      setTestcases({ ...testcases, hidden: [...testcases.hidden, testcase] });
+    } else {
+      setTestcases({ ...testcases, sample: [...testcases.sample, testcase] });
+    }
+  };
+  const createTestcase = async () => {
+    console.log("createad,,,")
+    try {
+      const { data, status } = await helperService.createTestcase(
+        {question_id:authState?.challenge?._id ,testcase:testcases},
+        { headers: { Authorization: authState.user.token } }
+      );
+      if(status === 201){
+        console.log(data)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    // setTestcases(authState?.challenge?.testcases)
+    console.log(authState?.challenge)
+  }, [])
   return (
     <div>
       <div className="d-flex flex-column" style={{ marginTop: "40px" }}>
@@ -57,6 +97,52 @@ const TestCase = () => {
         </button>
         {/* </Link> */}
       </div>
+      <h1>Sample</h1>
+      {testcases.sample.map((testcase) => (
+        <div class="text_hovering_cards text_hovering_cards-1 d-flex flex-wrap align-items-center justify-content-center m-1">
+          <div class="text_hovering_card text_hovering_card">
+            <div class="text_hovering_card_content">
+              <section>
+                <span class="section_left">
+                  <h3>{testcase.input_foramt}</h3>
+                  <h5>{testcase.output_foramt}</h5>
+                </span>
+                <span class="section_right">
+                  <Link
+                    to="/challenges/challenges-dashboard/create-challenge"
+                    class="card_but"
+                  >
+                    <i class="fa fa-pen"></i>
+                  </Link>
+                </span>
+              </section>
+            </div>
+          </div>
+        </div>
+      ))}
+      <h1>Hidden </h1>
+      {testcases.hidden.map((testcase) => (
+        <div class="text_hovering_cards text_hovering_cards-1 d-flex flex-wrap align-items-center justify-content-center m-1">
+          <div class="text_hovering_card text_hovering_card">
+            <div class="text_hovering_card_content">
+              <section>
+                <span class="section_left">
+                  <h3>{testcase.input_foramt}</h3>
+                  <h5>{testcase.output_foramt}</h5>
+                </span>
+                <span class="section_right">
+                  <Link
+                    to="/challenges/challenges-dashboard/create-challenge"
+                    class="card_but"
+                  >
+                    <i class="fa fa-pen"></i>
+                  </Link>
+                </span>
+              </section>
+            </div>
+          </div>
+        </div>
+      ))}
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -70,23 +156,29 @@ const TestCase = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            <TextField
+            <InputReducer
               fullWidth
               id="outlined-multiline-static"
               label="Enter Input format"
               multiline
               rows={4}
               variant="outlined"
+              onClickHandler={(value) =>
+                setTestcase({ ...testcase, input_foramt: value })
+              }
             />
           </DialogContentText>
           <DialogContentText id="alert-dialog-slide-description">
-            <TextField
+            <InputReducer
               fullWidth
               id="outlined-multiline-static"
               label="Enter Output format"
               multiline
               rows={4}
               variant="outlined"
+              onClickHandler={(value) =>
+                setTestcase({ ...testcase, output_foramt: value })
+              }
             />
           </DialogContentText>
         </DialogContent>
@@ -104,8 +196,11 @@ const TestCase = () => {
           />
         </DialogContentText>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" variant="contained">
+          <Button onClick={addTestcase} color="primary" variant="contained">
             ADD TESTCASE
+          </Button>
+          <Button onClick={createTestcase} color="primary" variant="contained">
+            SAVE TESTCASES
           </Button>
           <Button onClick={handleClose} color="primary">
             CLOSE

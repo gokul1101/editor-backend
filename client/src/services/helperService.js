@@ -190,27 +190,6 @@ const helperService = {
       });
     }
   },
-  createQuizQuestion : async (payload,config) => {
-    try {
-      const { data, status } = await axios.post(
-        `${baseURL}/api/v1/question/create`,
-        payload,
-        config
-      );
-      if (status === 201) {
-        return Promise.resolve({
-          data,
-          status,
-        });
-      }
-    } catch (err) {
-      console.log(err);
-      return Promise.reject({
-        status: err.response.status,
-        data: err.response.data,
-      });
-    }
-  },
   createChallenge : async (payload,config) => {
     try {
       const { data, status } = await axios.post(
@@ -236,6 +215,47 @@ const helperService = {
     try {
       const { data, status } = await axios.get(
         `${baseURL}/api/v1/challenges/all?id=${id}`,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          data,
+          status,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  getQuestion : async ({id,type},config) => {
+    try {
+      const { data, status } = await axios.get(
+        `${baseURL}/api/v1/question/get?id=${id}&type=${type} `,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          data,
+          status,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  createTestcase : async (payload,config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/testcase/create`,
+        payload,
         config
       );
       if (status === 201) {

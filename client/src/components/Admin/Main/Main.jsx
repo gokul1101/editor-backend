@@ -154,6 +154,11 @@ const Main = (props) => {
                 <Quizzes />
               </Route>
             </Route>
+            <Route path="/challenges">
+              <Route path="/challenges/:id">
+                <ChallengeDashboard/>
+              </Route>
+            </Route>
             <Route
               exact
               path="/"

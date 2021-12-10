@@ -50,7 +50,7 @@ const ContestQuizzes = () => {
       if (status === 200) {
         // TODO:
         // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
-        setQuizzArr(data.Quizzes);
+        setQuizzArr(data.quizzes);
         setOpen(false);
       }
     } catch (err) {
@@ -117,10 +117,10 @@ const ContestQuizzes = () => {
         </DialogActions>
       </Dialog>
       <div className="challenge-chips d-flex flex-wrap border p-2 mt-4">
-        {quizzArr.length > 0 ? (
-          quizzArr.map((e) => {
+        {quizzArr?.length > 0 ? (
+          quizzArr?.map((e) => {
             return (
-              <div className="create-con">
+              <div className="create-con" key = {e._id}>
                 <div className="p-2 mr-2 ml-2 quizzes-chip">
                   <DeleteOutlineIcon />
                   <Link
