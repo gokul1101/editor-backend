@@ -21,7 +21,7 @@ const ContestCard = ({ image, question, routeQuestion }) => {
         <img
           src={image}
           className="question-card-image position-absolute img-fluid"
-          alt="image"
+          alt="someImage"
           height="150px"
           width="150px"
         />

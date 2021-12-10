@@ -9,14 +9,12 @@ import Users from "./Users/Users";
 import CreateContest from "./Contests/CreateContest/CreateContest";
 import ContestDetails from "./Contests/ContestDetails/ContestDetails";
 import Quizzes from "./Quizzes/Quizzes";
-import Challenges from "./Challenges/Challenges";
 import CreateQuiz from "./Quizzes/CreateQuiz/CreateQuiz";
 import AddQuiz from "./Quizzes/CreateQuiz/AddQuiz/AddQuiz";
-import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
 import { AuthContext } from "../../../contexts/AuthContext";
 const Main = (props) => {
   const [, authDispatch] = useContext(AuthContext);
-  const [sideToggle, setSideToggle] = useState(false);
+  const [sideToggle, ] = useState(false);
   useEffect(() => {
     props.fetchUser();
   }, []);

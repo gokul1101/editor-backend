@@ -91,6 +91,7 @@ const ContestStatictics = (props) => {
           <div className="top-part mt-2 mb-2 p-2">
             <div className="d-flex align-items-center justify-content-center mt-2 mb-2">
               <img
+              alt="someImage"
                 src="https://img.icons8.com/emoji/30/000000/trophy-emoji.png"
                 className="pr-3 img-fluid"
               />
@@ -103,7 +104,7 @@ const ContestStatictics = (props) => {
                 </div>
                 <div className="col-md-6 top-scorer">Dhanush Karthick</div>
                 <div className="col-md-4 d-flex justify-content-between align-items-center">
-                  <img src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
+                  <img alt="someImage" src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
                   <span className="score-point">1029</span>
                 </div>
               </div>
@@ -113,7 +114,7 @@ const ContestStatictics = (props) => {
                 </div>
                 <div className="col-md-6 top-scorer">Dhanush Karthick</div>
                 <div className="col-md-4 d-flex justify-content-between align-items-center">
-                  <img src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
+                  <img alt="someImage" src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
                   <span className="score-point">102</span>
                 </div>
               </div>
@@ -123,7 +124,7 @@ const ContestStatictics = (props) => {
                 </div>
                 <div className="col-md-6 top-scorer">Dhanush Karthick</div>
                 <div className="col-md-4 d-flex justify-content-between align-items-center">
-                  <img src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
+                  <img alt="someImage" src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
                   <span className="score-point">10</span>
                 </div>
               </div>
@@ -131,7 +132,7 @@ const ContestStatictics = (props) => {
           </div>
           <div className="top-part mt-2 mb-2 p-3">
             <div className="submissions d-flex flex-column align-items-center justify-content-center">
-              <img src={SubmissionGif} height="96" width="96" />
+              <img alt="someImage" src={SubmissionGif} height="96" width="96" />
               <span>Total no. of submissions : <span className="submission-count">40</span></span>
             </div>
           </div>

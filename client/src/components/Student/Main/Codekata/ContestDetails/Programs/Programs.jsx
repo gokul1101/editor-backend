@@ -5,6 +5,7 @@ import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
 import Editor from "../../../../../Reducer/Editor/Editor";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import Testcase from "./Testcase/Testcase";
+import Timer from "../../Timer/Timer";
 const Programs = (props) => {
   let history = useHistory();
   const { questionId } = useParams();
@@ -31,16 +32,15 @@ const Programs = (props) => {
   const handleLanguage = (event) => setLanguage(event.target.value);
   return (
     <>
-    {console.log(challenge)}
       <div className="container-fluid" id={challenge?._id}>
         <div className="problem-header p-2 d-flex border-bottom border-left">
           <div className="problem-title d-flex">
             <div
-              class="back-btn mt-1 ml-2 mr-2"
+              className="back-btn mt-1 ml-2 mr-2"
               onClick={() => history.goBack()}
             >
-              <div class="triangle"></div>
-              <div class="halfcircle"></div>
+              <div className="triangle"></div>
+              <div className="halfcircle"></div>
             </div>
             {/* <span className="problem-title-head">Array of hope</span> */}
           </div>
@@ -48,23 +48,20 @@ const Programs = (props) => {
             
           </div> */}
           <div className="d-flex align-items-center justify-content-center">
-            <div className="timer d-flex pr-2 pl-2">
-              <i class="fas fa-clock clock-icon mr-2"></i>
-              <span className="timer-clock">: 8</span>
-            </div>
+            <Timer />
           </div>
         </div>
         <div className="problem-toggler">
           <div className="d-flex">
             <div className="col-md-4 p-0 border-left border-right border-bottom">
               <ul
-                class="nav nav-pills program-pills p-3 border-bottom"
+                className="nav nav-pills program-pills p-3 border-bottom"
                 id="pills-tab"
                 role="tablist"
               >
-                <li class="nav-item program-item" role="presentation">
+                <li className="nav-item program-item" role="presentation">
                   <a
-                    class="nav-link active program-link"
+                    className="nav-link active program-link"
                     id="pills-problem-tab"
                     data-toggle="pill"
                     href="#pills-problem"
@@ -75,9 +72,9 @@ const Programs = (props) => {
                     Problem
                   </a>
                 </li>
-                <li class="nav-item program-item" role="presentation">
+                <li className="nav-item program-item" role="presentation">
                   <a
-                    class="nav-link program-link"
+                    className="nav-link program-link"
                     id="pills-submissions-tab"
                     data-toggle="pill"
                     href="#pills-submissions"
@@ -89,9 +86,9 @@ const Programs = (props) => {
                   </a>
                 </li>
               </ul>
-              <div class="tab-content p-2" id="pills-tabContent">
+              <div className="tab-content p-2" id="pills-tabContent">
                 <div
-                  class="tab-pane fade show active p-2"
+                  className="tab-pane fade show active p-2"
                   id="pills-problem"
                   role="tabpanel"
                   aria-labelledby="pills-problem-tab"
@@ -117,13 +114,13 @@ const Programs = (props) => {
                     </span>
                     <div className="constraints-content d-flex flex-column mt-2">
                       <span className="mt-2">
-                        <i class="fas fa-circle constraints-dot mr-2"></i>
+                        <i className="fas fa-circle constraints-dot mr-2"></i>
                         <span className="constraints-highlight pr-2 pl-2 mr-1">
                           {challenge?.constraints}
                         </span>
                       </span>
                       {/* <span className="mt-2">
-                        <i class="fas fa-circle constraints-dot mr-2"></i>
+                        <i className="fas fa-circle constraints-dot mr-2"></i>
                         <span className="constraints-highlight pr-2 pl-2 mr-1">
                           0 &lt; m &lt; 200,000
                         </span>{" "}
@@ -169,7 +166,7 @@ const Programs = (props) => {
                   <div></div>
                 </div>
                 <div
-                  class="tab-pane fade"
+                  className="tab-pane fade"
                   id="pills-submissions"
                   role="tabpanel"
                   aria-labelledby="pills-submissions-tab"
@@ -213,7 +210,7 @@ const Programs = (props) => {
               <Editor language={language} themeName={themeName} />
               <div className="create-con mt-3 d-flex justify-content-end">
                 <button className="p-2">
-                  <i class="fas fa-check pr-2 pl-2"></i>SUBMIT
+                  <i className="fas fa-check pr-2 pl-2"></i>SUBMIT
                 </button>
                 <button className="p-2 ml-2">
                   <i className="fas fa-code pr-2 pl-2"></i>RUN CODE

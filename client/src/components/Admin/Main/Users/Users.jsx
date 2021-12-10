@@ -6,8 +6,8 @@ import ListUser from "./ListUser/ListUser";
 const Users = () => {
   return (
     <div className="container-fluid add-user-container">
-      <ul class="list-group d-flex align-items-center justify-content-center flex-row p-2 mt-3 mb-3">
-        <li class="list-group-item user-group-pill">
+      <ul className="list-group d-flex align-items-center justify-content-center flex-row p-2 mt-3 mb-3">
+        <li className="list-group-item user-group-pill">
           <NavLink
             exact
             className="user-navlink pr-3 pl-3 m-2"
@@ -17,7 +17,7 @@ const Users = () => {
             <i className="fas fa-plus pr-1 pl-1"></i> Add user
           </NavLink>
         </li>
-        <li class="list-group-item user-group-pill">
+        <li className="list-group-item user-group-pill">
           <NavLink
             exact
             className="user-navlink pr-3 pl-3 m-2"

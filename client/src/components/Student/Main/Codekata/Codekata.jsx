@@ -4,14 +4,16 @@ import { AuthContext } from "../../../../contexts/AuthContext";
 import helperService from "../../../../services/helperService";
 import codekata from "../../../Images/codekata.svg";
 import "./Codekata.css";
-const Codekata = (props) => {
+const Codekata = ({setSideToggle, ...props}) => {
   const [authState,authDispatch] = useContext(AuthContext);
   const history = useHistory();
   const [code, setCode] = useState("");
 
   useEffect(() => {
-    props.setSideToggle(false);
-  }, []);
+    setSideToggle(false);
+    authDispatch({type : "REMOVE_CONTEST"})
+    authDispatch({type : "REMOVE_DURATION"})
+  }, [setSideToggle, authDispatch]);
   const submitCode = async (e) => {
     e.preventDefault();
     if (code.length !== 6){
@@ -27,6 +29,10 @@ const Codekata = (props) => {
         authDispatch({
           type: "SET_CONTEST",
           payload: { ...contest },
+        });
+        authDispatch({
+          type: "SET_DURATION",
+          payload: contest?.session?.ends_at,
         });
         history.push(`/codekata/${code}`);
       }

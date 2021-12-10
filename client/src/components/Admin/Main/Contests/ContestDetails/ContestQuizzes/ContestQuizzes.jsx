@@ -17,7 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 const ContestQuizzes = () => {
   const { id } = useParams();
-  const [authState, authDispatch] = useContext(AuthContext);
+  const [authState,] = useContext(AuthContext);
   const [quizName, setQuizName] = useState("");
   const [open, setOpen] = React.useState(false);
   const [quizzArr, setQuizzArr] = useState([]);
