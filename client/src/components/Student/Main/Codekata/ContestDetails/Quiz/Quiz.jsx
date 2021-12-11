@@ -6,70 +6,57 @@ import Male from "../../../../../Images/man.png";
 import Timer from "../../Timer/Timer";
 import { useContext } from "react";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
-
+import helperService from "../../../../../../services/helperService";
 const Quiz = ({ setSideToggle }) => {
   const location = useParams();
   const history = useHistory();
   const [authState, authDisaptch] = useContext(AuthContext);
-  // const [questions, setQuestions] = useState({});
-  useEffect(() => {
-    console.log(authState.contest);
-    setSideToggle(true);
-  }, [setSideToggle]);
-
-  let [currentQuestion, setCurrentQuestion] = useState(0);
+  const [quiz, setQuiz] = useState({});
+  const [questions, setQuestions] = useState([]);
+  let [currentQuestionNumber, setCurrentQuestionNumber] = useState(0);
+  let [currentQuestion, setCurrentQuestion] = useState({});
   const [status, setStatus] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState("");
-  const questions = [
-    {
-      questionText: "who is richest person in the world?",
-      answerOptions: {
-        A: "Jeff Bezons",
-        B: "Elon Musk",
-        C: "Mukesh Ambani",
-        D: "Warren Buffett",
-      },
-      correctAnswer: "Elon Musk",
-    },
-    {
-      questionText: "World pana kaarar yaar ?",
-      answerOptions: {
-        A: "Vijay Rupani",
-        B: "Manmohan singh",
-        C: "Narendra Modi",
-        D: "Deep Patel",
-      },
-      correctAnswer: "Elon Musk",
-    },
-    {
-      questionText: "Who is CEO of Tata?",
-      answerOptions: {
-        A: "Jeff Bezos",
-        B: "Ratan Tata",
-        C: "Mukesh Ambani",
-        D: "Gautam Adani",
-      },
-      correctAnswer: "Elon Musk",
-    },
-    {
-      questionText: "how many countries in the world?",
-      answerOptions: {
-        A: "238",
-        B: "237",
-        C: "299",
-        D: "123",
-      },
-      correctAnswer: "372",
-    },
-  ];
 
-  const handleNext = () => {
-    if (!status) return;
-    const nextQuetions = currentQuestion + 1;
-    if (nextQuetions < questions.length) {
-      setCurrentQuestion(nextQuetions);
+  const initComponent = async () => {
+    setQuiz(
+      authState?.contest?.quizzes.find(
+        (quiz) => quiz._id === location.questionId
+      )
+    );
+    setSideToggle(true);
+    let [mcqs] = await getQuestions();
+    setCurrentQuestion(mcqs);
+    setCurrentQuestionNumber(currentQuestionNumber + 1);
+  };
+  const getQuestions = async () => {
+    try {
+      const {
+        status,
+        data: { mcqs },
+      } = await helperService.getQuizQuestions(
+        { id: location.questionId, page: currentQuestionNumber + 1 },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 200) {
+        setQuestions([...questions, ...mcqs]);
+        return mcqs;
+      }
+    } catch (err) {
+      console.log(err);
     }
-
+  };
+  useEffect(async () => {
+    await initComponent();
+  }, []);
+  let isLast = currentQuestionNumber === quiz?.total_mcqs;
+  const handleNext = async () => {
+    if (!status) return;
+    if (!isLast) {
+      let [mcqs] = await getQuestions();
+      setCurrentQuestion(mcqs);
+      setCurrentQuestionNumber(currentQuestionNumber + 1);
+    }
     setStatus(false);
     setSelectedAnswer("");
   };
@@ -77,7 +64,7 @@ const Quiz = ({ setSideToggle }) => {
     setSelectedAnswer(ans);
     setStatus(true);
   };
-  let isLast = currentQuestion + 1 === questions.length;
+  
   return (
     <div className="container-fluid p-0 Quiz-question-container">
       <div className="d-flex">
@@ -105,11 +92,12 @@ const Quiz = ({ setSideToggle }) => {
           <p className="text-left dash-title-category">
             ROOM CODE : {location.id}
           </p>
-          <p className="text-left problem-article">Python warmup MCQ's</p>
+          <p className="text-left problem-article">{quiz?.name}</p>
           <div className="col p-0">
             <div className="col question-outoff p-0">
               <span className="question-order p-2 bg-dark text-white">
-                Question {currentQuestion + 1}/{questions.length}
+                Question {currentQuestionNumber || 0}/
+                {quiz?.total_mcqs || 0}
               </span>
             </div>
             <div className="hr">
@@ -123,28 +111,30 @@ const Quiz = ({ setSideToggle }) => {
           </div>
           <div className="d-flex flex-column quizzes pt-4 pb-4">
             <div className="d-flex">
-              <div className="numberCircle ml-3">{currentQuestion + 1}</div>
+              <div className="numberCircle ml-3">
+                {currentQuestionNumber}
+              </div>
               <div className="question-up ml-3">
                 <span className="span-question font-weight-bolder">
-                  {questions[currentQuestion].questionText}
+                  {currentQuestion.statement}
                 </span>
               </div>
             </div>
             <div className="d-flex flex-column align-items-center justify-content-center mt-3">
               <div className="d-flex p-2 w-100 individual-question flex-wrap">
-                {Object.values(questions[currentQuestion].answerOptions).map(
-                  (answerOptions, id) => {
+                {Object.values(currentQuestion?.options || []).map(
+                  (option, id) => {
                     return (
                       <button
                         key={id}
                         className={`${
-                          status && selectedAnswer === answerOptions
+                          status && selectedAnswer === option
                             ? `correct-option text-left p-2 m-2`
                             : `option-1 text-left p-2 m-2 individual-options`
                         }`}
-                        onClick={() => answerHandler(answerOptions)}
+                        onClick={() => answerHandler(option)}
                       >
-                        {answerOptions}
+                        {option}
                       </button>
                     );
                   }
@@ -199,11 +189,11 @@ const Quiz = ({ setSideToggle }) => {
             >
               <span className="span-question mt-2 mb-3">Question Path</span>
               <div className="d-flex flex-wrap">
-                {questions.map((x, i) => {
+                {Array.apply(0, Array(quiz?.total_mcqs || 0)).map((x, i) => {
                   return (
                     <button
                       className={`${
-                        currentQuestion === i
+                        currentQuestionNumber-1 === i
                           ? `correct ml-3 mb-2 text-center`
                           : `que-path ml-3 mb-3 text-center`
                       }`}

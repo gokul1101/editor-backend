@@ -149,10 +149,10 @@ const helperService = {
       });
     }
   },
-  getQuizQuestions : async ({id},config) => {
+  getQuizQuestions : async ({id, page=1},config) => {
     try {
       const { data, status } = await axios.get(
-        `${baseURL}/api/v1/mcq/all?id=${id}`,
+        `${baseURL}/api/v1/mcq/all?id=${id}&page=${page}`,
         config
       );
       if (status === 200) {

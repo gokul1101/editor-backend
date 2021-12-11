@@ -125,6 +125,11 @@ const setTime = (date, duration) => {
   date.setTime(date.getTime() + (seconds *  1000));
   return date;
 }
+
+const modifyData = (data) => {
+  
+}
+
 module.exports = {
   UUID,
   getDuration,

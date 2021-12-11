@@ -22,9 +22,8 @@ const createQuestion = async (req, res) => {
     questionDetails.type_id = (
       await TestType.findOne({ name: questionDetails.type_id })
     )._id;
-    let { code, message,mcq } = await functions[index](questionDetails);
-    console.log(mcq)
-    res.status(code).json({message,mcq});
+    let { code, message, mcq } = await functions[index](questionDetails);
+    res.status(code).json({ message, mcq });
   } catch (err) {
     //! Error in creating question
     console.log("at line 29", err);
@@ -42,7 +41,7 @@ const getQuestion = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting question
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on fetching mcqs`;
     }
@@ -61,8 +60,8 @@ const updateQuestion = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in updating question
-    console.log(err)
-    if(!err.code) {
+    console.log(err);
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on updating mcqs`;
     }
@@ -70,14 +69,15 @@ const updateQuestion = async (req, res) => {
   }
 };
 const getAllMCQS = async (req, res) => {
-  const {id, page=1, limit=10} = req.query;
+  let { id, page = 1, limit } = req.query;
   let flag = req.user.role_id === "admin";
+  limit = flag? 10 : 1;
   try {
-    const response = await getAllMcqWithQuizID(id, page, limit,flag);
+    const response = await getAllMcqWithQuizID(id, page, limit, flag);
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting mcqs with quiz id
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on fetching mcqs`;
     }
@@ -91,7 +91,7 @@ const getAllChallenges = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting mcqs with quiz id
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on fetching mcqs`;
     }
