@@ -3,8 +3,8 @@ import React, { createContext, useReducer } from "react";
 const initialState = {
   user: null,
   contest: null,
-  challenge : null,
-  duration: null
+  challenge: null,
+  duration: null,
 };
 const AuthReducer = (state, action) => {
   switch (action.type) {

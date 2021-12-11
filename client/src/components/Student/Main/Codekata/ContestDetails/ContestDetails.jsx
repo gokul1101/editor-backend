@@ -23,11 +23,14 @@ const ContestDetails = (props) => {
   return (
     <div className="container-fluid dashboard">
       <div className="d-flex">
-        <div className="back-btn mr-auto mt-3 ml-4" onClick={() => history.goBack()}>
+        <div
+          className="back-btn mr-auto mt-3 ml-4"
+          onClick={() => history.goBack()}
+        >
           <div className="triangle"></div>
           <div className="halfcircle"></div>
         </div>
-        <div className="timer mt-2">
+        <div className="timer mt-4">
           <Timer />
         </div>
         <div className="user-info position-relative">
@@ -49,42 +52,58 @@ const ContestDetails = (props) => {
             <span className="room-code p-2 m-2 text-white">{id}</span>
           </p>
         </div>
-        <div className="create-con">
-          <button className="p-2">
-            <i className="fas fa-rocket pr-2 pl-2"></i>SUBMIT
-          </button>
-        </div>
+        <button className="btn-hover color-11 mt-4">
+          SUBMIT <i className="fas fa-rocket mr-2 ml-2"></i>
+        </button>
       </div>
       <div className="d-flex">
-        <div className="col-md-8">
-          <p className="text-left ml-5 dash-title-category">QUIZZES</p>
-          <div className="d-flex flex-wrap">
-            {authState?.contest?.quizzes?.map((quiz) => {
-              return (
-                <ContestCard
-                  key={quiz._id}
-                  image={QuizImage}
-                  question={quiz}
-                  routeQuestion={routeQuestion}
-                />
-              );
-            })}
-          </div>
-          <p className="text-left ml-5 problem-article">PROBLEMS</p>
-          <div className="d-flex flex-wrap">
-            {authState?.contest?.challenges?.map((problem) => {
-              return (
-                <ContestCard
-                  key={problem._id}
-                  image={ProblemImage}
-                  question={problem}
-                  routeQuestion={routeQuestion}
-                />
-              );
-            })}
-          </div>
+        <div
+          className="col-md-8"
+          style={{ height: "80vh", overflowY: "scroll" }}
+        >
+          {authState.contest.quizzes.length === 0 ? (
+            <></>
+          ) : (
+            <div className="quiz-card">
+              <p className="text-left ml-5 dash-title-category">QUIZZES</p>
+              <div className="d-flex flex-wrap">
+                {authState?.contest?.quizzes?.map((quiz) => {
+                  return (
+                    <ContestCard
+                      key={quiz._id}
+                      image={QuizImage}
+                      question={quiz}
+                      routeQuestion={routeQuestion}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          {authState.contest.challenges.length === 0 ? (
+            <></>
+          ) : (
+            <div className="challenge-card">
+              <p className="text-left ml-5 problem-article">PROBLEMS</p>
+              <div className="d-flex flex-wrap">
+                {authState?.contest?.challenges?.map((problem) => {
+                  return (
+                    <ContestCard
+                      key={problem._id}
+                      image={ProblemImage}
+                      question={problem}
+                      routeQuestion={routeQuestion}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
-        <div className="col-md-4">
+        <div
+          className="col-md-4"
+          style={{ height: "80vh", overflowY: "scroll" }}
+        >
           <div className="tab-content p-2" id="pills-tabContent">
             <div className="d-flex mt-2">
               <h5 className="quiz-instruct mr-2">

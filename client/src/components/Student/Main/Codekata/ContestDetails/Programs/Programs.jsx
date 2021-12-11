@@ -36,19 +36,46 @@ const Programs = (props) => {
         <div className="problem-header p-2 d-flex border-bottom border-left">
           <div className="problem-title d-flex">
             <div
-              className="back-btn mt-1 ml-2 mr-2"
+              className="back-btn mt-2 ml-2 mr-2"
               onClick={() => history.goBack()}
             >
               <div className="triangle"></div>
               <div className="halfcircle"></div>
             </div>
-            {/* <span className="problem-title-head">Array of hope</span> */}
+            <div className="timer mt-1 ml-2">
+              <Timer />
+            </div>
           </div>
-          {/* <div className="d-flex align-items-center ml-3 mr-auto">
-            
-          </div> */}
-          <div className="d-flex align-items-center justify-content-center">
-            <Timer />
+          <div className="w-100 d-flex flex-row-reverse mt-3 mb-2">
+            <div className="w-25 mx-2">
+              <SelectReducer
+                array={["c", "java"]}
+                name="Select language"
+                handleSelect={handleLanguage}
+                value={language}
+                size="small"
+                defaultValue={language}
+                className="w-100"
+              />
+            </div>
+            <div className="w-25 mx-2">
+              <SelectReducer
+                array={[
+                  "xcode",
+                  "monokai",
+                  "github",
+                  "nord_dark",
+                  "textmate",
+                  "one_dark",
+                ]}
+                name="Select theme"
+                handleSelect={handleChange}
+                value={themeName}
+                size="small"
+                className="w-100"
+                defaultValue={themeName}
+              />
+            </div>
           </div>
         </div>
         <div className="problem-toggler">
@@ -104,9 +131,7 @@ const Programs = (props) => {
                     </div>
                   </div>
                   <div className="problem-statement text-justify mt-3">
-                    <p>
-                      {challenge?.statement}
-                    </p>
+                    <p>{challenge?.statement}</p>
                   </div>
                   <div className="constraints mb-2">
                     <span className="constraints-title font-weight-bolder color-highlight">
@@ -149,7 +174,9 @@ const Programs = (props) => {
                         output :{" "}
                       </span>{" "}
                       <br />
-                      <p className="mt-2 font-weight-bolder">{challenge?.output_format}</p>
+                      <p className="mt-2 font-weight-bolder">
+                        {challenge?.output_format}
+                      </p>
                     </div>
                   </div>
                   <div className="hints mt-2 d-flex flex-column">
@@ -157,9 +184,7 @@ const Programs = (props) => {
                       Hints :
                     </span>
                     <div className="problem-statement text-justify mt-2">
-                      <p>
-                       {challenge?.description}
-                      </p>
+                      <p>{challenge?.description}</p>
                     </div>
                   </div>
                   {/* /TESTCASE/ */}
@@ -176,44 +201,13 @@ const Programs = (props) => {
               </div>
             </div>
             <div className="col-md-8 p-0 d-flex flex-column">
-              <div className="w-100 d-flex flex-row-reverse mt-3 mb-2">
-                <div className="w-25 mx-2">
-                  <SelectReducer
-                    array={["c", "java"]}
-                    name="Select language"
-                    handleSelect={handleLanguage}
-                    value={language}
-                    size="small"
-                    defaultValue={language}
-                    className="w-100"
-                    />
-                </div>
-                <div className="w-25 mx-2">
-                  <SelectReducer
-                    array={[
-                      "xcode",
-                      "monokai",
-                      "github",
-                      "nord_dark",
-                      "textmate",
-                      "one_dark",
-                    ]}
-                    name="Select theme"
-                    handleSelect={handleChange}
-                    value={themeName}
-                    size="small"
-                    className="w-100"
-                    defaultValue={themeName}
-                  />
-                </div>
-              </div>
               <Editor language={language} themeName={themeName} />
-              <div className="create-con mt-3 d-flex justify-content-end">
-                <button className="p-2">
-                  <i className="fas fa-check pr-2 pl-2"></i>SUBMIT
+              <div className="mt-3 d-flex justify-content-end">
+                <button className="btn-hover color-11 mr-2">
+                  RUN CODE <i className="fas fa-code mr-2 ml-2"></i>
                 </button>
-                <button className="p-2 ml-2">
-                  <i className="fas fa-code pr-2 pl-2"></i>RUN CODE
+                <button className="btn-hover color-11">
+                  SUBMIT <i className="fas fa-rocket mr-2 ml-2"></i>
                 </button>
               </div>
             </div>

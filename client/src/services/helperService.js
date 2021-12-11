@@ -149,7 +149,7 @@ const helperService = {
       });
     }
   },
-  getQuizQuestions : async ({id},config) => {
+  getQuizQuestions: async ({ id }, config) => {
     try {
       const { data, status } = await axios.get(
         `${baseURL}/api/v1/mcq/all?id=${id}`,
@@ -169,7 +169,7 @@ const helperService = {
       });
     }
   },
-  createQuizQuestion : async (payload,config) => {
+  createQuizQuestion: async (payload, config) => {
     try {
       const { data, status } = await axios.post(
         `${baseURL}/api/v1/question/create`,
@@ -190,7 +190,7 @@ const helperService = {
       });
     }
   },
-  createChallenge : async (payload,config) => {
+  createChallenge: async (payload, config) => {
     try {
       const { data, status } = await axios.post(
         `${baseURL}/api/v1/question/create`,
@@ -211,7 +211,7 @@ const helperService = {
       });
     }
   },
-  getChallenges : async ({id},config) => {
+  getChallenges: async ({ id }, config) => {
     try {
       const { data, status } = await axios.get(
         `${baseURL}/api/v1/challenges/all?id=${id}`,
@@ -231,7 +231,7 @@ const helperService = {
       });
     }
   },
-  getQuestion : async ({id,type},config) => {
+  getQuestion: async ({ id, type }, config) => {
     try {
       const { data, status } = await axios.get(
         `${baseURL}/api/v1/question/get?id=${id}&type=${type} `,
@@ -251,7 +251,7 @@ const helperService = {
       });
     }
   },
-  createTestcase : async (payload,config) => {
+  createTestcase: async (payload, config) => {
     try {
       const { data, status } = await axios.post(
         `${baseURL}/api/v1/testcase/create`,
