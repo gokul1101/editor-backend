@@ -33,7 +33,7 @@ const {
   createMultipleTestCases,
   updateTestCase,
 } = require("../controllers/testcaseController");
-const {compilerService} = require("../services/compilerService");
+const { createSubmission } = require("../controllers/submissionController");
 const { getErrorLogs } = require("../controllers/errorLogsController");
 const { compile } = require("../controllers/compileController");
 
@@ -48,18 +48,13 @@ router.post(
 //* User registration
 router.post(
   "/api/v1/user/create",
-  // userAuth,
-  // routeAuth("createUser"),
+  userAuth,
+  routeAuth("createUser"),
   createUser
 );
 
 //* User Details
-router.get(
-  "/api/v1/user/get",
-  userAuth,
-  routeAuth("getUser"),
-  getUser
-);
+router.get("/api/v1/user/get", userAuth, routeAuth("getUser"), getUser);
 
 //* User Update
 router.post(
@@ -106,6 +101,7 @@ router.get(
 router.get(
   "/api/v1/contest/dashboard",
   userAuth,
+  routeAuth("getContestForDashboard"),
   getContestForDashboard
 );
 router.get(
@@ -166,12 +162,7 @@ router.post(
   routeAuth("updateQuestion"),
   updateQuestion
 );
-router.get(
-  "/api/v1/mcq/all",
-  userAuth,
-  routeAuth("getAllMCQS"),
-  getAllMCQS
-);
+router.get("/api/v1/mcq/all", userAuth, routeAuth("getAllMCQS"), getAllMCQS);
 router.post(
   "/api/v1/challenge/all",
   userAuth,
@@ -191,10 +182,16 @@ router.post(
   routeAuth("updateTestCase"),
   updateTestCase
 );
+//* =============Submission===============*//
+router.post(
+  "/api/v1/submission/create",
+  userAuth,
+  routeAuth("createSubmission"),
+  createSubmission
+);
 //* ==============Compiler===============*//
-// router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compilerService);
 router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compile);
 
 //* =============== Error Logs =========== *//
-router.get("/api/v1/errorLogs", userAuth, routeAuth("errorLogs"), getErrorLogs)
+router.get("/api/v1/errorLogs", userAuth, routeAuth("errorLogs"), getErrorLogs);
 module.exports = router;

@@ -2,12 +2,14 @@ const common = [
   "getUser",
   "updateUser",
   "getContest",
+  "getContestForDashboard",
   "getAllContests",
   "getQuiz",
   "getAllQuizzes",
   "getQuestion",
   "getAllMCQS",
   "getAllChallenges",
+  "createSubmission",
   "compiler",
 ];
 const student = [...common];

@@ -129,42 +129,46 @@ const challengeSubmissionService = async ({
     const { max_score } = await Question.findById(question_id);
     const { testcases } = await Answer.findOne({ question_id });
     const totalTestCases = testcases.sample.length + testcases.hidden.length;
-    const sampleTestCaseOutput = testcases.sample.map((testcase) => {
-      try {
-        const { output } = await compilerService(code, testcase.input);
-        if (submission && testcase.output === output) score++;
-        return {
-          expectedOutput: testcase.output,
-          actualOutput: output,
-          errors: false,
-        };
-      } catch ({ output }) {
-        flag = false;
-        console.log(output);
-        return {
-          expectedOutput: testcase.output,
-          actualOutput: output,
-          errors: true,
-        };
-      }
-    });
+    const sampleTestCaseOutput = await Promise.all(
+      testcases.sample.map(async (testcase) => {
+        try {
+          const { output } = await compilerService(code, testcase.input);
+          if (submission && testcase.output === output) score++;
+          return {
+            expectedOutput: testcase.output,
+            actualOutput: output,
+            errors: false,
+          };
+        } catch ({ output }) {
+          flag = false;
+          console.log(output);
+          return {
+            expectedOutput: testcase.output,
+            actualOutput: output,
+            errors: true,
+          };
+        }
+      })
+    );
     if (!submission && !flag)
       return Promise.resolve({
         code: 200,
         sampleTestCaseOutput,
       });
-    const hiddenTestCaseOutput = testcases.hidden.map((testcase) => {
-      try {
-        const { output } = await compilerService(code, testcase.input);
-        if (output === testcase.output) {
-          if (submission) score++;
-          return true;
-        } else return false;
-      } catch (err) {
-        console.log(err);
-        return false;
-      }
-    });
+    const hiddenTestCaseOutput = await Promise.all(
+      testcases.hidden.map(async (testcase) => {
+        try {
+          const { output } = await compilerService(code, testcase.input);
+          if (output === testcase.output) {
+            if (submission) score++;
+            return true;
+          } else return false;
+        } catch (err) {
+          console.log(err);
+          return false;
+        }
+      })
+    );
     if (submission) {
       let total_score = Math.round((score / totalTestCases) * max_score);
       return Promise.resolve({ score: total_score });

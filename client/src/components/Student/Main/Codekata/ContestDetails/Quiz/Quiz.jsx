@@ -10,7 +10,7 @@ import helperService from "../../../../../../services/helperService";
 const Quiz = ({ setSideToggle }) => {
   const location = useParams();
   const history = useHistory();
-  const [authState, authDisaptch] = useContext(AuthContext);
+  const [authState, ] = useContext(AuthContext);
   const [quiz, setQuiz] = useState({});
   const [questions, setQuestions] = useState([]);
   let [currentQuestionNumber, setCurrentQuestionNumber] = useState(0);
@@ -57,11 +57,13 @@ const Quiz = ({ setSideToggle }) => {
       setCurrentQuestion(mcqs);
       setCurrentQuestionNumber(currentQuestionNumber + 1);
     }
+
     setStatus(false);
     setSelectedAnswer("");
   };
   const answerHandler = (ans) => {
-    setSelectedAnswer(ans);
+    let option = String.fromCharCode(65 + ans);
+    setSelectedAnswer(option);
     setStatus(true);
   };
   
@@ -123,16 +125,16 @@ const Quiz = ({ setSideToggle }) => {
             <div className="d-flex flex-column align-items-center justify-content-center mt-3">
               <div className="d-flex p-2 w-100 individual-question flex-wrap">
                 {Object.values(currentQuestion?.options || []).map(
-                  (option, id) => {
+                  (option, index) => {
                     return (
                       <button
-                        key={id}
+                        key={option}
                         className={`${
-                          status && selectedAnswer === option
+                          status && selectedAnswer === String.fromCharCode(index+65)
                             ? `correct-option text-left p-2 m-2`
                             : `option-1 text-left p-2 m-2 individual-options`
                         }`}
-                        onClick={() => answerHandler(option)}
+                        onClick={() => answerHandler(index)}
                       >
                         {option}
                       </button>
