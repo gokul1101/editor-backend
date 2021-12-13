@@ -112,6 +112,7 @@ const Login = (props) => {
             </form>
             <form action="#" className="sign-up-form" onSubmit={handleSubmit}>
               <h2 className="title">Admin Sign in</h2>
+              <p className="highlight">Learn , Code , Repeat</p>
               <div className="input-field">
                 <i className="fas fa-user"></i>
                 <input

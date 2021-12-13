@@ -121,10 +121,8 @@ const CreateContest = (props) => {
       </div>
 
       <div className="create-con mt-5 float-right">
-        <button className="p-2" onClick={getContest}>
-          <i className="fas fa-plus pr-2 pl-2"></i>
-          {props?.title?.toUpperCase()}
-        </button>
+      <button className="btn-hover color-11 mt-4"  onClick={getContest} > <i className="fas fa-plus pr-2 pl-1"></i>  {props?.title?.toUpperCase()} </button>   
+      
       </div>
     </div>
   );

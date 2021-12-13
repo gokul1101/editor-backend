@@ -1,6 +1,7 @@
 import React from "react";
 import "./ContestStatictics.css";
 import SubmissionGif from "../../../../../Images/submission.gif";
+import Pagination from "@material-ui/lab/Pagination";
 const ContestStatictics = (props) => {
   const stats = [
     {
@@ -75,6 +76,7 @@ const ContestStatictics = (props) => {
             <div className="col-md-2 inner-stat-nav">TIME</div>
             <div className="col-md-3 inner-stat-nav">POINTS</div>
           </div>
+
           {stats.map((e, id) => {
             return (
               <div className="stats d-flex w-100">
@@ -86,7 +88,9 @@ const ContestStatictics = (props) => {
               </div>
             );
           })}
+
         </div>
+        
         <div className="col-md-3 d-flex flex-column m-1">
           <div className="top-part mt-2 mb-2 p-2">
             <div className="d-flex align-items-center justify-content-center mt-2 mb-2">
@@ -139,7 +143,17 @@ const ContestStatictics = (props) => {
 
           </div>
         </div>
+
       </div>
+      <div>
+      <Pagination
+            count={13}
+            color="primary"
+            variant="text"
+          className="mt-5 d-flex justify-content-end"
+          />
+      </div>
+
     </div>
   );
 };

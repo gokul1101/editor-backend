@@ -287,7 +287,17 @@ const ListUser = (props) => {
               })}
             </div>
           </div>
-        </div>
+          <div>
+     
+        
+      </div>
+      </div>
+        <Pagination
+            count={13}
+            color="primary"
+            variant="text"
+          className="mt-5 d-flex justify-content-end"
+          />
       </div>
     </>
   );

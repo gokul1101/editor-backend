@@ -3,6 +3,8 @@ import "./Contests.css";
 import { Link } from "react-router-dom";
 import helperService from "../../../../services/helperService";
 import { AuthContext } from "../../../../contexts/AuthContext";
+import Pagination from "@material-ui/lab/Pagination";
+
 const Contests = () => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [eventArr, setEventArr] = useState([]);
@@ -106,6 +108,7 @@ const Contests = () => {
           </div>
           <div className="col-md-2 text-center content-nav-title">Status</div>
         </div>
+        
         <div className="d-flex flex-column">
           {eventArr.map((event) => {
             return (
@@ -128,8 +131,18 @@ const Contests = () => {
             );
           })}
         </div>
+        
+      </div>
+      <div>
+      <Pagination
+            count={13}
+            color="primary"
+            variant="text"
+          className="mt-5 d-flex justify-content-end"
+          />
       </div>
     </div>
+    
   );
 };
 
