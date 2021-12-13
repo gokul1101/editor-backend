@@ -7,27 +7,54 @@ import ProblemImage from "../../../../Images/problem.png";
 import Timer from "../Timer/Timer";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import ContestCard from "./ContestCard/ContestCard";
+import helperService from "../../../../../services/helperService";
 
-const ContestDetails = (props) => {
+const ContestDetails = ({setSideToggle}) => {
   const { id } = useParams();
   const history = useHistory();
-  const [authState, authDispatch] = useContext(AuthContext);
+  const [authState, ] = useContext(AuthContext);
   const routeQuestion = (question_id, type) => {
     history.push(`/codekata/${id}/${type}/${question_id}`);
   };
-
+  const sumbitContest = async () => {
+    let payload = {
+      user_id : authState?.user?._id,
+      contest_id : authState?.contest?.contest_id
+    }
+    let contestQuizzes = authState?.contest?.quizzes || [];
+    let contestChallenges = authState?.contest?.challenges || [];
+    payload.quizzes = contestQuizzes.map(quiz => {
+      return (
+        JSON.parse(localStorage.getItem(quiz?.name) || "[]")
+      )
+    })
+    payload.challenges = contestChallenges.map(challenge => {
+      return (
+        JSON.parse(localStorage.getItem(challenge?.name) || "[]")
+      )
+    })
+    const response= await helperService.createSubmission(
+      {...payload},
+      { headers: { Authorization: authState.user.token } }
+    );
+    console.log(response);
+  }
   useEffect(() => {
-    props.setSideToggle(true);
-  }, []);
+    console.log(authState)
+    setSideToggle(true);
+  }, [setSideToggle]);
 
   return (
     <div className="container-fluid dashboard">
       <div className="d-flex">
-        <div className="back-btn mr-auto mt-3 ml-4" onClick={() => history.goBack()}>
+        <div
+          className="back-btn mr-auto mt-3 ml-4"
+          onClick={() => history.goBack()}
+        >
           <div className="triangle"></div>
           <div className="halfcircle"></div>
         </div>
-        <div className="timer mt-2">
+        <div className="timer mt-4">
           <Timer />
         </div>
         <div className="user-info position-relative">
@@ -49,42 +76,58 @@ const ContestDetails = (props) => {
             <span className="room-code p-2 m-2 text-white">{id}</span>
           </p>
         </div>
-        <div className="create-con">
-          <button className="p-2">
-            <i className="fas fa-rocket pr-2 pl-2"></i>SUBMIT
-          </button>
-        </div>
+        <button className="btn-hover color-11 mt-4" onClick={sumbitContest}>
+          SUBMIT <i className="fas fa-rocket mr-2 ml-2"></i>
+        </button>
       </div>
       <div className="d-flex">
-        <div className="col-md-8">
-          <p className="text-left ml-5 dash-title-category">QUIZZES</p>
-          <div className="d-flex flex-wrap">
-            {authState?.contest?.quizzes?.map((quiz) => {
-              return (
-                <ContestCard
-                  key={quiz._id}
-                  image={QuizImage}
-                  question={quiz}
-                  routeQuestion={routeQuestion}
-                />
-              );
-            })}
-          </div>
-          <p className="text-left ml-5 problem-article">PROBLEMS</p>
-          <div className="d-flex flex-wrap">
-            {authState?.contest?.challenges?.map((problem) => {
-              return (
-                <ContestCard
-                  key={problem._id}
-                  image={ProblemImage}
-                  question={problem}
-                  routeQuestion={routeQuestion}
-                />
-              );
-            })}
-          </div>
+        <div
+          className="col-md-8"
+          style={{ height: "80vh", overflowY: "scroll" }}
+        >
+          {authState.contest.quizzes.length === 0 ? (
+            <></>
+          ) : (
+            <div className="quiz-card">
+              <p className="text-left ml-5 dash-title-category">QUIZZES</p>
+              <div className="d-flex flex-wrap">
+                {authState?.contest?.quizzes?.map((quiz) => {
+                  return (
+                    <ContestCard
+                      key={quiz._id}
+                      image={QuizImage}
+                      question={quiz}
+                      routeQuestion={routeQuestion}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          {authState.contest.challenges.length === 0 ? (
+            <></>
+          ) : (
+            <div className="challenge-card">
+              <p className="text-left ml-5 problem-article">PROBLEMS</p>
+              <div className="d-flex flex-wrap">
+                {authState?.contest?.challenges?.map((problem) => {
+                  return (
+                    <ContestCard
+                      key={problem._id}
+                      image={ProblemImage}
+                      question={problem}
+                      routeQuestion={routeQuestion}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
-        <div className="col-md-4">
+        <div
+          className="col-md-4"
+          style={{ height: "80vh", overflowY: "scroll" }}
+        >
           <div className="tab-content p-2" id="pills-tabContent">
             <div className="d-flex mt-2">
               <h5 className="quiz-instruct mr-2">

@@ -23,20 +23,21 @@ const createSubmissionService = async (submissionDetails) => {
     quizzes.map(async (quiz) => {
       try {
         const { score } = await quizSubmissionService(quiz);
+        console.log(score);
         total_score += score;
       } catch (err) {
         console.log(err);
       }
     });
-    challenges.map(async (challenge) => {
-      challenge.submission = true;
-      try {
-        const { score } = await challengeSubmissionService(challenge);
-        total_score += score;
-      } catch (err) {
-        console.log(err);
-      }
-    });
+    // challenges.map(async (challenge) => {
+    //   challenge.submission = true;
+    //   try {
+    //     const { score } = await challengeSubmissionService(challenge);
+    //     total_score += score;
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // });
 
     let newSubmission = new Submission({
       user_id,
@@ -105,9 +106,9 @@ const getAllSubmissionsService = async (page, limit) => {
 const quizSubmissionService = async (quizAnswers) => {
   const entries = Object.entries(quizAnswers);
   let score = 0;
-  for (const [question_id, option] of entries) {
+  for (const [id, option] of entries) {
     try {
-      const answer = await Answer.findOne({ question_id });
+      const answer = await Answer.findById(id);
       if (option === answer.options.correctOption) score++;
     } catch (err) {
       console.log(err);

@@ -10,20 +10,26 @@ import helperService from "../../../../../../services/helperService";
 const Quiz = ({ setSideToggle }) => {
   const location = useParams();
   const history = useHistory();
-  const [authState, ] = useContext(AuthContext);
-  const [quiz, setQuiz] = useState({});
-  const [questions, setQuestions] = useState([]);
-  let [currentQuestionNumber, setCurrentQuestionNumber] = useState(0);
+  const [authState] = useContext(AuthContext);
+  const findQuiz = () => {
+    let obj = authState?.contest?.quizzes.find(
+      (quiz) => quiz._id === location.questionId
+    );
+    return obj || {};
+  };
+  const [quiz,] = useState(findQuiz());
   let [currentQuestion, setCurrentQuestion] = useState({});
   const [status, setStatus] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState("");
+  const parseQuiz = () => JSON.parse(localStorage.getItem(quiz?.name) || "[]");
+  let [currentQuestionNumber, setCurrentQuestionNumber] = useState(
+    parseQuiz().length
+  );
+  useEffect(async () => {
+    await initComponent();
+  }, []);
 
   const initComponent = async () => {
-    setQuiz(
-      authState?.contest?.quizzes.find(
-        (quiz) => quiz._id === location.questionId
-      )
-    );
     setSideToggle(true);
     let [mcqs] = await getQuestions();
     setCurrentQuestion(mcqs);
@@ -38,35 +44,45 @@ const Quiz = ({ setSideToggle }) => {
         { id: location.questionId, page: currentQuestionNumber + 1 },
         { headers: { Authorization: authState.user.token } }
       );
-      if (status === 200) {
-        setQuestions([...questions, ...mcqs]);
-        return mcqs;
-      }
+      if (status === 200) return mcqs;
     } catch (err) {
       console.log(err);
     }
   };
-  useEffect(async () => {
-    await initComponent();
-  }, []);
+  let answers = parseQuiz();
   let isLast = currentQuestionNumber === quiz?.total_mcqs;
   const handleNext = async () => {
     if (!status) return;
+    let obj = {
+      id: currentQuestion.id,
+      option: selectedAnswer,
+    };
+    answers.push(obj);
+    localStorage.setItem(quiz?.name, JSON.stringify(answers));
     if (!isLast) {
       let [mcqs] = await getQuestions();
       setCurrentQuestion(mcqs);
       setCurrentQuestionNumber(currentQuestionNumber + 1);
     }
-
     setStatus(false);
     setSelectedAnswer("");
   };
   const answerHandler = (ans) => {
     let option = String.fromCharCode(65 + ans);
+    if(isLast) {
+      let obj = {
+        id: currentQuestion.id,
+        option,
+      };
+      answers.push(obj);
+      localStorage.setItem(quiz?.name, JSON.stringify(answers));
+    }
     setSelectedAnswer(option);
     setStatus(true);
   };
-  
+  const submitQuiz = () => {
+    history.push(`/codekata/${location.id}`)
+  }
   return (
     <div className="container-fluid p-0 Quiz-question-container">
       <div className="d-flex">
@@ -98,12 +114,11 @@ const Quiz = ({ setSideToggle }) => {
           <div className="col p-0">
             <div className="col question-outoff p-0">
               <span className="question-order p-2 bg-dark text-white">
-                Question {currentQuestionNumber || 0}/
-                {quiz?.total_mcqs || 0}
+                Question {currentQuestionNumber || 0}/{quiz?.total_mcqs || 0}
               </span>
             </div>
             <div className="hr">
-              <hr className="co p-0l" />
+              <hr className="co pl-0" />
             </div>
             <div className="col question-outoff p-0 mb-3">
               <span className="text-muted">
@@ -113,12 +128,10 @@ const Quiz = ({ setSideToggle }) => {
           </div>
           <div className="d-flex flex-column quizzes pt-4 pb-4">
             <div className="d-flex">
-              <div className="numberCircle ml-3">
-                {currentQuestionNumber}
-              </div>
+              <div className="numberCircle ml-3">{currentQuestionNumber}</div>
               <div className="question-up ml-3">
                 <span className="span-question font-weight-bolder">
-                  {currentQuestion.statement}
+                  {currentQuestion?.statement}
                 </span>
               </div>
             </div>
@@ -130,7 +143,8 @@ const Quiz = ({ setSideToggle }) => {
                       <button
                         key={option}
                         className={`${
-                          status && selectedAnswer === String.fromCharCode(index+65)
+                          status &&
+                          selectedAnswer === String.fromCharCode(index + 65)
                             ? `correct-option text-left p-2 m-2`
                             : `option-1 text-left p-2 m-2 individual-options`
                         }`}
@@ -195,7 +209,7 @@ const Quiz = ({ setSideToggle }) => {
                   return (
                     <button
                       className={`${
-                        currentQuestionNumber-1 === i
+                        currentQuestionNumber - 1 === i
                           ? `correct ml-3 mb-2 text-center`
                           : `que-path ml-3 mb-3 text-center`
                       }`}
@@ -211,7 +225,7 @@ const Quiz = ({ setSideToggle }) => {
                 className="mr-2 btn-hover pr-1 pl-1 color-11"
                 color="primary"
                 variant="contained"
-                onClick={handleNext}
+                onClick={submitQuiz}
               >
                 SUBMIT QUIZ
               </button>

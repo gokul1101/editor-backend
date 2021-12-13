@@ -55,6 +55,7 @@ const getContestForDashboard = async (req, res) => {
       req.user.role_id
     );
     let response = {
+      contest_id : contest._id,
       session: {},
       quizzes: [],
       challenges: [],

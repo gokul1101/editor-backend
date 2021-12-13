@@ -2,9 +2,9 @@ import React from "react";
 import { useContext } from "react";
 import { useState, useEffect } from "react";
 import { AuthContext } from "../../../../../contexts/AuthContext";
-
+import "./Timer.css";
 const Timer = () => {
-  const [authState, ] = useContext(AuthContext);
+  const [authState] = useContext(AuthContext);
   const ends_at = authState?.duration;
   const calculateTimeLeft = () => {
     let difference = +new Date(ends_at) - +new Date();
@@ -34,24 +34,27 @@ const Timer = () => {
     if (!timeLeft[interval]) {
       return;
     }
-    timerComponents.push(`${timeLeft[interval]}${interval.toUpperCase().charAt(0)}`
+    timerComponents.push(
+      `${timeLeft[interval]}${interval.toUpperCase().charAt(0)}`
     );
   });
   return (
-    <div className="p-2 d-flex align-items-center justify-content-center">
-      <i className="fas m-0 p-0 fa-clock clock-icon"></i>
-      {
-        timerComponents.length === 0? (
-          <span>Time's up</span>
-        ) : (
-          timerComponents.map((component, index) => {
-            let suffix = (index+1 !== timerComponents.length)? " : " : "";
+    <div className="d-flex">
+      {timerComponents.length === 0 ? (
+        <span>Time's up</span>
+      ) : (
+        <div className="d-flex align-items-center justify-content-center countdown-timer">
+          {timerComponents.map((component, index) => {
+            let suffix = index + 1 !== timerComponents.length ? " : " : "";
             return (
-              `${component}${suffix}`
-            )
-          })
-        )
-      }
+              <span
+                key={component}
+                className={`d-block timer-span mt-2 ml-1 px-2`}
+              >{`${component}${suffix}`}</span>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

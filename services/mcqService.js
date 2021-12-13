@@ -122,11 +122,11 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
         statement: questions[i].statement,
       };
       const answer = await Answer.findOne({ question_id: questions[i]._id });
+      mcq.id = answer._id;
       mcq.options = { ...answer.options };
       if (!flag) delete mcq["options"]["correctOption"];
       mcqs.push(mcq);
     }
-    console.log(mcqs);
     return Promise.resolve({
       code: 200,
       message: "MCQs has been found.",

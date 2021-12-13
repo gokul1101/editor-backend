@@ -34,9 +34,15 @@ const ContestCard = ({ image, question, routeQuestion }) => {
             >
               {question.name}
             </span>
-            <span>
-              No. of questions : <b>{question.total_mcqs}</b>
-            </span>
+            {question.type_id?(
+              <span>
+                Max Score : <b>{question?.max_score}</b>
+              </span>
+            ) : (
+              <span>
+                No. of questions : <b>{question?.total_mcqs}</b>
+              </span>
+            )}
           </div>
         </div>
       </div>

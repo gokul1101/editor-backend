@@ -1,5 +1,5 @@
 import "./App.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Login from "./components/Login/Login";
 import AdminMain from "./components/Admin/Main/Main";
 import Main from "./components/Student/Main/Main";
@@ -59,6 +59,29 @@ const App = () => {
       else snackBar(err.data, "error");
     }
   };
+  const disabledEvent = (e) => {
+    if (e.stopPropagation) {
+        e.stopPropagation();
+    } else if (window.event) {
+        window.event.cancelBubble = true;
+    }
+    e.preventDefault();
+    return false;
+}
+
+  // useEffect(() => {
+  //   document.addEventListener("contextmenu", (e) => disabledEvent(e));
+  //   document.addEventListener("keydown", e => {
+  //     if(e.ctrlKey && (e.key === 'u' || e.key === 'U')) disabledEvent(e);
+  //     if(e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'I')) disabledEvent(e);
+  //     if(e.ctrlKey && e.shiftKey && (e.key === 'j' || e.key === 'J')) disabledEvent(e);
+  //     if(e.key === 'F12') disabledEvent(e);
+  //   })
+  //   return () => {
+  //     document.removeEventListener("contextmenu", (e) => disabledEvent(e));
+  //     document.removeEventListener("keydown", (e) => disabledEvent(e));
+  //   }
+  // }, [])
   return (
     <>
       <div className="App m-0 p-0">
@@ -99,7 +122,6 @@ const App = () => {
         This page Enables on Tablet
       </div>
     </>
-    // </AuthProvider>
   );
 };
 

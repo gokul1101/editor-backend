@@ -90,7 +90,11 @@ const Dashboard = (props) => {
           <div className="d-flex flex-wrap justify-content-center mt-5">
             <div className="dash-card what-we-do-card mr-5 ml-5">
               <div className="dash-card img-one  p-4 m-4">
-                <img src={DashImg1} alt="someImage" className="ml-2 img-fluid" />
+                <img
+                  src={DashImg1}
+                  alt="someImage"
+                  className="ml-2 img-fluid"
+                />
               </div>
               <h6 className="card-title text-align-center">Target</h6>
               <p className="text-align-center">
@@ -100,7 +104,11 @@ const Dashboard = (props) => {
 
             <div className="dash-card what-we-do-card mr-5 ml-5">
               <div className="dash-card img-one  p-4 m-4">
-                <img src={DashImg2} alt="someImage" className="ml-2 img-fluid" />
+                <img
+                  src={DashImg2}
+                  alt="someImage"
+                  className="ml-2 img-fluid"
+                />
               </div>
               <h6 className="card-title text-align-center">Schedule</h6>
               <p className="text-align-center">
@@ -110,7 +118,11 @@ const Dashboard = (props) => {
 
             <div className="dash-card what-we-do-card mr-5 ml-5">
               <div className="dash-card img-one  p-4 m-4">
-                <img src={DashImg3} alt="someImage" className="ml-2 img-fluid" />
+                <img
+                  src={DashImg3}
+                  alt="someImage"
+                  className="ml-2 img-fluid"
+                />
               </div>
               <h6 className="card-title text-align-center">Timer</h6>
               <p className="text-align-center">
@@ -194,14 +206,20 @@ const Dashboard = (props) => {
             </div>
           </div>
         </div>
-              <div className="footer-link d-flex justify-content-between  mt-3">
-              <div>
-                <p className="font-weight-bolder">Copyrights reserved to Loop @ 2022</p>
-              </div>
-              <div className="d-flex">
-              <NavLink className="text-muted" to="">Privacy Policy |</NavLink>
-              <NavLink className="text-muted" to="">Terms & Conditions</NavLink>
-              </div>
+        <div className="footer-link d-flex justify-content-between mt-3">
+          <div>
+            <p className="font-weight-bolder">
+              Copyrights reserved to Loop @ 2022
+            </p>
+          </div>
+          <div className="d-flex">
+            <NavLink className="" to="">
+              Privacy Policy |
+            </NavLink>
+            <NavLink className="" to="">
+              Terms & Conditions
+            </NavLink>
+          </div>
         </div>
       </div>
     </div>

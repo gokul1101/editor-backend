@@ -162,9 +162,14 @@ router.post(
   routeAuth("updateQuestion"),
   updateQuestion
 );
-router.get("/api/v1/mcq/all", userAuth, routeAuth("getAllMCQS"), getAllMCQS);
-router.post(
-  "/api/v1/challenge/all",
+router.get(
+  "/api/v1/mcq/all",
+  userAuth,
+  routeAuth("getAllMCQS"),
+  getAllMCQS
+);
+router.get(
+  "/api/v1/challenges/all",
   userAuth,
   routeAuth("getAllChallenges"),
   getAllChallenges

@@ -12,6 +12,7 @@ import Quizzes from "./Quizzes/Quizzes";
 import CreateQuiz from "./Quizzes/CreateQuiz/CreateQuiz";
 import AddQuiz from "./Quizzes/CreateQuiz/AddQuiz/AddQuiz";
 import { AuthContext } from "../../../contexts/AuthContext";
+import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
 const Main = (props) => {
   const [, authDispatch] = useContext(AuthContext);
   const [sideToggle, ] = useState(false);
@@ -152,7 +153,11 @@ const Main = (props) => {
                 <Quizzes />
               </Route>
             </Route>
-            
+            <Route path="/challenges">
+              <Route path="/challenges/:id">
+                <ChallengeDashboard/>
+              </Route>
+            </Route>
             <Route
               exact
               path="/"

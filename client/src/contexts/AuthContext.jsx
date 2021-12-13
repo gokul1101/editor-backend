@@ -3,6 +3,7 @@ import React, { createContext, useReducer } from "react";
 const initialState = {
   user: null,
   contest: null,
+  challenge: null,
   duration: null,
 };
 const AuthReducer = (state, action) => {
@@ -13,6 +14,11 @@ const AuthReducer = (state, action) => {
       return { ...state, user: null };
     case "SET_CONTEST":
       return { ...state, contest: action.payload };
+    case "SET_CHALLENGE":
+      return { ...state, challenge: action.payload };
+    case "REMOVE_CHALLENGE":
+      console.log("working");
+      return { ...state, challenge: null };
     case "REMOVE_CONTEST":
       return { ...state, contest: null };
     case "SET_DURATION":
