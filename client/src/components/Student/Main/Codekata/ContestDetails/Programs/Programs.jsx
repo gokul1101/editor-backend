@@ -4,6 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
 import Editor from "../../../../../Reducer/Editor/Editor";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
+import helperService from "../../../../../../services/helperService";
 import Testcase from "./Testcase/Testcase";
 import Timer from "../../Timer/Timer";
 const Programs = (props) => {
@@ -12,6 +13,7 @@ const Programs = (props) => {
   const [authState] = useContext(AuthContext);
   const [challenge, setChallenge] = useState({});
   let [difficulty, setDifficulty] = useState("");
+  let [testCases, setTestCases] = useState({});
   useEffect(() => {
     props.setSideToggle(true);
   });
@@ -22,8 +24,20 @@ const Programs = (props) => {
     setChallenge(problem);
     setDifficulty(problem?.difficulty_id.level);
   };
+  const getTestCases = async () => {
+    try{
+      const {data : {message, testcases}} = await helperService.getTestCases(
+        { questionId },
+        { headers: { Authorization: authState.user.token } }
+      );
+      setTestCases(testcases?.testcases || {});
+    } catch(err) {
+
+    }
+  }
   useEffect(() => {
     findChallenge();
+    getTestCases();
   }, []);
   const [themeName, setThemeName] = React.useState("nord_dark");
   const [language, setLanguage] = React.useState("java");
@@ -164,7 +178,7 @@ const Programs = (props) => {
                     </span>
                     <div className="example-input mt-2">
                       <span className="font-weight-bolder color-highlight">
-                        Input :{" "}
+                        input_format :{" "}
                       </span>{" "}
                       <br />
                       <p className="mt-2 font-weight-bolder">
@@ -173,7 +187,7 @@ const Programs = (props) => {
                     </div>
                     <div className="example-output mt-2">
                       <span className="font-weight-bolder color-highlight">
-                        output :{" "}
+                        output_format :{" "}
                       </span>{" "}
                       <br />
                       <p className="mt-2 font-weight-bolder">
@@ -183,22 +197,21 @@ const Programs = (props) => {
                   </div>
                   <div className="hints mt-2 d-flex flex-column">
                     <span className="constraints-title font-weight-bolder color-highlight">
-                      Hints :
+                      Description :
                     </span>
                     <div className="problem-statement text-justify mt-2">
                       <p>{challenge?.description}</p>
                     </div>
                   </div>
-                  {/* /TESTCASE/ */}
-                  <div></div>
                 </div>
+                  {/* /TESTCASE/ */}
                 <div
                   className="tab-pane fade"
                   id="pills-submissions"
                   role="tabpanel"
                   aria-labelledby="pills-submissions-tab"
                 >
-                  <Testcase />
+                  <Testcase testcases={testCases}/>
                 </div>
               </div>
             </div>

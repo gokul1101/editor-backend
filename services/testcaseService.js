@@ -2,7 +2,7 @@ const Answer = require("../models/answers");
 const Question = require("../models/questions");
 const createMultipleTestCasesService = async ({ question_id, testcase }) => {
   const { sample, hidden } = testcase;
-  if (!sample && !hidden) 
+  if (!sample && !hidden)
     return Promise.reject({ code: 406, message: "Testcases not found" });
   try {
     const question = await Question.findById(question_id);
@@ -13,11 +13,11 @@ const createMultipleTestCasesService = async ({ question_id, testcase }) => {
       });
     } else {
       let testcases = {};
-      if(sample) testcases.sample = sample;
-      if(hidden) testcases.hidden = hidden;
+      if (sample) testcases.sample = sample;
+      if (hidden) testcases.hidden = hidden;
       const new_testcase = new Answer({
         question_id,
-        testcases
+        testcases,
       });
       await new_testcase.save();
       return Promise.reject({
@@ -91,27 +91,25 @@ const updateTestCaseService = async ({ testcase_id, index, testcase }) => {
     return Promise.reject({ code: 500, message: "Unable to update testcase" });
   }
 };
-const getTestCases = async (question_id) => {
-  try{
-    const testcases  = await Answer.findOne({question_id})
-    if(testcases){
+const getTestCasesService = async (question_id) => {
+  try {
+    const testcases = await Answer.findOne({ question_id });
+    if (testcases) {
       return Promise.resolve({
-        code:200,
-        message:`testcases found`,
-        testcases
-      })
-    }
-    else{
+        code: 200,
+        message: `testcases found`,
+        testcases,
+      });
+    } else {
       return Promise.resolve({
-        code:404,
-        message:"No testcases found"
-      })
+        code: 404,
+        message: "No testcases found",
+      });
     }
+  } catch (err) {
+    return Promise.reject({ code: 500, message: "Unable to get testcases" });
   }
-  catch(err){
-    return Promise.reject({ code: 500, message: "Unable to get testcases" }); 
-  }
-}
+};
 const deleteTestCaseService = async () => {
   try {
   } catch (err) {
@@ -123,5 +121,5 @@ module.exports = {
   createMultipleTestCasesService,
   updateTestCaseService,
   deleteTestCaseService,
-  getTestCases
+  getTestCasesService,
 };

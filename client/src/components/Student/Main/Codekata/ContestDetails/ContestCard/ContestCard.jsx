@@ -4,8 +4,13 @@ const ContestCard = ({ image, question, routeQuestion }) => {
   return (
     <div
       className="dcard mr-5 mb-5 position-relative d-flex align-items-center justify-content-center ml-5"
-      onClick={() => routeQuestion(question._id, (question.type_id? "problem" : "quiz"))}
-      
+      onClick={() =>
+        routeQuestion(
+          question._id,
+          question.name,
+          question.type_id ? "problem" : "quiz"
+        )
+      }
     >
       <div className="trigger position-absolute d-block"></div>
       <div className="trigger position-absolute d-block"></div>
@@ -16,8 +21,12 @@ const ContestCard = ({ image, question, routeQuestion }) => {
       <div className="trigger position-absolute d-block"></div>
       <div className="trigger position-absolute d-block"></div>
       <div className="trigger position-absolute d-block"></div>
-      
-      <div className={`card position-relative ${question.type_id? "card-blue" : "card-green"}`}>
+
+      <div
+        className={`card position-relative ${
+          question.type_id ? "card-blue" : "card-green"
+        }`}
+      >
         <img
           src={image}
           className="question-card-image position-absolute img-fluid"
@@ -34,7 +43,7 @@ const ContestCard = ({ image, question, routeQuestion }) => {
             >
               {question.name}
             </span>
-            {question.type_id?(
+            {question.type_id ? (
               <span>
                 Max Score : <b>{question?.max_score}</b>
               </span>

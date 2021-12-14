@@ -32,6 +32,7 @@ const {
 const {
   createMultipleTestCases,
   updateTestCase,
+  getTestCases,
 } = require("../controllers/testcaseController");
 const { createSubmission } = require("../controllers/submissionController");
 const { getErrorLogs } = require("../controllers/errorLogsController");
@@ -162,12 +163,7 @@ router.post(
   routeAuth("updateQuestion"),
   updateQuestion
 );
-router.get(
-  "/api/v1/mcq/all",
-  userAuth,
-  routeAuth("getAllMCQS"),
-  getAllMCQS
-);
+router.get("/api/v1/mcq/all", userAuth, routeAuth("getAllMCQS"), getAllMCQS);
 router.get(
   "/api/v1/challenges/all",
   userAuth,
@@ -180,6 +176,12 @@ router.post(
   userAuth,
   routeAuth("createMultipleTestCases"),
   createMultipleTestCases
+);
+router.get(
+  "/api/v1/testcase/get",
+  userAuth,
+  routeAuth("getTestCases"),
+  getTestCases
 );
 router.post(
   "/api/v1/testcase/update",

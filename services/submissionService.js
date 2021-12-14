@@ -19,16 +19,27 @@ const createSubmissionService = async (submissionDetails) => {
         code: 404,
         message: `Contest not found`,
       });
+    let submission = await Submission.findOne({ user_id, contest_id });
+    if (submission)
+      return Promise.reject({
+        code: 403,
+        message: `Contest already submitted.`,
+      });
+    const reducer = (previousValue, currentValue) =>
+      previousValue + currentValue;
     let total_score = 0;
-    quizzes.map(async (quiz) => {
-      try {
-        const { score } = await quizSubmissionService(quiz);
-        console.log(score);
-        total_score += score;
-      } catch (err) {
-        console.log(err);
-      }
-    });
+    let quizScore = await Promise.all(
+      quizzes.map(async (quiz) => {
+        try {
+          const { score } = await quizSubmissionService(quiz);
+          return score;
+        } catch (err) {
+          console.log(err);
+        }
+        return 0;
+      })
+    );
+    total_score += quizScore.reduce(reducer);
     // challenges.map(async (challenge) => {
     //   challenge.submission = true;
     //   try {
@@ -38,7 +49,6 @@ const createSubmissionService = async (submissionDetails) => {
     //     console.log(err);
     //   }
     // });
-
     let newSubmission = new Submission({
       user_id,
       contest_id,
@@ -104,16 +114,19 @@ const getAllSubmissionsService = async (page, limit) => {
   }
 };
 const quizSubmissionService = async (quizAnswers) => {
-  const entries = Object.entries(quizAnswers);
   let score = 0;
-  for (const [id, option] of entries) {
-    try {
-      const answer = await Answer.findById(id);
-      if (option === answer.options.correctOption) score++;
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  const answers = await Promise.all(
+    quizAnswers.map(async ({ id, option }) => {
+      try {
+        const answer = await Answer.findById(id);
+        if (option === answer.options.correctOption) return true;
+      } catch (err) {
+        console.log(err);
+      }
+      return false;
+    })
+  );
+  answers.forEach((ans) => (ans ? score++ : null));
   return Promise.resolve({
     code: 200,
     score,

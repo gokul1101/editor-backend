@@ -17,7 +17,7 @@ const Quiz = ({ setSideToggle }) => {
     );
     return obj || {};
   };
-  const [quiz,] = useState(findQuiz());
+  const [quiz] = useState(findQuiz());
   let [currentQuestion, setCurrentQuestion] = useState({});
   const [status, setStatus] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState("");
@@ -69,26 +69,30 @@ const Quiz = ({ setSideToggle }) => {
   };
   const answerHandler = (ans) => {
     let option = String.fromCharCode(65 + ans);
-    if(isLast) {
+    if (isLast) {
       let obj = {
         id: currentQuestion.id,
         option,
       };
-      answers.push(obj);
+      if (currentQuestionNumber - 1 === answers.length) answers.push(obj);
+      else answers[answers.length - 1] = obj;
       localStorage.setItem(quiz?.name, JSON.stringify(answers));
     }
     setSelectedAnswer(option);
     setStatus(true);
   };
   const submitQuiz = () => {
-    history.push(`/codekata/${location.id}`)
-  }
+    let quizzes = JSON.parse(localStorage.getItem("quizzes") || "[]");
+    quizzes.push(quiz?.name);
+    localStorage.setItem("quizzes", JSON.stringify(quizzes));
+    history.push(`/codekata/${location.id}`);
+  };
   return (
     <div className="container-fluid p-0 Quiz-question-container">
       <div className="d-flex">
         <div
           className="back-btn mr-auto mt-3 ml-4"
-          onClick={() => history.goBack()}
+          onClick={() => history.push(`/codekata/${location.id}`)}
         >
           <div className="triangle"></div>
           <div className="halfcircle"></div>
@@ -208,6 +212,7 @@ const Quiz = ({ setSideToggle }) => {
                 {Array.apply(0, Array(quiz?.total_mcqs || 0)).map((x, i) => {
                   return (
                     <button
+                      key={x}
                       className={`${
                         currentQuestionNumber - 1 === i
                           ? `correct ml-3 mb-2 text-center`

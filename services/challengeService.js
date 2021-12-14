@@ -1,7 +1,7 @@
 const Question = require("../models/questions");
 const Contest = require("../models/contests");
 const Difficuly = require("../models/difficulties");
-const { mapDifficultyId, mapDifficultyLevel } = require("../utils/helper");
+const { mapDifficultyId } = require("../utils/helper");
 const { getTestCases } = require("./testcaseService");
 
 //IF THIS WILL BE CONTROLLER THEN USE AWAIT ONLY INSTEAD OF PROMISE
@@ -38,11 +38,6 @@ const getChallenge = async (id) => {
   try {
     let question = await Question.findById(id).populate([
       {
-        path: "type_id",
-        model: "testTypes",
-        select: "name",
-      },
-      {
         path: "difficulty_id",
         model: "difficulty",
         select: "level",
@@ -54,7 +49,6 @@ const getChallenge = async (id) => {
         message: `Question with id ${id} had not found`,
       });
     } else {
-      question.difficulty = await mapDifficultyLevel(question.difficulty_id);
       const {code,message,testcases} = (await getTestCases(question._id))
       
       if(code === 200) {

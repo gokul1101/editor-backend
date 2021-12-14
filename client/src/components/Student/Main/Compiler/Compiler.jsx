@@ -85,10 +85,6 @@ const Compiler = (props) => {
     return () => props.setSideToggle(false);
   });
 
-  const returnBack = () => {
-    history.goBack();
-  };
-
   const handleChange = (event) => {
     setThemeName(event.target.value);
   };
@@ -120,7 +116,7 @@ const Compiler = (props) => {
     <div className="container-fluid p-0 compiler-container">
       <div className="d-flex">
         <div className="d-flex mr-auto mt-2">
-          <div className="back-btn mt-3 ml-4" onClick={returnBack}>
+          <div className="back-btn mt-3 ml-4" onClick={() => history.goBack()}>
             <div className="triangle"></div>
             <div className="halfcircle"></div>
           </div>

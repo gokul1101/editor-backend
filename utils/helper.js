@@ -102,17 +102,6 @@ const mapDifficultyId = async (level) => {
     return Promise.reject(err);
   }
 };
-const mapDifficultyLevel = async (id) => {
-  try {
-    const difficult = await Difficult.findById(id);
-    if (difficult) return Promise.resolve(difficult.level);
-    throw "Invalid difficulty id found";
-  } catch (err) {
-    console.log(err);
-    return Promise.reject(err);
-  }
-};
-
 const setTime = (date, duration) => {
   let [days, hours, minutes, seconds] = duration.split(" ");
   days = +(days.slice(0, -1));
@@ -142,6 +131,5 @@ module.exports = {
   mapStreamId,
   mapUserId,
   mapDifficultyId,
-  mapDifficultyLevel,
   setTime
 };

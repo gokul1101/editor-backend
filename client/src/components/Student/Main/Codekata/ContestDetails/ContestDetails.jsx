@@ -9,38 +9,54 @@ import { AuthContext } from "../../../../../contexts/AuthContext";
 import ContestCard from "./ContestCard/ContestCard";
 import helperService from "../../../../../services/helperService";
 
-const ContestDetails = ({setSideToggle}) => {
+const ContestDetails = ({ setSideToggle }) => {
   const { id } = useParams();
   const history = useHistory();
-  const [authState, ] = useContext(AuthContext);
-  const routeQuestion = (question_id, type) => {
-    history.push(`/codekata/${id}/${type}/${question_id}`);
+  const [authState] = useContext(AuthContext);
+  const routeQuestion = (_id, name, type) => {
+    const checkQuestion = (question) => question === name;
+    if (type === "problem") {
+      let completedChallenges = JSON.parse(
+        localStorage.getItem("problems") || "[]"
+      );
+      if (completedChallenges.some(checkQuestion)) {
+        return;
+      }
+    } else {
+      let completedQuizzes = JSON.parse(
+        localStorage.getItem("quizzes") || "[]"
+      );
+      if (completedQuizzes.some(checkQuestion)) {
+        return;
+      }
+    }
+    history.push(`/codekata/${id}/${type}/${_id}`);
   };
   const sumbitContest = async () => {
     let payload = {
-      user_id : authState?.user?._id,
-      contest_id : authState?.contest?.contest_id
-    }
+      user_id: authState?.user?._id,
+      contest_id: authState?.contest?.contest_id,
+    };
     let contestQuizzes = authState?.contest?.quizzes || [];
     let contestChallenges = authState?.contest?.challenges || [];
-    payload.quizzes = contestQuizzes.map(quiz => {
-      return (
-        JSON.parse(localStorage.getItem(quiz?.name) || "[]")
-      )
-    })
-    payload.challenges = contestChallenges.map(challenge => {
-      return (
-        JSON.parse(localStorage.getItem(challenge?.name) || "[]")
-      )
-    })
-    const response= await helperService.createSubmission(
-      {...payload},
-      { headers: { Authorization: authState.user.token } }
-    );
-    console.log(response);
-  }
+    payload.quizzes = contestQuizzes.map((quiz) => {
+      return JSON.parse(localStorage.getItem(quiz?.name) || "[]");
+    });
+    payload.challenges = contestChallenges.map((challenge) => {
+      return JSON.parse(localStorage.getItem(challenge?.name) || "[]");
+    });
+    try {
+      const response = await helperService.createSubmission(
+        { ...payload },
+        { headers: { Authorization: authState.user.token } }
+      );
+      console.log(response);
+      // history.push("/codekata");
+    } catch(err) {
+      
+    }
+  };
   useEffect(() => {
-    console.log(authState)
     setSideToggle(true);
   }, [setSideToggle]);
 
@@ -49,7 +65,7 @@ const ContestDetails = ({setSideToggle}) => {
       <div className="d-flex">
         <div
           className="back-btn mr-auto mt-3 ml-4"
-          onClick={() => history.goBack()}
+          onClick={() => history.push("/codekata")}
         >
           <div className="triangle"></div>
           <div className="halfcircle"></div>

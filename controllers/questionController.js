@@ -14,7 +14,6 @@ const {
 } = require("../services/challengeService");
 const createQuestion = async (req, res) => {
   let questionDetails = req.body;
-  console.log(questionDetails)
   let functions = [createMCQ, createChallenge],
     index;
   if (questionDetails.type_id === "mcq") index = 0;

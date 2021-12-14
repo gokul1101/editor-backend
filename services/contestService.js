@@ -36,6 +36,7 @@ const createContestService = async (contest) => {
       });
     }
   } catch (err) {
+    console.log(err);
     return Promise.reject({
       code: 500,
       message: "Can't create contest",
