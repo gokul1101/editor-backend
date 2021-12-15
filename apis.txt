@@ -317,7 +317,7 @@ body : {
   "description" : "Find the sum of two numbers a, b?",
   "input_format" : "1 2",
   "output_format" : "3",
-  "contraints" : "0 <= a,b <= 10^7",
+  "constraints" : "0 <= a,b <= 10^7",
   "difficulty_id" : "easy",
   "max_score" : 5
 }

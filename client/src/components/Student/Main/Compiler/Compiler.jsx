@@ -23,6 +23,8 @@ import { Button } from "@material-ui/core";
 import ComImg from "../../../Images/Loop1.jpg";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import helperService from "../../../../services/helperService";
+import { parseCode, template } from "../../../../services/utils";
+import Editor from "../../../Reducer/Editor/Editor";
 const Compiler = (props) => {
   const [authState] = useContext(AuthContext);
   const themes = [
@@ -45,20 +47,6 @@ const Compiler = (props) => {
       ? JSON.parse(sessionStorage.getItem("compile"))?.input
       : ""
   );
-  const template = {
-    c: `#include<stdio.h>
-  int main(){
-  printf("Welcome to Loop")
-  return 0;
-  }
-`,
-    java: `class Main {
-      //Class Name Should Be Main
-        public static void main(String args[]) {
-          System.out.println("Welcome to Loop");
-        }
-      }`,
-  };
 
   const [output, setOutput] = React.useState("");
   const [code, setCode] = React.useState(
@@ -85,10 +73,6 @@ const Compiler = (props) => {
     return () => props.setSideToggle(false);
   });
 
-  const returnBack = () => {
-    history.goBack();
-  };
-
   const handleChange = (event) => {
     setThemeName(event.target.value);
   };
@@ -100,12 +84,13 @@ const Compiler = (props) => {
   };
   const compile = async () => {
     try {
+      let parsedCode = parseCode(code);
       sessionStorage.setItem(
         "compile",
         JSON.stringify({ code, input, lang: language })
       );
       const { status, data } = await helperService.compile(
-        { code, input, lang: language },
+        { code: parsedCode, input, lang: language },
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 200) {
@@ -113,6 +98,7 @@ const Compiler = (props) => {
         setOutput(data);
       }
     } catch (err) {
+      console.log(err);
       setOutput(err.data);
     }
   };
@@ -120,7 +106,7 @@ const Compiler = (props) => {
     <div className="container-fluid p-0 compiler-container">
       <div className="d-flex">
         <div className="d-flex mr-auto mt-2">
-          <div className="back-btn mt-3 ml-4" onClick={returnBack}>
+          <div className="back-btn mt-3 ml-4" onClick={() => history.goBack()}>
             <div className="triangle"></div>
             <div className="halfcircle"></div>
           </div>
@@ -149,20 +135,24 @@ const Compiler = (props) => {
       </div>
       <div className="d-flex">
         <div className="col-md-9 p-0">
-          <AceEditor
+          <Editor 
+          language={language}
+          theme={themeName}
+          onChangeHandler={(value) => setCode(value)}
+          value={code}
+          />
+          {/* <AceEditor
             className="mt-3"
             height="100vh"
             width="100%"
             placeholder="Your code goes here.."
-            mode={language}
-            theme={themeName}
+ 
             name="Editor"
-            onChange={(value) => setCode(value)}
             fontSize={20}
             showPrintMargin={false}
             showGutter={true}
             highlightActiveLine={true}
-            value={code}
+            
             setOptions={{
               enableBasicAutocompletion: true,
               enableLiveAutocompletion: true,
@@ -170,7 +160,7 @@ const Compiler = (props) => {
               showLineNumbers: true,
               tabSize: 2,
             }}
-          />
+          /> */}
         </div>
         <div className="col-md-3 p-3">
           <div className="d-flex w-100">

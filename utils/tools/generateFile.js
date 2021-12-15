@@ -10,11 +10,6 @@ const generateFile = async (code, input, lang) => {
   const folderPath = path.join(dirCodes, fileId);
   const filePath = path.join(folderPath, fileName);
   try {
-    // if(input) {
-    //   fs.mkdirSync(folderPath, { recursive: true });
-    //   await fs.writeFileSync(filePath, code);
-    //   await fs.writeFileSync(path.join(folderPath, "input.txt"), input);
-    // }
     fs.mkdirSync(folderPath, { recursive: true });
     await fs.writeFileSync(filePath, code);
     if (input)

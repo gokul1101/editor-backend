@@ -23,3 +23,17 @@
       color: #000;
       text-decoration: none;
   }
+  .challenge-name{
+    color: #21A366;
+    font-weight: 900 !important;
+  }
+
+  .fa-trophy{
+    color: #ffd500;
+  }
+
+  .max-score{
+    background-color: #21A366;
+    color: white;
+    border-radius: 50%;
+  }

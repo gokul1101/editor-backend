@@ -1,5 +1,6 @@
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
+const { updateQuizService } = require("./quizService");
 const createMCQ = async ({ type_id, quiz_id, statement, options }) => {
   let question = {
     type_id,
@@ -13,8 +14,9 @@ const createMCQ = async ({ type_id, quiz_id, statement, options }) => {
   };
   let newAnswer = new Answer(answer);
   try {
-    newQuestion = await newQuestion.save();
-    newAnswer = await newAnswer.save();
+    await newQuestion.save();
+    await newAnswer.save();
+    await updateQuizService({ id: quiz_id, total_mcqs: 1 });
     return Promise.resolve({
       code: 201,
       message: "MCQ created successfully.",
@@ -125,6 +127,7 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
         statement: questions[i].statement,
       };
       const answer = await Answer.findOne({ question_id: questions[i]._id });
+      mcq.id = answer._id;
       mcq.options = { ...answer.options };
       if (!flag) delete mcq["options"]["correctOption"];
       mcqs.push({

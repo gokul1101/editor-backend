@@ -165,10 +165,10 @@ const helperService = {
       });
     }
   },
-  getQuizQuestions: async ({ id }, config) => {
+  getQuizQuestions: async ({ id, page = 1 }, config) => {
     try {
       const { data, status } = await axios.get(
-        `${baseURL}/api/v1/mcq/all?id=${id}`,
+        `${baseURL}/api/v1/mcq/all?id=${id}&page=${page}`,
         config
       );
       if (status === 200) {
@@ -379,6 +379,45 @@ const helperService = {
         return Promise.resolve({
           status,
           data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  getTestCases : async ({questionId}, config) => {
+    try {
+      const {data, status} = await axios.get(`${baseURL}/api/v1/testcase/get?id=${questionId}`, config)  
+      if (status === 200) {
+        return Promise.resolve({
+          data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  createSubmission: async (payload, config) => {
+    try {
+      const {
+        data: { message },
+        status,
+      } = await axios.post(
+        `${baseURL}/api/v1/submission/create`,
+        payload,
+        config
+      );
+      if (status === 201) {
+        return Promise.resolve({
+          message,
         });
       }
     } catch (err) {

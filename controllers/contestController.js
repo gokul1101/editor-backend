@@ -21,6 +21,7 @@ const createContest = async (req, res) => {
     let { code, message } = await createContestService(contest);
     res.status(code).send({ message });
   } catch ({code, status, message}) {
+    console.log(message)
     if (!code && !status) {
       code = 500;
       message = `Internal server Error on creating contest`;
@@ -55,6 +56,7 @@ const getContestForDashboard = async (req, res) => {
       req.user.role_id
     );
     let response = {
+      contest_id : contest._id,
       session: {},
       quizzes: [],
       challenges: [],

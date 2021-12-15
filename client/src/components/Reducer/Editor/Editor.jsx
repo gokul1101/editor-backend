@@ -19,17 +19,14 @@ const Editor = (props) => {
         width="100%"
         placeholder="Your code goes here.."
         mode={props.language}
-        theme={props.themeName}
+        theme={props.theme}
         name="Editor"
-        onChange={(value) => console.log(value)}
+        onChange= {(value)=>props.onChangeHandler(value)}
         fontSize={20}
         showPrintMargin={false}
         showGutter={true}
         highlightActiveLine={true}
-        value={`public class Main {
-    public static void main(String args[]) {
-    }
-}`}
+        value={props.value}
         setOptions={{
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true,
