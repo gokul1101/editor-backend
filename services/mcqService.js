@@ -13,12 +13,17 @@ const createMCQ = async ({ type_id, quiz_id, statement, options }) => {
   };
   let newAnswer = new Answer(answer);
   try {
-    await newQuestion.save();
-    await newAnswer.save();
+    newQuestion = await newQuestion.save();
+    newAnswer = await newAnswer.save();
     return Promise.resolve({
       code: 201,
       message: "MCQ created successfully.",
-      mcq: { statement: newQuestion.statement, options: newAnswer.options },
+      mcq: {
+        question_id: newQuestion._id,
+        answer_id: newAnswer._id,
+        statement: newQuestion.statement,
+        options: newAnswer.options,
+      },
     });
   } catch (err) {
     //! Error in creating mcq
@@ -122,9 +127,12 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
       const answer = await Answer.findOne({ question_id: questions[i]._id });
       mcq.options = { ...answer.options };
       if (!flag) delete mcq["options"]["correctOption"];
-      mcqs.push(mcq);
+      mcqs.push({
+        ...mcq,
+        question_id: questions[i]._id,
+        answer_id: answer._id,
+      });
     }
-    console.log(mcqs);
     return Promise.resolve({
       code: 200,
       message: "MCQs has been found.",
@@ -139,9 +147,37 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
     });
   }
 };
+const deleteMCQ = async ({ question_id, answer_id }) => {
+  try {
+    if (!question_id || !answer_id) {
+      return Promise.reject({
+        code: 406,
+        message: `Invalid parameters found`,
+      });
+    }
+    const question_result = await Question.findByIdAndDelete(question_id);
+    if (question_result) {
+      const answer_result = await Answer.findByIdAndDelete(answer_id);
+      if (answer_result) {
+        return Promise.resolve({
+          code: 202,
+          message: "MCQ question deleted Sucessfully",
+        });
+      }
+    }
+    //TODO  : May be for some condition
+  } catch (err) {
+    console.log(err);
+    return Promise.reject({
+      code: 500,
+      message: `Error in deleting Mcq`,
+    });
+  }
+};
 module.exports = {
   createMCQ,
   getMCQ,
   updateMCQ,
+  deleteMCQ,
   getAllMcqWithQuizID,
 };

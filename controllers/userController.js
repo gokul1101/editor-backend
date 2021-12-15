@@ -337,9 +337,41 @@ const getAllUsers = async (req, res) => {
     }
     const users = await User.find({ deleted_at: null })
       .limit(limit * 1)
-      .skip((page - 1) * limit);
+      .skip((page - 1) * limit)
+      .populate([
+        {
+          path: "role_id",
+          model: "role",
+          select: "name",
+        },
+        {
+          path: "gender_id",
+          model: "gender",
+          select: "name",
+        },
+        {
+          path: "stream_id",
+          model: "stream",
+          select: "name",
+        },
+        {
+          path: "course_id",
+          model: "course",
+          select: "name",
+        },
+        {
+          path: "college_id",
+          model: "college",
+          select: "name",
+        },
+        {
+          path: "batch_id",
+          model: "batch",
+          select: "start_year end_year",
+        },
+      ]);
     response.total = users.length;
-    response.users = users;
+    response.users = users.filter(user => user.role_id.name === "student").map(user => serializeUser(user));
     res.status(200).json(response);
   } catch (err) {
     //! Error in finding user details

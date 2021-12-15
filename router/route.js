@@ -22,6 +22,7 @@ const {
   updateQuestion,
   getAllMCQS,
   getAllChallenges,
+  deleteQuestion,
 } = require("../controllers/questionController");
 const {
   createQuiz,
@@ -172,6 +173,12 @@ router.get(
   routeAuth("getAllMCQS"),
   getAllMCQS
 );
+router.post(
+  "/api/v1/question/delete",
+  userAuth,
+  routeAuth("deleteQuestion"),
+  deleteQuestion
+)
 router.get(
   "/api/v1/challenges/all",
   userAuth,

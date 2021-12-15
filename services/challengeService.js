@@ -26,7 +26,6 @@ const createChallenge = async (question) => {
       });
     }
   } catch (err) {
-    console.log(err);
     return Promise.reject({
       code: 500,
       message: `Challenge cannot be created `,
@@ -55,10 +54,10 @@ const getChallenge = async (id) => {
       });
     } else {
       question.difficulty = await mapDifficultyLevel(question.difficulty_id);
-      const {code,message,testcases} = (await getTestCases(question._id))
-      
-      if(code === 200) {
-        question = {...question._doc,testcases}
+      const { code, message, testcases } = await getTestCases(question._id);
+
+      if (code === 200) {
+        question = { ...question._doc, testcases };
       }
       return Promise.resolve({
         code: 200,
@@ -87,9 +86,9 @@ const updateChallenge = async (question) => {
     } else {
       if (question.name) {
         const questionWithNewName = await Question.findOne({
-          name: question.name
+          name: question.name,
         });
-        if (questionWithNewName) {
+        if (questionWithNewName && JSON.stringify(questionWithNewName._id) !== JSON.stringify(id)) {
           return Promise.reject({
             code: 403,
             message: `Question name not available.`,
@@ -98,16 +97,18 @@ const updateChallenge = async (question) => {
       }
       if (question.difficulty_id)
         question.difficulty_id = await mapDifficultyId(question.difficulty_id);
-      await Question.findByIdAndUpdate(
-        id,
-        { ...question, update_at: new Date() }
-      );
+      if(question.type_id) delete question["type_id"]
+      await Question.findByIdAndUpdate(id, {
+        ...question,
+        update_at: new Date(),
+      });
       return Promise.resolve({
-        code: 200,
+        code: 201,
         message: `Question updated successfully`,
       });
     }
   } catch (err) {
+    console.log(err)
     return Promise.reject({
       code: 500,
       message: `Can't update the question.`,
@@ -146,5 +147,5 @@ module.exports = {
   createChallenge,
   getChallenge,
   getAllChallengesWithContestId,
-  updateChallenge
+  updateChallenge,
 };

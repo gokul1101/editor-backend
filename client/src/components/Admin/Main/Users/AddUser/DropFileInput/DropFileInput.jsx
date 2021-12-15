@@ -108,14 +108,14 @@ const DropFileInput = (props) => {
             </button>
           </div>
           <div className="d-flex align-items-end justify-content-end mt-3 p-2">
-            <NavLink className="log-file">
+            <div className="log-file">
               <span
                 className="badge badge-pill badge-secondary"
                 onClick={handleClickOpen}
               >
                 Logs
               </span>
-            </NavLink>
+            </div>
             <Dialog
               open={open}
               fullScreen={fullScreen}

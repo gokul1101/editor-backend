@@ -14,7 +14,7 @@ const SelectReducer = (props) => {
         <Select
           labelId="demo-simple-select-outlined-label"
           id="demo-simple-select-outlined"
-          value={props.themeName}
+          value={props.value}
           onChange={props.handleSelect}
           defaultValue={props.defaultValue}
           label={props.name}

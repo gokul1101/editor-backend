@@ -53,7 +53,7 @@ const ChallengeDashboard = () => {
             </NavLink>
           </li>
         </ul>
-        <div className="container p-0">
+        <div className=" p-0">
           <Switch>
             <Route path={`/challenges/:id/update`} exact>
               <CreateChallenge

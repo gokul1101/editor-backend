@@ -1,4 +1,4 @@
-import { TextField } from "@material-ui/core";
+import { Snackbar, TextField } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useContext } from "react";
 import { useState } from "react";
@@ -6,16 +6,17 @@ import { useHistory, useParams } from "react-router-dom";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import helperService from "../../../../../../services/helperService";
 import InputReducer from "../../../../../Reducer/InputReducer";
+import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
 import "./CreateChallenge.css";
 const CreateChallenge = (props) => {
-  const [authState,] = useContext(AuthContext);
+  const [authState] = useContext(AuthContext);
   const history = useHistory();
   const { id } = useParams();
   const [challenge, setChallenge] = useState({});
   const createChallenge = async () => {
     try {
       const { status } = await helperService.createChallenge(
-        { ...challenge },
+        { ...challenge, contest_id: id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
@@ -26,9 +27,25 @@ const CreateChallenge = (props) => {
     }
   };
   const updateChallenge = async () => {
-    console.log("Update clicked...");
+    try {
+      const { data, status } = await helperService.updateQuestion(
+        {
+          ...challenge,
+          id: authState?.challenge?._id,
+          contest_id: authState?.challenge?.contest_id,
+        },
+        {
+          headers: { Authorization: authState.user.token },
+        }
+      );
+      if (status === 201) {
+        console.log(data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
-  useEffect( () => {
+  useEffect(() => {
     setChallenge({
       name: authState?.challenge?.name,
       type_id: "problem",
@@ -38,14 +55,17 @@ const CreateChallenge = (props) => {
       input_format: authState?.challenge?.input_format,
       output_format: authState?.challenge?.output_format,
       constraints: authState?.challenge?.constraints,
-      difficulty_id: authState?.challenge?.difficulty_id.name,
+      difficulty_id: authState?.challenge?.difficulty_id.level,
       max_score: authState?.challenge?.max_score,
-    })
+    });
+
     return () => {
-      setChallenge({});
-    }
-  },[authState])
-  
+      if (authState?.challenge) setChallenge({});
+    };
+  }, [authState]);
+  useEffect(() => {
+    console.log(challenge);
+  }, [challenge]);
   return (
     <div
       className="container-fluid"
@@ -64,7 +84,7 @@ const CreateChallenge = (props) => {
               label="Challenge name"
               name="Challenge name"
               type="text"
-              value={authState?.challenge?.name}
+              value={challenge.name}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -170,6 +190,7 @@ const CreateChallenge = (props) => {
             <InputReducer
               fullWidth
               id="outlined-multiline-static"
+              label="Constraints"
               multiline
               InputLabelProps={{
                 shrink: true,
@@ -180,6 +201,53 @@ const CreateChallenge = (props) => {
               }
             />
           </div>
+        </div>
+        <div className="d-flex mt-2 mb-2">
+          <span className="contest-line-height mr-2 col-md-3">
+            Difficulty <span className="contest-star">*</span>
+          </span>
+          <div className="col-md-7">
+            <SelectReducer
+              value={challenge.difficulty_id}
+              defaultValue={challenge.difficulty_id}
+              className="w-100"
+              array={["easy", "medium", "hard"]}
+              name="Difficulty Level"
+              handleSelect={(e) => {
+                console.log(e.target.value);
+                setChallenge({ ...challenge, difficulty_id: e.target.value });
+              }}
+            />
+          </div>
+        </div>
+        <div className="d-flex mt-2 mb-2">
+          <span className="contest-line-height mr-2 col-md-3">
+            Max Score <span className="contest-star">*</span>
+          </span>
+          <div className="col-md-7">
+            <InputReducer
+              fullWidth
+              type="number"
+              label="Max Score"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={challenge.max_score}
+              onClickHandler={(value) =>
+                setChallenge({ ...challenge, max_score: value })
+              }
+            />
+          </div>
+        </div>
+        <div className="my-5">
+          <button
+            className="float-right mt-3 mb-5 btn-hover pr-1 pl-1 color-11"
+            color="primary"
+            variant="contained"
+            onClick={props?.title ? updateChallenge : createChallenge}
+          >
+            {props?.title ? props?.title.toUpperCase() : "CREATE CHALLENGE"}
+          </button>
         </div>
         {/* <div className="d-flex mt-2 mb-5">
           <span className="contest-line-height mr-2 col-md-3">
