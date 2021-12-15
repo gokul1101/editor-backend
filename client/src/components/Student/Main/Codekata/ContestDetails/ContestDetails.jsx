@@ -53,12 +53,95 @@ const ContestDetails = (props) => {
           </p>
         </div>
         <button className="btn-hover color-11 mt-4">
-          SUBMIT <i className="fas fa-rocket mr-2 ml-2"></i>
+          SUBMIT CONTEST <i className="fas fa-rocket mr-2 ml-2"></i>
         </button>
       </div>
       <div className="d-flex">
+      <div
+          className="col-md-5"
+          style={{ height: "80vh", overflowY: "scroll" }}
+        >
+          <div className="tab-content p-2" id="pills-tabContent">
+            <div className="d-flex mt-2">
+              <h5 className="quiz-instruct mr-2">
+                General Round – Each team - quota of 4 questions
+              </h5>
+            </div>
+            <div className="text-justify mt-2">
+              <p>There is no negative marking for wrong answer.</p>
+            </div>
+            <div className="instruction-div mb-2">
+              <span className="quiz-instruct">Instructions :</span>
+              <div className="instruction-content d-flex flex-column mt-2">
+                <span className="mt-2">
+                  <i className="fas fa-circle constraints-dot mr-2"></i>
+                  In this round each team has its own quota of 4 questions and
+                  other questions passed to it from the previous team that did
+                  not answer.
+                </span>
+                <span className="mt-2">
+                  <i className="fas fa-circle constraints-dot mr-2"></i>
+                  In this round each team has its own quota of 4 questions and
+                  other questions passed to it from the previous team that did
+                  not answer.
+                </span>
+                <span className="mt-2">
+                  <i className="fas fa-circle constraints-dot mr-2"></i>
+                  In this round each team has its own quota of 4 questions and
+                  other questions passed to it from the previous team that did
+                  not answer.
+                </span>
+                <span className="mt-2">
+                  <i className="fas fa-circle constraints-dot mr-2"></i>
+                  In this round each team has its own quota of 4 questions and
+                  other questions passed to it from the previous team that did
+                  not answer.
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="tab-content p-2" id="pills-tabContent">
+            <div className="d-flex mt-2">
+              <h5 className="quiz-instruct mr-2">
+                General Round – Each team - quota of 4 questions
+              </h5>
+            </div>
+            <div className="text-justify mt-2">
+              <p>There is no negative marking for wrong answer.</p>
+            </div>
+            <div className="instruction-div mb-2">
+              <span className="quiz-instruct">Instructions :</span>
+              <div className="instruction-content d-flex flex-column mt-2">
+                <span className="mt-2">
+                  <i className="fas fa-circle constraints-dot mr-2"></i>
+                  In this round each team has its own quota of 4 questions and
+                  other questions passed to it from the previous team that did
+                  not answer.
+                </span>
+                <span className="mt-2">
+                  <i className="fas fa-circle constraints-dot mr-2"></i>
+                  In this round each team has its own quota of 4 questions and
+                  other questions passed to it from the previous team that did
+                  not answer.
+                </span>
+                <span className="mt-2">
+                  <i className="fas fa-circle constraints-dot mr-2"></i>
+                  In this round each team has its own quota of 4 questions and
+                  other questions passed to it from the previous team that did
+                  not answer.
+                </span>
+                <span className="mt-2">
+                  <i className="fas fa-circle constraints-dot mr-2"></i>
+                  In this round each team has its own quota of 4 questions and
+                  other questions passed to it from the previous team that did
+                  not answer.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
         <div
-          className="col-md-8"
+          className="col-md-7"
           style={{ height: "80vh", overflowY: "scroll" }}
         >
           {authState.contest.quizzes.length === 0 ? (
@@ -100,89 +183,7 @@ const ContestDetails = (props) => {
             </div>
           )}
         </div>
-        <div
-          className="col-md-4"
-          style={{ height: "80vh", overflowY: "scroll" }}
-        >
-          <div className="tab-content p-2" id="pills-tabContent">
-            <div className="d-flex mt-2">
-              <h5 className="quiz-instruct mr-2">
-                General Round – Each team - quota of 4 questions
-              </h5>
-            </div>
-            <div className="text-justify mt-2">
-              <p>There is no negative marking for wrong answer.</p>
-            </div>
-            <div className="instruction-div mb-2">
-              <span className="quiz-instruct">Instructions :</span>
-              <div className="instruction-content d-flex flex-column mt-2">
-                <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
-                </span>
-                <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
-                </span>
-                <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
-                </span>
-                <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="tab-content p-2" id="pills-tabContent">
-            <div className="d-flex mt-2">
-              <h5 className="quiz-instruct mr-2">
-                General Round – Each team - quota of 4 questions
-              </h5>
-            </div>
-            <div className="text-justify mt-2">
-              <p>There is no negative marking for wrong answer.</p>
-            </div>
-            <div className="instruction-div mb-2">
-              <span className="quiz-instruct">Instructions :</span>
-              <div className="instruction-content d-flex flex-column mt-2">
-                <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
-                </span>
-                <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
-                </span>
-                <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
-                </span>
-                <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
   );
