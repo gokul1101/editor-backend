@@ -7,6 +7,7 @@ import { AuthContext } from "../../../../../../contexts/AuthContext";
 import helperService from "../../../../../../services/helperService";
 import Testcase from "./Testcase/Testcase";
 import Timer from "../../Timer/Timer";
+import { parseCode, template } from "../../../../../../services/utils";
 const Programs = (props) => {
   let history = useHistory();
   const { questionId } = useParams();
@@ -14,6 +15,13 @@ const Programs = (props) => {
   const [challenge, setChallenge] = useState({});
   let [difficulty, setDifficulty] = useState("");
   let [testCases, setTestCases] = useState({});
+  const [themeName, setThemeName] = React.useState("nord_dark");
+  const [language, setLanguage] = React.useState("java");
+  const [code, setCode] = React.useState(
+    sessionStorage.getItem(challenge?.name)
+      ? JSON.parse(sessionStorage.getItem(challenge?.name))?.code
+      : template[language]
+  );
   useEffect(() => {
     props.setSideToggle(true);
   });
@@ -25,25 +33,46 @@ const Programs = (props) => {
     setDifficulty(problem?.difficulty_id.level);
   };
   const getTestCases = async () => {
-    try{
-      const {data : {message, testcases}} = await helperService.getTestCases(
+    try {
+      const {
+        data: { message, testcases },
+      } = await helperService.getTestCases(
         { questionId },
         { headers: { Authorization: authState.user.token } }
       );
       setTestCases(testcases?.testcases || {});
-    } catch(err) {
-
-    }
-  }
+    } catch (err) {}
+  };
+  const compile = async () => {
+    console.log(code);
+    // try {
+    //   let parsedCode = parseCode(code);
+    //   sessionStorage.setItem(
+    //     challenge?.name,
+    //     JSON.stringify({ code, lang: language })
+    //   );
+    //   const { status, data } = await helperService.compile(
+    //     { code: parsedCode, input, lang: language },
+    //     { headers: { Authorization: authState?.user?.token } }
+    //   );
+    //   if (status === 200) {
+    //     console.log(data);
+    //   }
+    // } catch (err) {
+    //   console.log(err);
+    // }
+  };
   useEffect(() => {
     findChallenge();
     getTestCases();
   }, []);
-  const [themeName, setThemeName] = React.useState("nord_dark");
-  const [language, setLanguage] = React.useState("java");
   const handleChange = (event) => setThemeName(event.target.value);
 
-  const handleLanguage = (event) => setLanguage(event.target.value);
+  const handleLanguage = (event) => {
+    setLanguage(event.target.value)
+    setCode(template[event.target.value]);
+    sessionStorage.removeItem(challenge?.name);
+  }
   return (
     <>
       <div className="container-fluid" id={challenge?._id}>
@@ -58,7 +87,7 @@ const Programs = (props) => {
             </div>
           </div>
           <div className="timer mt-1 ml-2">
-            <h6 className="timer-text" style = {{width : "230px"}}>
+            <h6 className="timer-text" style={{ width: "230px" }}>
               <Timer />
             </h6>
           </div>
@@ -204,21 +233,26 @@ const Programs = (props) => {
                     </div>
                   </div>
                 </div>
-                  {/* /TESTCASE/ */}
+                {/* /TESTCASE/ */}
                 <div
                   className="tab-pane fade"
                   id="pills-submissions"
                   role="tabpanel"
                   aria-labelledby="pills-submissions-tab"
                 >
-                  <Testcase testcases={testCases}/>
+                  <Testcase testcases={testCases} />
                 </div>
               </div>
             </div>
             <div className="col-md-8 p-0 d-flex flex-column">
-              <Editor language={language} themeName={themeName} />
+              <Editor
+                language={language}
+                theme={themeName}
+                onChangeHandler={(value) => setCode(value)}
+                value={code}
+              />
               <div className="mt-3 d-flex justify-content-end">
-                <button className="btn-hover color-11 mr-2">
+                <button className="btn-hover color-11 mr-2" onClick={compile}>
                   RUN CODE <i className="fas fa-code mr-2 ml-2"></i>
                 </button>
                 <button className="btn-hover color-11">

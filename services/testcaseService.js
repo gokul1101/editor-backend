@@ -93,8 +93,9 @@ const updateTestCaseService = async ({ testcase_id, index, testcase }) => {
 };
 const getTestCasesService = async (question_id) => {
   try {
-    const testcases = await Answer.findOne({ question_id });
+    let testcases = await Answer.findOne({ question_id });
     if (testcases) {
+      testcases.testcases.hidden = testcases.testcases?.hidden?.length || 0;
       return Promise.resolve({
         code: 200,
         message: `testcases found`,

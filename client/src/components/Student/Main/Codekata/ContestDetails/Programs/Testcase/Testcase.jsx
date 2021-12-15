@@ -96,7 +96,7 @@ const Testcase = ({ testcases }) => {
         Hidden Test Case
       </h6>
       <div className="position-relative">
-        {testcases?.hidden?.map((testcase, index) => {
+        {Array.apply(0, Array(testcases?.hidden || 0)).map((testcase, index) => {
           let length = (testcases?.sample?.length || 0) + index + 1;
           return (
             <Accordion square expanded={expanded === `panel${length}`}>

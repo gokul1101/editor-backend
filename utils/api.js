@@ -11,7 +11,8 @@ const common = [
   "getAllChallenges",
   "createSubmission",
   "compiler",
-  "getTestCases"
+  "getTestCases",
+  "executeContestChallenge"
 ];
 const student = [...common];
 const admin = [

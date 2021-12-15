@@ -132,33 +132,35 @@ const quizSubmissionService = async (quizAnswers) => {
     score,
   });
 };
-const challengeSubmissionService = async ({
+const challengeSubmissionService = async (
   question_id,
   code,
-  submission,
-}) => {
+  lang,
+  submission = false,
+) => {
   let flag = true,
     score = 0;
   try {
-    const { max_score } = await Question.findById(question_id);
-    const { testcases } = await Answer.findOne({ question_id });
-    const totalTestCases = testcases.sample.length + testcases.hidden.length;
+    const max_score = (await Question.findById(question_id))?.max_score || 1;
+    const testcases = (await Answer.findOne({ question_id }))?.testcases || {};
+    const totalTestCases = testcases?.sample?.length + testcases?.hidden?.length;
     const sampleTestCaseOutput = await Promise.all(
-      testcases.sample.map(async (testcase) => {
+      testcases?.sample?.map(async (testcase) => {
         try {
-          const { output } = await compilerService(code, testcase.input);
+          const { output } = await compilerService(code, testcase.input, lang);
+          console.log(output)
           if (submission && testcase.output === output) score++;
           return {
             expectedOutput: testcase.output,
             actualOutput: output,
             errors: false,
           };
-        } catch ({ output }) {
+        } catch ({ err }) {
           flag = false;
-          console.log(output);
+          console.log(err);
           return {
             expectedOutput: testcase.output,
-            actualOutput: output,
+            actualOutput: err,
             errors: true,
           };
         }
@@ -170,9 +172,10 @@ const challengeSubmissionService = async ({
         sampleTestCaseOutput,
       });
     const hiddenTestCaseOutput = await Promise.all(
-      testcases.hidden.map(async (testcase) => {
+      testcases?.hidden?.map(async (testcase) => {
         try {
-          const { output } = await compilerService(code, testcase.input);
+          const { output } = await compilerService(code, testcase.input, lang);
+          console.log(output)
           if (output === testcase.output) {
             if (submission) score++;
             return true;
@@ -185,7 +188,7 @@ const challengeSubmissionService = async ({
     );
     if (submission) {
       let total_score = Math.round((score / totalTestCases) * max_score);
-      return Promise.resolve({ score: total_score });
+      return Promise.resolve({ code : 200, score: total_score });
     }
     return Promise.resolve({
       code: 200,
@@ -205,4 +208,5 @@ module.exports = {
   getSubmissionsService,
   getAllSubmissionsService,
   quizSubmissionService,
+  challengeSubmissionService
 };

@@ -36,7 +36,7 @@ const {
 } = require("../controllers/testcaseController");
 const { createSubmission } = require("../controllers/submissionController");
 const { getErrorLogs } = require("../controllers/errorLogsController");
-const { compile } = require("../controllers/compileController");
+const { compile, executeContestChallenge } = require("../controllers/compileController");
 
 //? Public Routes
 //* =============Login=============
@@ -198,6 +198,7 @@ router.post(
 );
 //* ==============Compiler===============*//
 router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compile);
+router.post("/api/v1/run-code", userAuth, routeAuth("executeContestChallenge"), executeContestChallenge);
 
 //* =============== Error Logs =========== *//
 router.get("/api/v1/errorLogs", userAuth, routeAuth("errorLogs"), getErrorLogs);
