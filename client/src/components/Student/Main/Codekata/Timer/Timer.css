@@ -1,37 +1,15 @@
-.timer {
-    padding: 4rem 0 0 0;
-    height: auto;
-    width: 100%;
-    text-align: center;
+.timer-span {
+  font-weight: 700 !important;
+  color: #39b98f;
+}
+.countdown-timer > .pop-span {
+  animation: pop 0.8s linear infinite;
+}
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
   }
-  
-  /* #clockdiv {
-    background-color: #c31432;
-    font-family: sans-serif;
-    display: inline-block;
-    font-weight: 100;
-    text-align: center;
-    border:none;
+  30% {
+    transform: scale(1.1);
   }
-  #clockdiv > div {
-    
-    border-radius: 3px;
-    display: inline-block;
-    font-size: 40px;
-  }
-  #clockdiv div > span {
-    padding: 15px;
-    border-radius: 3px;
-    font-family: "Orbitron", sans-serif;
-    background: linear-gradient(to right, #d81737, #f8b500);
-    color: transparent;
-    -webkit-background-clip: text;
-    display: inline-block;
-  }
-  .smalltext {
-    padding-top: 5px;
-    font-size: 15px;
-    background: linear-gradient(to right, #c31432, #f8b500);
-    color: transparent;
-    -webkit-background-clip: text;
-  } */
+}

@@ -88,7 +88,6 @@ const getContestForDashboard = async (req, res) => {
     response.quizzes = contestQuizzes.quizzes;
     let ContestChallenges = await getAllChallengesWithContestId(contest._id);
     response.challenges = ContestChallenges.challenges;
-
     res.status(status).send({ contest: response });
   } catch ({ status, code, message }) {
     console.log(message);

@@ -54,7 +54,7 @@ const Dashboard = (props) => {
                   </NavLink>
                 </div>
                 <div className="banner-stack-img col-md-6">
-                  <img src={LoopHeader} className="img-fluid" />
+                  <img alt="someImage" src={LoopHeader} className="img-fluid" />
                 </div>
               </div>
             </div>
@@ -86,34 +86,46 @@ const Dashboard = (props) => {
         </div>
 
         <div className="mt-5 mb-5">
-          <h3 class="text-center card-title">What we do ?</h3>
-          <div class="d-flex flex-wrap justify-content-center mt-5">
-            <div class="dash-card what-we-do-card mr-5 ml-5">
-              <div class="dash-card img-one  p-4 m-4">
-                <img src={DashImg1} alt="" class="ml-2 img-fluid" />
+          <h3 className="text-center card-title">What we do ?</h3>
+          <div className="d-flex flex-wrap justify-content-center mt-5">
+            <div className="dash-card what-we-do-card mr-5 ml-5">
+              <div className="dash-card img-one  p-4 m-4">
+                <img
+                  src={DashImg1}
+                  alt="someImage"
+                  className="ml-2 img-fluid"
+                />
               </div>
-              <h6 class="card-title text-align-center">Target</h6>
-              <p class="text-align-center">
+              <h6 className="card-title text-align-center">Target</h6>
+              <p className="text-align-center">
                 Set an target to complete MCQ’S and problems.
               </p>
             </div>
 
-            <div class="dash-card what-we-do-card mr-5 ml-5">
-              <div class="dash-card img-one  p-4 m-4">
-                <img src={DashImg2} alt="" class="ml-2 img-fluid" />
+            <div className="dash-card what-we-do-card mr-5 ml-5">
+              <div className="dash-card img-one  p-4 m-4">
+                <img
+                  src={DashImg2}
+                  alt="someImage"
+                  className="ml-2 img-fluid"
+                />
               </div>
-              <h6 class="card-title text-align-center">Schedule</h6>
-              <p class="text-align-center">
+              <h6 className="card-title text-align-center">Schedule</h6>
+              <p className="text-align-center">
                 Admin will assign you a problem statement.
               </p>
             </div>
 
-            <div class="dash-card what-we-do-card mr-5 ml-5">
-              <div class="dash-card img-one  p-4 m-4">
-                <img src={DashImg3} alt="" class="ml-2 img-fluid" />
+            <div className="dash-card what-we-do-card mr-5 ml-5">
+              <div className="dash-card img-one  p-4 m-4">
+                <img
+                  src={DashImg3}
+                  alt="someImage"
+                  className="ml-2 img-fluid"
+                />
               </div>
-              <h6 class="card-title text-align-center">Timer</h6>
-              <p class="text-align-center">
+              <h6 className="card-title text-align-center">Timer</h6>
+              <p className="text-align-center">
                 Complete the problems in a period of time.
               </p>
             </div>
@@ -133,7 +145,7 @@ const Dashboard = (props) => {
               </div>
             </div>
             <div className="col-md-6">
-              <img src={LoopHeader} alt="" />
+              <img src={LoopHeader} alt="someImage" />
             </div>
           </div>
         </div>
@@ -141,7 +153,7 @@ const Dashboard = (props) => {
           <p className="text-center dash-title-category">CODEKATA</p>
           <div className="d-flex align-items-center justify-content-center">
             <div className="col-md-6">
-              <img src={Img1} alt="" />
+              <img src={Img1} alt="someImage" />
             </div>
 
             <div className="col-md-6 d-flex flex-column align-items-center">
@@ -171,7 +183,7 @@ const Dashboard = (props) => {
               </div>
             </div>
             <div className="col-md-6">
-              <img src={Img2} alt="" />
+              <img src={Img2} alt="someImage" />
             </div>
           </div>
         </div>
@@ -179,7 +191,7 @@ const Dashboard = (props) => {
           <p className="text-center dash-title-category">ROADMAP</p>
           <div className="d-flex align-items-center justify-content-center">
             <div className="col-md-6">
-              <img src={Img3} alt="" />
+              <img src={Img3} alt="someImage" />
             </div>
 
             <div className="col-md-6 d-flex flex-column align-items-center">
@@ -194,14 +206,20 @@ const Dashboard = (props) => {
             </div>
           </div>
         </div>
-              <div className="footer-link d-flex justify-content-between  mt-3">
-              <div>
-                <p className="font-weight-bolder">Copyrights reserved to Loop @ 2022</p>
-              </div>
-              <div className="d-flex">
-              <NavLink className="text-muted" to="">Privacy Policy |</NavLink>
-              <NavLink className="text-muted" to="">Terms & Conditions</NavLink>
-              </div>
+        <div className="footer-link d-flex justify-content-between mt-3">
+          <div>
+            <p className="font-weight-bolder">
+              Copyrights reserved to Loop @ 2022
+            </p>
+          </div>
+          <div className="d-flex">
+            <NavLink className="" to="">
+              Privacy Policy |
+            </NavLink>
+            <NavLink className="" to="">
+              Terms & Conditions
+            </NavLink>
+          </div>
         </div>
       </div>
     </div>

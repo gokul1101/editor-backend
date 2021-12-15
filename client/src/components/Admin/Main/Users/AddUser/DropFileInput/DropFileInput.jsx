@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -11,6 +11,7 @@ import Chip from "@material-ui/core/Chip";
 import "./DropFileInput.css";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { NavLink } from "react-router-dom";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -69,7 +70,7 @@ const DropFileInput = (props) => {
         onDrop={onDrop}
       >
         <div className="drop-file-input__label">
-          <img src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png" />
+          <img alt="someImage" src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png" />
           <p>Drag & Drop your files here</p>
         </div>
         <input
@@ -87,7 +88,7 @@ const DropFileInput = (props) => {
               key={index}
               className="drop-file-preview__item d-flex w-100 align-items-center justify-content-center"
             >
-              <img src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png" />
+              <img alt="someImage" src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png" />
               <div className="drop-file-preview__item__info d-flex flex-column">
                 <span>{item.name}</span>
                 <div className="d-flex justify-content-between">
@@ -107,14 +108,14 @@ const DropFileInput = (props) => {
             </button>
           </div>
           <div className="d-flex align-items-end justify-content-end mt-3 p-2">
-            <a className="log-file">
+            <div className="log-file">
               <span
-                class="badge badge-pill badge-secondary"
+                className="badge badge-pill badge-secondary"
                 onClick={handleClickOpen}
               >
                 Logs
               </span>
-            </a>
+            </div>
             <Dialog
               open={open}
               fullScreen={fullScreen}

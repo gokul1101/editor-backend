@@ -1,6 +1,6 @@
 #partitioned {
-  padding-left: 12px;
-  letter-spacing: 40px;
+  padding-left: 13px;
+  letter-spacing: 38px;
   border: 0;
   background-image: linear-gradient(
     to left,
@@ -12,8 +12,7 @@
   background-repeat: repeat-x;
   background-position-x: 35px;
   background-color: transparent;
-  width: 308px;
-  min-width: 308px;
+  width: 310px;
   outline: none;
   color: #000;
   font-size: 16px;

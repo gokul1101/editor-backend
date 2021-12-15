@@ -58,64 +58,65 @@ const Testcase = () => {
   return (
     <div>
       <CompilerError/>
-      {/* Sample test Case Accordian */}
       <h6 className='p-2 font-weight-bolder test-case-heading mt-5'>Sample Test Case</h6>
-      <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" className='bg-sucess'>
-          <Typography classname="test-case-heading ">
-            <img src={Loader} alt="" height={40} className='p-2 rounded-circle' />
-            <span className='ml-3'>Test Case 1</span>
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            [5, 10, 15]
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion square expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <Typography classname="test-case-heading">
+      <div className="position-relative">
+        <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" className='bg-sucess'>
+            <Typography classname="test-case-heading ">
+              <img src={Loader} alt="" height={40} className='p-2 rounded-circle' />
+              <span className='ml-3'>Test Case 1</span>
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              [5, 10, 15]
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion square expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+          <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+            <Typography classname="test-case-heading">
 
 
-            <button className='btn btn-success'><i class="fas fa-check-circle"></i></button>
-            <span className='ml-3'>Test Case 2</span>
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            [5, 10, 15]
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion square expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-          <Typography classname="test-case-heading">
+              <button className='btn btn-success'><i className="fas fa-check-circle"></i></button>
+              <span className='ml-3'>Test Case 2</span>
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              [5, 10, 15]
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion square expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+          <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+            <Typography classname="test-case-heading">
 
-            <button className='btn btn-success'><i class="fas fa-check-circle"></i></button>
-            <span className='ml-3'>Test Case 3</span>
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            [5, 10, 15]
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion square expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography classname="test-case-heading">
+              <button className='btn btn-success'><i className="fas fa-check-circle"></i></button>
+              <span className='ml-3'>Test Case 3</span>
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              [5, 10, 15]
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion square expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+            <Typography classname="test-case-heading">
 
-            <button className='btn btn-danger'><i class="fas fa-times-circle"></i></button>
-            <span className='ml-3'>Test Case 4</span>
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            [5, 10, 15]
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+              <button className='btn btn-danger'><i className="fas fa-times-circle"></i></button>
+              <span className='ml-3'>Test Case 4</span>
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              [5, 10, 15]
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      </div>
 
 
       {/* Hidden test Case Accordian */}
@@ -123,43 +124,45 @@ const Testcase = () => {
 
 
       <h6 className='p-2 font-weight-bolder test-case-heading mt-5'>Hidden Test Case</h6>
-      <Accordion square expanded={expanded === 'panel5'}>
-        <AccordionSummary aria-controls="panel5d-content" id="panel5d-header" className=''>
+      <div className="position-relative">
+        <Accordion square expanded={expanded === 'panel5'}>
+          <AccordionSummary aria-controls="panel5d-content" id="panel5d-header" className=''>
+            <Typography className="test-case-heading w-100 mr-auto">
+              <button className='btn btn-danger'><i className="fas fa-times-circle"></i></button>
+              <span className='ml-3 text-dark'>Test Case 1</span>
+            </Typography>
+
+            <div className='lock-icon p-2 float-right'>
+              <i className="fas fa-lock"></i>
+            </div>
+
+
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              [5, 10, 15]
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion square expanded={expanded === 'panel6'}>
+          <AccordionSummary aria-controls="panel6d-content" id="panel6d-header">
           <Typography className="test-case-heading w-100 mr-auto">
-            <button className='btn btn-danger'><i class="fas fa-times-circle"></i></button>
-            <span className='ml-3 text-dark'>Test Case 1</span>
-          </Typography>
+              <button className='btn btn-danger'><i className="fas fa-times-circle"></i></button>
+              <span className='ml-3 text-dark'>Test Case 2</span>
+            </Typography>
 
-          <div className='lock-icon p-2 float-right'>
-            <i class="fas fa-lock"></i>
-          </div>
+            <div className='lock-icon p-2 float-right'>
+              <i className="fas fa-lock"></i>
+            </div>
 
-
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            [5, 10, 15]
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion square expanded={expanded === 'panel6'}>
-        <AccordionSummary aria-controls="panel6d-content" id="panel6d-header">
-        <Typography className="test-case-heading w-100 mr-auto">
-            <button className='btn btn-danger'><i class="fas fa-times-circle"></i></button>
-            <span className='ml-3 text-dark'>Test Case 2</span>
-          </Typography>
-
-          <div className='lock-icon p-2 float-right'>
-            <i class="fas fa-lock"></i>
-          </div>
-
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            [5, 10, 15]
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              [5, 10, 15]
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      </div>
 
 
 

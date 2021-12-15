@@ -50,6 +50,22 @@ const helperService = {
       });
     }
   },
+  getUsers : async ({page,limit},config) => {
+    try {
+      const { status, data } = await axios.get(`${baseURL}/api/v1/users/getAll?page=${page}&limit=${limit}`, config);
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch ({ response }) {
+      return Promise.reject({
+        status: response.status,
+        data: response.data,
+      });
+    }
+  },
   getContestWithCode: async (payload, config) => {
     let url = `${baseURL}/api/v1/contest/dashboard`;
     if (payload.id) url += `?id=${payload.id}`;
@@ -64,8 +80,8 @@ const helperService = {
       }
     } catch (err) {
       return Promise.reject({
-        status: err.response.status,
-        message: err.response.data,
+        status: err?.response?.status,
+        message: err?.response?.data,
       });
     }
   },
@@ -149,7 +165,7 @@ const helperService = {
       });
     }
   },
-  getQuizQuestions : async ({id},config) => {
+  getQuizQuestions: async ({ id }, config) => {
     try {
       const { data, status } = await axios.get(
         `${baseURL}/api/v1/mcq/all?id=${id}`,
@@ -169,7 +185,7 @@ const helperService = {
       });
     }
   },
-  createQuizQuestion : async (payload,config) => {
+  createQuizQuestion: async (payload, config) => {
     try {
       const { data, status } = await axios.post(
         `${baseURL}/api/v1/question/create`,
@@ -184,6 +200,168 @@ const helperService = {
       }
     } catch (err) {
       console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  createChallenge: async (payload, config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/question/create`,
+        payload,
+        config
+      );
+      if (status === 201) {
+        return Promise.resolve({
+          data,
+          status,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  getChallenges: async ({ id }, config) => {
+    try {
+      const { data, status } = await axios.get(
+        `${baseURL}/api/v1/challenges/all?id=${id}`,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          data,
+          status,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  getQuestion: async ({ id, type }, config) => {
+    try {
+      const { data, status } = await axios.get(
+        `${baseURL}/api/v1/question/get?id=${id}&type=${type} `,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          data,
+          status,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  updateQuestion: async (payload, config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/question/update?type=${payload.type_id}`,
+        payload,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          data,
+          status,
+        });
+      }
+    } catch (err) {
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  deleteQuestion: async (payload, config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/question/delete?type=${payload.type_id}`,
+        payload,
+        config
+      );
+      if (status === 202) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  createTestcase: async (payload, config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/testcase/create`,
+        payload,
+        config
+      );
+      if (status === 201) {
+        return Promise.resolve({
+          data,
+          status,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  createUser: async (payload, config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/user/create`,
+        payload,
+        config
+      );
+      if (status === 201) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  createBulkUsers: async (payload, config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/user/create/all`,
+        payload,
+        config
+      );
+      if (status === 201) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,

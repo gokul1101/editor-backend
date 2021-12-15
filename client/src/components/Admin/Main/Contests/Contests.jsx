@@ -67,7 +67,7 @@ const Contests = () => {
             return (
               <div className="d-flex mt-2 mb-2">
                 <div className="col-md-3 d-flex justify-content-between text-center upcoming-task">
-                  <i class="fas fa-link text-left mt-2"></i>
+                  <i className="fas fa-link text-left mt-2"></i>
                   <Link
                     to={`/contests/${event._id}/edit`}
                     onClick={() => setContest(event)}
@@ -114,7 +114,7 @@ const Contests = () => {
             return (
               <div className="d-flex mt-2 mb-2">
                 <div className="col-md-3 d-flex justify-content-between text-center upcoming-task">
-                  <i class="fas fa-link text-left mt-2"></i>
+                  <i className="fas fa-link text-left mt-2"></i>
                   <span>{event.name}</span>
                 </div>
                 <div className="col-md-3 text-center">{`${new Date(

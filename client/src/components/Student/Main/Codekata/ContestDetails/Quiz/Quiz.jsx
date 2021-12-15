@@ -4,13 +4,18 @@ import { useParams, useHistory } from "react-router-dom";
 import TimerImg from "../../../../../Images/timer.png";
 import Male from "../../../../../Images/man.png";
 import Timer from "../../Timer/Timer";
+import { useContext } from "react";
+import { AuthContext } from "../../../../../../contexts/AuthContext";
 
-const Quiz = (props) => {
+const Quiz = ({ setSideToggle }) => {
   const location = useParams();
   const history = useHistory();
+  const [authState, authDisaptch] = useContext(AuthContext);
+  // const [questions, setQuestions] = useState({});
   useEffect(() => {
-    props.setSideToggle(true);
-  });
+    console.log(authState.contest);
+    setSideToggle(true);
+  }, [setSideToggle]);
 
   let [currentQuestion, setCurrentQuestion] = useState(0);
   const [status, setStatus] = useState(false);
@@ -58,35 +63,30 @@ const Quiz = (props) => {
     },
   ];
 
-  const questionChange = (currQue) => {
-    console.log(currQue);
-    setCurrentQuestion(currQue);
-  };
-
   const handleNext = () => {
-    // if (isCorrect === true) {
-    //   setScore(score + 1);
-    // }
+    if (!status) return;
     const nextQuetions = currentQuestion + 1;
     if (nextQuetions < questions.length) {
       setCurrentQuestion(nextQuetions);
     }
-    // else {
-    //   setShowScore(true);
-    // }
-  };
 
+    setStatus(false);
+    setSelectedAnswer("");
+  };
   const answerHandler = (ans) => {
-    console.log(ans);
     setSelectedAnswer(ans);
     setStatus(true);
   };
+  let isLast = currentQuestion + 1 === questions.length;
   return (
     <div className="container-fluid p-0 Quiz-question-container">
       <div className="d-flex">
-        <div class="back-btn mr-auto mt-3 ml-4" onClick={() => history.goBack()}>
-          <div class="triangle"></div>
-          <div class="halfcircle"></div>
+        <div
+          className="back-btn mr-auto mt-3 ml-4"
+          onClick={() => history.goBack()}
+        >
+          <div className="triangle"></div>
+          <div className="halfcircle"></div>
         </div>
         <div className="user-info position-relative">
           <div className="d-flex mx-4 pt-3 user-det justify-content-end">
@@ -94,8 +94,8 @@ const Quiz = (props) => {
               <img src={Male} alt="male" height="50" width="50" />
             </div>
             <div className="user-profile d-flex flex-column">
-              <span className="user-name">Dhanush Karthick S</span>
-              <span className="register-no">1813015</span>
+              <span className="user-name">{authState?.user?.name}</span>
+              <span className="register-no">{authState?.user?.regno}</span>
             </div>
           </div>
         </div>
@@ -123,7 +123,7 @@ const Quiz = (props) => {
           </div>
           <div className="d-flex flex-column quizzes pt-4 pb-4">
             <div className="d-flex">
-              <div class="numberCircle ml-3">{currentQuestion + 1}</div>
+              <div className="numberCircle ml-3">{currentQuestion + 1}</div>
               <div className="question-up ml-3">
                 <span className="span-question font-weight-bolder">
                   {questions[currentQuestion].questionText}
@@ -136,12 +136,11 @@ const Quiz = (props) => {
                   (answerOptions, id) => {
                     return (
                       <button
-                    
                         key={id}
                         className={`${
                           status && selectedAnswer === answerOptions
-                            ? `correct-option text-left pr-2 pl-3 pt-2 pb-2 m-2`
-                            : `option-1 text-left pr-2 pl-3 pt-2 pb-2 m-2 individual-options`
+                            ? `correct-option text-left p-2 m-2`
+                            : `option-1 text-left p-2 m-2 individual-options`
                         }`}
                         onClick={() => answerHandler(answerOptions)}
                       >
@@ -152,16 +151,19 @@ const Quiz = (props) => {
                 )}
               </div>
             </div>
-            <div className="mt-2 d-flex justify-content-end mr-4">
-              <button
-                className="mr-2 btn-hover pr-1 pl-1 color-11"
-                color="primary"
-                variant="contained"
-                onClick={handleNext}
-              >
-                Next
-              </button>
-            </div>
+            {!isLast ? (
+              <div className="mt-2 d-flex justify-content-end mr-4">
+                <button
+                  className="mr-2 btn-hover pr-1 pl-1 color-11"
+                  color="primary"
+                  variant="contained"
+                  onClick={handleNext}
+                  disabled={isLast}
+                >
+                  Next
+                </button>
+              </div>
+            ) : null}
           </div>
         </div>
         <div className="col-md-4">
@@ -180,9 +182,15 @@ const Quiz = (props) => {
               </h2>
               <p className="font-weight-bolder">remaining</p>
               <div className="d-flex">
-                <span className="timer-hand mr-2 ml-3 font-weight-bolder">Hours</span>
-                <span className="timer-hand mr-2 font-weight-bolder">Minutes</span>
-                <span className="timer-hand mr-2 font-weight-bolder">Seconds</span>
+                <span className="timer-hand mr-2 ml-3 font-weight-bolder">
+                  Hours
+                </span>
+                <span className="timer-hand mr-2 font-weight-bolder">
+                  Minutes
+                </span>
+                <span className="timer-hand mr-2 font-weight-bolder">
+                  Seconds
+                </span>
               </div>
             </div>
             <div
@@ -191,7 +199,7 @@ const Quiz = (props) => {
             >
               <span className="span-question mt-2 mb-3">Question Path</span>
               <div className="d-flex flex-wrap">
-                {Array.apply(0, Array(500)).map(function (x, i) {
+                {questions.map((x, i) => {
                   return (
                     <button
                       className={`${
@@ -199,7 +207,6 @@ const Quiz = (props) => {
                           ? `correct ml-3 mb-2 text-center`
                           : `que-path ml-3 mb-3 text-center`
                       }`}
-                      onClick={() => questionChange(i)}
                     >
                       {i + 1}
                     </button>

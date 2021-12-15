@@ -20,7 +20,7 @@ const Users = () => {
             <i className="fas fa-plus pr-1 pl-1"></i> Add user
           </NavLink>
         </li>
-        <li class="list-group-item user-group-pill">
+        <li className="list-group-item user-group-pill">
           <NavLink
             exact
             className="user-navlink pr-3 pl-3 m-2 btn nav-button"

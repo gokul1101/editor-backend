@@ -1,3 +1,7 @@
+.create-challenge {
+  min-height : 100vh !important;
+  overflow-y: scroll !important;
+}
 .tags-input {
   min-height: 48px;
   width: 100%;

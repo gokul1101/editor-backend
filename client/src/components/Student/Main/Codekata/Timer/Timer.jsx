@@ -1,42 +1,60 @@
-
-
 import React from "react";
-import { useState ,useEffect} from "react";
+import { useContext } from "react";
+import { useState, useEffect } from "react";
+import { AuthContext } from "../../../../../contexts/AuthContext";
+import "./Timer.css";
+const Timer = () => {
+  const [authState] = useContext(AuthContext);
+  const ends_at = authState?.duration;
+  const calculateTimeLeft = () => {
+    let difference = +new Date(ends_at) - +new Date();
+    let timeLeft = {};
 
-const Timer = (props) => {
- const [date, setDate] = useState(0);
- const[hour,setHour]=useState(0);
- const[minutes,setMinutes]=useState(0);
- const[second,setSecond]=useState(0);
- const[deadline,setDeadline]=useState("");
-  useEffect(() => {
-    var deadline = new Date("dec 12, 2021 8:0:0").getTime();
-    var x = setInterval(function() {
-    var now = new Date().getTime();
-    var t = deadline - now;
-    var days = Math.floor(t / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((t % (1000 * 60)) / 1000);
-   
-    // document.getElementById("day").innerHTML = days +" : ";
-    // document.getElementById("hour").innerHTML = hours +" : ";
-    // document.getElementById("minute").innerHTML = minutes +" : ";
-    // document.getElementById("second").innerHTML = seconds;
-    if (t < 0) {
-      clearInterval(x);
-      setDeadline("TIME UP");
-      setDate(12);
-      setHour(2);
-      setMinutes(1);
-      setSecond(0);
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
     }
-  }, 1000);
-  })
+    return timeLeft;
+  };
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+    return () => clearTimeout(timer);
+  });
+
+  const timerComponents = [];
+
+  Object.keys(timeLeft).forEach((interval) => {
+    if (!timeLeft[interval]) {
+      return;
+    }
+    timerComponents.push(
+      `${timeLeft[interval]}${interval.toUpperCase().charAt(0)}`
+    );
+  });
   return (
-    <div className="timer p-2">
-      <span id="day">{date}</span> <span id="hour">{hour}</span> <span id="minute">{minutes}</span><span id="second">{second}</span>
-  </div>
+    <div className="d-flex align-items-center justify-content-center">
+      {timerComponents.length === 0 ? (
+        <span>Time's up</span>
+      ) : (
+        <div className="d-flex align-items-center countdown-timer justify-content-center" style={{width:'250px'}}>
+          {timerComponents.map((component, index) => {
+            let suffix = index + 1 !== timerComponents.length ? " : " : "";
+            return (
+              <p
+                className={`timer-span mt-2 ml-1 px-2`}
+              >{`${component}${suffix}`}</p>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 };
 

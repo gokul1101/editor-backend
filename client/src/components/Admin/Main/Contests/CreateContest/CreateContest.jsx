@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import helperService from "../../../../../services/helperService";
 import InputReducer from "../../../../Reducer/InputReducer";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import "./CreateContest.css";
 const CreateContest = (props) => {
-  const [authState, authDispatch] = useContext(AuthContext);
+  const [authState, ] = useContext(AuthContext);
   const [name, setName] = useState(authState?.contest?.name);
   const [date, setDate] = useState({
     start_date: authState?.contest?.start_date,
@@ -14,7 +14,6 @@ const CreateContest = (props) => {
     start_time: authState?.contest?.start_time,
     end_time: authState?.contest?.end_time,
   });
-  // const [name,setName] = useState("");
   const getContest = async () => {
     try {
       const resposne = await helperService.createContest(
@@ -27,6 +26,7 @@ const CreateContest = (props) => {
         },
         { headers: { Authorization: authState.user.token } }
       );
+      console.log(resposne)
     } catch (error) {
       console.log(error);
       // props.snackBar(error.error,"error")

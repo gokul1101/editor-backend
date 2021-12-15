@@ -91,6 +91,27 @@ const updateTestCaseService = async ({ testcase_id, index, testcase }) => {
     return Promise.reject({ code: 500, message: "Unable to update testcase" });
   }
 };
+const getTestCases = async (question_id) => {
+  try{
+    const testcases  = await Answer.findOne({question_id})
+    if(testcases){
+      return Promise.resolve({
+        code:200,
+        message:`testcases found`,
+        testcases
+      })
+    }
+    else{
+      return Promise.resolve({
+        code:404,
+        message:"No testcases found"
+      })
+    }
+  }
+  catch(err){
+    return Promise.reject({ code: 500, message: "Unable to get testcases" }); 
+  }
+}
 const deleteTestCaseService = async () => {
   try {
   } catch (err) {
@@ -102,4 +123,5 @@ module.exports = {
   createMultipleTestCasesService,
   updateTestCaseService,
   deleteTestCaseService,
+  getTestCases
 };

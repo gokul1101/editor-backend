@@ -17,7 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 const ContestQuizzes = () => {
   const { id } = useParams();
-  const [authState, authDispatch] = useContext(AuthContext);
+  const [authState,] = useContext(AuthContext);
   const [quizName, setQuizName] = useState("");
   const [open, setOpen] = React.useState(false);
   const [quizzArr, setQuizzArr] = useState([]);
@@ -50,7 +50,7 @@ const ContestQuizzes = () => {
       if (status === 200) {
         // TODO:
         // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
-        setQuizzArr(data.Quizzes);
+        setQuizzArr(data.quizzes);
         setOpen(false);
       }
     } catch (err) {
@@ -121,9 +121,9 @@ const ContestQuizzes = () => {
       </Dialog>
       <div className="challenge-chips d-flex flex-wrap border p-2 mt-4">
         {quizzArr?.length > 0 ? (
-          quizzArr.map((e) => {
+          quizzArr?.map((e) => {
             return (
-              <div className="create-con">
+              <div className="create-con" key = {e._id}>
                 <div className="p-2 mr-2 ml-2 quizzes-chip">
                   <DeleteOutlineIcon />
                   <Link

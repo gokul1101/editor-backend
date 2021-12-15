@@ -26,14 +26,14 @@ const CreateQuiz = () => {
               <Link to="/quizzes/add-quiz">
                 <div className="create-con mt-2 clearfix">
                   <button className="p-2 float-right">
-                    NEXT<i class="fas fa-arrow-right pr-2 pl-3"></i>
+                    NEXT<i className="fas fa-arrow-right pr-2 pl-3"></i>
                   </button>
                 </div>
               </Link>
             </div>
           </div>
           <div className="col-md-6 d-flex">
-            <img src={LoopHeader} className="img-fluid" />
+            <img alt="someImage" src={LoopHeader} className="img-fluid" />
           </div>
         </div>
       </div>

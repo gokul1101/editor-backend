@@ -5,6 +5,7 @@ const {
   getMCQ,
   updateMCQ,
   getAllMcqWithQuizID,
+  deleteMCQ,
 } = require("../services/mcqService");
 const {
   createChallenge,
@@ -14,6 +15,7 @@ const {
 } = require("../services/challengeService");
 const createQuestion = async (req, res) => {
   let questionDetails = req.body;
+  console.log(questionDetails);
   let functions = [createMCQ, createChallenge],
     index;
   if (questionDetails.type_id === "mcq") index = 0;
@@ -22,13 +24,16 @@ const createQuestion = async (req, res) => {
     questionDetails.type_id = (
       await TestType.findOne({ name: questionDetails.type_id })
     )._id;
-    let { code, message,mcq } = await functions[index](questionDetails);
-    console.log(mcq)
-    res.status(code).json({message,mcq});
+    let { code, message, mcq } = await functions[index](questionDetails);
+    if (mcq) return res.status(code).json({ message, mcq });
+    res.status(code).send(message);
   } catch (err) {
     //! Error in creating question
-    console.log("at line 29", err);
-    return res.status(500).json({ message: `Internal server error` });
+    if (!err.code) {
+      err.code = 500;
+      err.message = `Internal server error`;
+    }
+    return res.status(err.code).json({ message: err.message });
   }
 };
 const getQuestion = async (req, res) => {
@@ -42,7 +47,7 @@ const getQuestion = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting question
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on fetching mcqs`;
     }
@@ -61,23 +66,45 @@ const updateQuestion = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in updating question
-    console.log(err)
-    if(!err.code) {
+    console.log(err);
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on updating mcqs`;
     }
     return res.status(err.code).send(err.message);
   }
 };
+
+const deleteQuestion = async(req,res) => {
+  let questionDetails = req.body;
+  let { type } = req.query;
+  let functions = [deleteMCQ],
+    index;
+  if (type === "mcq") index = 0;
+  else if (type === "problem") index = 1;
+  try {
+    let response = await functions[index](questionDetails);
+    res.status(response.code).send(response);
+  } catch (err) {
+    //! Error in updating question
+    console.log(err);
+    if (!err.code) {
+      err.code = 500;
+      err.message = `Internal server Error on deleting mcqs`;
+    }
+    return res.status(err.code).send(err.message);
+  }
+}
+
 const getAllMCQS = async (req, res) => {
-  const {id, page=1, limit=10} = req.query;
+  const { id, page = 1, limit = 10 } = req.query;
   let flag = req.user.role_id === "admin";
   try {
-    const response = await getAllMcqWithQuizID(id, page, limit,flag);
+    const response = await getAllMcqWithQuizID(id, page, limit, flag);
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting mcqs with quiz id
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on fetching mcqs`;
     }
@@ -85,13 +112,13 @@ const getAllMCQS = async (req, res) => {
   }
 };
 const getAllChallenges = async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.query;
   try {
     const response = await getAllChallengesWithContestId(id);
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting mcqs with quiz id
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on fetching mcqs`;
     }
@@ -103,6 +130,7 @@ module.exports = {
   createQuestion,
   getQuestion,
   updateQuestion,
+  deleteQuestion,
   getAllMCQS,
   getAllChallenges,
 };
