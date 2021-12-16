@@ -34,14 +34,6 @@ const App = () => {
     setMessage(snackMessage);
     setOpen(true);
   };
-  const unauthorized = (message) => {
-    snackBar(message, "error");
-    localStorage.clear();
-    authDispatch({
-      type: "REMOVE_USER",
-    });
-    history.push("/login");
-  };
   const fetchUser = async () => {
     try {
       const { status, data } = await helperService.getUser(
@@ -55,8 +47,9 @@ const App = () => {
         });
       }
     } catch (err) {
-      if (err.status === 401) unauthorized(err.data);
-      else snackBar(err.data, "error");
+      console.log(err);
+      // if (err.status === 401) unauthorized(err.data);
+      // snackBar(err.data, "error");
     }
   };
   return (
@@ -84,9 +77,9 @@ const App = () => {
             {authState.user ? (
               [
                 authState.user.role === "student" ? (
-                  <Main snackBar={snackBar} unauthorized={unauthorized} fetchUser={fetchUser} />
+                  <Main snackBar={snackBar} fetchUser={fetchUser} />
                 ) : (
-                  <AdminMain snackBar={snackBar} fetchUser={fetchUser}/>
+                  <AdminMain snackBar={snackBar} fetchUser={fetchUser} />
                 ),
               ]
             ) : (

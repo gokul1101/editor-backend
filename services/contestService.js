@@ -101,7 +101,7 @@ const updateContestService = async ({
         message: "Contest not found",
       });
     if (name) {
-      let contestNameExists = await Contest.findOne({ name });
+      let contestNameExists =( await Contest.findOne({ name }));
       if (contestNameExists)
         return Promise.reject({
           status: 403,

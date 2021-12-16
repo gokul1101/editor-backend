@@ -8,6 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
 import { AuthContext } from "../../../../../contexts/AuthContext";
+import GradientBtn from "../../../../Reducer/GradientBtn/GradientBtn";
 const useStyles = makeStyles((theme) => ({
   root: {
     border: "1px solid #1E2D64",
@@ -98,7 +99,7 @@ const AddUser = () => {
     }
   };
   return (
-    <div className="container-fluid">
+    <div className="container">
       <p className="text-left dash-title-category pb-2">Add Details *</p>
       <div className="col p-0" style={{ marginTop: "-20px" }}>
         <div className="hr">
@@ -217,7 +218,7 @@ const AddUser = () => {
             </div>
           </div>
           <div className="d-flex mt-3 mb-2">
-            <div className="col-md-4 p-1">
+            <div className="col-md-6 p-1">
               <TextField
                 id="date"
                 label="Batch starts"
@@ -247,9 +248,10 @@ const AddUser = () => {
               />
             </div>
           </div>
-          <button className="loop-btn mt-3 pr-2 pl-2 ml-3" onClick={createUser}>
+          <GradientBtn icon="fas fa-plus">Create User</GradientBtn>
+          {/* <button className="loop-btn mt-3 pr-2 pl-2 ml-3" onClick={createUser}>
             <i className="fas fa-plus pr-2 pl-2"></i>Create user
-          </button>
+          </button> */}
         </div>
         <div className="col-md-4 p-2 border m-1">
           <DropFileInput onFileChange={onFileChange} />

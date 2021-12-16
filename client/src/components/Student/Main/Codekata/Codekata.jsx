@@ -37,10 +37,7 @@ const Codekata = ({setSideToggle, ...props}) => {
         history.push(`/codekata/${code}`);
       }
     } catch (err) {
-      console.log(err);
-      if (err.status === 401) props.unauthorized(err.data);      
-      if(err)
-        props.snackBar(err.message, "error");      
+      console.log(err);     
     }
   };
   return (

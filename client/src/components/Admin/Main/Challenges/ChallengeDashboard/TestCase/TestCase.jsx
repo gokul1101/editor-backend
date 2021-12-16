@@ -74,8 +74,12 @@ const TestCase = () => {
     }
   };
   useEffect(() => {
-    console.log(authState?.challenge?.testcases?.testcases);
-      setTestcases(authState?.challenge?.testcases?.testcases || {});
+    setTestcases(
+      authState?.challenge?.testcases?.testcases || {
+        sample: [],
+        hidden: [],
+      }
+    );
   }, [authState]);
   return (
     <div>

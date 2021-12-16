@@ -1,22 +1,46 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import helperService from "../../../../../services/helperService";
 import InputReducer from "../../../../Reducer/InputReducer";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import "./CreateContest.css";
+import { useHistory, useParams } from "react-router-dom";
 const CreateContest = (props) => {
-  const [authState, ] = useContext(AuthContext);
+  const history = useHistory();
+  const { id } = useParams();
+  const convertDate = (date) => {
+    if (date) return date.split("T")[0];
+    return "";
+  };
+  //**state declartion start */
+  const [authState, authDispatch] = useContext(AuthContext);
   const [name, setName] = useState(authState?.contest?.name);
   const [date, setDate] = useState({
-    start_date: authState?.contest?.start_date,
-    end_date: authState?.contest?.end_date,
+    start_date: convertDate(authState?.contest?.start_date),
+    end_date: convertDate(authState?.contest?.end_date),
   });
   const [time, setTime] = useState({
     start_time: authState?.contest?.start_time,
     end_time: authState?.contest?.end_time,
   });
-  const getContest = async () => {
+  //**state declartion end */
+  const fetchContest = async () => {
     try {
-      const resposne = await helperService.createContest(
+      const { data, status } = await helperService.getContestWithCode(
+        {id},
+        {headers: { Authorization: authState.user.token },
+      });
+      if(status === 200) {
+        console.log(data)
+        // authDispatch({})
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+ 
+  const createContest = async () => {
+    try {
+      const { status, data } = await helperService.createContest(
         {
           name,
           start_date: date.start_date,
@@ -26,13 +50,42 @@ const CreateContest = (props) => {
         },
         { headers: { Authorization: authState.user.token } }
       );
-      console.log(resposne)
+      if (status === 201) {
+        history.push(`/contests`);
+      }
     } catch (error) {
       console.log(error);
       // props.snackBar(error.error,"error")
     }
   };
-
+  const updateContest = async () => {
+    try {
+      const { data, status } = await helperService.updateContest(
+        {
+          id,
+          name,
+          start_date: date.start_date,
+          end_date: date.end_date,
+          start_time: time.start_time,
+          end_time: time.end_time,
+        },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 200) {
+        console.log(data);
+        alert("contest update Successfully");
+      }
+    } catch (error) {
+      console.log(error);
+      // props.snackBar(error.error,"error")
+    }
+  };
+  useEffect(() => {
+    if(props?.title && !authState?.contest) fetchContest()
+    return () => {
+      authDispatch({ type: "REMOVE_CONTEST" });
+    };
+  }, []);
   return (
     <div className="container mt-5">
       <div className="d-flex flex-column">
@@ -55,7 +108,7 @@ const CreateContest = (props) => {
           </span>
           <div className="col-md-4">
             <InputReducer
-            className="bg-input-change"
+              className="bg-input-change"
               placeholder="Contest name"
               name="Contest name"
               type="text"
@@ -69,10 +122,11 @@ const CreateContest = (props) => {
             Date <span className="contest-star">*</span>
           </span>
           <div className="col-md-4">
+            {console.log("At line 79", date)}
             <InputReducer
               placeholder="Starts at"
               name="Starts at"
-              type="text"
+              type="date"
               value={date.start_date}
               onClickHandler={(e) => setDate({ ...date, start_date: e })}
             />
@@ -82,7 +136,7 @@ const CreateContest = (props) => {
             <InputReducer
               placeholder="Ends at"
               name="Ends at"
-              type="text"
+              type="date"
               value={date.end_date}
               onClickHandler={(e) => setDate({ ...date, end_date: e })}
             />
@@ -99,7 +153,7 @@ const CreateContest = (props) => {
             <InputReducer
               placeholder="Ends at"
               name="Ends at"
-              type="text"
+              type="time"
               value={time.start_time}
               onClickHandler={(e) => setTime({ ...time, start_time: e })}
             />
@@ -109,7 +163,7 @@ const CreateContest = (props) => {
             <InputReducer
               placeholder="Ends at"
               name="Ends at"
-              type="text"
+              type="time"
               value={time.end_time}
               onClickHandler={(e) => setTime({ ...time, end_time: e })}
             />
@@ -121,7 +175,10 @@ const CreateContest = (props) => {
       </div>
 
       <div className="create-con mt-5 float-right">
-        <button className="p-2" onClick={getContest}>
+        <button
+          className="p-2"
+          onClick={props?.title ? updateContest : createContest}
+        >
           <i className="fas fa-plus pr-2 pl-2"></i>
           {props?.title?.toUpperCase()}
         </button>
