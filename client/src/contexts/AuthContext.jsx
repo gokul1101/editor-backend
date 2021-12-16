@@ -4,7 +4,7 @@ const initialState = {
   user: null,
   contest: null,
   challenge: null,
-  duration: null,
+  end_date: null,
 };
 const AuthReducer = (state, action) => {
   switch (action.type) {
@@ -21,10 +21,10 @@ const AuthReducer = (state, action) => {
       return { ...state, challenge: null };
     case "REMOVE_CONTEST":
       return { ...state, contest: null };
-    case "SET_DURATION":
-      return { ...state, duration: action.payload };
-    case "REMOVE_DURATION":
-      return { ...state, duration: null };
+    case "SET_END_DATE":
+      return { ...state, end_date: action.payload };
+    case "REMOVE_END_DATE":
+      return { ...state, end_date: null };
     default:
       return state;
   }

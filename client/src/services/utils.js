@@ -7,16 +7,22 @@ export const parseCode = (code) => {
   return output;
 };
 export const template = {
-  c: `#include<stdio.h>
+  c: 
+`#include<stdio.h>
+
 int main(){
-printf("Welcome to Loop")
-return 0;
+  printf("Welcome to Loop")
+  return 0;
 }
 `,
-  java: `class Main {
-    //Class Name Should Be Main
-      public static void main(String args[]) {
-        System.out.println("Welcome to Loop");
-      }
-    }`,
+java: 
+`import java.util.*;
+class Main {
+
+  //Class Name Should Be Main
+
+  public static void main(String args[]) {
+    System.out.println("Welcome to Loop");
+  }
+}`,
 }

@@ -22,8 +22,8 @@ const createSessionService = async ({ user_id, contest_id }) => {
       });
     }
     let starts_at = new Date();
-    let ends_at;
-    if (contest.duration) ends_at = setTime(new Date(), contest.duration);
+    let ends_at = contest.end_date;
+    // if (contest.duration) ends_at = setTime(new Date(), contest.duration);
     let newSession = new Session({ user_id, contest_id, starts_at, ends_at });
     await newSession.save();
     return Promise.resolve({
@@ -50,6 +50,29 @@ const getSessionService = async (sessionDetails) => {
     return Promise.resolve({
       code: 200,
       message: "Session found.",
+      session,
+    });
+  } catch (err) {
+    console.log(err);
+    return Promise.reject({
+      code: 500,
+      message: "Error in getting session.",
+    });
+  }
+};
+const updateSessionService = async (contest_id, user_id, ends_at) => {
+  try {
+    let session = await Session.findOne({contest_id, user_id});
+    if (!session)
+      return Promise.reject({
+        code: 404,
+        message: "Session not found!",
+      });
+    session.ends_at = ends_at;
+    await session.save();
+    return Promise.resolve({
+      code: 200,
+      message: "Session updated.",
       session,
     });
   } catch (err) {
@@ -90,5 +113,6 @@ const getAllSessionsService = async (session, page, limit) => {
 module.exports = {
   createSessionService,
   getSessionService,
-  getAllSessionsService,
+  updateSessionService,
+  getAllSessionsService
 };

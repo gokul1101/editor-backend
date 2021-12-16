@@ -389,6 +389,27 @@ const helperService = {
       });
     }
   },
+  runCode: async (payload, config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/run-code`,
+        payload,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
   getTestCases : async ({questionId}, config) => {
     try {
       const {data, status} = await axios.get(`${baseURL}/api/v1/testcase/get?id=${questionId}`, config)  

@@ -57,6 +57,7 @@ const ContestDetails = ({ setSideToggle }) => {
     }
   };
   useEffect(() => {
+    console.log("cdsda")
     setSideToggle(true);
    
   }, [setSideToggle]);
