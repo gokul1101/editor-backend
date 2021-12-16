@@ -92,6 +92,9 @@ const Programs = (props) => {
             </h6>
           </div>
           <div className="w-100 d-flex flex-row-reverse mt-3 mb-2">
+            <div>
+              <h5 className="mt-2 score-card">Maximum Score : <span className="program-score p-2">80</span></h5>
+            </div>
             <div className="w-25 mx-2">
               <SelectReducer
                 array={["c", "java"]}
@@ -202,12 +205,12 @@ const Programs = (props) => {
                     </div>
                   </div>
                   <div className="problem-input d-flex flex-column mt-4 mb-2">
-                    <span className="constraints-title mb-2">
+                    <span className="constraints-title mb-2 text-muted">
                       Example :
                     </span>
                     <div className="example-input mt-2">
-                      <span className="font-weight-bolder color-highlight">
-                        input_format :{" "}
+                      <span className="font-weight-bolder ip-highlight">
+                        input format :{" "}
                       </span>{" "}
                       <br />
                       <p className="mt-2">
@@ -215,8 +218,8 @@ const Programs = (props) => {
                       </p>
                     </div>
                     <div className="example-output mt-2">
-                      <span className="font-weight-bolder color-highlight">
-                        output_format :{" "}
+                      <span className="font-weight-bolder op-highlight">
+                        output format :{" "}
                       </span>{" "}
                       <br />
                       <p className="mt-2 ">
