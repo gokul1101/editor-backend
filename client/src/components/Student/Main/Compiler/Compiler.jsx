@@ -220,18 +220,16 @@ const Compiler = (props) => {
             />
             <div className="d-flex align-items-end justify-content-end border-bottom">
               <Button
-                variant="outlined"
-                className="w-25 mt-3 mb-3 pr-2 pl-2"
-                color="primary"
+                className="w-25 mt-3 mb-3 pr-2 pl-2 compile-button"
                 onClick={compile}
               >
                 COMPILE
               </Button>
             </div>
             <div className="d-flex flex-column">
-              <span className="mt-2">OUTPUT :</span>
+              <span className="mt-3 text-highlight font-weight-bolder">OUTPUT :</span>
               <TextField
-                className="mt-2"
+                className="mt-2 text-output"
                 id="outlined-multiline-static"
                 multiline
                 rows={10}

@@ -166,7 +166,7 @@ const Programs = (props) => {
                   aria-labelledby="pills-problem-tab"
                 >
                   <div className="d-flex mt-2">
-                    <h5 className="problem-state mr-2">{challenge?.name}</h5>
+                    <h5 className="problem-state mr-2 font-weight-bolder">{challenge?.name}</h5>
                     <div
                       className={`problem-badge-${difficulty} d-flex align-items-center justify-content-center mr-2`}
                     >
@@ -185,7 +185,7 @@ const Programs = (props) => {
                     <div className="constraints-content d-flex flex-column mt-2">
                       <span className="mt-2">
                         <i className="fas fa-circle constraints-dot mr-2"></i>
-                        <span className="constraints-highlight pr-2 pl-2 mr-1">
+                        <span className="constraints-highlight pr-2 pl-2 mr-1 ">
                           {challenge?.constraints}
                         </span>
                       </span>
@@ -202,7 +202,7 @@ const Programs = (props) => {
                     </div>
                   </div>
                   <div className="problem-input d-flex flex-column mt-4 mb-2">
-                    <span className="constraints-title mb-2 font-weight-bolder color-highlight">
+                    <span className="constraints-title mb-2">
                       Example :
                     </span>
                     <div className="example-input mt-2">
@@ -210,7 +210,7 @@ const Programs = (props) => {
                         input_format :{" "}
                       </span>{" "}
                       <br />
-                      <p className="mt-2 font-weight-bolder">
+                      <p className="mt-2">
                         {challenge?.input_format}
                       </p>
                     </div>
@@ -219,7 +219,7 @@ const Programs = (props) => {
                         output_format :{" "}
                       </span>{" "}
                       <br />
-                      <p className="mt-2 font-weight-bolder">
+                      <p className="mt-2 ">
                         {challenge?.output_format}
                       </p>
                     </div>
