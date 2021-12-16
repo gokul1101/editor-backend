@@ -55,6 +55,7 @@ const Codekata = ({setSideToggle, ...props}) => {
                 id="partitioned"
                 type="text"
                 maxLength="6"
+                value={code.toUpperCase()}
                 onChange={(e) => setCode(e.target.value)}
               />
             </div>

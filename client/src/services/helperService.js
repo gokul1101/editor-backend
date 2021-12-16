@@ -32,9 +32,12 @@ const helperService = {
   },
   //* ================= PRIVATE ROUTES ======================== *//
   //** MULTIPLE USERS */
-  getUsers : async ({page,limit},config) => {
+  getUsers: async ({ page, limit }, config) => {
     try {
-      const { status, data } = await axios.get(`${baseURL}/api/v1/users/getAll?page=${page}&limit=${limit}`, config);
+      const { status, data } = await axios.get(
+        `${baseURL}/api/v1/users/getAll?page=${page}&limit=${limit}`,
+        config
+      );
       if (status === 200) {
         return Promise.resolve({
           status,
@@ -70,6 +73,7 @@ const helperService = {
   },
   //** USERS */
   createUser: async (payload, config) => {
+    console.log(payload, config);
     try {
       const { data, status } = await axios.post(
         `${baseURL}/api/v1/user/create`,
@@ -148,7 +152,26 @@ const helperService = {
       });
     }
   },
-  updateContest : async (payload, config) => {
+  getContest: async (payload, config) => {
+    let url = `${baseURL}/api/v1/contest/get`;
+    if (payload.id) url += `?id=${payload.id}`;
+    else if (payload.code) url += `?code=${payload.code}`;
+    try {
+      const { data, status } = await axios.get(url, config);
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
+      return Promise.reject({
+        status: err?.response?.status,
+        message: err?.response?.data,
+      });
+    }
+  },
+  updateContest: async (payload, config) => {
     try {
       const { data, status } = await axios.post(
         `${baseURL}/api/v1/contest/update`,
@@ -229,10 +252,10 @@ const helperService = {
       });
     }
   },
-  getQuizQuestions: async ({ id }, config) => {
+  getQuizQuestions: async ({ id, page = 1 }, config) => {
     try {
       const { data, status } = await axios.get(
-        `${baseURL}/api/v1/mcq/all?id=${id}`,
+        `${baseURL}/api/v1/mcq/all?id=${id}&page=${page}`,
         config
       );
       if (status === 200) {
@@ -394,7 +417,7 @@ const helperService = {
       });
     }
   },
-//** COMPILE */
+  //** COMPILE */
   compile: async (payload, config) => {
     try {
       const { data, status } = await axios.post(
@@ -406,6 +429,48 @@ const helperService = {
         return Promise.resolve({
           status,
           data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  getTestCases: async ({ questionId }, config) => {
+    try {
+      const { data, status } = await axios.get(
+        `${baseURL}/api/v1/testcase/get?id=${questionId}`,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  createSubmission: async (payload, config) => {
+    try {
+      const {
+        data: { message },
+        status,
+      } = await axios.post(
+        `${baseURL}/api/v1/submission/create`,
+        payload,
+        config
+      );
+      if (status === 201) {
+        return Promise.resolve({
+          message,
         });
       }
     } catch (err) {

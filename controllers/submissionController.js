@@ -11,7 +11,7 @@ const createSubmission = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in creating submission
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on creating submission`;
     }
@@ -25,7 +25,7 @@ const getSubmission = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting submissions
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on getting submissions`;
     }
@@ -39,7 +39,7 @@ const getAllSubmissions = async (req, res) => {
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting submissions
-    if(!err.code) {
+    if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on getting submissions`;
     }

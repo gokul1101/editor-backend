@@ -8,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
 import { AuthContext } from "../../../../../contexts/AuthContext";
-import GradientBtn from "../../../../Reducer/GradientBtn/GradientBtn";
+import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 const useStyles = makeStyles((theme) => ({
   root: {
     border: "1px solid #1E2D64",
@@ -89,7 +89,7 @@ const AddUser = () => {
           course_id: courses[user.course_id],
           batch_id: `${batchStart.substring(0, 4)}-${batchEnd.substring(0, 4)}`,
         },
-        { headers: { Authorization: authState.user.state } }
+        { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 201) {
         console.log(data, status);
@@ -248,10 +248,12 @@ const AddUser = () => {
               />
             </div>
           </div>
-          <GradientBtn icon="fas fa-plus">Create User</GradientBtn>
-          {/* <button className="loop-btn mt-3 pr-2 pl-2 ml-3" onClick={createUser}>
-            <i className="fas fa-plus pr-2 pl-2"></i>Create user
-          </button> */}
+          <CustomButton
+            className="btn-hover color-11 mt-4"
+            onClickHandler={createUser}
+          >
+            <i className="fas fa-plus pr-2 pl-2"></i>CREATE USER
+          </CustomButton>
         </div>
         <div className="col-md-4 p-2 border m-1">
           <DropFileInput onFileChange={onFileChange} />

@@ -46,19 +46,10 @@
   padding: 7px;
   background-color: #d2f7cf;
 }
-.timer-clock,
-.clock-icon {
-  font-size: 24px;
-  color: rgb(78, 78, 78);
-}
-.clock-icon {
-  position: relative;
-  top: 7px;
-}
-.timer {
+.problem-header .timer {
+  height : 40px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  height: 40px;
 }
 .program-pills .program-link.active,
 .program-pills .show > .program-link {

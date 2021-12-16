@@ -4,6 +4,7 @@ import InputReducer from "../../../../Reducer/InputReducer";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import "./CreateContest.css";
 import { useHistory, useParams } from "react-router-dom";
+import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 const CreateContest = (props) => {
   const history = useHistory();
   const { id } = useParams();
@@ -25,11 +26,11 @@ const CreateContest = (props) => {
   //**state declartion end */
   const fetchContest = async () => {
     try {
-      const { data, status } = await helperService.getContestWithCode(
-        {id},
-        {headers: { Authorization: authState.user.token },
-      });
-      if(status === 200) {
+      const { data, status } = await helperService.getContest(
+        { id },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 200) {
         console.log(data)
         // authDispatch({})
       }
@@ -37,7 +38,7 @@ const CreateContest = (props) => {
       console.log(err);
     }
   };
- 
+
   const createContest = async () => {
     try {
       const { status, data } = await helperService.createContest(
@@ -81,7 +82,7 @@ const CreateContest = (props) => {
     }
   };
   useEffect(() => {
-    if(props?.title && !authState?.contest) fetchContest()
+    if (props?.title && !authState?.contest) fetchContest();
     return () => {
       authDispatch({ type: "REMOVE_CONTEST" });
     };
@@ -174,15 +175,14 @@ const CreateContest = (props) => {
         </div>
       </div>
 
-      <div className="create-con mt-5 float-right">
-        <button
-          className="p-2"
-          onClick={props?.title ? updateContest : createContest}
-        >
-          <i className="fas fa-plus pr-2 pl-2"></i>
-          {props?.title?.toUpperCase()}
-        </button>
-      </div>
+      <CustomButton
+        className="btn-hover color-11 mt-4 float-right"
+        onClickHandler={
+          props?.title !== "Create Contest" ? updateContest : createContest
+        }
+      >
+        <i className="fas fa-plus pr-2 pl-2"></i> {props?.title?.toUpperCase()}
+      </CustomButton>
     </div>
   );
 };

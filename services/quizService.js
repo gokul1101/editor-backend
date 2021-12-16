@@ -62,7 +62,7 @@ const updateQuizService = async ({ id, name, total_mcqs, contest_id }) => {
       });
     } else {
       if (name) quiz.name = name;
-      if (total_mcqs) quiz.total_mcqs = total_mcqs;
+      if (total_mcqs) quiz.total_mcqs = quiz.total_mcqs + 1;
       if (contest_id) quiz.contest_id = contest_id;
       await quiz.save();
       return Promise.resolve({

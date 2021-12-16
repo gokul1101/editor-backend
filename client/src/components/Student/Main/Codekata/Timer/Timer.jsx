@@ -35,21 +35,23 @@ const Timer = () => {
       return;
     }
     timerComponents.push(
-      `${timeLeft[interval]}${interval.toUpperCase().charAt(0)}`
+      `${timeLeft[interval]}${interval.charAt(0)}`
     );
   });
   return (
-    <div className="d-flex align-items-center justify-content-center">
+    <div className="d-flex">
       {timerComponents.length === 0 ? (
         <span>Time's up</span>
       ) : (
-        <div className="d-flex align-items-center countdown-timer justify-content-center" style={{width:'250px'}}>
+        <div className="d-flex align-items-center justify-content-center countdown-timer">
+          
           {timerComponents.map((component, index) => {
             let suffix = index + 1 !== timerComponents.length ? " : " : "";
             return (
-              <p
-                className={`timer-span mt-2 ml-1 px-2`}
-              >{`${component}${suffix}`}</p>
+              <span
+                key={component}
+                className={`d-block timer-span mt-2 ml-1 px-2`}
+              >{`${component}${suffix}`}</span>
             );
           })}
         </div>

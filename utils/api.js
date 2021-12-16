@@ -2,13 +2,17 @@ const common = [
   "getUser",
   "updateUser",
   "getContest",
+  "getContestForDashboard",
   "getAllContests",
   "getQuiz",
   "getAllQuizzes",
   "getQuestion",
   "getAllMCQS",
   "getAllChallenges",
+  "createSubmission",
   "compiler",
+  "getTestCases",
+  "executeContestChallenge"
 ];
 const student = [...common];
 const admin = [

@@ -9,7 +9,7 @@ const CustomButton = ({
 }) => {
   return (
     <button
-      className={className}
+      className={`${className} pr-4 pl-4`}
       id={id}
       onClick={onClickHandler}
       onKeyPress={onKeyPressHandler}

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import helperService from "../../../../../../services/helperService";
+import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
 import "./CreateChallenge.css";
@@ -32,7 +33,7 @@ const CreateChallenge = (props) => {
         {
           ...challenge,
           id: authState?.challenge?._id,
-          contest_id: authState?.challenge?.contest_id,
+          contest_id: authState?.challenge?.contest._id,
         },
         {
           headers: { Authorization: authState.user.token },
@@ -240,44 +241,14 @@ const CreateChallenge = (props) => {
           </div>
         </div>
         <div className="my-5">
-          <button
-            className="float-right mt-3 mb-5 btn-hover pr-1 pl-1 color-11"
-            color="primary"
-            variant="contained"
-            onClick={props?.title ? updateChallenge : createChallenge}
+          <CustomButton
+            className="btn-hover color-11 mt-4 float-right"
+            onClickHandler={props?.title ? updateChallenge : createChallenge}
           >
+            <i className="fas fa-plus pr-2 pl-2"></i>{" "}
             {props?.title ? props?.title.toUpperCase() : "CREATE CHALLENGE"}
-          </button>
+          </CustomButton>
         </div>
-        {/* <div className="d-flex mt-2 mb-5">
-          <span className="contest-line-height mr-2 col-md-3">
-            Tags <span className="contest-star">*</span>
-          </span>
-          <div className="col-md-7">
-            <div className="tags-input">
-              <ul id="tags">
-                {tags.map((tag, index) => (
-                  <li key={index} className="tag">
-                    <span className="tag-title">{tag}</span>
-                    <span
-                      className="tag-close-icon"
-                      onClick={() => removeTags(index)}
-                    >
-                      x
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <input
-                type="text"
-                onKeyUp={(event) =>
-                  event.key === "Enter" ? addTags(event) : null
-                }
-                placeholder="Press enter to add tags"
-              />
-            </div>
-          </div>
-        </div> */}
       </div>
     </div>
   );

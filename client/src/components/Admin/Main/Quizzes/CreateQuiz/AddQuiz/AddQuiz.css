@@ -3,7 +3,9 @@
   font-size: 20px;
   text-align: center;
   border-radius: 50%;
-  line-height: 28px;
+  top: 50%;
+  left: 0%;
+  transform: translate(-50%, -50%);
 }
 .answer-add-quiz {
   height: auto;
@@ -12,7 +14,7 @@
   font-size: 18px;
   text-align: center;
   background-color: rgba(219, 219, 219, 0.9);
-  border-radius: 20px;
+  border-radius: 10px;
 }
 .add-quiz-question-span {
   color: #21a366;
@@ -29,4 +31,11 @@
   text-align: center;
   line-height: 36px;
   background-color: rgb(155, 143, 143, 0.2);
+}
+.quiz-ques {
+  background-color: #f4f6f5;
+  color: #000;
+  border-radius: 10px;
+  cursor: pointer;
+  border-left: 5px solid #21a366;
 }

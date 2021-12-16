@@ -15,7 +15,6 @@ const {
 } = require("../services/challengeService");
 const createQuestion = async (req, res) => {
   let questionDetails = req.body;
-  console.log(questionDetails);
   let functions = [createMCQ, createChallenge],
     index;
   if (questionDetails.type_id === "mcq") index = 0;
@@ -97,8 +96,9 @@ const deleteQuestion = async(req,res) => {
 }
 
 const getAllMCQS = async (req, res) => {
-  const { id, page = 1, limit = 10 } = req.query;
+  let { id, page = 1, limit } = req.query;
   let flag = req.user.role_id === "admin";
+  limit = flag? 10 : 1;
   try {
     const response = await getAllMcqWithQuizID(id, page, limit, flag);
     res.status(response.code).send(response);

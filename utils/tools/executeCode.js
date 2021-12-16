@@ -30,7 +30,6 @@ const executeCode = (filePath, input) => {
       if (error) {
         stderr = stderr.split(filePath);
         stderr = stderr.filter((err) => err !== "").map((err) => `Main ${err}`);
-        console.log(stderr);
         reject(stderr);
       }
       resolve(stdout);

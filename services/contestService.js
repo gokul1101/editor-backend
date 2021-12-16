@@ -32,10 +32,11 @@ const createContestService = async (contest) => {
       return Promise.resolve({
         code: 201,
         message: "Contest created successfully",
-        contestCode : contest.code
+        contestCode: contest.code,
       });
     }
   } catch (err) {
+    console.log(err);
     return Promise.reject({
       code: 500,
       message: "Can't create contest",
@@ -43,12 +44,12 @@ const createContestService = async (contest) => {
   }
 };
 const getContestService = async (id, code, role_id) => {
+  console.log(id, code, role_id);
   try {
     //If contest already exist return success otherwise not found
     let contest;
     if (role_id === "admin") contest = await Contest.findById(id);
-    else if (role_id === "student")
-      contest = await Contest.findOne({ code });
+    else if (role_id === "student") contest = await Contest.findOne({ code });
     if (!contest) {
       return Promise.reject({
         status: 404,
@@ -74,9 +75,10 @@ const getContestService = async (id, code, role_id) => {
         });
       }
     }
-    return Promise.resolve({ 
+    return Promise.resolve({
       status: 200,
       contest,
+      message:"Contest found"
     });
   } catch (err) {
     return Promise.reject({
@@ -101,7 +103,7 @@ const updateContestService = async ({
         message: "Contest not found",
       });
     if (name) {
-      let contestNameExists =( await Contest.findOne({ name }));
+      let contestNameExists = await Contest.findOne({ name });
       if (contestNameExists)
         return Promise.reject({
           status: 403,
