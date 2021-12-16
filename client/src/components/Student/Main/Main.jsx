@@ -128,7 +128,7 @@ const Main = (props) => {
         <div className="main-div w-100">
           <Switch>
             <Route path="/dashboard" exact>
-              <Dashboard setSideToggle={setSideToggle} />
+              <Dashboard setSideToggle={setSideToggle} snackBar={props.snackBar} />
             </Route>
             <Route path="/articles" exact>
               <Articles setSideToggle={setSideToggle} />
@@ -137,15 +137,15 @@ const Main = (props) => {
               <Roadmap setSideToggle={setSideToggle} />
             </Route>
             <Route path="/compiler" exact>
-              <Compiler setSideToggle={setSideToggle} />
+              <Compiler setSideToggle={setSideToggle} snackBar={props.snackBar}  />
             </Route>
             <Route path="/profile" exact>
-              <Profile setSideToggle={setSideToggle} />
+              <Profile setSideToggle={setSideToggle} snackBar={props.snackBar}  />
             </Route>
             <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
             <Route path="/codekata" exact>
               <Codekata
-                snackBar={props.snackBar}
+                snackBar={props.snackBar} 
                 setSideToggle={setSideToggle}
               />
             </Route>

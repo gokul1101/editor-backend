@@ -22,6 +22,7 @@ const Timer = () => {
   };
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   useEffect(() => {
+    
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);

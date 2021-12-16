@@ -4,6 +4,7 @@ const Contest = require("../models/contests");
 const Answer = require("../models/answers");
 const Question = require("../models/questions");
 const { compilerService } = require("./compilerService");
+const { updateSessionService } = require("./sessionService");
 const createSubmissionService = async (submissionDetails) => {
   let { user_id, contest_id, quizzes, challenges } = submissionDetails;
   try {
@@ -25,21 +26,21 @@ const createSubmissionService = async (submissionDetails) => {
         code: 403,
         message: `Contest already submitted.`,
       });
-    const reducer = (previousValue, currentValue) =>
-      previousValue + currentValue;
+    // const reducer = (previousValue, currentValue) =>
+    //   previousValue + currentValue;
     let total_score = 0;
-    let quizScore = await Promise.all(
-      quizzes.map(async (quiz) => {
-        try {
-          const { score } = await quizSubmissionService(quiz);
-          return score;
-        } catch (err) {
-          console.log(err);
-        }
-        return 0;
-      })
-    );
-    total_score += quizScore.reduce(reducer);
+    // let quizScore = await Promise.all(
+    //   quizzes.map(async (quiz) => {
+    //     try {
+    //       const { score } = await quizSubmissionService(quiz);
+    //       return score;
+    //     } catch (err) {
+    //       console.log(err);
+    //     }
+    //     return 0;
+    //   })
+    // );
+    // total_score += quizScore.reduce(reducer);
     // challenges.map(async (challenge) => {
     //   challenge.submission = true;
     //   try {
@@ -55,6 +56,7 @@ const createSubmissionService = async (submissionDetails) => {
       score: total_score,
     });
     await newSubmission.save();
+    await updateSessionService(contest_id, user_id, new Date())
     return Promise.resolve({
       code: 201,
       message: `Submitted successfully!`,
