@@ -28,12 +28,14 @@
     font-weight: 900 !important;
   }
 
-  .fa-trophy{
-    color: #ffd500;
-  }
+ 
 
   .max-score{
     background-color: #21A366;
     color: white;
     border-radius: 50%;
+  }
+
+  .fa-star{
+    color: rgb(173, 173, 15) !important;
   }

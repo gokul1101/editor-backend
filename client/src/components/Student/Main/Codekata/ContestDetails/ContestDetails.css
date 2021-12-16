@@ -127,3 +127,8 @@
 .room-code {
   background-color: rgb(7, 71, 7);
 }
+
+.fa-star{
+  color: orangered;
+  padding-right: 10px;
+}

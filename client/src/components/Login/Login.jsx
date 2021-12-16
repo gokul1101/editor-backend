@@ -86,7 +86,7 @@ const Login = (props) => {
               <p className="text-muted">Learn , code , repeat</p>
 
               <div className="input-field mb-2">
-                <i className="fas fa-lock"></i>
+              <i class="fas fa-id-card-alt"></i>  
                 <input
                   type="text"
                   placeholder="Register number"
@@ -114,7 +114,7 @@ const Login = (props) => {
               <h2 className="title">Admin Sign in</h2>
               <p className="highlight">Learn , Code , Repeat</p>
               <div className="input-field">
-                <i className="fas fa-user"></i>
+              <i class="fas fa-id-card-alt"></i>
                 <input
                   type="text"
                   placeholder="Register no"
@@ -149,7 +149,7 @@ const Login = (props) => {
                 for the students.
               </p>
               <CustomButton
-                className="btn transparent"
+                className="btn transparent signin-button"
                 id="sign-up-btn"
                 onClickHandler={changeSignup}
               >
@@ -166,7 +166,7 @@ const Login = (props) => {
                 number to attend contest .
               </p>
               <CustomButton
-                className="btn transparent mt-2 "
+                className="btn transparent mt-2 signin-to-atudent "
                 id="sign-in-btn"
                 onClickHandler={changeSignin}
               >

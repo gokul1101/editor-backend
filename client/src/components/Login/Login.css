@@ -406,3 +406,12 @@ form.sign-in-form {
   color: #0ba360;
 }
 
+.signin-button{
+  background-color:white !important;
+  border-color: #0ba360 !important;
+}
+
+.signin-to-atudent{
+  background-color: white !important;
+  border-color: #0ba360 !important;
+}

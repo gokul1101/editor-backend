@@ -58,6 +58,7 @@ const ContestDetails = ({ setSideToggle }) => {
   };
   useEffect(() => {
     setSideToggle(true);
+   
   }, [setSideToggle]);
 
   return (
@@ -90,7 +91,7 @@ const ContestDetails = ({ setSideToggle }) => {
       <h1>Saturday Challenge</h1>
       </div>
       <div className="mt-3 p-2">
-        <h3 className="font-weight-bolder color-highlight"><i className="fas fa-trophy"></i> Max Score : <span className="max-score p-2">40</span></h3>
+        <h3 className="font-weight-bolder color-highlight"><i class="fas fa-star"></i>Max Score : <span className="max-score p-2">40</span></h3>
       </div>
       </div>
       <div className="d-flex mt-4 mb-2">
