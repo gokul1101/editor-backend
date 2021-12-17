@@ -235,7 +235,7 @@ const Quiz = ({ setSideToggle }) => {
                 variant="contained"
                 onClick={submitQuiz}
               >
-                SUBMIT QUIZ
+               <i className="fas fa-rocket mr-2 ml-2 p-1"></i> SUBMIT QUIZ
               </button>
             </div>
           </div>

@@ -84,8 +84,14 @@ const Testcase = ({ testcases }) => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>{testcase?.input}</Typography>
+                  <div className="d-flex flex-column">
+
+                  <p className="text-highlight font-weight-bolder">Input : </p>
+                <Typography>{testcase?.input}</Typography><br/>
+                <p className="text-highlight font-weight-bolder">Output : </p>
+
                 <Typography>{testcase?.output}</Typography>
+                  </div>
               </AccordionDetails>
             </Accordion>
           );

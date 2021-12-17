@@ -113,3 +113,18 @@
   color: #05a04b;
   font-size: 18px;
 }
+
+.ip-highlight,.op-highlight{
+  font-size:20px;
+ color: #00c3ff;
+}
+.program-score{
+  border-radius: 50%;
+  background-color: #05a04b;
+  color: white;
+}
+
+.score-card{
+  color: #05a04b;
+  font-weight: bolder;
+}
