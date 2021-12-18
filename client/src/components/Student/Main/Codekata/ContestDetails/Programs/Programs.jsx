@@ -45,22 +45,22 @@ const Programs = (props) => {
   };
   const compile = async () => {
     console.log(code);
-    // try {
-    //   let parsedCode = parseCode(code);
-    //   sessionStorage.setItem(
-    //     challenge?.name,
-    //     JSON.stringify({ code, lang: language })
-    //   );
-    //   const { status, data } = await helperService.compile(
-    //     { code: parsedCode, input, lang: language },
-    //     { headers: { Authorization: authState?.user?.token } }
-    //   );
-    //   if (status === 200) {
-    //     console.log(data);
-    //   }
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    try {
+      let parsedCode = parseCode(code);
+      sessionStorage.setItem(
+        challenge?.name,
+        JSON.stringify({ code, lang: language })
+      );
+      const { status, data } = await helperService.runCode(
+        { id : challenge?._id, code: parsedCode, lang: language },
+        { headers: { Authorization: authState?.user?.token } }
+      );
+      if (status === 200) {
+        console.log(data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
   useEffect(() => {
     findChallenge();

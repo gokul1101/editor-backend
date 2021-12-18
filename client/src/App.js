@@ -34,6 +34,14 @@ const App = () => {
     setMessage(snackMessage);
     setOpen(true);
   };
+  // const unauthorized = (message) => {
+  //   snackBar(message, "error");
+  //   localStorage.clear();
+  //   authDispatch({
+  //     type: "REMOVE_USER",
+  //   });
+  //   history.push("/login");
+  // };
   const fetchUser = async () => {
     try {
       const { status, data } = await helperService.getUser(

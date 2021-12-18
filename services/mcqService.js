@@ -36,7 +36,7 @@ const createMCQ = async ({ type_id, quiz_id, statement, options }) => {
     });
   }
 };
-const getMCQ = async (id) => {
+const getMCQ = async (id, role) => {
   try {
     let question = await Question.findById(id);
     if (!question) {

@@ -42,13 +42,13 @@ const getQuestion = async (req, res) => {
   if (type === "mcq") index = 0;
   else if (type === "problem") index = 1;
   try {
-    let response = await functions[index](id);
+    let response = await functions[index](id, req.user.role);
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting question
     if (!err.code) {
       err.code = 500;
-      err.message = `Internal server Error on fetching mcqs`;
+      err.message = `Internal server Error`;
     }
     return res.status(err.code).send(err.message);
   }

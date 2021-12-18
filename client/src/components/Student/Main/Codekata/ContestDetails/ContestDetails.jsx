@@ -55,6 +55,7 @@ const ContestDetails = ({ setSideToggle }) => {
     } catch (err) {}
   };
   useEffect(() => {
+    console.log("cdsda")
     setSideToggle(true);
     console.log(authState);
   }, [setSideToggle]);

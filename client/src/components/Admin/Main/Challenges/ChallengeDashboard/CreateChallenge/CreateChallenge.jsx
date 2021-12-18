@@ -39,7 +39,7 @@ const CreateChallenge = (props) => {
           headers: { Authorization: authState.user.token },
         }
       );
-      if (status === 201) {
+      if (status === 200) {
         console.log(data);
       }
     } catch (err) {
