@@ -7,7 +7,7 @@ import InputReducer from "../../../../../Reducer/InputReducer";
 import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
 import "./AddQuiz.css";
 import QuizQuestion from "./QuizQuestion/QuizQuestion";
-const AddQuiz = () => {
+const AddQuiz = (props) => {
   const [question, setQuestion] = useState({
     statement: "",
     options: {
@@ -53,10 +53,12 @@ const AddQuiz = () => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
+        props.snackBar("Quiz created successfully", "success");
         setQuestions([...questions, mcq]);
       }
     } catch (err) {
       console.log(err);
+      props.snackBar(err.data, "error");
     }
   };
   const deleteQuestion = async (question) => {
@@ -67,12 +69,14 @@ const AddQuiz = () => {
       );
       if (status === 202) {
         console.log(questions, question);
+        props.snackBar("Question deleted successfully", "info");
         setQuestions(
           questions.filter((ques) => ques.question_id !== question.question_id)
         );
       }
     } catch (err) {
       console.log(err);
+      props.snackBar(err.data, "error");
     }
   };
   const updateQuestion = async () => {
@@ -82,6 +86,7 @@ const AddQuiz = () => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
+        props.snackBar("Question updated successfully", "info");
         console.log(
           questions.map((ques) => {
             if (ques.question_id === question.question_id) return question;
@@ -97,6 +102,7 @@ const AddQuiz = () => {
       }
     } catch (err) {
       console.log(err);
+      props.snackBar(err.data, "error");
     } finally {
       setUpdateFlag(false);
       setQuestion({
@@ -112,6 +118,7 @@ const AddQuiz = () => {
       });
     }
   };
+
   const updateDetails = async (question) => {
     setUpdateFlag(true);
     setQuestion({ ...question, type_id: "mcq" });

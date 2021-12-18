@@ -74,7 +74,7 @@ const updateQuestion = async (req, res) => {
   }
 };
 
-const deleteQuestion = async(req,res) => {
+const deleteQuestion = async (req, res) => {
   let questionDetails = req.body;
   let { type } = req.query;
   let functions = [deleteMCQ],
@@ -93,12 +93,12 @@ const deleteQuestion = async(req,res) => {
     }
     return res.status(err.code).send(err.message);
   }
-}
+};
 
 const getAllMCQS = async (req, res) => {
   let { id, page = 1, limit } = req.query;
   let flag = req.user.role_id === "admin";
-  limit = flag? 10 : 1;
+  limit = flag ? 10 : 1;
   try {
     const response = await getAllMcqWithQuizID(id, page, limit, flag);
     res.status(response.code).send(response);

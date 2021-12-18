@@ -126,7 +126,7 @@ const Main = (props) => {
         <div className="main-div w-100">
           <Switch>
             <Route path="/admin-dashboard" exact>
-              <AdminDashboard />
+              <AdminDashboard snackBar={props.snackBar} />
             </Route>
 
             <Route path="/users">
@@ -135,37 +135,40 @@ const Main = (props) => {
             <Route path="/contests">
               <Switch>
                 <Route path="/contests/create-contest" exact>
-                  <CreateContest title="Create Contest" />
+                  <CreateContest
+                    title="Create Contest"
+                    snackBar={props.snackBar}
+                  />
                 </Route>
                 <Route path="/contests/:id">
-                  <ContestDetails />
+                  <ContestDetails snackBar={props.snackBar} />
                 </Route>
                 <Route path="/contests" exact>
-                  <Contests />
+                  <Contests snackBar={props.snackBar} />
                 </Route>
               </Switch>
             </Route>
             <Route path="/quizzes">
               <Route path="/quizzes/create-quiz">
-                <CreateQuiz />
+                <CreateQuiz snackBar={props.snackBar} />
               </Route>
               <Route path={`/quizzes/:id/add-question`}>
-                <AddQuiz />
+                <AddQuiz snackBar={props.snackBar} />
               </Route>
               <Route path="/quizzes" exact>
-                <Quizzes />
+                <Quizzes snackBar={props.snackBar} />
               </Route>
             </Route>
             <Route path="/challenges">
               <Route path="/challenges/:id">
-                <ChallengeDashboard />
+                <ChallengeDashboard snackBar={props.snackBar} />
               </Route>
             </Route>
             <Route path="/report" exact>
-              <Report />
+              <Report snackBar={props.snackBar} />
             </Route>
             <Route path="/error-logs" exact>
-              <ErrorLogs />
+              <ErrorLogs snackBar={props.snackBar} />
             </Route>
             <Route
               exact

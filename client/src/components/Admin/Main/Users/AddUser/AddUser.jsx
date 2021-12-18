@@ -46,7 +46,7 @@ const courses = {
   SF: "Safety & Fire Engineering",
   AUTO: "Automobile Engineering",
 };
-const AddUser = () => {
+const AddUser = (props) => {
   const [authState] = useContext(AuthContext);
   const [user, setUser] = useState({
     regno: "",
@@ -93,6 +93,7 @@ const AddUser = () => {
       );
       if (status === 201) {
         console.log(data, status);
+        props.snackBar("Successfully user created", "success");
       }
     } catch (err) {
       console.log(err);

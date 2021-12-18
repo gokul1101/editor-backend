@@ -54,13 +54,13 @@ const App = () => {
   };
   const disabledEvent = (e) => {
     if (e.stopPropagation) {
-        e.stopPropagation();
+      e.stopPropagation();
     } else if (window.event) {
-        window.event.cancelBubble = true;
+      window.event.cancelBubble = true;
     }
     e.preventDefault();
     return false;
-}
+  };
 
   // useEffect(() => {
   //   document.addEventListener("contextmenu", (e) => disabledEvent(e));

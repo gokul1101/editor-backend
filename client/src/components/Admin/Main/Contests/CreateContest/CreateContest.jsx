@@ -31,7 +31,17 @@ const CreateContest = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        console.log(data)
+        console.log(data);
+        setName(data?.contest?.name);
+        setDate({
+          start_date: convertDate(data?.contest?.start_date),
+          end_date: convertDate(data?.contest?.end_date),
+        });
+        setTime({
+          start_time: data?.contest?.start_time,
+          end_time: data?.contest?.end_time,
+        });
+
         // authDispatch({})
       }
     } catch (err) {
@@ -52,10 +62,12 @@ const CreateContest = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
+        props.snackBar("Contest created successfully", "success");
         history.push(`/contests`);
       }
     } catch (error) {
       console.log(error);
+      props.snackBar(error.data, "error");
       // props.snackBar(error.error,"error")
     }
   };
@@ -74,10 +86,11 @@ const CreateContest = (props) => {
       );
       if (status === 200) {
         console.log(data);
-        alert("contest update Successfully");
+        props.snackBar("Contest updated successfully", "success");
       }
     } catch (error) {
       console.log(error);
+      props.snackBar(error.data, "success");
       // props.snackBar(error.error,"error")
     }
   };
@@ -87,6 +100,9 @@ const CreateContest = (props) => {
       authDispatch({ type: "REMOVE_CONTEST" });
     };
   }, []);
+  useEffect(() => {
+    console.log(date, time);
+  }, [date, time]);
   return (
     <div className="container mt-5">
       <div className="d-flex flex-column">

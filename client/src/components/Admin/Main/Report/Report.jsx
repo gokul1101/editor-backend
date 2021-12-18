@@ -1,6 +1,9 @@
 import React from "react";
 
-const Report = () => {
+const Report = (props) => {
+  React.useEffect(() => {
+    props.snackBar("Ippothiku onnu illa", "info");
+  }, []);
   return (
     <div className="d-flex flex-column justify-content-center align-items-center h-100 mt-5">
       <img

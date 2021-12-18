@@ -15,8 +15,9 @@ const createMultipleTestCases = async (req, res) => {
 };
 const getTestCases = async (req, res) => {
   try {
-    const {id} = req.query
-    const {code, message, testcases} = await getTestCasesService(id);
+    const { id } = req.query;
+    const { code, message, testcases } = await getTestCasesService(id);
+    console.log(code, message, testcases);
     res.status(code).json({ message, testcases });
   } catch (err) {
     if (err.code) res.status(err.code).json({ message: err.message });
