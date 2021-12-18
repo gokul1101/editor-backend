@@ -18,6 +18,7 @@ const Main = (props) => {
   const [sideToggle, ] = useState(false);
   useEffect(() => {
     props.fetchUser();
+    console.log(props.snackBar);
   }, []);
   return (
     <div className="container-fluid p-0">
@@ -126,10 +127,10 @@ const Main = (props) => {
             <Route path="/admin-dashboard" exact>
               <AdminDashboard />
             </Route>
-            <Route path="/users">
-              <Users />
+            <Route path="/users" >
+              <Users snackBar={props.snackBar}/>
             </Route>
-            <Route path="/contests">
+            <Route path="/contests" >
               <Switch>
               <Route path="/contests/create-contest" exact>
                 <CreateContest title = "Create Contest"/>
