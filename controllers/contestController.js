@@ -32,12 +32,12 @@ const createContest = async (req, res) => {
 const getContest = async (req, res) => {
   const { id, code } = req.query;
   try {
-    let { status, message } = await getContestService(
+    let {status,message,contest} = await getContestService(
       id,
       code,
       req.user.role_id
     );
-    res.status(status).send({ message });
+    res.status(status).send({message,contest });
   } catch ({code, status, message}) {
     if (!code && !status) {
       code = 500;
@@ -56,7 +56,7 @@ const getContestForDashboard = async (req, res) => {
       req.user.role_id
     );
     let response = {
-      contest_id : contest._id,
+      contest,
       session: {},
       quizzes: [],
       challenges: [],

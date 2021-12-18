@@ -37,10 +37,7 @@ const Codekata = ({setSideToggle, ...props}) => {
         history.push(`/codekata/${code}`);
       }
     } catch (err) {
-      console.log(err);
-      if (err.status === 401) props.unauthorized(err.data);      
-      if(err)
-        props.snackBar(err.message, "error");      
+      console.log(err);     
     }
   };
   return (
@@ -58,6 +55,7 @@ const Codekata = ({setSideToggle, ...props}) => {
                 id="partitioned"
                 type="text"
                 maxLength="6"
+                value={code.toUpperCase()}
                 onChange={(e) => setCode(e.target.value)}
               />
             </div>

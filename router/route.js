@@ -22,6 +22,7 @@ const {
   updateQuestion,
   getAllMCQS,
   getAllChallenges,
+  deleteQuestion,
 } = require("../controllers/questionController");
 const {
   createQuiz,

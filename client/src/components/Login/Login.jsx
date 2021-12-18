@@ -86,7 +86,7 @@ const Login = (props) => {
               <p className="text-muted">Learn , code , repeat</p>
 
               <div className="input-field mb-2">
-                <i className="fas fa-lock"></i>
+              <i class="fas fa-id-card-alt"></i>  
                 <input
                   type="text"
                   placeholder="Register number"
@@ -112,8 +112,9 @@ const Login = (props) => {
             </form>
             <form action="#" className="sign-up-form" onSubmit={handleSubmit}>
               <h2 className="title">Admin Sign in</h2>
+              <p className="highlight">Learn , Code , Repeat</p>
               <div className="input-field">
-                <i className="fas fa-user"></i>
+              <i class="fas fa-id-card-alt"></i>
                 <input
                   type="text"
                   placeholder="Register no"
@@ -147,13 +148,13 @@ const Login = (props) => {
                 Click here to login with you adminstration ID to create contest
                 for the students.
               </p>
-              <CustomButton
-                className="btn transparent"
+              <button
+                className="btn signin-button"
                 id="sign-up-btn"
-                onClickHandler={changeSignup}
+                onClick={changeSignup}
               >
                 Sign in
-              </CustomButton>
+              </button>
             </div>
             <img src={Hello} className="image img-fluid" alt="admin-signin" />
           </div>
@@ -164,13 +165,13 @@ const Login = (props) => {
                 Click here to login as a student with the help of register
                 number to attend contest .
               </p>
-              <CustomButton
-                className="btn transparent mt-2 "
+              <button
+                className="btn mt-2 signin-to-student"
                 id="sign-in-btn"
-                onClickHandler={changeSignin}
+                onClick={changeSignin}
               >
                 Sign in
-              </CustomButton>
+              </button>
             </div>
             <img
               src={Developer}

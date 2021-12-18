@@ -9,6 +9,9 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Pagination from "@material-ui/lab/Pagination";
 import "./ListUser.css";
+import helperService from "../../../../../services/helperService";
+import { useContext } from "react";
+import { AuthContext } from "../../../../../contexts/AuthContext";
 const tableData = [
   {
     reg_no: 1813015,
@@ -164,42 +167,75 @@ const ListUser = (props) => {
 
   //   setCurrentSort(nextSort);
   // };
-
+  const [authState] = useContext(AuthContext);
+  const [users, setUsers] = useState([]);
+  const [pagination, setPagination] = useState({ page: 1, limit: 10 });
+  const fetchUsers = async () => {
+    try {
+      const { status, data } = await helperService.getUsers(pagination, {
+        headers: { Authorization: authState.user.token },
+      });
+      if (status === 200) {
+        setUsers(data.users);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    fetchUsers();
+  }, []);
   return (
     <>
       <div className="container-fluid">
-
-
-
         <div className="d-flex justify-content-between p-3 m-3">
           <div>
-              <div className="filter d-flex">
+            <div className="filter d-flex">
               <i className="fas fa-filter mt-3"></i>
-              <h6 className="ml-4 font-weight-bolder mt-3 highlight-textz ">Filter By : </h6>  
+              <h6 className="ml-4 font-weight-bolder mt-3 highlight-textz ">
+                Filter By :{" "}
+              </h6>
               <div className="dropdown mx-3">
-                  <button className="drop-button dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Ascending
-                  </button>
-                  <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a className="dropdown-item" >Desending</a>
-                    <a className="dropdown-item" >Random</a>
-                  </div>
-          </div>
-              </div>            
+                <button
+                  className="drop-button dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Ascending
+                </button>
+                <div
+                  className="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton"
+                >
+                  <a className="dropdown-item">Desending</a>
+                  <a className="dropdown-item">Random</a>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="d-flex">
-          <div className="form-group has-search">
-    <span className="fa fa-search form-control-feedback"></span>
-    <input type="text" className="form-control" placeholder="Search"/>
-  </div>
-  
-              <div>
-              <button className="pr-4 pl-4 mr-2 d-load-btn ml-3"><i class="fas fa-download"></i><span className="ml-2 font-weight-bolder">Download Details</span></button>
-                </div>      
+            <div className="form-group has-search">
+              <span className="fa fa-search form-control-feedback"></span>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search"
+              />
+            </div>
+
+            <div>
+              <button className="pr-4 pl-4 mr-2 d-load-btn ml-3">
+                <i class="fas fa-download"></i>
+                <span className="ml-2 font-weight-bolder">
+                  Download Details
+                </span>
+              </button>
+            </div>
           </div>
         </div>
-
-
 
         <div className="d-flex">
           <div
@@ -233,35 +269,62 @@ const ListUser = (props) => {
                 Phone Number
               </div>
             </div>
-            {tableData.map((e) => {
+            {users.map((e) => {
               return (
-                <div className="d-flex">
-                  <div className="col-md-1 list-table-data text-center data">
-                    {e.reg_no}
+                <div className="d-flex" key={e._id}>
+                  <div
+                    className="col-md-1 list-table-data p-2 text-center data"
+                    style={{ height: "50px" }}
+                  >
+                    {e.regno}
                   </div>
-                  <div className="col-md-3 list-table-data text-center data">
+                  <div
+                    className="col-md-3 list-table-data p-2 text-center data"
+                    style={{ height: "50px" }}
+                  >
                     {e.name}
                   </div>
-                  <div className="col-md-3 list-table-data text-center data">
+                  <div
+                    className="col-md-3 list-table-data p-2 text-center data"
+                    style={{ height: "50px" }}
+                  >
                     {e.email}
                   </div>
-                  <div className="col-md-1 list-table-data text-center data">
-                    {e.gender}
+                  <div
+                    className="col-md-1 list-table-data p-2 text-center data"
+                    style={{ height: "50px" }}
+                  >
+                    {e.gender_id}
                   </div>
-                  <div className="col-md-1 list-table-data text-center data">
-                    {e.stream}
+                  <div
+                    className="col-md-1 list-table-data p-2 text-center data"
+                    style={{ height: "50px" }}
+                  >
+                    {e.stream_id}
                   </div>
-                  <div className="col-md-2 list-table-data text-center data">
-                    {e.batch}
+                  <div
+                    className="col-md-2 list-table-data p-2 text-center data"
+                    style={{ height: "50px" }}
+                  >
+                    {e.batch_id}
                   </div>
-                  <div className="col-md-3 list-table-data text-center data">
-                    {e.course}
+                  <div
+                    className="col-md-3 list-table-data p-2 text-center data"
+                    style={{ height: "50px" }}
+                  >
+                    {e.course_id}
                   </div>
-                  <div className="col-md-3 list-table-data text-center data">
-                    {e.college}
+                  <div
+                    className="col-md-3 list-table-data p-2 text-center data"
+                    style={{ height: "50px" }}
+                  >
+                    {e.college_id}
                   </div>
-                  <div className="col-md-2 list-table-data text-center data">
-                    {e.phone}
+                  <div
+                    className="col-md-2 list-table-data p-2 text-center data"
+                    style={{ height: "50px" }}
+                  >
+                    {e.phone_no}
                   </div>
                 </div>
               );
@@ -272,13 +335,19 @@ const ListUser = (props) => {
               <div className="col-md-12 list-table-header text-center">
                 EDIT / DELETE
               </div>
-              {tableData.map((e) => {
+              {users.map((e) => {
                 return (
                   <>
-                    <div className="col-md-12 p-0 d-flex p-2 mt-1 align-items-center justify-content-center">
-                      <button className="pr-4 pl-4 mr-2 edit-btn "><i class="fas fa-pencil-alt"></i><span className="ml-2">Edit</span></button>
+                    <div
+                      className="col-md-12 p-0 d-flex p-2 align-items-center justify-content-center"
+                      style={{ marginTop: "6px", height: "50px" }}
+                    >
+                      <button className="pr-4 pl-4 mr-2 edit-btn ">
+                        <i class="fas fa-pencil-alt"></i>
+                        <span className="ml-2">Edit</span>
+                      </button>
                       <button className="pr-4 pl-4 delete-btn" disabled>
-                      <i class="fas fa-trash"></i>
+                        <i class="fas fa-trash"></i>
                         <span className="ml-2">Delete</span>
                       </button>
                     </div>
@@ -287,7 +356,17 @@ const ListUser = (props) => {
               })}
             </div>
           </div>
-        </div>
+          <div>
+     
+        
+      </div>
+      </div>
+        <Pagination
+            count={13}
+            color="primary"
+            variant="text"
+          className="mt-5 d-flex justify-content-end"
+          />
       </div>
     </>
   );

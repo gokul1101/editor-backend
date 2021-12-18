@@ -3,6 +3,9 @@ import "./Contests.css";
 import { Link } from "react-router-dom";
 import helperService from "../../../../services/helperService";
 import { AuthContext } from "../../../../contexts/AuthContext";
+import Pagination from "@material-ui/lab/Pagination";
+import CustomButton from "../../../Reducer/CustomButton/CustomButton";
+
 const Contests = () => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [eventArr, setEventArr] = useState([]);
@@ -35,13 +38,11 @@ const Contests = () => {
         <div className="contest-header mr-auto">
           <p className="text-left dash-title-category pb-2">Contests</p>
         </div>
-        <div className="create-con">
-          <Link to="/contests/create-contest">
-            <button className="p-2">
-              <i className="fas fa-plus pr-2 pl-2"></i>CREATE CONTEST
-            </button>
-          </Link>
-        </div>
+        <Link to="/contests/create-contest">
+          <CustomButton className="btn-hover color-11 mt-0">
+            <i className="fas fa-plus pr-2 pl-2"></i>CREATE CONTEST
+          </CustomButton>
+        </Link>
       </div>
       <div className="mt-3 mb-3">
         <div className="upcoming-events">
@@ -106,6 +107,7 @@ const Contests = () => {
           </div>
           <div className="col-md-2 text-center content-nav-title">Status</div>
         </div>
+
         <div className="d-flex flex-column">
           {eventArr.map((event) => {
             return (
@@ -128,6 +130,14 @@ const Contests = () => {
             );
           })}
         </div>
+      </div>
+      <div>
+        <Pagination
+          count={13}
+          color="primary"
+          variant="text"
+          className="mt-5 d-flex justify-content-end"
+        />
       </div>
     </div>
   );

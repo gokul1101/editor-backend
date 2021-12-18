@@ -5,6 +5,7 @@ const {
   getMCQ,
   updateMCQ,
   getAllMcqWithQuizID,
+  deleteMCQ,
 } = require("../services/mcqService");
 const {
   createChallenge,
@@ -22,13 +23,16 @@ const createQuestion = async (req, res) => {
     questionDetails.type_id = (
       await TestType.findOne({ name: questionDetails.type_id })
     )._id;
-    let { code, message,mcq } = await functions[index](questionDetails);
-    if(mcq) return res.status(code).json({message,mcq});
+    let { code, message, mcq } = await functions[index](questionDetails);
+    if (mcq) return res.status(code).json({ message, mcq });
     res.status(code).send(message);
   } catch (err) {
     //! Error in creating question
-    console.log("at line 29", err);
-    return res.status(500).json({ message: `Internal server error` });
+    if (!err.code) {
+      err.code = 500;
+      err.message = `Internal server error`;
+    }
+    return res.status(err.code).json({ message: err.message });
   }
 };
 const getQuestion = async (req, res) => {
@@ -38,7 +42,7 @@ const getQuestion = async (req, res) => {
   if (type === "mcq") index = 0;
   else if (type === "problem") index = 1;
   try {
-    let response = await functions[index](id);
+    let response = await functions[index](id, req.user.role);
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting question
@@ -69,6 +73,28 @@ const updateQuestion = async (req, res) => {
     return res.status(err.code).send(err.message);
   }
 };
+
+const deleteQuestion = async(req,res) => {
+  let questionDetails = req.body;
+  let { type } = req.query;
+  let functions = [deleteMCQ],
+    index;
+  if (type === "mcq") index = 0;
+  else if (type === "problem") index = 1;
+  try {
+    let response = await functions[index](questionDetails);
+    res.status(response.code).send(response);
+  } catch (err) {
+    //! Error in updating question
+    console.log(err);
+    if (!err.code) {
+      err.code = 500;
+      err.message = `Internal server Error on deleting mcqs`;
+    }
+    return res.status(err.code).send(err.message);
+  }
+}
+
 const getAllMCQS = async (req, res) => {
   let { id, page = 1, limit } = req.query;
   let flag = req.user.role_id === "admin";
@@ -86,7 +112,7 @@ const getAllMCQS = async (req, res) => {
   }
 };
 const getAllChallenges = async (req, res) => {
-  const {id} = req.query;
+  const { id } = req.query;
   try {
     const response = await getAllChallengesWithContestId(id);
     res.status(response.code).send(response);
@@ -104,6 +130,7 @@ module.exports = {
   createQuestion,
   getQuestion,
   updateQuestion,
+  deleteQuestion,
   getAllMCQS,
   getAllChallenges,
 };

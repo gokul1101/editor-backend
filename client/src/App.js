@@ -55,8 +55,9 @@ const App = () => {
         });
       }
     } catch (err) {
+      console.log(err);
       // if (err.status === 401) unauthorized(err.data);
-      snackBar(err.data, "error");
+      // snackBar(err.data, "error");
     }
   };
   const disabledEvent = (e) => {
@@ -109,7 +110,7 @@ const App = () => {
                 authState.user.role === "student" ? (
                   <Main snackBar={snackBar} fetchUser={fetchUser} />
                 ) : (
-                  <AdminMain snackBar={snackBar} fetchUser={fetchUser}/>
+                  <AdminMain snackBar={snackBar} fetchUser={fetchUser} />
                 ),
               ]
             ) : (

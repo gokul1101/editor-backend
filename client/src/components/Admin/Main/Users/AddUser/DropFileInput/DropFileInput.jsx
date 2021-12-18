@@ -12,6 +12,7 @@ import "./DropFileInput.css";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import { NavLink } from "react-router-dom";
+import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -70,7 +71,10 @@ const DropFileInput = (props) => {
         onDrop={onDrop}
       >
         <div className="drop-file-input__label">
-          <img alt="someImage" src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png" />
+          <img
+            alt="someImage"
+            src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png"
+          />
           <p>Drag & Drop your files here</p>
         </div>
         <input
@@ -88,7 +92,10 @@ const DropFileInput = (props) => {
               key={index}
               className="drop-file-preview__item d-flex w-100 align-items-center justify-content-center"
             >
-              <img alt="someImage" src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png" />
+              <img
+                alt="someImage"
+                src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png"
+              />
               <div className="drop-file-preview__item__info d-flex flex-column">
                 <span>{item.name}</span>
                 <div className="d-flex justify-content-between">
@@ -101,21 +108,21 @@ const DropFileInput = (props) => {
               </div>
             </div>
           ))}
-          
+
           <div className="d-flex align-items-center justify-content-center mt-3">
-            <button className="loop-btn pr-2 pl-2">
-              <i className="fas fa-upload pr-2 pl-2"></i>Upload Excel file
-            </button>
+            <CustomButton className="btn-hover color-11 mt-2">
+            <i className="fas fa-upload pr-2 pl-2"></i>Upload Excel file
+            </CustomButton>
           </div>
           <div className="d-flex align-items-end justify-content-end mt-3 p-2">
-            <NavLink className="log-file">
+            <div className="log-file">
               <span
                 className="badge badge-pill badge-secondary"
                 onClick={handleClickOpen}
               >
                 Logs
               </span>
-            </NavLink>
+            </div>
             <Dialog
               open={open}
               fullScreen={fullScreen}
@@ -181,9 +188,12 @@ const DropFileInput = (props) => {
         <div className="drop-file-preview__item mt-2 d-flex flex-column align-items-center justify-content-center">
           No file choosen. Excel file only be uploaded.
           <div className="d-flex align-items-center justify-content-center mt-3">
-            <button className="loop-btn pr-2 pl-2 mt-2 mb-2">
-              <i className="fas fa-upload pr-2 pl-2"></i>Download Sample file
-            </button>
+            {/* <button className="loop-btn pr-2 pl-2 mt-2 mb-2">
+              <i className="fas fa-download pr-2 pl-2"></i>Download Sample file
+            </button> */}
+            <CustomButton className="btn-hover color-11 mt-4">
+              <i className="fas fa-download pr-2 pl-2"></i>Download Sample file
+            </CustomButton>
           </div>
         </div>
       )}

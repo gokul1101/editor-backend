@@ -91,18 +91,19 @@ const updateTestCaseService = async ({ testcase_id, index, testcase }) => {
     return Promise.reject({ code: 500, message: "Unable to update testcase" });
   }
 };
-const getTestCasesService = async (question_id) => {
+const getTestCasesService = async (question_id, role) => {
   try {
     let testcases = await Answer.findOne({ question_id });
     if (testcases) {
-      testcases.testcases.hidden = testcases.testcases?.hidden?.length || 0;
+      if(role === "student")
+        testcases.testcases.hidden = testcases.testcases?.hidden?.length || 0;
       return Promise.resolve({
         code: 200,
         message: `testcases found`,
         testcases,
       });
     } else {
-      return Promise.resolve({
+      return Promise.reject({
         code: 404,
         message: "No testcases found",
       });

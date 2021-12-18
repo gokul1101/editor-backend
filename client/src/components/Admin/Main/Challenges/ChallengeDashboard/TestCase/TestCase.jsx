@@ -34,8 +34,8 @@ const TestCase = () => {
     hidden: [],
   });
   const [testcase, setTestcase] = useState({
-    input_foramt: "",
-    output_foramt: "",
+    input: "",
+    output: "",
   });
   const [open, setOpen] = React.useState(false);
 
@@ -53,30 +53,33 @@ const TestCase = () => {
     setOpen(false);
   };
   const addTestcase = () => {
+    console.log(testcases, testcase);
     if (checked) {
-      setTestcases({ ...testcases, hidden: [...testcases.hidden, testcase] });
+      setTestcases({ ...testcases, hidden: [...testcases?.hidden, testcase] });
     } else {
-      setTestcases({ ...testcases, sample: [...testcases.sample, testcase] });
+      setTestcases({ ...testcases, sample: [...testcases?.sample, testcase] });
     }
   };
   const createTestcase = async () => {
-    console.log("createad,,,")
     try {
       const { data, status } = await helperService.createTestcase(
-        {question_id:authState?.challenge?._id ,testcase:testcases},
+        { question_id: authState?.challenge?._id, testcase: testcases },
         { headers: { Authorization: authState.user.token } }
       );
-      if(status === 201){
-        console.log(data)
+      if (status === 201) {
+        if (data?.testcases.length > 0) setTestcases(data.testcases);
       }
     } catch (err) {
       console.log(err);
     }
   };
   useEffect(() => {
-    // setTestcases(authState?.challenge?.testcases)
-    console.log(authState?.challenge)
-  }, [])
+    console.log(authState?.challenge?.testcases?.testcases);
+      setTestcases(authState?.challenge?.testcases?.testcases || {
+        sample: [],
+        hidden: [],
+      });
+  }, [authState]);
   return (
     <div>
       <div className="d-flex flex-column" style={{ marginTop: "40px" }}>
@@ -98,14 +101,14 @@ const TestCase = () => {
         {/* </Link> */}
       </div>
       <h1>Sample</h1>
-      {testcases.sample.map((testcase) => (
+      {testcases?.sample?.map((testcase) => (
         <div class="text_hovering_cards text_hovering_cards-1 d-flex flex-wrap align-items-center justify-content-center m-1">
           <div class="text_hovering_card text_hovering_card">
             <div class="text_hovering_card_content">
               <section>
                 <span class="section_left">
-                  <h3>{testcase.input_foramt}</h3>
-                  <h5>{testcase.output_foramt}</h5>
+                  <h3>{testcase.input}</h3>
+                  <h5>{testcase.output}</h5>
                 </span>
                 <span class="section_right">
                   <Link
@@ -121,14 +124,14 @@ const TestCase = () => {
         </div>
       ))}
       <h1>Hidden </h1>
-      {testcases.hidden.map((testcase) => (
+      {testcases?.hidden.map((testcase) => (
         <div class="text_hovering_cards text_hovering_cards-1 d-flex flex-wrap align-items-center justify-content-center m-1">
           <div class="text_hovering_card text_hovering_card">
             <div class="text_hovering_card_content">
               <section>
                 <span class="section_left">
-                  <h3>{testcase.input_foramt}</h3>
-                  <h5>{testcase.output_foramt}</h5>
+                  <h3>{testcase.input}</h3>
+                  <h5>{testcase.output}</h5>
                 </span>
                 <span class="section_right">
                   <Link
@@ -164,7 +167,7 @@ const TestCase = () => {
               rows={4}
               variant="outlined"
               onClickHandler={(value) =>
-                setTestcase({ ...testcase, input_foramt: value })
+                setTestcase({ ...testcase, input: value })
               }
             />
           </DialogContentText>
@@ -177,7 +180,7 @@ const TestCase = () => {
               rows={4}
               variant="outlined"
               onClickHandler={(value) =>
-                setTestcase({ ...testcase, output_foramt: value })
+                setTestcase({ ...testcase, output: value })
               }
             />
           </DialogContentText>

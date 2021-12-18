@@ -112,7 +112,7 @@ const Quiz = ({ setSideToggle }) => {
       <div className="d-flex p-2" style={{ marginTop: "40px" }}>
         <div className="col-md-8 p-3 pl-5">
           <p className="text-left dash-title-category">
-            ROOM CODE : {location.id}
+            ROOM CODE : <span className="room-code p-2">{location.id}</span>
           </p>
           <p className="text-left problem-article">{quiz?.name}</p>
           <div className="col p-0">
@@ -121,12 +121,12 @@ const Quiz = ({ setSideToggle }) => {
                 Question {currentQuestionNumber || 0}/{quiz?.total_mcqs || 0}
               </span>
             </div>
-            <div className="hr">
+            <div className="hr mt-2">
               <hr className="co pl-0" />
             </div>
             <div className="col question-outoff p-0 mb-3">
               <span className="text-muted">
-                Note: Choosen answer boxes are turned into Green color
+                Note: Choosen answer boxes are turned into thick Green color
               </span>
             </div>
           </div>
@@ -192,6 +192,9 @@ const Quiz = ({ setSideToggle }) => {
               </h2>
               <p className="font-weight-bolder">remaining</p>
               <div className="d-flex">
+              <span className="timer-hand mr-2 ml-3 font-weight-bolder">
+                  Days
+                </span>
                 <span className="timer-hand mr-2 ml-3 font-weight-bolder">
                   Hours
                 </span>

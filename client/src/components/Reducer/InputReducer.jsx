@@ -12,7 +12,7 @@ const InputReducer = (props) => {
       fullWidth={props.fullWidth}
       multiline={props.multiline ? true : false}
       variant="outlined"
-      className={`w-100 ${props.className? props.className : ""}`}
+      className={`w-100 ${props.className ? props.className : ""}`}
       placeholder={props.placeholder}
       name={props.name}
       value={props.value}

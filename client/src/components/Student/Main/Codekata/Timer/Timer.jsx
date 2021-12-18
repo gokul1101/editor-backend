@@ -36,7 +36,7 @@ const Timer = () => {
       return;
     }
     timerComponents.push(
-      `${timeLeft[interval]}${interval.toUpperCase().charAt(0)}`
+      `${timeLeft[interval]}${interval.charAt(0)}`
     );
   });
   return (
@@ -45,6 +45,7 @@ const Timer = () => {
         <span>Time's up</span>
       ) : (
         <div className="d-flex align-items-center justify-content-center countdown-timer">
+          
           {timerComponents.map((component, index) => {
             let suffix = index + 1 !== timerComponents.length ? " : " : "";
             return (

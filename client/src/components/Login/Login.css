@@ -337,10 +337,10 @@ form.sign-in-form {
   }
 }
 .btn-hover {
-  width: 200px;
+  width: max-content;
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
+  color: #fff !important;
   cursor: pointer;
   height: 45px;
   text-align: center;
@@ -397,7 +397,20 @@ form.sign-in-form {
   }
 }
 
-.form-title{
+.form-title {
   font-weight: 900;
   color: #0ba360;
+}
+
+.highlight {
+  color: #0ba360;
+}
+
+.signin-button,
+.signin-to-student {
+  width: 120px;
+  color: #000;
+  font-weight: 700;
+  background-color: transparent !important;
+  border: 1px solid #000 !important;
 }

@@ -13,9 +13,11 @@ import CreateQuiz from "./Quizzes/CreateQuiz/CreateQuiz";
 import AddQuiz from "./Quizzes/CreateQuiz/AddQuiz/AddQuiz";
 import { AuthContext } from "../../../contexts/AuthContext";
 import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
+import Report from "./Report/Report";
+import ErrorLogs from "./ErrorLogs/ErrorLogs";
 const Main = (props) => {
   const [, authDispatch] = useContext(AuthContext);
-  const [sideToggle, ] = useState(false);
+  const [sideToggle] = useState(false);
   useEffect(() => {
     props.fetchUser();
   }, []);
@@ -73,28 +75,28 @@ const Main = (props) => {
                 <span className="tooltip">Contests</span>
               </NavLink>
             </li>
-            {/* <li className="nav-item dash-item mb-2 color-11">
+            <li className="nav-item dash-item mb-2 color-11">
               <NavLink
                 activeClassName="active-class color-11"
-                to="/quizzes"
+                to="/report"
                 className="nav-link dash-li"
               >
                 <i className="fas fa-road pr-4 pl-4 dash-icon shake"></i>
-                <span className="hide-span">Quizzes</span>
-                <span className="tooltip">Quizzes</span>
+                <span className="hide-span">Report</span>
+                <span className="tooltip">Report</span>
               </NavLink>
             </li>
             <li className="nav-item dash-item mb-2 color-11">
               <NavLink
                 activeClassName="active-class color-11"
-                to="/challenges"
+                to="/error-logs"
                 className="nav-link dash-li"
               >
                 <i className="fas fa-road pr-4 pl-4 dash-icon shake"></i>
-                <span className="hide-span">Challenges</span>
-                <span className="tooltip">Challenges</span>
+                <span className="hide-span">Error Logs</span>
+                <span className="tooltip">Error Logs</span>
               </NavLink>
-            </li> */}
+            </li>
           </ul>
           <div className="sidebar-footer d-flex align-items-center justify-content-center position-relative">
             <ul className="nav flex-column w-100 side-ul">
@@ -126,20 +128,21 @@ const Main = (props) => {
             <Route path="/admin-dashboard" exact>
               <AdminDashboard />
             </Route>
+
             <Route path="/users">
               <Users />
             </Route>
             <Route path="/contests">
               <Switch>
-              <Route path="/contests/create-contest" exact>
-                <CreateContest title = "Create Contest"/>
-              </Route>
-              <Route path="/contests/:id" >
-                <ContestDetails />
-              </Route>
-              <Route path="/contests" exact>
-                <Contests  />
-              </Route>
+                <Route path="/contests/create-contest" exact>
+                  <CreateContest title="Create Contest" />
+                </Route>
+                <Route path="/contests/:id">
+                  <ContestDetails />
+                </Route>
+                <Route path="/contests" exact>
+                  <Contests />
+                </Route>
               </Switch>
             </Route>
             <Route path="/quizzes">
@@ -155,8 +158,14 @@ const Main = (props) => {
             </Route>
             <Route path="/challenges">
               <Route path="/challenges/:id">
-                <ChallengeDashboard/>
+                <ChallengeDashboard />
               </Route>
+            </Route>
+            <Route path="/report" exact>
+              <Report />
+            </Route>
+            <Route path="/error-logs" exact>
+              <ErrorLogs />
             </Route>
             <Route
               exact
