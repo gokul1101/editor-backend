@@ -34,7 +34,7 @@ const DropFileInput = (props) => {
     if (
       newFile &&
       newFile.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
       // const updatedList = [newFile];
       setFileList([newFile]);
@@ -111,7 +111,7 @@ const DropFileInput = (props) => {
 
           <div className="d-flex align-items-center justify-content-center mt-3">
             <CustomButton className="btn-hover color-11 mt-2">
-            <i className="fas fa-upload pr-2 pl-2"></i>Upload Excel file
+              <i className="fas fa-upload pr-2 pl-2"></i>Upload Excel file
             </CustomButton>
           </div>
           <div className="d-flex align-items-end justify-content-end mt-3 p-2">

@@ -30,6 +30,7 @@ const Contests = (props) => {
     }
   };
   useEffect(() => {
+    console.log("contest snackbar",props.snackBar);
     fetchContests();
   }, []);
   const setContest = (contest) => {

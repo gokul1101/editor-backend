@@ -27,7 +27,7 @@ const GreenCheckbox = withStyles({
   },
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
-const TestCase = () => {
+const TestCase = (props) => {
   const [authState] = useContext(AuthContext);
   const [testcases, setTestcases] = useState({
     sample: [],
@@ -53,6 +53,7 @@ const TestCase = () => {
     setOpen(false);
   };
   const addTestcase = () => {
+    props.snackBar("Sucessfully added","success")
     console.log(testcases, testcase);
     if (checked) {
       setTestcases({ ...testcases, hidden: [...testcases?.hidden, testcase] });
@@ -61,6 +62,7 @@ const TestCase = () => {
     }
   };
   const createTestcase = async () => {
+    props.snackBar("Sucessfully added","success")
     try {
       const { data, status } = await helperService.createTestcase(
         { question_id: authState?.challenge?._id, testcase: testcases },

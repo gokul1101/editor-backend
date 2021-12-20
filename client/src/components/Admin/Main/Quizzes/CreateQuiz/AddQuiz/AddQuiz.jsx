@@ -94,7 +94,7 @@ const AddQuiz = (props) => {
       );
       if (status === 202) {
         console.log(questions, question);
-        props.snackBar("Question deleted successfully", "info");
+        props.snackBar("Question deleted successfully", "success");
         setQuestions(
           questions.filter((ques) => ques.question_id !== question.question_id)
         );
