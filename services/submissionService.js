@@ -140,7 +140,7 @@ const challengeSubmissionService = async (
   lang,
   submission = false,
 ) => {
-  let flag = true,
+  let flag = true, isSampleFailed = false
     score = 0;
   try {
     const max_score = (await Question.findById(question_id))?.max_score || 1;
@@ -150,20 +150,20 @@ const challengeSubmissionService = async (
     for(let i = 0; i < testcases?.sample.length; i++) {
       try {
         const { output } = await compilerService(code, testcases?.sample[i].input, lang);
-        // console.log(output)
+        output = output.replace(/\n+$/, "");
         if (submission && testcases?.sample[i].output === output) score++;
-        else flag = false;
+        else isSampleFailed = false;
         sampleTestCaseOutput.push({
           expectedOutput: testcases?.sample[i].output,
           actualOutput: output,
           errors: false,
         })
-      } catch ({ err }) {
+      } catch (err) {
         if(i == 0) {
           return Promise.resolve({
             code: 200,
             errors : true,
-            err
+            err : err.err
           })
         }
         flag = false;
@@ -175,10 +175,10 @@ const challengeSubmissionService = async (
         break;
       }
     }
-    if (!submission && !flag)
+    if (!submission && (!flag || isSampleFailed))
       return Promise.resolve({
         code: 200,
-        isSampleFailed : true,
+        isSampleFailed,
         sampleTestCaseOutput,
       });
     const hiddenTestCaseOutput = await Promise.all(

@@ -75,7 +75,6 @@ const getContestForDashboard = async (req, res) => {
           res.status(403).send({ message: "Your session was expired." });
         }
       } catch (err) {
-        console.log(err);
         if (err.code === 404) {
           let userSession = await createSessionService({
             user_id,
