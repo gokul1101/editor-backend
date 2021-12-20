@@ -4,6 +4,7 @@ import InputReducer from "../../../Reducer/InputReducer";
 import SelectReducer from "../../../Reducer/SelectReducer/SelectReducer";
 import { Button, makeStyles } from "@material-ui/core";
 import { useState } from "react";
+import { emailCheck } from "../../../../services/utils";
 const useStyles = makeStyles((theme) => ({
   root: {
     border: "1px solid #1E2D64",
@@ -38,7 +39,20 @@ const Profile = (props) => {
   })
   useEffect(() => {
     props.setSideToggle(false);
+
   });
+  const userEditedDetails = () => {
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let charRegex =  /^[A-Za-z0-9 ]+$/;
+    if(emailRegex.test(user.email) && user.register_number.length === 7 && user.new_password.length >= 6 && charRegex.test(user.name)){
+      props.snackBar("Your details are updated , Have Fun !!!","success");
+
+    }
+   else{
+     props.snackBar("invalid details Please check the fields","error");
+   }
+   console.log(user);
+  }
   return (
     <div className="container">
       <div className={styles.margin}>
@@ -56,7 +70,13 @@ const Profile = (props) => {
         <div className="input-container w-100 d-flex flex-column">
           <div className="d-flex mt-2 mb-2">
             <div className="col-md-6">
-              <InputReducer placeholder="Enter Email" name="Email" type="email" label="Email"  className={styles.fieldColor}/>
+              <InputReducer
+               placeholder="Enter Email"
+                name="Email"
+                 type="email"
+                  label="Email"
+                  onClickHandler={(value) => setUser({...user,email:value})} 
+                   className={styles.fieldColor}/>
             </div>
             <div className="col-md-6">
               <InputReducer
@@ -65,6 +85,7 @@ const Profile = (props) => {
                 type="text"
                 label="Register Number"
                 className={styles.fieldColor}
+                onClickHandler={(value) => setUser({...user,register_number:value})} 
               />
             </div>
           </div>
@@ -76,6 +97,7 @@ const Profile = (props) => {
                 type="password"
                 label="Old Password"
                 className={styles.fieldColor}
+                onClickHandler={(value) => setUser({...user,old_password:value})} 
               />
             </div>
             <div className="col-md-6">
@@ -85,12 +107,21 @@ const Profile = (props) => {
                 label="New Password"
                 type="password"
                 className={styles.fieldColor}
+                onClickHandler={(value) => setUser({...user,new_password:value})} 
+
               />
             </div>
           </div>
           <div className="d-flex mt-2 mb-2">
             <div className="col-md-6">
-              <InputReducer placeholder="Enter Name" name="Name" type="text" label="Name" className={styles.fieldColor} />
+              <InputReducer 
+              placeholder="Enter Name"
+               name="Name"
+                type="text"
+                 label="Name"
+                  className={styles.fieldColor}
+                  onClickHandler={(value) => setUser({...user,name:value})}  
+                  />
             </div>
             <div className="col-md-6">
               <InputReducer
@@ -99,6 +130,7 @@ const Profile = (props) => {
                 label="Phone number"
                 type="Number"
                 className={styles.fieldColor}
+                onClickHandler={(value) => setUser({...user,phone_number:value})} 
               />
             </div>
           </div>
@@ -110,22 +142,16 @@ const Profile = (props) => {
               <SelectReducer
                 array={["MALE", "FEMALE"]}
                 name="Select gender"
-              
+                handleSelect={(value) => setUser({...user,gender:value.target.value})} 
+                
                 className={styles.fieldColor}
               />
             </div>
             
           </div>
-          {/* <div
-            className="d-flex mt-3 mb-2"
-            style={{ position: "relative", left: "-7px" }}
-          >
-            <div className="col-md-6">
-              <SelectReducer array={["CSE", "IT", "CIVIL"]} className="w-100" name="Course name" />
-            </div>
-          </div> */}
+          
           <div className="d-flex pl-3 mt-2">
-            <Button   className="mr-2 btn btn-save">
+            <Button  className="mr-2 btn btn-save" onClick={userEditedDetails}>
               Save Changes
             </Button>
             <Button className="btn-cancel">

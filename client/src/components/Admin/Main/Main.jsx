@@ -15,11 +15,13 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
 import Report from "./Report/Report";
 import ErrorLogs from "./ErrorLogs/ErrorLogs";
+import CreateChallenge from "./Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
 const Main = (props) => {
   const [, authDispatch] = useContext(AuthContext);
   const [sideToggle] = useState(false);
   useEffect(() => {
     props.fetchUser();
+    console.log(props.snackBar);
   }, []);
   return (
     <div className="container-fluid p-0">
@@ -128,11 +130,10 @@ const Main = (props) => {
             <Route path="/admin-dashboard" exact>
               <AdminDashboard snackBar={props.snackBar} />
             </Route>
-
-            <Route path="/users">
-              <Users />
+            <Route path="/users" >
+              <Users snackBar={props.snackBar}/>
             </Route>
-            <Route path="/contests">
+            <Route path="/contests" >
               <Switch>
                 <Route path="/contests/create-contest" exact>
                   <CreateContest
@@ -162,6 +163,9 @@ const Main = (props) => {
             <Route path="/challenges">
               <Route path="/challenges/:id">
                 <ChallengeDashboard snackBar={props.snackBar} />
+              </Route>
+              <Route path="/challenges/:id/challenge/create">
+                <CreateChallenge snackBar={props.snackBar} />
               </Route>
             </Route>
             <Route path="/report" exact>

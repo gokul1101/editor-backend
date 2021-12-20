@@ -7,11 +7,12 @@ import CreateContest from "../CreateContest/CreateContest";
 import ChallengeDashboard from "../../Challenges/ChallengeDashboard/ChallengeDashboard";
 import Challenges from "../../Challenges/Challenges";
 import CreateChallenge from "../../Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
-const ContestDetails = () => {
+const ContestDetails = (props) => {
   const { id } = useParams();
   const selectedTags = (tags) => {
     console.log(tags);
   };
+  console.log(props);
   return (
     <>
       <ul class="container-fluid list-group d-flex flex-row py-2 my-3 border">
@@ -70,8 +71,7 @@ const ContestDetails = () => {
             </Route>
             <Route path="/contests/:id/challenges/create" exact>
               <CreateChallenge
-                selectedTags={selectedTags}
-                tags={["Wipro", "Virtusa"]}
+                snackBar={props.snackBar}
               />
             </Route>
           </Route>

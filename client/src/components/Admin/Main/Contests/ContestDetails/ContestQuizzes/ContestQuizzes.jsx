@@ -34,6 +34,7 @@ const ContestQuizzes = () => {
       if (status === 201) {
         // TODO:
         console.log(quiz);
+        
         // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
         setQuizzArr((existing) => [...existing, quiz]);
         setOpen(false);

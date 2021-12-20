@@ -26,3 +26,7 @@ class Main {
   }
 }`,
 }
+
+export const emailCheck = {
+  regEx:"/^[^\s@]+@[^\s@]+\.[^\s@]+$/"
+}

@@ -9,6 +9,7 @@ import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     border: "1px solid #1E2D64",
@@ -75,6 +76,45 @@ const AddUser = (props) => {
     }
   };
   const createUser = async () => {
+    //Regex
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let charRegex =  /^[A-Za-z0-9]+$/;
+  
+    if(!user.name.length >=3 && !user.name.length <=25){
+      props.snackBar("Username is Incorrect","error")
+      return;
+    }
+    if(user.regno.length !== 7){
+      props.snackBar("Register Number is Incorrect","error");
+      return;
+    }
+    if(user.stream_id === ""){
+      props.snackBar("Stream is not selected","error")
+      return;
+    }
+    if(user.course_id === ""){
+      props.snackBar(" Course is not selected","error")
+      return
+    }
+    if(user.college_id === ""){
+      props.snackBar("College is not selected","error")
+      return
+    }
+    if(!emailRegex.test(user.email)){
+      props.snackBar("Email is Incorrect","error")
+      return;
+    }
+    
+    if(user.phone_no.length !== 10){
+      console.log(user.phone_no.length );
+      props.snackBar("Phone Number is Incorrect","error")
+      return;
+    }
+    if(user.gender_id === ""){
+      props.snackBar("Gender is not Selected","error")
+      return;
+    }
+    
     try {
       console.log({
         ...user,
@@ -96,7 +136,8 @@ const AddUser = (props) => {
         props.snackBar("Successfully user created", "success");
       }
     } catch (err) {
-      console.log(err);
+      props.snackBar(err.data, "error");
+
     }
   };
   return (
@@ -126,7 +167,7 @@ const AddUser = (props) => {
                 name="Name"
                 type="text"
                 value={user.name}
-                onClickHandler={(value) => setUser({ ...user, name: value })}
+                onClickHandler={(value) => setUser({ ...user, name: value.trim() })}
               />
             </div>
             <div className="col-md-6 p-1">
@@ -137,7 +178,7 @@ const AddUser = (props) => {
                 name="Register Number"
                 type="text"
                 value={user.regno}
-                onClickHandler={(value) => setUser({ ...user, regno: value })}
+                onClickHandler={(value) => setUser({ ...user, regno: value.trim() })}
               />
             </div>
           </div>
@@ -187,7 +228,7 @@ const AddUser = (props) => {
                 name="Email"
                 type="email"
                 value={user.email}
-                onClickHandler={(value) => setUser({ ...user, email: value })}
+                onClickHandler={(value) => setUser({ ...user, email: value.trim() })}
               />
             </div>
           </div>

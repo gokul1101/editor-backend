@@ -6,7 +6,7 @@ import { AuthContext } from "../../../../contexts/AuthContext";
 import Pagination from "@material-ui/lab/Pagination";
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
 
-const Contests = () => {
+const Contests = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [contests, setContests] = useState({
     upcoming: [],
@@ -46,9 +46,6 @@ const Contests = () => {
       console.log(err);
     }
   };
-  useEffect(() => {
-    console.log(contests);
-  }, [contests]);
   useEffect(() => {
     fetchContests();
   }, []);

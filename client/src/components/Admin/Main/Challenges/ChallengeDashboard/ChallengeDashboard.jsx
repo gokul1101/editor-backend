@@ -4,7 +4,8 @@ import { AuthContext } from "../../../../../contexts/AuthContext";
 import helperService from "../../../../../services/helperService";
 import CreateChallenge from "./CreateChallenge/CreateChallenge";
 import TestCase from "./TestCase/TestCase";
-const ChallengeDashboard = () => {
+const ChallengeDashboard = (props) => {
+  console.log("At line challenge dashboard", props)
   const [authState, authDispatch] = useContext(AuthContext);
   const { id } = useParams();
   const fetchChallenge = async () => {
@@ -59,6 +60,7 @@ const ChallengeDashboard = () => {
               <CreateChallenge
                 title="Update Challenge"
                 fetchChallenge={fetchChallenge}
+                snackBar={props.snackBar}
               />
             </Route>
             <Route path={`/challenges/:id/create-testcase`} exact>

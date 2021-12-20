@@ -6,7 +6,8 @@ import ListUser from "./ListUser/ListUser";
 
 
 
-const Users = () => {
+const Users = (props) => {
+  console.log(props);
   return (
     <div className="container-fluid add-user-container mt-4">
       <ul class="list-group d-flex align-items-center justify-content-end flex-row p-2 mt-3 mb-3">
@@ -34,7 +35,7 @@ const Users = () => {
       <div className="container-fluid">
         <Switch>
           <Route path="/users/add-user" exact>
-            <AddUser />
+            <AddUser snackBar={props.snackBar}/>
           </Route>
           <Route path="/users/list-user" exact>
             <ListUser />
