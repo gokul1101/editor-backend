@@ -22,7 +22,7 @@ const Programs = (props) => {
       ? JSON.parse(sessionStorage.getItem(challenge?.name))?.code
       : template[language]
   );
-  const [isError, setIsError] = useState(false);
+  const [isError, setIsError] = useState(true);
   const [isSampleFailed, setIsSampleFailed] = useState(false);
   const [errors, setErrors] = useState([]);
   useEffect(() => {

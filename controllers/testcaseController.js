@@ -23,7 +23,7 @@ const getTestCases = async (req, res) => {
     const { id } = req.query;
     const { code, message, testcasesDetails } = await getTestCasesService(
       id,
-      req.user.role
+      req.user.role_id
     );
     res.status(code).json({ message, testcasesDetails });
   } catch (err) {
