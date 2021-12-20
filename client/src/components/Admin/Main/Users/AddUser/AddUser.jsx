@@ -8,6 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
 import { AuthContext } from "../../../../../contexts/AuthContext";
+import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 const useStyles = makeStyles((theme) => ({
   root: {
     border: "1px solid #1E2D64",
@@ -46,7 +47,6 @@ const courses = {
   AUTO: "Automobile Engineering",
 };
 const AddUser = (props) => {
-  console.log(props);
   const [authState] = useContext(AuthContext);
   const [user, setUser] = useState({
     regno: "",
@@ -77,18 +77,43 @@ const AddUser = (props) => {
   const createUser = async () => {
     //Regex
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let charRegex =  /^[A-Za-z0-9 ]+$/;
-    if(charRegex.test(user.name) && emailRegex.test(user.email) && user.regno.length === 7 
-    && user.phone_no.length === 10 && user.stream_id !== "" && user.course_id !== "" && user.gender_id !== ""
-    && user.college_id !== ""
-    ){
-      props.snackBar("Use Created , Have Fun !!!","success");
-      console.log("user created !!");
+    let charRegex =  /^[A-Za-z0-9]+$/;
+  
+    if(!user.name.length >=3 && !user.name.length <=25){
+      props.snackBar("Username is Incorrect","error")
+      return;
     }
-    else{
-     props.snackBar("Invalid Details , Kindly check the entered details","error");
-     console.log("Having errors !!");
+    if(user.regno.length !== 7){
+      props.snackBar("Register Number is Incorrect","error");
+      return;
     }
+    if(user.stream_id === ""){
+      props.snackBar("Stream is not selected","error")
+      return;
+    }
+    if(user.course_id === ""){
+      props.snackBar(" Course is not selected","error")
+      return
+    }
+    if(user.college_id === ""){
+      props.snackBar("College is not selected","error")
+      return
+    }
+    if(!emailRegex.test(user.email)){
+      props.snackBar("Email is Incorrect","error")
+      return;
+    }
+    
+    if(user.phone_no.length !== 10){
+      console.log(user.phone_no.length );
+      props.snackBar("Phone Number is Incorrect","error")
+      return;
+    }
+    if(user.gender_id === ""){
+      props.snackBar("Gender is not Selected","error")
+      return;
+    }
+    
     try {
       console.log({
         ...user,
@@ -103,17 +128,19 @@ const AddUser = (props) => {
           course_id: courses[user.course_id],
           batch_id: `${batchStart.substring(0, 4)}-${batchEnd.substring(0, 4)}`,
         },
-        { headers: { Authorization: authState.user.state } }
+        { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 201) {
         console.log(data, status);
+        props.snackBar("Successfully user created", "success");
       }
     } catch (err) {
-      console.log(err);
+      props.snackBar(err.data, "error");
+
     }
   };
   return (
-    <div className="container-fluid">
+    <div className="container">
       <p className="text-left dash-title-category pb-2">Add Details *</p>
       <div className="col p-0" style={{ marginTop: "-20px" }}>
         <div className="hr">
@@ -139,7 +166,7 @@ const AddUser = (props) => {
                 name="Name"
                 type="text"
                 value={user.name}
-                onClickHandler={(value) => setUser({ ...user, name: value })}
+                onClickHandler={(value) => setUser({ ...user, name: value.trim() })}
               />
             </div>
             <div className="col-md-6 p-1">
@@ -150,7 +177,7 @@ const AddUser = (props) => {
                 name="Register Number"
                 type="text"
                 value={user.regno}
-                onClickHandler={(value) => setUser({ ...user, regno: value })}
+                onClickHandler={(value) => setUser({ ...user, regno: value.trim() })}
               />
             </div>
           </div>
@@ -200,7 +227,7 @@ const AddUser = (props) => {
                 name="Email"
                 type="email"
                 value={user.email}
-                onClickHandler={(value) => setUser({ ...user, email: value })}
+                onClickHandler={(value) => setUser({ ...user, email: value.trim() })}
               />
             </div>
           </div>
@@ -232,7 +259,7 @@ const AddUser = (props) => {
             </div>
           </div>
           <div className="d-flex mt-3 mb-2">
-            <div className="col-md-4 p-1">
+            <div className="col-md-6 p-1">
               <TextField
                 id="date"
                 label="Batch starts"
@@ -262,9 +289,12 @@ const AddUser = (props) => {
               />
             </div>
           </div>
-          <button className="loop-btn mt-3 pr-2 pl-2 ml-3" onClick={createUser}>
-            <i className="fas fa-plus pr-2 pl-2"></i>Create user
-          </button>
+          <CustomButton
+            className="btn-hover color-11 mt-4"
+            onClickHandler={createUser}
+          >
+            <i className="fas fa-plus pr-2 pl-2"></i>CREATE USER
+          </CustomButton>
         </div>
         <div className="col-md-4 p-2 border m-1">
           <DropFileInput onFileChange={onFileChange} />

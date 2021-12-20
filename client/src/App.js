@@ -55,19 +55,20 @@ const App = () => {
         });
       }
     } catch (err) {
+      console.log(err);
       // if (err.status === 401) unauthorized(err.data);
-      snackBar(err.data, "error");
+      // snackBar(err.data, "error");
     }
   };
   const disabledEvent = (e) => {
     if (e.stopPropagation) {
-        e.stopPropagation();
+      e.stopPropagation();
     } else if (window.event) {
-        window.event.cancelBubble = true;
+      window.event.cancelBubble = true;
     }
     e.preventDefault();
     return false;
-}
+  };
 
   // useEffect(() => {
   //   document.addEventListener("contextmenu", (e) => disabledEvent(e));
@@ -109,7 +110,7 @@ const App = () => {
                 authState.user.role === "student" ? (
                   <Main snackBar={snackBar} fetchUser={fetchUser} />
                 ) : (
-                  <AdminMain snackBar={snackBar} fetchUser={fetchUser}/>
+                  <AdminMain snackBar={snackBar} fetchUser={fetchUser} />
                 ),
               ]
             ) : (

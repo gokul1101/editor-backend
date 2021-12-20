@@ -12,12 +12,13 @@ import InputReducer from "../../../../../Reducer/InputReducer";
 import helperService from "../../../../../../services/helperService";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import { Link, useParams } from "react-router-dom";
+import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const ContestQuizzes = () => {
   const { id } = useParams();
-  const [authState,] = useContext(AuthContext);
+  const [authState] = useContext(AuthContext);
   const [quizName, setQuizName] = useState("");
   const [open, setOpen] = React.useState(false);
   const [quizzArr, setQuizzArr] = useState([]);
@@ -33,6 +34,7 @@ const ContestQuizzes = () => {
       if (status === 201) {
         // TODO:
         console.log(quiz);
+        
         // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
         setQuizzArr((existing) => [...existing, quiz]);
         setOpen(false);
@@ -81,16 +83,13 @@ const ContestQuizzes = () => {
         </span>
         <span className="create-con-text">drop to the desired location </span>
       </div>
-      <div className="create-con" onClick={handleClickOpen}>
-        {/* <Link to="/contests/create-contest"> */}
-        <button className="p-2 mt-3" onClick={handleClickOpen}>
-          <i className="fas fa-plus pr-2 pl-2"></i>ADD CHALLENGES
-        </button>
-        {/* </Link> */}
-      </div>
+      <CustomButton
+        className="btn-hover color-11 mt-4"
+        onClickHandler={handleClickOpen}
+      >
+        <i className="fas fa-plus pr-2 pl-2"></i>ADD QUIZZES
+      </CustomButton>
       <Dialog
-            
-
         open={open}
         TransitionComponent={Transition}
         keepMounted
@@ -107,11 +106,18 @@ const ContestQuizzes = () => {
               <label>Create Quiz</label>
               <InputReducer value={quizName} onClickHandler={setQuizName} />
             </div>
-            <p className="text-muted mt-3">Note : Should contain a valid quiz name , Please don't use previous names</p>
+            <p className="text-muted mt-3">
+              Note : Should contain a valid quiz name , Please don't use
+              previous names
+            </p>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={createQuizz} className="btn btn-sucess bb-2" variant="contained">
+          <Button
+            onClick={createQuizz}
+            className="btn btn-sucess bb-2"
+            variant="contained"
+          >
             ADD
           </Button>
           <Button onClick={handleClose} color="primary">
@@ -123,7 +129,7 @@ const ContestQuizzes = () => {
         {quizzArr?.length > 0 ? (
           quizzArr?.map((e) => {
             return (
-              <div className="create-con" key = {e._id}>
+              <div className="create-con" key={e._id}>
                 <div className="p-2 mr-2 ml-2 quizzes-chip">
                   <DeleteOutlineIcon />
                   <Link

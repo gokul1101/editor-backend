@@ -34,8 +34,8 @@ const TestCase = () => {
     hidden: [],
   });
   const [testcase, setTestcase] = useState({
-    input_foramt: "",
-    output_foramt: "",
+    input: "",
+    output: "",
   });
   const [open, setOpen] = React.useState(false);
 
@@ -107,8 +107,8 @@ const TestCase = () => {
             <div class="text_hovering_card_content">
               <section>
                 <span class="section_left">
-                  <h3>{testcase.input_foramt}</h3>
-                  <h5>{testcase.output_foramt}</h5>
+                  <h3>{testcase.input}</h3>
+                  <h5>{testcase.output}</h5>
                 </span>
                 <span class="section_right">
                   <Link
@@ -124,14 +124,14 @@ const TestCase = () => {
         </div>
       ))}
       <h1>Hidden </h1>
-      {testcases?.hidden?.map((testcase) => (
+      {testcases?.hidden.map((testcase) => (
         <div class="text_hovering_cards text_hovering_cards-1 d-flex flex-wrap align-items-center justify-content-center m-1">
           <div class="text_hovering_card text_hovering_card">
             <div class="text_hovering_card_content">
               <section>
                 <span class="section_left">
-                  <h3>{testcase.input_foramt}</h3>
-                  <h5>{testcase.output_foramt}</h5>
+                  <h3>{testcase.input}</h3>
+                  <h5>{testcase.output}</h5>
                 </span>
                 <span class="section_right">
                   <Link
@@ -167,7 +167,7 @@ const TestCase = () => {
               rows={4}
               variant="outlined"
               onClickHandler={(value) =>
-                setTestcase({ ...testcase, input_foramt: value })
+                setTestcase({ ...testcase, input: value })
               }
             />
           </DialogContentText>
@@ -180,7 +180,7 @@ const TestCase = () => {
               rows={4}
               variant="outlined"
               onClickHandler={(value) =>
-                setTestcase({ ...testcase, output_foramt: value })
+                setTestcase({ ...testcase, output: value })
               }
             />
           </DialogContentText>

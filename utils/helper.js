@@ -7,10 +7,6 @@ const Batch = require("../models/batches");
 const Course = require("../models/courses");
 const College = require("../models/colleges");
 const Difficult = require("../models/difficulties");
-const {
-  Types: { ObjectId },
-} = require("mongoose");
-const Answer = require("../models/answers");
 
 const UUID = () => uuidv4();
 const getDuration = (start, end) => {

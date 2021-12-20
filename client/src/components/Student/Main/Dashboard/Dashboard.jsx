@@ -171,7 +171,7 @@ const Dashboard = (props) => {
         </div>
 
         <div className="dashboard-code mt-5">
-          <p className="text-center dash-title-category">Articles</p>
+          <p className="text-center dash-title-category">ARTICLES</p>
           <div className="d-flex align-items-center justify-content-center">
             <div className="col-md-6 d-flex flex-column align-items-center">
               <div className="d-flex flex-column mt-3">

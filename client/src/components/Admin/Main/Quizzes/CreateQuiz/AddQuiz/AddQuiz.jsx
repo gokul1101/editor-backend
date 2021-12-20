@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import helperService from "../../../../../../services/helperService";
+import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
 import "./AddQuiz.css";
-const AddQuiz = () => {
+import QuizQuestion from "./QuizQuestion/QuizQuestion";
+const AddQuiz = (props) => {
   const [question, setQuestion] = useState({
     statement: "",
     options: {
@@ -19,9 +21,11 @@ const AddQuiz = () => {
   });
 
   const [updateFlag, setUpdateFlag] = useState(false);
+
   const [authState] = useContext(AuthContext);
   const [questions, setQuestions] = useState([]);
   const { id } = useParams();
+
   const fetchQuizzes = async () => {
     try {
       const {
@@ -40,6 +44,30 @@ const AddQuiz = () => {
     }
   };
   const createQuestion = async () => {
+    if(question.statement.length === 0){
+      props.snackBar("Question is Empty","error")
+      return;
+    }
+    if(question.options.A === ""){
+      props.snackBar("A Option is Empty","error")
+      return;
+    }
+    if(question.options.B === ""){
+      props.snackBar("B Option is Empty","error")
+      return;
+    }
+    if(question.options.C === ""){
+      props.snackBar("C Option is Empty","error")
+      return;
+    }
+    if(question.options.D === ""){
+      props.snackBar("D Option is Empty","error")
+      return;
+    }
+    if(question.options.correctOption === ""){
+      props.snackBar("Correct Option is Not selected","error")
+      return;
+    }
     try {
       const {
         data: { mcq },
@@ -49,21 +77,31 @@ const AddQuiz = () => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
+        props.snackBar("Quiz created successfully", "success");
         setQuestions([...questions, mcq]);
       }
     } catch (err) {
       console.log(err);
+      props.snackBar(err.data, "error");
     }
   };
   const deleteQuestion = async (question) => {
+    console.log(question);
     try {
-      const { data, status } = await helperService.deleteQuestion({...question,type_id:"mcq"},{headers:{Authorization:authState.user.token}});
-      if(status === 202){
-        console.log(questions,question)
-        setQuestions(questions.filter((ques)=>ques.question_id !== question.question_id))
+      const { data, status } = await helperService.deleteQuestion(
+        { ...question, type_id: "mcq" },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 202) {
+        console.log(questions, question);
+        props.snackBar("Question deleted successfully", "info");
+        setQuestions(
+          questions.filter((ques) => ques.question_id !== question.question_id)
+        );
       }
     } catch (err) {
       console.log(err);
+      props.snackBar(err.data, "error");
     }
   };
   const updateQuestion = async () => {
@@ -73,6 +111,7 @@ const AddQuiz = () => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
+        props.snackBar("Question updated successfully", "info");
         console.log(
           questions.map((ques) => {
             if (ques.question_id === question.question_id) return question;
@@ -88,6 +127,7 @@ const AddQuiz = () => {
       }
     } catch (err) {
       console.log(err);
+      props.snackBar(err.data, "error");
     } finally {
       setUpdateFlag(false);
       setQuestion({
@@ -108,7 +148,6 @@ const AddQuiz = () => {
     setUpdateFlag(true);
     setQuestion({ ...question, type_id: "mcq" });
   };
-
   useEffect(() => {
     fetchQuizzes();
   }, []);
@@ -168,9 +207,6 @@ const AddQuiz = () => {
               })
             }
           />
-          {/* <TextField
-           
-          /> */}
         </div>
       </div>
       <div className="d-flex">
@@ -209,9 +245,6 @@ const AddQuiz = () => {
             }
           />
         </div>
-        {/* <div className="col-md-6"> */}
-
-        {/* </div> */}
       </div>
       <div className="d-flex">
         <div className="col-md-4 mr-auto">
@@ -228,66 +261,32 @@ const AddQuiz = () => {
             }
           />
         </div>
-        <div className="create-con mt-4 clearfix">
-          <button
-            className="p-2 float-right"
-            onClick={updateFlag ? updateQuestion : createQuestion}
-          >
-            {updateFlag ? (
-              <span>
-                Update Quiz<i className="fas fa-plus pr-2 pl-3"></i>
-              </span>
-            ) : (
-              <span>
-                ADD Quiz<i className="fas fa-plus pr-2 pl-3"></i>
-              </span>
-            )}
-          </button>
-        </div>
+        <CustomButton
+          className="btn-hover color-11 mt-4 float-right"
+          onClickHandler={updateFlag ? updateQuestion : createQuestion}
+        >
+          {updateFlag ? (
+            <span>
+              UPADTE QUIZ<i className="fas fa-plus pr-2 pl-3"></i>
+            </span>
+          ) : (
+            <span>
+              ADD QUIZ<i className="fas fa-plus pr-2 pl-3"></i>
+            </span>
+          )}
+        </CustomButton>
       </div>
-      <div className="d-flex flex-wrap">
-        {questions.map((question) => (
-          <div className="respective-question-badge col-md-4 mt-2 mb-2 p-3">
-            <div className="d-flex flex-column">
-              <div className="edit-add-quiz p-2 d-flex align-items-end justify-content-end">
-                <i
-                  className="fas fa-edit mr-2 ml-2"
-                  onClick={() => updateDetails(question)}
-                ></i>
-                <i className="fas fa-trash mr-2 ml-2" onClick={() => deleteQuestion(question)}></i>
-              </div>
-              <div className="d-flex">
-                <span className="add-quiz-question-span mt-2 mb-2">
-                  {question.statement}
-                </span>
-              </div>
-              <div className="d-flex align-items-center">
-                <div className="option-add-quiz mr-2">A.</div>
-                <div className="answer-add-quiz m-1 p-1">
-                  <span>{question.options.A}</span>
-                </div>
-              </div>
-              <div className="d-flex align-items-center">
-                <div className="option-add-quiz mr-2">B.</div>
-                <div className="answer-add-quiz m-1 p-1">
-                  <span>{question.options.B}</span>
-                </div>
-              </div>
-              <div className="d-flex align-items-center">
-                <div className="option-add-quiz mr-2">C.</div>
-                <div className="answer-add-quiz m-1 p-1">
-                  <span>{question.options.C}</span>
-                </div>
-              </div>
-              <div className="d-flex align-items-center">
-                <div className="option-add-quiz mr-2">D.</div>
-                <div className="answer-add-quiz m-1 p-1">
-                  <span>{question.options.D}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="quiz-accordian mt-4 d-flex flex-column">
+        {questions.map((question, index) => {
+          return (
+            <QuizQuestion
+              question={question}
+              index={index}
+              updateDetails={updateDetails}
+              deleteQuestion={deleteQuestion}
+            />
+          );
+        })}
       </div>
     </div>
   );

@@ -148,13 +148,13 @@ const Login = (props) => {
                 Click here to login with you adminstration ID to create contest
                 for the students.
               </p>
-              <CustomButton
-                className="btn transparent signin-button"
+              <button
+                className="btn signin-button"
                 id="sign-up-btn"
-                onClickHandler={changeSignup}
+                onClick={changeSignup}
               >
                 Sign in
-              </CustomButton>
+              </button>
             </div>
             <img src={Hello} className="image img-fluid" alt="admin-signin" />
           </div>
@@ -165,13 +165,13 @@ const Login = (props) => {
                 Click here to login as a student with the help of register
                 number to attend contest .
               </p>
-              <CustomButton
-                className="btn transparent mt-2 signin-to-atudent "
+              <button
+                className="btn mt-2 signin-to-student"
                 id="sign-in-btn"
-                onClickHandler={changeSignin}
+                onClick={changeSignin}
               >
                 Sign in
-              </CustomButton>
+              </button>
             </div>
             <img
               src={Developer}

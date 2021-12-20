@@ -35,7 +35,7 @@ const ContestDetails = ({ setSideToggle }) => {
   const sumbitContest = async () => {
     let payload = {
       user_id: authState?.user?._id,
-      contest_id: authState?.contest?.contest_id,
+      contest_id: authState?.contest?.contest._id,
     };
     let contestQuizzes = authState?.contest?.quizzes || [];
     let contestChallenges = authState?.contest?.challenges || [];
@@ -52,14 +52,12 @@ const ContestDetails = ({ setSideToggle }) => {
       );
       console.log(response);
       // history.push("/codekata");
-    } catch(err) {
-      
-    }
+    } catch (err) {}
   };
   useEffect(() => {
     console.log("cdsda")
     setSideToggle(true);
-   
+    console.log(authState);
   }, [setSideToggle]);
 
   return (
@@ -88,15 +86,17 @@ const ContestDetails = ({ setSideToggle }) => {
         </div>
       </div>
       <div className="d-flex justify-content-between p-2 m-2">
-      <div className="challenge-name ml-4 font-weight-bolder">
-      <h1>Saturday Challenge</h1>
-      </div>
-      <div className="mt-3 p-2">
-        <h3 className="font-weight-bolder color-highlight"><i class="fas fa-star"></i>Max Score : <span className="max-score p-2">40</span></h3>
-      </div>
+        <div className="challenge-name ml-4 font-weight-bolder">
+          <h1>{authState?.contest?.contest.name}</h1>
+        </div>
+        <div className="mt-3 p-2">
+          <h3 className="font-weight-bolder color-highlight">
+            <i class="fas fa-star"></i>Max Score :{" "}
+            <span className="max-score p-2">{40}</span>
+          </h3>
+        </div>
       </div>
       <div className="d-flex mt-4 mb-2">
-       
         <div className="d-flex mr-auto">
           <p className="text-left ml-5 dash-title-category text-dark">
             ROOM CODE :{" "}
@@ -108,7 +108,7 @@ const ContestDetails = ({ setSideToggle }) => {
         </button>
       </div>
       <div className="d-flex">
-      <div
+        <div
           className="col-md-5"
           style={{ height: "80vh", overflowY: "scroll" }}
         >
@@ -136,7 +136,7 @@ const ContestDetails = ({ setSideToggle }) => {
                   other questions passed to it from the previous team that did
                   not answer.
                 </span>
-              
+
                 <span className="mt-2">
                   <i className="fas fa-circle constraints-dot mr-2"></i>
                   In this round each team has its own quota of 4 questions and
@@ -229,7 +229,6 @@ const ContestDetails = ({ setSideToggle }) => {
             </div>
           )}
         </div>
-        
       </div>
     </div>
   );
