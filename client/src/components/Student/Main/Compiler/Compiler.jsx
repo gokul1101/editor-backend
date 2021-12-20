@@ -16,7 +16,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import "./Compiler.css";
-import { useHistory } from "react-router-dom";
 import Male from "../../../Images/man.png";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
@@ -25,6 +24,7 @@ import { AuthContext } from "../../../../contexts/AuthContext";
 import helperService from "../../../../services/helperService";
 import { parseCode, template } from "../../../../services/utils";
 import Editor from "../../../Reducer/Editor/Editor";
+import GoBack from "../../../Reducer/GoBack/GoBack";
 const Compiler = (props) => {
   const [authState] = useContext(AuthContext);
   const themes = [
@@ -66,7 +66,6 @@ const Compiler = (props) => {
     },
   }));
   const classes = useStyles();
-  let history = useHistory();
 
   useEffect(() => {
     props.setSideToggle(true);
@@ -106,10 +105,7 @@ const Compiler = (props) => {
     <div className="container-fluid p-0 compiler-container">
       <div className="d-flex">
         <div className="d-flex mr-auto mt-2">
-          <div className="back-btn mt-3 ml-4" onClick={() => history.goBack()}>
-            <div className="triangle"></div>
-            <div className="halfcircle"></div>
-          </div>
+          <GoBack />
           <div className="complier-img">
             <img
               src={ComImg}

@@ -40,7 +40,7 @@ const DropFileInput = (props) => {
       setFileList([newFile]);
       props.onFileChange([newFile]);
     } else {
-      alert("Please select a valid excel file");
+      props.snackBar("Please select a valid  excel file", "error");
     }
   };
 
@@ -111,7 +111,7 @@ const DropFileInput = (props) => {
 
           <div className="d-flex align-items-center justify-content-center mt-3">
             <CustomButton className="btn-hover color-11 mt-2">
-            <i className="fas fa-upload pr-2 pl-2"></i>Upload Excel file
+              <i className="fas fa-upload pr-2 pl-2"></i>Upload Excel file
             </CustomButton>
           </div>
           <div className="d-flex align-items-end justify-content-end mt-3 p-2">

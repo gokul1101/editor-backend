@@ -32,7 +32,7 @@ const Contests = () => {
   return (
     <div
       className="container-fluid"
-      style={{ height: "100vh", overflowY: "scroll", marginTop: "20px" }}
+      style={{ height: "100vh", overflowY: "scroll", marginTop: "40px" }}
     >
       <div className="d-flex">
         <div className="contest-header mr-auto">
@@ -65,8 +65,8 @@ const Contests = () => {
             console.log(event);
             return (
               <div className="d-flex mt-2 mb-2">
-                <div className="col-md-3 d-flex justify-content-between text-center upcoming-task">
-                  <i className="fas fa-link text-left mt-2"></i>
+                <i className="fas fa-link contest-link position-relative"></i>
+                <div className="col-md-3 d-flex align-items-center justify-content-center upcoming-task">
                   <Link
                     to={`/contests/${event._id}/edit`}
                     onClick={() => setContest(event)}
@@ -112,8 +112,8 @@ const Contests = () => {
           {eventArr.map((event) => {
             return (
               <div className="d-flex mt-2 mb-2">
-                <div className="col-md-3 d-flex justify-content-between text-center upcoming-task">
-                  <i className="fas fa-link text-left mt-2"></i>
+                <i className="fas fa-link contest-link position-relative"></i>
+                <div className="col-md-3 d-flex align-items-center justify-content-center upcoming-task">
                   <span>{event.name}</span>
                 </div>
                 <div className="col-md-3 text-center">{`${new Date(

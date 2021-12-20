@@ -8,6 +8,7 @@ import Timer from "../Timer/Timer";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import ContestCard from "./ContestCard/ContestCard";
 import helperService from "../../../../../services/helperService";
+import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 
 const ContestDetails = ({ setSideToggle }) => {
   const { id } = useParams();
@@ -55,13 +56,13 @@ const ContestDetails = ({ setSideToggle }) => {
     } catch (err) {}
   };
   useEffect(() => {
-    console.log("cdsda")
+    console.log("cdsda");
     setSideToggle(true);
     console.log(authState);
   }, [setSideToggle]);
 
   return (
-    <div className="container-fluid dashboard">
+    <div className="container-fluid dashboard" style={{ overflow: "hidden" }}>
       <div className="d-flex">
         <div
           className="back-btn mr-auto mt-3 ml-4"
@@ -85,7 +86,7 @@ const ContestDetails = ({ setSideToggle }) => {
           </div>
         </div>
       </div>
-      <div className="d-flex justify-content-between p-2 m-2">
+      <div className="d-flex justify-content-between p-0 mt-2">
         <div className="challenge-name ml-4 font-weight-bolder">
           <h1>{authState?.contest?.contest.name}</h1>
         </div>
@@ -96,16 +97,19 @@ const ContestDetails = ({ setSideToggle }) => {
           </h3>
         </div>
       </div>
-      <div className="d-flex mt-4 mb-2">
+      <div className="d-flex mt-1 mb-1">
         <div className="d-flex mr-auto">
-          <p className="text-left ml-5 dash-title-category text-dark">
+          <p className="text-left ml-4 dash-title-category text-dark">
             ROOM CODE :{" "}
             <span className="room-code p-2 m-2 text-white">{id}</span>
           </p>
         </div>
-        <button className="btn-hover color-11 mt-4 p-2" onClick={sumbitContest}>
-          SUBMIT CONTEST<i className="fas fa-rocket mr-2 ml-2"></i>
-        </button>
+        <CustomButton
+          className="btn-hover color-11 mt-2"
+          onClickHandler={sumbitContest}
+        >
+          <i className="fas fa-rocket pr-2 pl-2"></i> SUBMIT CONTEST
+        </CustomButton>
       </div>
       <div className="d-flex">
         <div
@@ -188,7 +192,7 @@ const ContestDetails = ({ setSideToggle }) => {
         </div>
         <div
           className="col-md-7"
-          style={{ height: "80vh", overflowY: "scroll" }}
+          style={{ height: "75vh", overflowY: "scroll" }}
         >
           {authState.contest.quizzes.length === 0 ? (
             <></>

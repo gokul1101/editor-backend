@@ -78,17 +78,25 @@ const AddUser = (props) => {
   const createUser = async () => {
     //Regex
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let charRegex =  /^[A-Za-z0-9 ]+$/;
-    if(charRegex.test(user.name) && emailRegex.test(user.email) && user.regno.length === 7 
-    && user.phone_no.length === 10 && user.stream_id !== "" && user.course_id !== "" && user.gender_id !== ""
-    && user.college_id !== ""
-    ){
-      props.snackBar("Use Created , Have Fun !!!","success");
+    let charRegex = /^[A-Za-z0-9 ]+$/;
+    if (
+      charRegex.test(user.name) &&
+      emailRegex.test(user.email) &&
+      user.regno.length === 7 &&
+      user.phone_no.length === 10 &&
+      user.stream_id !== "" &&
+      user.course_id !== "" &&
+      user.gender_id !== "" &&
+      user.college_id !== ""
+    ) {
+      props.snackBar("User Created , Have Fun !!!", "success");
       console.log("user created !!");
-    }
-    else{
-     props.snackBar("Invalid Details , Kindly check the entered details","error");
-     console.log("Having errors !!");
+    } else {
+      props.snackBar(
+        "Invalid Details , Kindly check the entered details",
+        "error"
+      );
+      console.log("Having errors !!");
     }
     try {
       console.log({
@@ -272,7 +280,10 @@ const AddUser = (props) => {
           </CustomButton>
         </div>
         <div className="col-md-4 p-2 border m-1">
-          <DropFileInput onFileChange={onFileChange} />
+          <DropFileInput
+            onFileChange={onFileChange}
+            snackBar={props.snackBar}
+          />
         </div>
       </div>
     </div>
