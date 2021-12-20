@@ -22,6 +22,9 @@ const Programs = (props) => {
       ? JSON.parse(sessionStorage.getItem(challenge?.name))?.code
       : template[language]
   );
+  const [isError, setIsError] = useState(false);
+  const [isSampleFailed, setIsSampleFailed] = useState(false);
+  const [errors, setErrors] = useState([]);
   useEffect(() => {
     props.setSideToggle(true);
   });
@@ -44,7 +47,6 @@ const Programs = (props) => {
     } catch (err) {}
   };
   const compile = async () => {
-    console.log(code);
     try {
       let parsedCode = parseCode(code);
       sessionStorage.setItem(
@@ -57,6 +59,11 @@ const Programs = (props) => {
       );
       if (status === 200) {
         console.log(data);
+        if(data?.errors) setIsError(true);
+        else setIsError(false);
+        if(data?.isSampleFailed) setIsSampleFailed(true);
+        else setIsSampleFailed(false);
+        if(data?.err) setErrors(data?.err);
       }
     } catch (err) {
       console.log(err);
@@ -243,7 +250,7 @@ const Programs = (props) => {
                   role="tabpanel"
                   aria-labelledby="pills-submissions-tab"
                 >
-                  <Testcase testcases={testCases} />
+                  <Testcase isError={isError} testcases={testCases} isSampleFailed={isSampleFailed} errors={errors}/>
                 </div>
               </div>
             </div>

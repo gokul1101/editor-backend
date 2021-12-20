@@ -44,7 +44,6 @@ const createContestService = async (contest) => {
   }
 };
 const getContestService = async (id, code, role_id) => {
-  console.log(id, code, role_id);
   try {
     //If contest already exist return success otherwise not found
     let contest;

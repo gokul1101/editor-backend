@@ -140,37 +140,45 @@ const challengeSubmissionService = async (
   lang,
   submission = false,
 ) => {
-  let flag = true,
+  let flag = true, isSampleFailed = false
     score = 0;
   try {
     const max_score = (await Question.findById(question_id))?.max_score || 1;
     const testcases = (await Answer.findOne({ question_id }))?.testcases || {};
     const totalTestCases = testcases?.sample?.length + testcases?.hidden?.length;
-    const sampleTestCaseOutput = await Promise.all(
-      testcases?.sample?.map(async (testcase) => {
-        try {
-          const { output } = await compilerService(code, testcase.input, lang);
-          console.log(output)
-          if (submission && testcase.output === output) score++;
-          return {
-            expectedOutput: testcase.output,
-            actualOutput: output,
-            errors: false,
-          };
-        } catch ({ err }) {
-          flag = false;
-          console.log(err);
-          return {
-            expectedOutput: testcase.output,
-            actualOutput: err,
-            errors: true,
-          };
+    let sampleTestCaseOutput = [];
+    for(let i = 0; i < testcases?.sample.length; i++) {
+      try {
+        const { output } = await compilerService(code, testcases?.sample[i].input, lang);
+        output = output.replace(/\n+$/, "");
+        if (submission && testcases?.sample[i].output === output) score++;
+        else isSampleFailed = false;
+        sampleTestCaseOutput.push({
+          expectedOutput: testcases?.sample[i].output,
+          actualOutput: output,
+          errors: false,
+        })
+      } catch (err) {
+        if(i == 0) {
+          return Promise.resolve({
+            code: 200,
+            errors : true,
+            err : err.err
+          })
         }
-      })
-    );
-    if (!submission && !flag)
+        flag = false;
+        sampleTestCaseOutput.push({
+          expectedOutput: testcases?.sample[i].output,
+          actualOutput: err,
+          errors: true,
+        })
+        break;
+      }
+    }
+    if (!submission && (!flag || isSampleFailed))
       return Promise.resolve({
         code: 200,
+        isSampleFailed,
         sampleTestCaseOutput,
       });
     const hiddenTestCaseOutput = await Promise.all(
