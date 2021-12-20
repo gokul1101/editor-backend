@@ -48,6 +48,7 @@ const courses = {
   AUTO: "Automobile Engineering",
 };
 const AddUser = (props) => {
+  console.log(props);
   const [authState] = useContext(AuthContext);
   const [user, setUser] = useState({
     regno: "",
@@ -78,31 +79,25 @@ const AddUser = (props) => {
   const createUser = async () => {
     //Regex
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let charRegex =  /^[A-Za-z0-9]+$/;
-  
-    if(!user.name.length >=3 && !user.name.length <=25){
-      props.snackBar("Username is Incorrect","error")
-      return;
-    }
-    if(user.regno.length !== 7){
-      props.snackBar("Register Number is Incorrect","error");
-      return;
-    }
-    if(user.stream_id === ""){
-      props.snackBar("Stream is not selected","error")
-      return;
-    }
-    if(user.course_id === ""){
-      props.snackBar(" Course is not selected","error")
-      return
-    }
-    if(user.college_id === ""){
-      props.snackBar("College is not selected","error")
-      return
-    }
-    if(!emailRegex.test(user.email)){
-      props.snackBar("Email is Incorrect","error")
-      return;
+    let charRegex = /^[A-Za-z0-9 ]+$/;
+    if (
+      charRegex.test(user.name) &&
+      emailRegex.test(user.email) &&
+      user.regno.length === 7 &&
+      user.phone_no.length === 10 &&
+      user.stream_id !== "" &&
+      user.course_id !== "" &&
+      user.gender_id !== "" &&
+      user.college_id !== ""
+    ) {
+      props.snackBar("User Created , Have Fun !!!", "success");
+      console.log("user created !!");
+    } else {
+      props.snackBar(
+        "Invalid Details , Kindly check the entered details",
+        "error"
+      );
+      console.log("Having errors !!");
     }
     
     if(user.phone_no.length !== 10){
@@ -298,7 +293,10 @@ const AddUser = (props) => {
           </CustomButton>
         </div>
         <div className="col-md-4 p-2 border m-1">
-          <DropFileInput onFileChange={onFileChange} />
+          <DropFileInput
+            onFileChange={onFileChange}
+            snackBar={props.snackBar}
+          />
         </div>
       </div>
     </div>

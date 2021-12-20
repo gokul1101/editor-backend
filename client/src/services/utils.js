@@ -7,16 +7,14 @@ export const parseCode = (code) => {
   return output;
 };
 export const template = {
-  c: 
-`#include<stdio.h>
+  c: `#include<stdio.h>
 
 int main(){
   printf("Welcome to Loop")
   return 0;
 }
 `,
-java: 
-`import java.util.*;
+  java: `import java.util.*;
 class Main {
 
   //Class Name Should Be Main
@@ -25,8 +23,8 @@ class Main {
     System.out.println("Welcome to Loop");
   }
 }`,
-}
+};
 
 export const emailCheck = {
-  regEx:"/^[^\s@]+@[^\s@]+\.[^\s@]+$/"
-}
+  regEx: "/^[^s@]+@[^s@]+.[^s@]+$/",
+};
