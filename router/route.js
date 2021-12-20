@@ -164,6 +164,12 @@ router.post(
   routeAuth("updateQuestion"),
   updateQuestion
 );
+router.post(
+  "/api/v1/question/delete",
+  userAuth,
+  routeAuth("deleteQuestion"),
+  deleteQuestion
+);
 router.get("/api/v1/mcq/all", userAuth, routeAuth("getAllMCQS"), getAllMCQS);
 router.get(
   "/api/v1/challenges/all",
