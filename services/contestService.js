@@ -78,7 +78,7 @@ const getContestService = async (id, code, role_id) => {
     return Promise.resolve({
       status: 200,
       contest,
-      message:"Contest found"
+      message: "Contest found",
     });
   } catch (err) {
     return Promise.reject({
@@ -143,6 +143,35 @@ const updateContestService = async ({
     });
   }
 };
+const getAllContestWithFilter = async (page, limit) => {
+  try {
+    //**past contests */
+    const pastContestsCount = await Contest.find({ end_date: { $lte: new Date() } }).countDocuments()
+    const pastContests = await Contest.find({ end_date: { $lte: new Date() } })
+    .sort({start_date:'asc'})
+    .limit(limit * 1)
+    .skip((page - 1) * limit);
+    //**ongoing contests */
+    const ongoingContests = await Contest.find({
+      start_date: { $lte: new Date() },
+      end_date: { $gte: new Date() },
+    }).sort();
+    //**upcoming contests */
+    const upcomingContests =  await Contest.find({
+      start_date: { $gte: new Date() },
+    }).sort({start_date:'asc'});
+    //**promise result */
+    return Promise.resolve({
+      code: 200,
+      message: {pastContestsCount,pastContests, ongoingContests, upcomingContests },
+    });
+  } catch (err) {
+    return Promise.reject({
+      code:500,
+      message:`Internal Server Error`
+    })
+  }
+};
 const getAllContestService = async (page, limit) => {
   try {
     let response = {};
@@ -170,4 +199,5 @@ module.exports = {
   getContestService,
   updateContestService,
   getAllContestService,
+  getAllContestWithFilter,
 };

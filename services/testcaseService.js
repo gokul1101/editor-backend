@@ -3,6 +3,7 @@ const Answer = require("../models/answers");
 const Question = require("../models/questions");
 const createMultipleTestCasesService = async ({ question_id, testcase }) => {
   const { sample, hidden } = testcase;
+  console.log(testcase)
   if (!sample && !hidden)
     return Promise.reject({ code: 406, message: "Invalid parameters" });
   try {
@@ -30,24 +31,33 @@ const createMultipleTestCasesService = async ({ question_id, testcase }) => {
     return Promise.reject({ code: 500, message: "Unable to create testcase" });
   }
 };
-const createTestCaseService = async ({ testcase_id, testcase }) => {
+const createTestCaseService = async ({
+  testcase_id,
+  testcase,
+  question_id,
+}) => {
   let idx = 0;
   const { sample, hidden } = testcase;
   const input = ["sample", "hidden"];
   if (hidden) idx = 1;
   try {
-    const testcases = await Answer.findOne(testcase_id);
-    if (!testcases) {
+    let testcases = await Answer.findOne({ _id: testcase_id });
+    // console.log(testcases)
+    if (testcases && !testcases.testcases) {
       return createMultipleTestCasesService({ question_id, testcase });
     }
-    const new_testcases = await findByIdAndUpdate(testcase_id, {
-      $push: { testcases: { [input[idx]]: testcase } },
+    console.log("at line 45 ",testcases,testcase)
+    testcases.testcases[input[idx]].push(testcase)
+    const new_testcases = await Answer.findByIdAndUpdate(testcase_id, {
+      testcases,
     });
+    console.log("at line ", testcase, testcase_id, question_id, testcases);
     return Promise.resolve({
-      code : 200,
-      testscases : new_testcases
-    })
+      code: 200,
+      testscases: new_testcases,
+    });
   } catch (err) {
+    console.log(err);
     return Promise.reject({ code: 500, message: "Unable to create testcases" });
   }
 };
@@ -94,7 +104,6 @@ const updateTestCaseService = async ({ testcase_id, index, testcase }) => {
       }
     }
   } catch (err) {
-    console.log(err);
     return Promise.reject({ code: 500, message: "Unable to update testcase" });
   }
 };

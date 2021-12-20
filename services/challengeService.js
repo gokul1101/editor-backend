@@ -49,7 +49,6 @@ const getChallenge = async (id, role) => {
       try{
         const {code,message,testcases} = (await getTestCasesService(question._id, role))
         if(code === 200) {
-          console.log(testcases)
           question = {...question._doc,testcases}
         }
       } catch(err){
@@ -64,7 +63,6 @@ const getChallenge = async (id, role) => {
       });
     }
   } catch (err) {
-    console.log(err);
     return Promise.reject({
       code: 500,
       message: `Can't get the question.`,

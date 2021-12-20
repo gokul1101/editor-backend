@@ -75,7 +75,7 @@ const TestCase = () => {
   };
   useEffect(() => {
     console.log(authState?.challenge?.testcases?.testcases);
-      setTestcases(authState?.challenge?.testcases?.testcases || {
+      setTestcases(authState?.challenge?.testcases?.testcases?.sample || {
         sample: [],
         hidden: [],
       });
@@ -124,7 +124,7 @@ const TestCase = () => {
         </div>
       ))}
       <h1>Hidden </h1>
-      {testcases?.hidden.map((testcase) => (
+      {testcases?.hidden?.map((testcase) => (
         <div class="text_hovering_cards text_hovering_cards-1 d-flex flex-wrap align-items-center justify-content-center m-1">
           <div class="text_hovering_card text_hovering_card">
             <div class="text_hovering_card_content">
