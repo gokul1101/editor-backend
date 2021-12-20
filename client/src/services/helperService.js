@@ -190,7 +190,7 @@ const helperService = {
       });
     }
   },
-  getAllContests: async ({limit=10,page=1,past=false}, config) => {
+  getAllContests: async ({page,past,limit}, config) => {
     try {
       const { data, status } = await axios.get(
         `${baseURL}/api/v1/contests/getAll?page=${page}&limit=${limit}&past=${past}`,

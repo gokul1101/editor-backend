@@ -154,10 +154,10 @@ const deleteContest = async (req, res) => {
   }
 };
 const getAllContests = async (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
+  const { page = 1, limit = 10,past } = req.query;
   try {
     // let { code, message } = await getAllContestService(page, limit);
-    let { code, message } = await getAllContestWithFilter(page, limit);
+    let { code, message } = await getAllContestWithFilter(page, limit,past);
     res.status(code).send({ message });
   } catch (err) {
     if (!err.code) {
