@@ -47,6 +47,7 @@ const courses = {
   AUTO: "Automobile Engineering",
 };
 const AddUser = (props) => {
+  console.log(props);
   const [authState] = useContext(AuthContext);
   const [user, setUser] = useState({
     regno: "",
@@ -75,6 +76,20 @@ const AddUser = (props) => {
     }
   };
   const createUser = async () => {
+    //Regex
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let charRegex =  /^[A-Za-z0-9 ]+$/;
+    if(charRegex.test(user.name) && emailRegex.test(user.email) && user.regno.length === 7 
+    && user.phone_no.length === 10 && user.stream_id !== "" && user.course_id !== "" && user.gender_id !== ""
+    && user.college_id !== ""
+    ){
+      props.snackBar("Use Created , Have Fun !!!","success");
+      console.log("user created !!");
+    }
+    else{
+     props.snackBar("Invalid Details , Kindly check the entered details","error");
+     console.log("Having errors !!");
+    }
     try {
       console.log({
         ...user,

@@ -148,6 +148,7 @@ const CreateContest = (props) => {
               onClickHandler={(e) => setDate({ ...date, start_date: e })}
             />
           </div>
+          
           <span className="contest-line-height mr-2">at</span>
           <div className="col-md-4">
             <InputReducer
