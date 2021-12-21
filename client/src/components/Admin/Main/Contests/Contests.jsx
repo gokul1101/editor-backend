@@ -38,8 +38,8 @@ const Contests = (props) => {
         setContests({
           pastContestsCount,
           past: pastContests,
-          ongoing: [...contests.ongoing, ...ongoingContests],
-          upcoming: [...contests.upcoming, ...upcomingContests],
+          ongoing: [...ongoingContests],
+          upcoming: [...upcomingContests],
         });
       }
     } catch (err) {

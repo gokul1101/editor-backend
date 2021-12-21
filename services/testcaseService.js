@@ -71,9 +71,9 @@ const createTestCaseService = async ({
     return Promise.reject({ code: 500, message: "Unable to create testcases" });
   }
 };
-const updateTestCaseService = async ({ testcase_id, index, testcase }) => {
+const updateTestCaseService = async ({ testcase_id, oldInput, testcase }) => {
   const { sample, hidden } = testcase;
-  if (!index && !sample && !hidden) {
+  if (!oldInput && !sample && !hidden) {
     //Not sure about err code
     return Promise.reject({
       code: 403,
@@ -93,9 +93,12 @@ const updateTestCaseService = async ({ testcase_id, index, testcase }) => {
       });
     } else {
       //updating in array
-
-      exist_testcases["testcases"][input[idx]][index] = testcase[input[idx]];
-
+      exist_testcases["testcases"][input[idx]] = exist_testcases["testcases"][
+        input[idx]
+      ].map((e) => {
+        if (e.input === oldInput) return testcase[input[idx]][0];
+        return e;
+      });
       const updated_result = await Answer.findByIdAndUpdate(testcase_id, {
         $set: {
           testcases: exist_testcases["testcases"],
@@ -126,7 +129,11 @@ const getTestCasesService = async (question_id, role) => {
       return Promise.resolve({
         code: 200,
         message: `testcases found`,
-        testcasesDetails: { id: testcases._id, testcases: testcases.testcases },
+        testcases: {
+          id: testcases._id,
+          sample: testcases.testcases.sample,
+          hidden: testcases.testcases.hidden,
+        },
       });
     } else {
       return Promise.resolve({
@@ -138,12 +145,59 @@ const getTestCasesService = async (question_id, role) => {
     return Promise.reject({ code: 500, message: "Unable to get testcases" });
   }
 };
-const deleteTestCaseService = async () => {
+const deleteTestCaseService = async (question_id) => {
   try {
+    const exist_testcases = await Answer.findOne({ question_id });
+    if (!exist_testcases) {
+      return Promise.reject({ code: 404, message: "No testcases found" });
+    }
+    exist_testcases["testcases"][input[idx]] = exist_testcases["testcases"][
+      input[idx]
+    ].filter((e) => {
+      if (e.input !== oldInput) return testcase[input[idx]][0];
+      return e;
+    });
+    const updated_result = await Answer.findByIdAndUpdate(testcase_id, {
+      $set: {
+        testcases: exist_testcases["testcases"],
+      },
+    });
+    return Promise.resolve({
+      code: 204,
+      message: `Testcase deleted successfully`,
+    });
   } catch (err) {
     return Promise.reject({ code: 500, message: "Unable to delete testcase" });
   }
 };
+// const updateTestCaseService = async (question_id,testcase) => {
+//   const { sample, hidden } = testcase;
+//   if (!index && !sample && !hidden) {
+//     //Not sure about err code
+//     return Promise.reject({
+//       code: 403,
+//       message: "Invalid parameters for updating testcase",
+//     });
+//   }
+//   try {
+//     const input = ["sample", "hidden"];
+//     if (hidden) idx = 1;
+//     //Fetching all testcases
+//     const exist_testcases = await Answer.findOne(question_id);
+//     if (!exist_testcases) {
+//       return Promise.reject({
+//         code: 404,
+//         message: `Testcase with id ${testcase_id} not found`,
+//       });
+//     }
+//     const deletedCase = await Answer.findByIdAndUpdate(exist_testcases._id, {
+//         $set: {'testcases.sample.$[element]':testcase[input[idx]][0]},
+//         // {arrayFilters:[{"element.input":"oldInput"}]}
+//       });
+//   } catch (err) {
+//     return Promise.reject({ code: 500, message: "Unable to update testcase" });
+//   }
+// };
 module.exports = {
   createTestCaseService,
   createMultipleTestCasesService,

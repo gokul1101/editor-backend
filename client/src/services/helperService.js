@@ -1,5 +1,6 @@
 import axios from "axios";
-const baseURL = "http://localhost:5000";
+// const baseURL = "http://localhost:5000";
+const baseURL = "http://03ba-103-70-191-34.ngrok.io";
 
 const helperService = {
   rejectionHandler: ({ response }) => {
@@ -190,7 +191,7 @@ const helperService = {
       });
     }
   },
-  getAllContests: async ({page,past,limit}, config) => {
+  getAllContests: async ({ page, past, limit }, config) => {
     try {
       const { data, status } = await axios.get(
         `${baseURL}/api/v1/contests/getAll?page=${page}&limit=${limit}&past=${past}`,
@@ -439,6 +440,7 @@ const helperService = {
       });
     }
   },
+  //** TESTCASE */
   createTestcase: async (payload, config) => {
     try {
       const { data, status } = await axios.post(
@@ -460,7 +462,6 @@ const helperService = {
       });
     }
   },
-
   getTestCases: async ({ questionId }, config) => {
     try {
       const { data, status } = await axios.get(
@@ -470,6 +471,48 @@ const helperService = {
       if (status === 200) {
         return Promise.resolve({
           data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  updateTestcase: async (payload, config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/testcase/update`,
+        payload,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          data,
+          status,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  deleteTestcase: async (payload, config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/testcase/delete`,
+        payload,
+        config
+      );
+      if (status === 202) {
+        return Promise.resolve({
+          data,
+          status,
         });
       }
     } catch (err) {

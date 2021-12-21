@@ -28,11 +28,13 @@ const GreenCheckbox = withStyles({
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
 const TestCase = (props) => {
-  const [authState] = useContext(AuthContext);
-  const [testcases, setTestcases] = useState({
+  const testcasesDefaultValue = {
+    id: null,
     sample: [],
     hidden: [],
-  });
+  };
+  const [authState] = useContext(AuthContext);
+  const [testcases, setTestcases] = useState(testcasesDefaultValue);
   const [testcase, setTestcase] = useState({
     input: "",
     output: "",
@@ -57,42 +59,48 @@ const TestCase = (props) => {
     setOpen(false);
   };
   const addTestcase = () => {
-    props.snackBar("Sucessfully added","success")
+    // props.snackBar("Sucessfully added","success")
     console.log(testcases, testcase);
     if (checked) {
       setTestcases({ ...testcases, hidden: [...testcases.hidden, testcase] });
-      setDBTestcase({...DBTestcase,hidden:[testcase]})
+      setDBTestcase({
+        ...DBTestcase,
+        hidden: [{ ...testcase, output: testcase.output.replace(/\n+$/, "") }],
+      });
     } else {
-      setDBTestcase({...DBTestcase,sample:[testcase]})
+      setDBTestcase({
+        ...DBTestcase,
+        sample: [{ ...testcase, output: testcase.output.replace(/\n+$/, "") }],
+      });
       setTestcases({ ...testcases, sample: [...testcases.sample, testcase] });
     }
   };
   const createTestcase = async () => {
-    props.snackBar("Sucessfully added","success")
+    // props.snackBar("Sucessfully added","success")
     try {
       const { data, status } = await helperService.createTestcase(
         { question_id: authState?.challenge?._id, testcase: DBTestcase },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
-        if (data?.testcases) setTestcases(...data.testcases);
+        if (data?.testcases)
+          setTestcases({
+            ...testcases,
+            sample: [...testcases.sample, DBTestcase.sample],
+            hidden: [...testcases.hidden, DBTestcase.hidden],
+          });
       }
     } catch (err) {
       console.log(err);
-    }finally{
+    } finally {
       setDBTestcase({
         sample: [],
         hidden: [],
-      })
+      });
     }
   };
   useEffect(() => {
-    setTestcases(
-      authState?.challenge?.testcases?.testcases || {
-        sample: [],
-        hidden: [],
-      }
-    );
+    setTestcases(authState?.challenge?.testcases || testcasesDefaultValue);
   }, [authState]);
   return (
     <div>
@@ -194,7 +202,7 @@ const TestCase = (props) => {
               rows={4}
               variant="outlined"
               onClickHandler={(value) =>
-                setTestcase({ ...testcase, output: value })
+                setTestcase({ ...testcase, output: JSON.stringify(value) })
               }
             />
           </DialogContentText>
