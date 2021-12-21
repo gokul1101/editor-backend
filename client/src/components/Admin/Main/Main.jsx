@@ -15,6 +15,7 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
 import Report from "./Report/Report";
 import ErrorLogs from "./ErrorLogs/ErrorLogs";
+import CreateChallenge from "./Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
 const Main = (props) => {
   const [, authDispatch] = useContext(AuthContext);
   const [sideToggle] = useState(false);
@@ -162,6 +163,9 @@ const Main = (props) => {
             <Route path="/challenges">
               <Route path="/challenges/:id">
                 <ChallengeDashboard snackBar={props.snackBar} />
+              </Route>
+              <Route path="/challenges/:id/challenge/create">
+                <CreateChallenge snackBar={props.snackBar} />
               </Route>
             </Route>
             <Route path="/report" exact>

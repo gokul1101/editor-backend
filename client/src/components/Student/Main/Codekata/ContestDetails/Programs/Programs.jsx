@@ -9,6 +9,7 @@ import Testcase from "./Testcase/Testcase";
 import Timer from "../../Timer/Timer";
 import { parseCode, template } from "../../../../../../services/utils";
 import GoBack from "../../../../../Reducer/GoBack/GoBack";
+import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 const Programs = (props) => {
   let history = useHistory();
   const { questionId } = useParams();
@@ -23,7 +24,7 @@ const Programs = (props) => {
       ? JSON.parse(sessionStorage.getItem(challenge?.name))?.code
       : template[language]
   );
-  const [isError, setIsError] = useState(false);
+  const [isError, setIsError] = useState(true);
   const [isSampleFailed, setIsSampleFailed] = useState(false);
   const [errors, setErrors] = useState([]);
   useEffect(() => {
@@ -260,16 +261,25 @@ const Programs = (props) => {
               <Editor
                 language={language}
                 theme={themeName}
+                height="80vh"
                 onChangeHandler={(value) => setCode(value)}
                 value={code}
               />
               <div className="mt-3 d-flex justify-content-end">
-                <button className="btn-hover color-11 mr-2" onClick={compile}>
+                {/* <button className="btn-hover color-11 mr-2" onClick={compile}>
                   RUN CODE <i className="fas fa-code mr-2 ml-2"></i>
-                </button>
-                <button className="btn-hover color-11">
-                  SUBMIT <i className="fas fa-rocket mr-2 ml-2"></i>
-                </button>
+                </button> */}
+                <CustomButton
+                  className="btn-hover color-11 mt-2 mr-2"
+                  onClickHandler={compile}
+                >
+                  <i className="fas fa-code pr-2 pl-2"></i>RUN CODE
+                </CustomButton>
+                <CustomButton
+                  className="btn-hover color-11 mt-2"
+                >
+                  <i className="fas fa-code pr-2 pl-2"></i>SUBMIT
+                </CustomButton>
               </div>
             </div>
           </div>

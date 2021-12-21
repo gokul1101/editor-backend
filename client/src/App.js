@@ -14,6 +14,7 @@ import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { AuthContext } from "./contexts/AuthContext";
 import helperService from "./services/helperService";
+import Loader from "./components/Reducer/Loader/Loader";
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -110,6 +111,7 @@ const App = () => {
                 authState.user.role === "student" ? (
                   <Main snackBar={snackBar} fetchUser={fetchUser} />
                 ) : (
+                  // <Loader />
                   <AdminMain snackBar={snackBar} fetchUser={fetchUser} />
                 ),
               ]

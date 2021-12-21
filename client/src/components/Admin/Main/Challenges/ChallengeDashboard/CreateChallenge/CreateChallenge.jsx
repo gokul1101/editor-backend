@@ -1,4 +1,4 @@
-import { Snackbar, TextField } from "@material-ui/core";
+import { Snackbar } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useContext } from "react";
 import { useState } from "react";
@@ -15,12 +15,47 @@ const CreateChallenge = (props) => {
   const { id } = useParams();
   const [challenge, setChallenge] = useState({});
   const createChallenge = async () => {
+    console.log(challenge)
+    if (challenge.name === undefined) {
+      props.snackBar("Challenge Name is Empty", "error")
+      return
+    }
+    if(challenge.description === undefined){
+      props.snackBar("Challenge Description is Empty", "error")
+      return;
+    }
+    if(challenge.statement === undefined){
+      props.snackBar("Challenge Statement is Empty", "error")
+      return;
+    }
+
+   if(challenge.input_format === undefined){
+     props.snackBar("Input is Empty","error")
+     return;
+   } 
+   if(challenge.output_format === undefined){
+    props.snackBar("Output is Empty","error")
+    return;
+  } 
+  if(challenge.constraints === undefined){
+    props.snackBar("contraints is Empty","error")
+    return;
+  } 
+  if(challenge.difficulty_id === undefined){
+    props.snackBar("Difficulty is not Selected","error")
+    return;
+  } 
+  if(challenge.max_score === undefined){
+    props.snackBar("Maximum Score is Empty","error")
+    return;
+  } 
     try {
       const { status } = await helperService.createChallenge(
         { ...challenge, contest_id: id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
+        props.snackBar("Challenge is created Successfully","success")
         history.push(`/contests/${id}/challenges`);
       }
     } catch (err) {
@@ -43,10 +78,12 @@ const CreateChallenge = (props) => {
         console.log(data);
       }
     } catch (err) {
-      console.log(err);
+      props.snackBar(err,"error")
+     
     }
   };
   useEffect(() => {
+    console.log(props);
     setChallenge({
       name: authState?.challenge?.name,
       type_id: "problem",
@@ -65,7 +102,7 @@ const CreateChallenge = (props) => {
     };
   }, [authState]);
   useEffect(() => {
-    console.log(challenge);
+    console.log(props);
   }, [challenge]);
   return (
     <div

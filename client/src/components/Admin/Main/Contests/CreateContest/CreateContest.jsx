@@ -49,7 +49,16 @@ const CreateContest = (props) => {
     }
   };
 
+  
   const createContest = async () => {
+    // if(name.length === 0){
+    //   props.snackBar("Contest Name is Empty","error")
+    // }
+
+    //     if(new Date(`${date.start_date}`) >= new Date()){
+    //         console.log("already day Ends");
+    //     }
+    
     try {
       const { status, data } = await helperService.createContest(
         {
@@ -72,6 +81,8 @@ const CreateContest = (props) => {
     }
   };
   const updateContest = async () => {
+
+   
     try {
       const { data, status } = await helperService.updateContest(
         {
@@ -93,6 +104,8 @@ const CreateContest = (props) => {
       props.snackBar(error.data, "success");
       // props.snackBar(error.error,"error")
     }
+
+
   };
   useEffect(() => {
     if (props?.title && !authState?.contest) fetchContest();

@@ -53,12 +53,12 @@ const ContestDetails = ({ setSideToggle }) => {
       );
       console.log(response);
       // history.push("/codekata");
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
   useEffect(() => {
-    console.log("cdsda");
     setSideToggle(true);
-    console.log(authState);
   }, [setSideToggle]);
 
   return (

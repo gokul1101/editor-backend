@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const QuizQuestion = ({ question, index, updateDetails, deleteQuestion }) => {
-  console.log(updateDetails);
+  console.log(deleteQuestion);
   const [isActive, setIsActive] = useState(false);
   return (
     <>

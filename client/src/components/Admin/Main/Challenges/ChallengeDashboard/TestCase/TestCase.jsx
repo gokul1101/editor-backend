@@ -27,7 +27,7 @@ const GreenCheckbox = withStyles({
   },
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
-const TestCase = () => {
+const TestCase = (props) => {
   const [authState] = useContext(AuthContext);
   const [testcases, setTestcases] = useState({
     sample: [],
@@ -36,6 +36,10 @@ const TestCase = () => {
   const [testcase, setTestcase] = useState({
     input: "",
     output: "",
+  });
+  const [DBTestcase, setDBTestcase] = useState({
+    sample: [],
+    hidden: [],
   });
   const [open, setOpen] = React.useState(false);
 
@@ -53,32 +57,42 @@ const TestCase = () => {
     setOpen(false);
   };
   const addTestcase = () => {
+    props.snackBar("Sucessfully added","success")
     console.log(testcases, testcase);
     if (checked) {
-      setTestcases({ ...testcases, hidden: [...testcases?.hidden, testcase] });
+      setTestcases({ ...testcases, hidden: [...testcases.hidden, testcase] });
+      setDBTestcase({...DBTestcase,hidden:[testcase]})
     } else {
-      setTestcases({ ...testcases, sample: [...testcases?.sample, testcase] });
+      setDBTestcase({...DBTestcase,sample:[testcase]})
+      setTestcases({ ...testcases, sample: [...testcases.sample, testcase] });
     }
   };
   const createTestcase = async () => {
+    props.snackBar("Sucessfully added","success")
     try {
       const { data, status } = await helperService.createTestcase(
-        { question_id: authState?.challenge?._id, testcase: testcases },
+        { question_id: authState?.challenge?._id, testcase: DBTestcase },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
-        if (data?.testcases.length > 0) setTestcases(data.testcases);
+        if (data?.testcases) setTestcases(...data.testcases);
       }
     } catch (err) {
       console.log(err);
+    }finally{
+      setDBTestcase({
+        sample: [],
+        hidden: [],
+      })
     }
   };
   useEffect(() => {
-    console.log(authState?.challenge?.testcases?.testcases);
-      setTestcases(authState?.challenge?.testcases?.testcases || {
+    setTestcases(
+      authState?.challenge?.testcases?.testcases || {
         sample: [],
         hidden: [],
-      });
+      }
+    );
   }, [authState]);
   return (
     <div>
@@ -124,7 +138,7 @@ const TestCase = () => {
         </div>
       ))}
       <h1>Hidden </h1>
-      {testcases?.hidden.map((testcase) => (
+      {testcases?.hidden?.map((testcase) => (
         <div class="text_hovering_cards text_hovering_cards-1 d-flex flex-wrap align-items-center justify-content-center m-1">
           <div class="text_hovering_card text_hovering_card">
             <div class="text_hovering_card_content">

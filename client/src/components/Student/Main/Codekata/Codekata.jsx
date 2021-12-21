@@ -4,14 +4,15 @@ import { AuthContext } from "../../../../contexts/AuthContext";
 import helperService from "../../../../services/helperService";
 import codekata from "../../../Images/codekata.svg";
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
-import GoBack from "../../../Reducer/GoBack/GoBack";
 import "./Codekata.css";
+import { useLoader } from "../../../../contexts/AuthContext";
 const Codekata = ({ setSideToggle, ...props }) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const history = useHistory();
   const [code, setCode] = useState("");
-
+  const [loader, showLoader, hideLoader] = useLoader();
   useEffect(() => {
+    console.log(authState);
     setSideToggle(false);
     authDispatch({ type: "REMOVE_CONTEST" });
     authDispatch({ type: "REMOVE_DURATION" });
@@ -23,6 +24,7 @@ const Codekata = ({ setSideToggle, ...props }) => {
       return;
     }
     try {
+      showLoader();
       const {
         status,
         data: { contest },
@@ -39,15 +41,17 @@ const Codekata = ({ setSideToggle, ...props }) => {
           type: "SET_DURATION",
           payload: contest?.session?.ends_at,
         });
-        history.push(`/codekata/${code}`);
+          hideLoader();
+          history.push(`/codekata/${code}`);
       }
     } catch (err) {
       console.log(err);
+      hideLoader();
     }
   };
   return (
     <div className="container h-100" style={{ marginTop: "150px" }}>
-        <GoBack />
+      {loader}
       <div className="d-flex align-items-center justify-content-center">
         <div className="col-md-6 d-flex flex-column">
           <p className="header-title mt-1">

@@ -1,4 +1,3 @@
-const { findByIdAndUpdate } = require("../models/answers");
 const Answer = require("../models/answers");
 const Question = require("../models/questions");
 const createMultipleTestCasesService = async ({ question_id, testcase }) => {
@@ -30,23 +29,44 @@ const createMultipleTestCasesService = async ({ question_id, testcase }) => {
     return Promise.reject({ code: 500, message: "Unable to create testcase" });
   }
 };
-const createTestCaseService = async ({ testcase_id, testcase }) => {
+const createTestCaseService = async ({
+  testcase_id,
+  testcase,
+  question_id,
+}) => {
   let idx = 0;
   const { sample, hidden } = testcase;
   const input = ["sample", "hidden"];
-  if (hidden) idx = 1;
+  if (hidden.length > 0) idx = 1;
   try {
-    const testcases = await Answer.findOne(testcase_id);
-    if (!testcases) {
+    let testcases = await Answer.findOne({ question_id });
+    if (
+      !testcases ||
+      (testcases && !testcases.testcases.hidden && !testcases.testcases.sample)
+    ) {
       return createMultipleTestCasesService({ question_id, testcase });
     }
-    const new_testcases = await findByIdAndUpdate(testcase_id, {
-      $push: { testcases: { [input[idx]]: testcase } },
-    });
+    let new_testcases = null;
+    if (sample.length > 0) {
+      new_testcases = await Answer.findOneAndUpdate(
+        { question_id },
+        {
+          $push: { "testcases.sample": testcase[input[idx]][0] },
+        }
+      );
+    } else if (hidden.length > 0) {
+      new_testcases = await Answer.findOneAndUpdate(
+        { question_id },
+        {
+          $push: { "testcases.hidden": testcase[input[idx]][0] },
+        }
+      );
+    }
     return Promise.resolve({
-      code : 200,
-      testscases : new_testcases
-    })
+      code: 201,
+      testscases: new_testcases,
+      message: `Testcase added successfully`,
+    });
   } catch (err) {
     return Promise.reject({ code: 500, message: "Unable to create testcases" });
   }
@@ -94,7 +114,6 @@ const updateTestCaseService = async ({ testcase_id, index, testcase }) => {
       }
     }
   } catch (err) {
-    console.log(err);
     return Promise.reject({ code: 500, message: "Unable to update testcase" });
   }
 };
@@ -107,7 +126,7 @@ const getTestCasesService = async (question_id, role) => {
       return Promise.resolve({
         code: 200,
         message: `testcases found`,
-        testcases,
+        testcasesDetails: { id: testcases._id, testcases: testcases.testcases },
       });
     } else {
       return Promise.resolve({

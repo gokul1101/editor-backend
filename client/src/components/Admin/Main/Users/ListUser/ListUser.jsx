@@ -1,4 +1,13 @@
 import React, { useEffect, useState } from "react";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
+import InputReducer from "../../../../Reducer/InputReducer";
+import SelectReducer from "../../../../Reducer/SelectReducer/SelectReducer";
+import { Button, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,7 +20,10 @@ import Pagination from "@material-ui/lab/Pagination";
 import "./ListUser.css";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
-import { AuthContext } from "../../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 const tableData = [
   {
     reg_no: 1813015,
@@ -125,6 +137,18 @@ const tableData = [
   },
 ];
 const ListUser = (props) => {
+  const [loader, showLoader, hideLoader] = useLoader();
+  const [user, setUser] = useState({
+    regno: "",
+    name: "",
+    email: "",
+    gender_id: "",
+    stream_id: "",
+    course_id: "",
+    college_id: "",
+    phone_no: "",
+  });
+  const [open, setOpen] = React.useState(false);
   //   const [posts, setPosts] = useState([]);
   //   const [page, setPage] = useState(1);
   //   const loadPosts = async () => {
@@ -172,22 +196,37 @@ const ListUser = (props) => {
   const [pagination, setPagination] = useState({ page: 1, limit: 10 });
   const fetchUsers = async () => {
     try {
+      showLoader();
       const { status, data } = await helperService.getUsers(pagination, {
         headers: { Authorization: authState.user.token },
       });
       if (status === 200) {
         setUsers(data.users);
+        hideLoader();
       }
     } catch (err) {
       console.log(err);
+      hideLoader();
     }
   };
   useEffect(() => {
+    console.log(user);
     fetchUsers();
   }, []);
+
+  const editUserDetail = (data) => {
+    console.log("at line", data);
+    setUser(data);
+
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <>
       <div className="container-fluid">
+        {loader}
         <div className="d-flex justify-content-between p-3 m-3">
           <div>
             <div className="filter d-flex">
@@ -342,7 +381,10 @@ const ListUser = (props) => {
                       className="col-md-12 p-0 d-flex p-2 align-items-center justify-content-center"
                       style={{ marginTop: "6px", height: "50px" }}
                     >
-                      <button className="pr-4 pl-4 mr-2 edit-btn ">
+                      <button
+                        className="pr-4 pl-4 mr-2 edit-btn "
+                        onClick={() => editUserDetail(e)}
+                      >
                         <i class="fas fa-pencil-alt"></i>
                         <span className="ml-2">Edit</span>
                       </button>
@@ -357,16 +399,163 @@ const ListUser = (props) => {
             </div>
           </div>
           <div>
-     
-        
-      </div>
-      </div>
+            <Dialog
+              open={open}
+              TransitionComponent={Transition}
+              keepMounted
+              maxWidth="md"
+              fullWidth
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description"
+            >
+              <DialogTitle id="alert-dialog-slide-title">
+                {"Edit User"}
+              </DialogTitle>
+
+              <DialogContent>
+                <div className="d-flex mx-2 my-3">
+                  <div className="col-md-6">
+                    <InputReducer
+                      id="outlined-multiline-static"
+                      label="Register Name"
+                      variant="outlined"
+                      value={user.regno}
+                      onClickHandler={(value) =>
+                        setUser({ ...user, regno: value.trim() })
+                      }
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <InputReducer
+                      id="outlined-multiline-static"
+                      label="Name"
+                      variant="outlined"
+                      value={user.name}
+                      onClickHandler={(value) =>
+                        setUser({ ...user, name: value.trim() })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="d-flex mx-2 my-3">
+                  <div className="col-md-6">
+                    <InputReducer
+                      id="outlined-multiline-static"
+                      label="Email"
+                      variant="outlined"
+                      value={user.email}
+                      onClickHandler={(value) =>
+                        setUser({ ...user, email: value.trim() })
+                      }
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <SelectReducer
+                      label="gender"
+                      array={["male", "female"]}
+                      name="Gender"
+                      className="w-100"
+                      value={user.gender_id}
+                      onClickHandler={(value) =>
+                        setUser({ ...user, gender_id: value.trim() })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="d-flex mx-2 my-3">
+                  <div className="col-md-6">
+                    <SelectReducer
+                      array={["B.E", "B.Tech"]}
+                      name="Stream"
+                      label="Stream"
+                      className="w-100"
+                      value={user.stream_id}
+                      onClickHandler={(value) =>
+                        setUser({ ...user, stream_id: value.trim() })
+                      }
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <SelectReducer
+                      array={["CSE", "IT", "CIVIL"]}
+                      name="Course Name"
+                      label="course"
+                      className="w-100"
+                      value={user.course_id}
+                      onClickHandler={(value) =>
+                        setUser({ ...user, course_id: value.trim() })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="d-flex mx-2 my-3">
+                  <div className="col-md-6">
+                    <SelectReducer
+                      array={["KSRCT", "KSRCE", "KSRIET"]}
+                      name="College Name"
+                      className="w-100"
+                      value={user.college_id}
+                      onClickHandler={(value) =>
+                        setUser({ ...user, college_id: value.trim() })
+                      }
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <InputReducer
+                      placeholder="Phone number"
+                      label="Phone number"
+                      name="Phone number"
+                      type="text"
+                      className="w-100"
+                      value={user.phone_no}
+                      onClickHandler={(value) =>
+                        setUser({ ...user, phone_no: value.trim() })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="d-flex mx-2 my-3">
+                  <div className="col-md-6">
+                    <TextField
+                      id="date"
+                      label="Batch starts"
+                      type="month"
+                      defaultValue="2017-05-24"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <TextField
+                      id="date"
+                      label="Batch ends"
+                      type="month"
+                      defaultValue="2017-05-24"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </div>
+                </div>
+              </DialogContent>
+
+              <DialogActions>
+                <button className="btn btn-success">Update User</button>
+
+                <Button onClick={handleClose} color="primary">
+                  CLOSE
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        </div>
         <Pagination
-            count={13}
-            color="primary"
-            variant="text"
+          count={13}
+          color="primary"
+          variant="text"
           className="mt-5 d-flex justify-content-end"
-          />
+        />
       </div>
     </>
   );

@@ -44,6 +44,30 @@ const AddQuiz = (props) => {
     }
   };
   const createQuestion = async () => {
+    if(question.statement.length === 0){
+      props.snackBar("Question is Empty","error")
+      return;
+    }
+    if(question.options.A === ""){
+      props.snackBar("A Option is Empty","error")
+      return;
+    }
+    if(question.options.B === ""){
+      props.snackBar("B Option is Empty","error")
+      return;
+    }
+    if(question.options.C === ""){
+      props.snackBar("C Option is Empty","error")
+      return;
+    }
+    if(question.options.D === ""){
+      props.snackBar("D Option is Empty","error")
+      return;
+    }
+    if(question.options.correctOption === ""){
+      props.snackBar("Correct Option is Not selected","error")
+      return;
+    }
     try {
       const {
         data: { mcq },
@@ -62,6 +86,7 @@ const AddQuiz = (props) => {
     }
   };
   const deleteQuestion = async (question) => {
+    console.log(question);
     try {
       const { data, status } = await helperService.deleteQuestion(
         { ...question, type_id: "mcq" },
@@ -69,7 +94,7 @@ const AddQuiz = (props) => {
       );
       if (status === 202) {
         console.log(questions, question);
-        props.snackBar("Question deleted successfully", "info");
+        props.snackBar("Question deleted successfully", "success");
         setQuestions(
           questions.filter((ques) => ques.question_id !== question.question_id)
         );
