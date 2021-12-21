@@ -100,6 +100,26 @@ const TestCase = (props) => {
       });
     }
   };
+
+//edit and delete the testcases
+const sampleTestCaseEdit = () => {
+  setOpen(true);
+}
+const sampleTestCaseDelete = () => {
+  props.snackBar("Selected Sample Test case is deleted successfully","success")
+}
+
+const hiddenTestCaseEdit = () => {
+  setOpen(true);
+}
+const hiddenTestCaseDelete = () => {
+  props.snackBar("Selected Hidden Test case is deleted successfully","success")
+}
+
+
+
+
+
   useEffect(() => {
     setTestcases(authState?.challenge?.testcases || testcasesDefaultValue);
   }, [authState]);
@@ -143,8 +163,14 @@ const TestCase = (props) => {
                 }}
               >
                 <div className="edit-delete d-flex ml-auto p-2 m-2">
+<<<<<<< HEAD
                   <i class="fas fa-edit"></i>
                   <i class="fas fa-trash ml-2 "></i>
+=======
+                  
+                  <i class="fas fa-edit" onClick={sampleTestCaseEdit}></i>
+                  <i class="fas fa-trash ml-2 " onClick={sampleTestCaseDelete}></i>
+>>>>>>> 0bfa435ad86ca84ddc5b8a6de025565feb5ba909
                 </div>
                 <div className="input">
                   <h4 className="font-weight-bolder text-highlight">Input</h4>
@@ -170,6 +196,7 @@ const TestCase = (props) => {
       ) : (
         <div className="d-flex flex-wrap">
           {testcases?.hidden?.map((testcase) => (
+<<<<<<< HEAD
             <div className="p-2">
               <div
                 class="card test-card p-3"
@@ -193,6 +220,33 @@ const TestCase = (props) => {
                 </div>
               </div>
             </div>
+=======
+           <div className="p-2">
+           <div
+             class="card test-card p-3"
+             style={{
+               height: "250px",
+               width: "300px",
+               borderBottom: "5px solid #21A366",
+               
+             }}
+           >
+             <div className="edit-delete d-flex ml-auto p-2 m-2">
+               
+               <i class="fas fa-edit" onClick={hiddenTestCaseEdit}></i>
+               <i class="fas fa-trash ml-2 " onClick={hiddenTestCaseDelete}></i>
+             </div>
+             <div className="input">
+               <h4 className="font-weight-bolder text-highlight">Input</h4>
+               <h6>{testcase.input}</h6>
+             </div>
+             <div className="output">
+               <h4 className="font-weight-bolder text-highlight">Output</h4>
+               <h6>{testcase.output}</h6>
+             </div>
+           </div>
+         </div>
+>>>>>>> 0bfa435ad86ca84ddc5b8a6de025565feb5ba909
           ))}
         </div>
       )}

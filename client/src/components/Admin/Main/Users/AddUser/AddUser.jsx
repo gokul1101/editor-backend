@@ -79,6 +79,7 @@ const AddUser = (props) => {
   const createUser = async () => {
     //Regex
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+<<<<<<< HEAD
     let charRegex = /^[A-Za-z0-9 ]+$/;
     if (
       charRegex.test(user.name) &&
@@ -98,6 +99,33 @@ const AddUser = (props) => {
         "error"
       );
       console.log("Having errors !!");
+=======
+    let charRegex =  /^[A-Za-z0-9]+$/;
+  
+    if(!user.name.length >=3 && !user.name.length <=25){
+      props.snackBar("Username is Incorrect","error")
+      return;
+    }
+    if(user.regno.length !== 7){
+      props.snackBar("Please check the register Number","error");
+      return;
+    }
+    if(user.stream_id === ""){
+      props.snackBar("Stream is not selected","error")
+      return;
+    }
+    if(user.course_id === ""){
+      props.snackBar(" Course is not selected","error")
+      return
+    }
+    if(user.college_id === ""){
+      props.snackBar("College is not selected","error")
+      return
+    }
+    if(!emailRegex.test(user.email)){
+      props.snackBar("Email is Incorrect","error")
+      return;
+>>>>>>> 0bfa435ad86ca84ddc5b8a6de025565feb5ba909
     }
     if(user.phone_no.length !== 10){
       console.log(user.phone_no.length );
