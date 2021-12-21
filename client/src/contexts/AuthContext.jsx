@@ -33,7 +33,7 @@ const AuthReducer = (state, action) => {
 
 const useLoader = () => {
   const [loading, setLoading] = useState(false);
-  console.log(loading)
+  console.log(loading);
   return [
     loading ? <Loader /> : null,
     () => setLoading(true),
