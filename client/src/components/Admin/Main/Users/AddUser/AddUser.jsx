@@ -104,7 +104,6 @@ const AddUser = (props) => {
       props.snackBar("Email is Incorrect","error")
       return;
     }
-    
     if(user.phone_no.length !== 10){
       console.log(user.phone_no.length );
       props.snackBar("Phone Number is Incorrect","error")
@@ -118,16 +117,15 @@ const AddUser = (props) => {
     try {
       console.log({
         ...user,
-        college_id: colleges[user.college_id],
-        course_id: courses[user.course_id],
-        batch_id: `${batchStart.substring(0, 4)}-${batchEnd.substring(0, 4)}`,
+        college_id: user.college_id,
+        course_id: user.course_id,
+        batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(user.batch_id.length-4, user.batch_id.length)}`,
       });
       const { status, data } = await helperService.createUser(
         {
           ...user,
-          college_id: colleges[user.college_id],
-          course_id: courses[user.course_id],
-          batch_id: `${batchStart.substring(0, 4)}-${batchEnd.substring(0, 4)}`,
+          college_id: user.college_id,
+          batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(user.batch_id.length-4, user.batch_id.length)}`,
         },
         { headers: { Authorization: authState?.user?.token } }
       );
@@ -199,7 +197,7 @@ const AddUser = (props) => {
             <div className="col-md-6 p-1">
               <SelectReducer
                 className={classes.fieldColor}
-                array={["CSE", "IT", "CIVIL"]}
+                array={["Computer Science & Engineering", "Information Technology", "Civil Engineering"]}
                 name="Course Name"
                 handleSelect={(e) =>
                   setUser({ ...user, course_id: e.target.value })
@@ -213,7 +211,7 @@ const AddUser = (props) => {
               <SelectReducer
                 value={user.college_id}
                 className={classes.fieldColor}
-                array={["KSRCT", "KSRCE", "KSRIET"]}
+                array={["KSR College of Engineering", "KSR College of Technology", "KSR Institute for Engineering & Technology"]}
                 name="College Name"
                 handleSelect={(e) =>
                   setUser({ ...user, college_id: e.target.value })
@@ -261,34 +259,18 @@ const AddUser = (props) => {
           </div>
           <div className="d-flex mt-3 mb-2">
             <div className="col-md-6 p-1">
-              <TextField
-                id="date"
-                label="Batch starts"
-                type="month"
-                defaultValue="2017-05-24"
-                value={batchStart}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(e) => setBatchStart(e.target.value)}
+            <SelectReducer
+                       className={classes.fieldColor} 
+                array={["2018-2022", "2019-2023","2020-2024","2021-2025","2022-2026"]}
+                name="batch year"
+                label="Batch year"
+                handleSelect={(e) =>
+                  setUser({ ...user, batch_id: e.target.value })
+                }
+                 value={user.batch_id}
               />
             </div>
-            <div className="col-md-4 p-1">
-              <TextField
-                id="date"
-                label="Batch ends"
-                type="month"
-                defaultValue="2017-05-24"
-                value={batchEnd}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                // value = {}
-                onChange={(e) => setBatchEnd(e.target.value)}
-              />
-            </div>
+            
           </div>
           <CustomButton
             className="btn-hover color-11 mt-4"
