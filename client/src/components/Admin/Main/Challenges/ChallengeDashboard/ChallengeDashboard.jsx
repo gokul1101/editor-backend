@@ -32,14 +32,15 @@ const ChallengeDashboard = (props) => {
     <>
       <div className="challenge-container h-auto">
         <ul class="list-group d-flex align-items-center justify-content-center flex-row p-2 mt-3 mb-3">
-          <li class="list-group-item user-group-pill">
+          <li class="list-group-item user-group-pill" style={{"height":"300px !important"}}>
             <NavLink
               exact
-              className="user-navlink pr-3 pl-3 m-2"
+              className="user-navlink pr-3 pl-3 m-2 border border-success "
               to={`/challenges/${id}/update`}
               activeClassName="active-user-pill"
+              
             >
-              <i className="fas fa-plus pr-1 pl-1"></i> Challenge
+              <i className="fas fa-plus pr-1 pl-1 "></i> Challenge
             </NavLink>
           </li>
           <li className="list-group-item user-group-pill">

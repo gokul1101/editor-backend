@@ -93,7 +93,7 @@ const sampleTestCaseEdit = () => {
   setOpen(true);
 }
 const sampleTestCaseDelete = () => {
-  props.snackBar("Selected Sample Test case is deleted successfully","success")
+  props.snackBar("Selected Sample Test case is deleted successfully ","success")
 }
 
 const hiddenTestCaseEdit = () => {
@@ -138,7 +138,7 @@ const hiddenTestCaseDelete = () => {
       <h4 className="m-2 p-2 text-uppercase text-center font-weight-bolder">Sample Test Cases</h4>
       {testcases?.sample?.length === 0 ? (
         <div className="alert alert-primary" role="alert">
-       Till now No Sample test Case is added
+       Till now No Sample test Case is added !!!!!
       </div>
       ) : (
         <div className="d-flex p-2 flex-wrap">
@@ -175,7 +175,7 @@ const hiddenTestCaseDelete = () => {
 <h4 className="m-2 p-2  text-uppercase text-center font-weight-bolder">Hidden Test Cases</h4>
       {testcases?.hidden.length === 0 ? (
         <div className="alert alert-primary" role="alert">
-        Till now No Hidden test Case is added
+        Till now No Hidden test Case is added !!!!!
        </div>
       ) : (
         <div className="d-flex flex-wrap">
