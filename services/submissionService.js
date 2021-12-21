@@ -56,7 +56,7 @@ const createSubmissionService = async (submissionDetails) => {
       score: total_score,
     });
     await newSubmission.save();
-    await updateSessionService(contest_id, user_id, new Date())
+    await updateSessionService(contest_id, user_id, new Date());
     return Promise.resolve({
       code: 201,
       message: `Submitted successfully!`,
@@ -138,54 +138,66 @@ const challengeSubmissionService = async (
   question_id,
   code,
   lang,
-  submission = false,
+  submission = false
 ) => {
-  let flag = true, isSampleFailed = false
-    score = 0;
+  let complilationError = false,
+    isSampleFailed = false;
+  score = 0;
   try {
     const max_score = (await Question.findById(question_id))?.max_score || 1;
     const testcases = (await Answer.findOne({ question_id }))?.testcases || {};
-    const totalTestCases = testcases?.sample?.length + testcases?.hidden?.length;
+    const totalTestCases =
+      testcases?.sample?.length + testcases?.hidden?.length;
     let sampleTestCaseOutput = [];
-    for(let i = 0; i < testcases?.sample.length; i++) {
+    for (let i = 0; i < testcases?.sample.length; i++) {
       try {
-        const { output } = await compilerService(code, testcases?.sample[i].input, lang);
+        let { output } = await compilerService(
+          code,
+          testcases?.sample[i].input,
+          lang
+        );
         output = output.replace(/\n+$/, "");
-        if (submission && testcases?.sample[i].output === output) score++;
-        else isSampleFailed = false;
-        sampleTestCaseOutput.push({
+        let testCaseOutput = {
           expectedOutput: testcases?.sample[i].output,
           actualOutput: output,
-          errors: false,
-        })
+        };
+        if (testcases?.sample[i].output === output) {
+          if (submission) score++;
+          testCaseOutput.errors = false;
+        } else {
+          isSampleFailed = true;
+          testCaseOutput.errors = true;
+        }
+        sampleTestCaseOutput.push(testCaseOutput);
       } catch (err) {
-        if(i == 0) {
+        console.log(err);
+        if (i == 0) {
           return Promise.resolve({
             code: 200,
-            errors : true,
-            err : err.err
-          })
+            errors: true,
+            err: err.err,
+          });
         }
-        flag = false;
+        complilationError = true;
         sampleTestCaseOutput.push({
           expectedOutput: testcases?.sample[i].output,
           actualOutput: err,
           errors: true,
-        })
+        });
         break;
       }
     }
-    if (!submission && (!flag || isSampleFailed))
+    if (!submission && (complilationError || isSampleFailed))
       return Promise.resolve({
         code: 200,
         isSampleFailed,
-        sampleTestCaseOutput,
+        sample: sampleTestCaseOutput,
       });
     const hiddenTestCaseOutput = await Promise.all(
       testcases?.hidden?.map(async (testcase) => {
         try {
-          const { output } = await compilerService(code, testcase.input, lang);
-          console.log(output)
+          let { output } = await compilerService(code, testcase.input, lang);
+          output = output.replace(/\n+$/, "");
           if (output === testcase.output) {
             if (submission) score++;
             return true;
@@ -198,7 +210,7 @@ const challengeSubmissionService = async (
     );
     if (submission) {
       let total_score = Math.round((score / totalTestCases) * max_score);
-      return Promise.resolve({ code : 200, score: total_score });
+      return Promise.resolve({ code: 200, score: total_score });
     }
     return Promise.resolve({
       code: 200,
@@ -218,5 +230,5 @@ module.exports = {
   getSubmissionsService,
   getAllSubmissionsService,
   quizSubmissionService,
-  challengeSubmissionService
+  challengeSubmissionService,
 };

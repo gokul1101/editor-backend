@@ -5,7 +5,7 @@ import { AuthContext } from "../../../../../contexts/AuthContext";
 import "./Timer.css";
 const Timer = () => {
   const [authState] = useContext(AuthContext);
-  const ends_at = authState?.duration;
+  const ends_at = authState?.contest?.contest?.end_date;
   const calculateTimeLeft = () => {
     let difference = +new Date(ends_at) - +new Date();
     let timeLeft = {};

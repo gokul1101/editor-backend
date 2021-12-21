@@ -12,12 +12,18 @@ const Programs = (props) => {
   let history = useHistory();
   const { questionId } = useParams();
   const [authState] = useContext(AuthContext);
-  const [challenge, setChallenge] = useState({});
   let [difficulty, setDifficulty] = useState("");
+  const findChallenge = () => {
+    const problem = authState?.contest?.challenges?.find(
+      (problem) => problem._id === questionId
+    );
+    return problem || {};
+  };
+  const [challenge, setChallenge] = useState(findChallenge());
   let [testCases, setTestCases] = useState({});
-  const [themeName, setThemeName] = React.useState("nord_dark");
-  const [language, setLanguage] = React.useState("java");
-  const [code, setCode] = React.useState(
+  const [themeName, setThemeName] = useState("nord_dark");
+  const [language, setLanguage] = useState("java");
+  const [code, setCode] = useState(
     sessionStorage.getItem(challenge?.name)
       ? JSON.parse(sessionStorage.getItem(challenge?.name))?.code
       : template[language]
@@ -25,16 +31,13 @@ const Programs = (props) => {
   const [isError, setIsError] = useState(true);
   const [isSampleFailed, setIsSampleFailed] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [output, setOutput] = useState({});
+  const [tabClick, setTabClick] = useState(true);
   useEffect(() => {
     props.setSideToggle(true);
   });
-  const findChallenge = () => {
-    const problem = authState?.contest?.challenges?.find(
-      (problem) => problem._id === questionId
-    );
-    setChallenge(problem);
-    setDifficulty(problem?.difficulty_id.level);
-  };
+
   const getTestCases = async () => {
     try {
       const {
@@ -43,43 +46,49 @@ const Programs = (props) => {
         { questionId },
         { headers: { Authorization: authState.user.token } }
       );
-      setTestCases(testcases?.testcases || {});
+      setTestCases(testcases || {});
     } catch (err) {}
   };
   const compile = async () => {
     try {
+      setTabClick(false);
+      setIsLoading(true);
       let parsedCode = parseCode(code);
       sessionStorage.setItem(
         challenge?.name,
         JSON.stringify({ code, lang: language })
       );
       const { status, data } = await helperService.runCode(
-        { id : challenge?._id, code: parsedCode, lang: language },
+        { id: challenge?._id, code: parsedCode, lang: language },
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 200) {
         console.log(data);
-        if(data?.errors) setIsError(true);
+        if (data?.errors) setIsError(true);
         else setIsError(false);
-        if(data?.isSampleFailed) setIsSampleFailed(true);
+        if (data?.err) setErrors(data?.err);
+        if (data?.isSampleFailed) setIsSampleFailed(true);
         else setIsSampleFailed(false);
-        if(data?.err) setErrors(data?.err);
+        setOutput({ sample: data?.sample || [], hidden: data?.hidden || [] });
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
+  const submitChallenge = () => {}
   useEffect(() => {
-    findChallenge();
+    setDifficulty(challenge?.difficulty_id.level);
     getTestCases();
   }, []);
   const handleChange = (event) => setThemeName(event.target.value);
 
   const handleLanguage = (event) => {
-    setLanguage(event.target.value)
+    setLanguage(event.target.value);
     setCode(template[event.target.value]);
     sessionStorage.removeItem(challenge?.name);
-  }
+  };
   return (
     <>
       <div className="container-fluid" id={challenge?._id}>
@@ -100,7 +109,9 @@ const Programs = (props) => {
           </div>
           <div className="w-100 d-flex flex-row-reverse mt-3 mb-2">
             <div>
-              <h5 className="mt-2 score-card">Maximum Score : <span className="program-score p-2">80</span></h5>
+              <h5 className="mt-2 score-card">
+                Maximum Score : <span className="program-score p-2">80</span>
+              </h5>
             </div>
             <div className="w-25 mx-2">
               <SelectReducer
@@ -143,7 +154,7 @@ const Programs = (props) => {
               >
                 <li className="nav-item program-item" role="presentation">
                   <a
-                    className="nav-link active program-link"
+                    className={`nav-link ${tabClick? "active" : ""} program-link`}
                     id="pills-problem-tab"
                     data-toggle="pill"
                     href="#pills-problem"
@@ -156,7 +167,7 @@ const Programs = (props) => {
                 </li>
                 <li className="nav-item program-item" role="presentation">
                   <a
-                    className="nav-link program-link"
+                    className={`nav-link ${!tabClick? "active" : ""} program-link`}
                     id="pills-submissions-tab"
                     data-toggle="pill"
                     href="#pills-submissions"
@@ -170,13 +181,15 @@ const Programs = (props) => {
               </ul>
               <div className="tab-content p-2" id="pills-tabContent">
                 <div
-                  className="tab-pane fade show active p-2"
+                  className={`tab-pane fade ${tabClick? "show active" : ""}`}
                   id="pills-problem"
                   role="tabpanel"
                   aria-labelledby="pills-problem-tab"
                 >
                   <div className="d-flex mt-2">
-                    <h5 className="problem-state mr-2 font-weight-bolder">{challenge?.name}</h5>
+                    <h5 className="problem-state mr-2 font-weight-bolder">
+                      {challenge?.name}
+                    </h5>
                     <div
                       className={`problem-badge-${difficulty} d-flex align-items-center justify-content-center mr-2`}
                     >
@@ -220,18 +233,14 @@ const Programs = (props) => {
                         input format :{" "}
                       </span>{" "}
                       <br />
-                      <p className="mt-2">
-                        {challenge?.input_format}
-                      </p>
+                      <p className="mt-2">{challenge?.input_format}</p>
                     </div>
                     <div className="example-output mt-2">
                       <span className="font-weight-bolder op-highlight">
                         output format :{" "}
                       </span>{" "}
                       <br />
-                      <p className="mt-2 ">
-                        {challenge?.output_format}
-                      </p>
+                      <p className="mt-2 ">{challenge?.output_format}</p>
                     </div>
                   </div>
                   <div className="hints mt-2 d-flex flex-column">
@@ -245,12 +254,19 @@ const Programs = (props) => {
                 </div>
                 {/* /TESTCASE/ */}
                 <div
-                  className="tab-pane fade"
+                  className={`tab-pane fade ${!tabClick? "show active" : ""}`}
                   id="pills-submissions"
                   role="tabpanel"
                   aria-labelledby="pills-submissions-tab"
                 >
-                  <Testcase isError={isError} testcases={testCases} isSampleFailed={isSampleFailed} errors={errors}/>
+                  <Testcase
+                    testCaseOutput={output}
+                    isLoading={isLoading}
+                    isError={isError}
+                    testcases={testCases}
+                    isSampleFailed={isSampleFailed}
+                    errors={errors}
+                  />
                 </div>
               </div>
             </div>
@@ -262,11 +278,11 @@ const Programs = (props) => {
                 value={code}
               />
               <div className="mt-3 d-flex justify-content-end">
-                <button className="btn-hover color-11 mr-2" onClick={compile}>
-                  RUN CODE <i className="fas fa-code mr-2 ml-2"></i>
+                <button className="btn-hover color-11 mr-2 pl-4 pr-3" onClick={compile}>
+                  RUN CODE <i className="fas fa-code mx-2"></i>
                 </button>
-                <button className="btn-hover color-11">
-                  SUBMIT <i className="fas fa-rocket mr-2 ml-2"></i>
+                <button className="btn-hover color-11 pl-4 pr-3" onClick={submitChallenge}>
+                  SUBMIT <i className="fas fa-rocket mx-2"></i>
                 </button>
               </div>
             </div>

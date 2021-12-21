@@ -126,7 +126,11 @@ const getTestCasesService = async (question_id, role) => {
       return Promise.resolve({
         code: 200,
         message: `testcases found`,
-        testcasesDetails: { id: testcases._id, testcases: testcases.testcases },
+        testcases: {
+          id: testcases._id,
+          sample: testcases.testcases.sample,
+          hidden: testcases.testcases.hidden,
+        },
       });
     } else {
       return Promise.resolve({

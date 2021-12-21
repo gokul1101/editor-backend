@@ -21,11 +21,11 @@ const createMultipleTestCases = async (req, res) => {
 const getTestCases = async (req, res) => {
   try {
     const { id } = req.query;
-    const { code, message, testcasesDetails } = await getTestCasesService(
+    const { code, message, testcases } = await getTestCasesService(
       id,
       req.user.role_id
     );
-    res.status(code).json({ message, testcasesDetails });
+    res.status(code).json({ message, testcases });
   } catch (err) {
     if (err.code) res.status(err.code).json({ message: err.message });
     else res.status(500).json({ message: "Internal server error" });
