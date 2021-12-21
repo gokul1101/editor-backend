@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Contests.css";
 import { Link } from "react-router-dom";
 import helperService from "../../../../services/helperService";
-import { AuthContext } from "../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../contexts/AuthContext";
 import Pagination from "@material-ui/lab/Pagination";
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
 
 const Contests = (props) => {
+  const [loader, showLoader, hideLoader] = useLoader();
   const [authState, authDispatch] = useContext(AuthContext);
   const [contests, setContests] = useState({
     upcoming: [],
@@ -15,16 +16,17 @@ const Contests = (props) => {
     pastContestsCount: 0,
   });
   const [page, setPage] = useState(1);
-  const handlePagination = (e,value) => {
-    if(page !== value){
-    setPage(value)
-    fetchContests(value,true)
+  const handlePagination = (e, value) => {
+    if (page !== value) {
+      setPage(value);
+      fetchContests(value, true);
     }
   };
-  const fetchContests = async (page = 1,past=false,limit=1) => {
+  const fetchContests = async (page = 1, past = false, limit = 1) => {
     try {
+      showLoader();
       const { status, data } = await helperService.getAllContests(
-        {page,past,limit},
+        { page, past, limit },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
@@ -38,12 +40,14 @@ const Contests = (props) => {
         setContests({
           pastContestsCount,
           past: pastContests,
-          ongoing: [...contests.ongoing, ...ongoingContests],
-          upcoming: [...contests.upcoming, ...upcomingContests],
+          ongoing: [...ongoingContests],
+          upcoming: [...upcomingContests],
         });
+        hideLoader();
       }
     } catch (err) {
       console.log(err);
+      hideLoader();
     }
   };
   useEffect(() => {
@@ -55,8 +59,9 @@ const Contests = (props) => {
   return (
     <div
       className="container-fluid"
-      style={{ height: "100vh", overflowY: "scroll", marginTop: "20px" }}
+      style={{ height: "100vh", overflowY: "scroll", marginTop: "40px" }}
     >
+      {loader}
       <div className="d-flex">
         <div className="contest-header mr-auto">
           <p className="text-left dash-title-category pb-2">Contests</p>
@@ -87,8 +92,8 @@ const Contests = (props) => {
           {contests?.ongoing?.map((event) => {
             return (
               <div className="d-flex mt-2 mb-2">
-                <div className="col-md-3 d-flex justify-content-between text-center upcoming-task">
-                  <i className="fas fa-link text-left mt-2"></i>
+                <i className="fas fa-link contest-link position-relative"></i>
+                <div className="col-md-3 text-center upcoming-task">
                   <Link
                     to={`/contests/${event._id}/edit`}
                     onClick={() => setContest(event)}
@@ -131,8 +136,8 @@ const Contests = (props) => {
             console.log(event);
             return (
               <div className="d-flex mt-2 mb-2">
-                <div className="col-md-3 d-flex justify-content-between text-center upcoming-task">
-                  <i className="fas fa-link text-left mt-2"></i>
+                <i className="fas fa-link contest-link position-relative"></i>
+                <div className="col-md-3 text-center upcoming-task">
                   <Link
                     to={`/contests/${event._id}/edit`}
                     onClick={() => setContest(event)}
@@ -178,8 +183,8 @@ const Contests = (props) => {
           {contests?.past?.map((event) => {
             return (
               <div className="d-flex mt-2 mb-2">
-                <div className="col-md-3 d-flex justify-content-between text-center upcoming-task">
-                  <i className="fas fa-link text-left mt-2"></i>
+                <i className="fas fa-link contest-link position-relative"></i>
+                <div className="col-md-3 text-center upcoming-task">
                   <span>{event.name}</span>
                 </div>
                 <div className="col-md-3 text-center">{`${new Date(
@@ -203,7 +208,7 @@ const Contests = (props) => {
           color="primary"
           variant="text"
           className="mt-5 d-flex justify-content-center"
-          onChange={(e, value) => handlePagination(e,value)}
+          onChange={(e, value) => handlePagination(e, value)}
         />
       </div>
     </div>

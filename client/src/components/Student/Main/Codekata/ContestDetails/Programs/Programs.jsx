@@ -8,6 +8,8 @@ import helperService from "../../../../../../services/helperService";
 import Testcase from "./Testcase/Testcase";
 import Timer from "../../Timer/Timer";
 import { parseCode, template } from "../../../../../../services/utils";
+import GoBack from "../../../../../Reducer/GoBack/GoBack";
+import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 const Programs = (props) => {
   let history = useHistory();
   const { questionId } = useParams();
@@ -94,15 +96,11 @@ const Programs = (props) => {
       <div className="container-fluid" id={challenge?._id}>
         <div className="problem-header p-2 d-flex border-bottom border-left">
           <div className="problem-title d-flex">
-            <div
-              className="back-btn mt-2 ml-2 mr-2"
-              onClick={() => history.goBack()}
-            >
-              <div className="triangle"></div>
-              <div className="halfcircle"></div>
+            <div className="mt-1 mr-2 ml-2">
+              <GoBack />
             </div>
           </div>
-          <div className="timer mt-1 ml-2">
+          <div className="timer mt-3 ml-4">
             <h6 className="timer-text" style={{ width: "230px" }}>
               <Timer />
             </h6>
@@ -274,16 +272,23 @@ const Programs = (props) => {
               <Editor
                 language={language}
                 theme={themeName}
+                height="80vh"
                 onChangeHandler={(value) => setCode(value)}
                 value={code}
               />
-              <div className="mt-3 d-flex justify-content-end">
-                <button className="btn-hover color-11 mr-2 pl-4 pr-3" onClick={compile}>
-                  RUN CODE <i className="fas fa-code mx-2"></i>
-                </button>
-                <button className="btn-hover color-11 pl-4 pr-3" onClick={submitChallenge}>
-                  SUBMIT <i className="fas fa-rocket mx-2"></i>
-                </button>
+              <div className="mt-3 d-flex justify-content-end">                
+                <CustomButton
+                  className="btn-hover color-11 mt-2 mr-2"
+                  onClickHandler={compile}
+                  >
+                  <i className="fas fa-code px-2"></i>RUN CODE
+                </CustomButton>
+                <CustomButton
+                  className="btn-hover color-11 mt-2"
+                  onClickHandler={submitChallenge}
+                >
+                  <i className="fas fa-code px-2"></i>SUBMIT
+                </CustomButton>
               </div>
             </div>
           </div>

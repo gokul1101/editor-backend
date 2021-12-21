@@ -102,8 +102,8 @@ const ContestQuizzes = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            <div className="d-flex">
-              <label>Create Quiz</label>
+            <div className="d-flex flex-column">
+              <label>Create Quiz :</label>
               <InputReducer value={quizName} onClickHandler={setQuizName} />
             </div>
             <p className="text-muted mt-3">

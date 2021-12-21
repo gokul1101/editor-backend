@@ -20,7 +20,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import "./ListUser.css";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
-import { AuthContext } from "../../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -137,6 +137,7 @@ const tableData = [
   },
 ];
 const ListUser = (props) => {
+  const [loader, showLoader, hideLoader] = useLoader();
   const [user, setUser] = useState({
     regno: "",
     name: "",
@@ -195,14 +196,17 @@ const ListUser = (props) => {
   const [pagination, setPagination] = useState({ page: 1, limit: 10 });
   const fetchUsers = async () => {
     try {
+      showLoader();
       const { status, data } = await helperService.getUsers(pagination, {
         headers: { Authorization: authState.user.token },
       });
       if (status === 200) {
         setUsers(data.users);
+        hideLoader();
       }
     } catch (err) {
       console.log(err);
+      hideLoader();
     }
   };
   useEffect(() => {
@@ -222,6 +226,7 @@ const ListUser = (props) => {
   return (
     <>
       <div className="container-fluid">
+        {loader}
         <div className="d-flex justify-content-between p-3 m-3">
           <div>
             <div className="filter d-flex">
@@ -415,7 +420,9 @@ const ListUser = (props) => {
                       label="Register Name"
                       variant="outlined"
                       value={user.regno}
-                      onClickHandler={(value) => setUser({ ...user, regno: value.trim() })}
+                      onClickHandler={(value) =>
+                        setUser({ ...user, regno: value.trim() })
+                      }
                     />
                   </div>
                   <div className="col-md-6">
@@ -424,7 +431,9 @@ const ListUser = (props) => {
                       label="Name"
                       variant="outlined"
                       value={user.name}
-                      onClickHandler = {(value) => setUser({ ...user, name: value.trim() })}
+                      onClickHandler={(value) =>
+                        setUser({ ...user, name: value.trim() })
+                      }
                     />
                   </div>
                 </div>
@@ -435,8 +444,9 @@ const ListUser = (props) => {
                       label="Email"
                       variant="outlined"
                       value={user.email}
-                      onClickHandler={(value) => setUser({ ...user, email: value.trim() })}
-
+                      onClickHandler={(value) =>
+                        setUser({ ...user, email: value.trim() })
+                      }
                     />
                   </div>
                   <div className="col-md-6">
@@ -446,8 +456,9 @@ const ListUser = (props) => {
                       name="Gender"
                       className="w-100"
                       value={user.gender_id}
-                      onClickHandler={(value) => setUser({ ...user, gender_id: value.trim() })}
-
+                      onClickHandler={(value) =>
+                        setUser({ ...user, gender_id: value.trim() })
+                      }
                     />
                   </div>
                 </div>
@@ -459,8 +470,9 @@ const ListUser = (props) => {
                       label="Stream"
                       className="w-100"
                       value={user.stream_id}
-                      onClickHandler={(value) => setUser({ ...user, stream_id: value.trim() })}
-
+                      onClickHandler={(value) =>
+                        setUser({ ...user, stream_id: value.trim() })
+                      }
                     />
                   </div>
                   <div className="col-md-6">
@@ -470,8 +482,9 @@ const ListUser = (props) => {
                       label="course"
                       className="w-100"
                       value={user.course_id}
-                      onClickHandler={(value) => setUser({ ...user, course_id: value.trim() })}
-
+                      onClickHandler={(value) =>
+                        setUser({ ...user, course_id: value.trim() })
+                      }
                     />
                   </div>
                 </div>
@@ -482,8 +495,9 @@ const ListUser = (props) => {
                       name="College Name"
                       className="w-100"
                       value={user.college_id}
-                      onClickHandler={(value) => setUser({ ...user, college_id: value.trim() })}
-
+                      onClickHandler={(value) =>
+                        setUser({ ...user, college_id: value.trim() })
+                      }
                     />
                   </div>
                   <div className="col-md-6">
@@ -494,42 +508,40 @@ const ListUser = (props) => {
                       type="text"
                       className="w-100"
                       value={user.phone_no}
-                      onClickHandler={(value) => setUser({ ...user, phone_no: value.trim() })}
-
+                      onClickHandler={(value) =>
+                        setUser({ ...user, phone_no: value.trim() })
+                      }
                     />
                   </div>
                 </div>
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
-                  <TextField
-                    id="date"
-                    label="Batch starts"
-                    type="month"
-                    defaultValue="2017-05-24"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
+                    <TextField
+                      id="date"
+                      label="Batch starts"
+                      type="month"
+                      defaultValue="2017-05-24"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
                   </div>
                   <div className="col-md-6">
-                  <TextField
-                    id="date"
-                    label="Batch ends"
-                    type="month"
-                    defaultValue="2017-05-24"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
+                    <TextField
+                      id="date"
+                      label="Batch ends"
+                      type="month"
+                      defaultValue="2017-05-24"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
                   </div>
-
                 </div>
               </DialogContent>
 
               <DialogActions>
-                <button  className="btn btn-success">
-                  Update User
-                </button>
+                <button className="btn btn-success">Update User</button>
 
                 <Button onClick={handleClose} color="primary">
                   CLOSE

@@ -3,28 +3,35 @@ import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import helperService from "../../../../services/helperService";
 import codekata from "../../../Images/codekata.svg";
+import CustomButton from "../../../Reducer/CustomButton/CustomButton";
 import "./Codekata.css";
-const Codekata = ({setSideToggle, ...props}) => {
-  const [authState,authDispatch] = useContext(AuthContext);
+import { useLoader } from "../../../../contexts/AuthContext";
+const Codekata = ({ setSideToggle, ...props }) => {
+  const [authState, authDispatch] = useContext(AuthContext);
   const history = useHistory();
   const [code, setCode] = useState("");
-
+  const [loader, showLoader, hideLoader] = useLoader();
   useEffect(() => {
+    console.log(authState);
     setSideToggle(false);
-    authDispatch({type : "REMOVE_CONTEST"})
-    authDispatch({type : "REMOVE_DURATION"})
+    authDispatch({ type: "REMOVE_CONTEST" });
+    authDispatch({ type: "REMOVE_DURATION" });
   }, [setSideToggle, authDispatch]);
   const submitCode = async (e) => {
     e.preventDefault();
-    if (code.length !== 6){
+    if (code.length !== 6) {
       props.snackBar("Your code is wrong!! Ckeck your code", "error");
       return;
     }
     try {
-      const {status, data : {contest}} = await helperService.getContestWithCode(
-        {code},
+      showLoader();
+      const {
+        status,
+        data: { contest },
+      } = await helperService.getContestWithCode(
+        { code },
         { headers: { Authorization: authState.user.token } }
-      );      
+      );
       if (status === 200) {
         authDispatch({
           type: "SET_CONTEST",
@@ -34,14 +41,17 @@ const Codekata = ({setSideToggle, ...props}) => {
           type: "SET_DURATION",
           payload: contest?.session?.ends_at,
         });
+        showLoader();
         history.push(`/codekata/${code}`);
       }
     } catch (err) {
-      console.log(err);     
+      console.log(err);
+      hideLoader();
     }
   };
   return (
     <div className="container h-100" style={{ marginTop: "150px" }}>
+      {loader}
       <div className="d-flex align-items-center justify-content-center">
         <div className="col-md-6 d-flex flex-column">
           <p className="header-title mt-1">
@@ -64,9 +74,12 @@ const Codekata = ({setSideToggle, ...props}) => {
             <span>
               <b>* By entering the code you can attend the test.</b>
             </span>
-            <button className="btn-hover color-11 mt-4" onClick={submitCode}>
-              ENTER CODE <i className="fas fa-code mr-2 ml-2"></i>
-            </button>
+            <CustomButton
+              className="btn-hover color-11 mt-3"
+              onClickHandler={submitCode}
+            >
+              <i className="fas fa-code pr-2 pl-2"></i>ENTER CODE
+            </CustomButton>
           </div>
         </div>
         <div className="col-md-6">

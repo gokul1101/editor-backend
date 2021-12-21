@@ -7,6 +7,8 @@ import Timer from "../../Timer/Timer";
 import { useContext } from "react";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import helperService from "../../../../../../services/helperService";
+import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
+import GoBack from "../../../../../Reducer/GoBack/GoBack";
 const Quiz = ({ setSideToggle }) => {
   const location = useParams();
   const history = useHistory();
@@ -90,12 +92,8 @@ const Quiz = ({ setSideToggle }) => {
   return (
     <div className="container-fluid p-0 Quiz-question-container">
       <div className="d-flex">
-        <div
-          className="back-btn mr-auto mt-3 ml-4"
-          onClick={() => history.push(`/codekata/${location.id}`)}
-        >
-          <div className="triangle"></div>
-          <div className="halfcircle"></div>
+        <div className="mr-auto mt-3 ml-4">
+          <GoBack />
         </div>
         <div className="user-info position-relative">
           <div className="d-flex mx-4 pt-3 user-det justify-content-end">
@@ -163,15 +161,13 @@ const Quiz = ({ setSideToggle }) => {
             </div>
             {!isLast ? (
               <div className="mt-2 d-flex justify-content-end mr-4">
-                <button
-                  className="mr-2 btn-hover pr-1 pl-1 color-11"
-                  color="primary"
-                  variant="contained"
-                  onClick={handleNext}
+                <CustomButton
+                  className="btn-hover color-11 mt-3"
+                  onClickHandler={handleNext}
                   disabled={isLast}
                 >
-                  Next
-                </button>
+                  <i className="fas fa-forward pr-2 pl-2"></i> NEXT
+                </CustomButton>
               </div>
             ) : null}
           </div>
@@ -192,7 +188,7 @@ const Quiz = ({ setSideToggle }) => {
               </h2>
               <p className="font-weight-bolder">remaining</p>
               <div className="d-flex">
-              <span className="timer-hand mr-2 ml-3 font-weight-bolder">
+                <span className="timer-hand mr-2 ml-3 font-weight-bolder">
                   Days
                 </span>
                 <span className="timer-hand mr-2 ml-3 font-weight-bolder">
@@ -229,14 +225,12 @@ const Quiz = ({ setSideToggle }) => {
               </div>
             </div>
             <div className="d-flex justify-content-end mt-2">
-              <button
-                className="mr-2 btn-hover pr-1 pl-1 color-11"
-                color="primary"
-                variant="contained"
-                onClick={submitQuiz}
+              <CustomButton
+                className="btn-hover color-11 mt-3"
+                onClickHandler={submitQuiz}
               >
-               <i className="fas fa-rocket mr-2 ml-2 p-1"></i> SUBMIT QUIZ
-              </button>
+                <i className="fas fa-rocket pr-2 pl-2"></i> SUBMIT QUIZ
+              </CustomButton>
             </div>
           </div>
         </div>

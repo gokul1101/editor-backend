@@ -40,7 +40,7 @@ const DropFileInput = (props) => {
       setFileList([newFile]);
       props.onFileChange([newFile]);
     } else {
-      alert("Please select a valid excel file");
+      props.snackBar("Please select a valid  excel file", "error");
     }
   };
 

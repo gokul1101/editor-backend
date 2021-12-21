@@ -15,13 +15,13 @@ const Editor = (props) => {
   return (
     <div>
       <AceEditor
-        height="80vh"
+        height={props.height}
         width="100%"
         placeholder="Your code goes here.."
         mode={props.language}
         theme={props.theme}
         name="Editor"
-        onChange= {(value)=>props.onChangeHandler(value)}
+        onChange={(value) => props.onChangeHandler(value)}
         fontSize={20}
         showPrintMargin={false}
         showGutter={true}

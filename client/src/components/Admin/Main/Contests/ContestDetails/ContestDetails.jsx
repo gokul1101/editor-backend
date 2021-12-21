@@ -70,9 +70,7 @@ const ContestDetails = (props) => {
               <ContestChallenges />
             </Route>
             <Route path="/contests/:id/challenges/create" exact>
-              <CreateChallenge
-                snackBar={props.snackBar}
-              />
+              <CreateChallenge snackBar={props.snackBar} />
             </Route>
           </Route>
           <Route path={`/contests/:id/statistics`} exact>

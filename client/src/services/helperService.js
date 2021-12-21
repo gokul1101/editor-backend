@@ -1,5 +1,6 @@
 import axios from "axios";
 const baseURL = "http://localhost:5000";
+// const baseURL = "https://03ba-103-70-191-34.ngrok.io";
 
 const helperService = {
   rejectionHandler: ({ response }) => {
@@ -190,7 +191,7 @@ const helperService = {
       });
     }
   },
-  getAllContests: async ({page,past,limit}, config) => {
+  getAllContests: async ({ page, past, limit }, config) => {
     try {
       const { data, status } = await axios.get(
         `${baseURL}/api/v1/contests/getAll?page=${page}&limit=${limit}&past=${past}`,
