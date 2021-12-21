@@ -44,7 +44,6 @@ const createContestService = async (contest) => {
   }
 };
 const getContestService = async (id, code, role_id) => {
-  console.log(id, code, role_id);
   try {
     //If contest already exist return success otherwise not found
     let contest;
@@ -143,33 +142,44 @@ const updateContestService = async ({
     });
   }
 };
-const getAllContestWithFilter = async (page, limit) => {
+const getAllContestWithFilter = async (page, limit, past) => {
   try {
+    let ongoingContests = [];
+    let upcomingContests = [];
     //**past contests */
-    const pastContestsCount = await Contest.find({ end_date: { $lte: new Date() } }).countDocuments()
+    const pastContestsCount = await Contest.find({
+      end_date: { $lte: new Date() },
+    }).countDocuments();
     const pastContests = await Contest.find({ end_date: { $lte: new Date() } })
-    .sort({start_date:'asc'})
-    .limit(limit * 1)
-    .skip((page - 1) * limit);
+      .sort({ start_date: "asc" })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
     //**ongoing contests */
-    const ongoingContests = await Contest.find({
-      start_date: { $lte: new Date() },
-      end_date: { $gte: new Date() },
-    }).sort();
-    //**upcoming contests */
-    const upcomingContests =  await Contest.find({
-      start_date: { $gte: new Date() },
-    }).sort({start_date:'asc'});
+    if (past === 'false') {
+      ongoingContests = await Contest.find({
+        start_date: { $lte: new Date() },
+        end_date: { $gte: new Date() },
+      }).sort();
+      //**upcoming contests */
+      upcomingContests = await Contest.find({
+        start_date: { $gte: new Date() },
+      }).sort({ start_date: "asc" });
+    }
     //**promise result */
     return Promise.resolve({
       code: 200,
-      message: {pastContestsCount,pastContests, ongoingContests, upcomingContests },
+      message: {
+        pastContestsCount,
+        pastContests,
+        ongoingContests,
+        upcomingContests,
+      },
     });
   } catch (err) {
     return Promise.reject({
-      code:500,
-      message:`Internal Server Error`
-    })
+      code: 500,
+      message: `Internal Server Error`,
+    });
   }
 };
 const getAllContestService = async (page, limit) => {

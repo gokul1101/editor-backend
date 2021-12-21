@@ -1,9 +1,7 @@
-const { findByIdAndUpdate } = require("../models/answers");
 const Answer = require("../models/answers");
 const Question = require("../models/questions");
 const createMultipleTestCasesService = async ({ question_id, testcase }) => {
   const { sample, hidden } = testcase;
-  console.log(testcase)
   if (!sample && !hidden)
     return Promise.reject({ code: 406, message: "Invalid parameters" });
   try {
@@ -39,25 +37,37 @@ const createTestCaseService = async ({
   let idx = 0;
   const { sample, hidden } = testcase;
   const input = ["sample", "hidden"];
-  if (hidden) idx = 1;
+  if (hidden.length > 0) idx = 1;
   try {
-    let testcases = await Answer.findOne({ _id: testcase_id });
-    // console.log(testcases)
-    if (testcases && !testcases.testcases) {
+    let testcases = await Answer.findOne({ question_id });
+    if (
+      !testcases ||
+      (testcases && !testcases.testcases.hidden && !testcases.testcases.sample)
+    ) {
       return createMultipleTestCasesService({ question_id, testcase });
     }
-    console.log("at line 45 ",testcases,testcase)
-    testcases.testcases[input[idx]].push(testcase)
-    const new_testcases = await Answer.findByIdAndUpdate(testcase_id, {
-      testcases,
-    });
-    console.log("at line ", testcase, testcase_id, question_id, testcases);
+    let new_testcases = null;
+    if (sample.length > 0) {
+      new_testcases = await Answer.findOneAndUpdate(
+        { question_id },
+        {
+          $push: { "testcases.sample": testcase[input[idx]][0] },
+        }
+      );
+    } else if (hidden.length > 0) {
+      new_testcases = await Answer.findOneAndUpdate(
+        { question_id },
+        {
+          $push: { "testcases.hidden": testcase[input[idx]][0] },
+        }
+      );
+    }
     return Promise.resolve({
-      code: 200,
+      code: 201,
       testscases: new_testcases,
+      message: `Testcase added successfully`,
     });
   } catch (err) {
-    console.log(err);
     return Promise.reject({ code: 500, message: "Unable to create testcases" });
   }
 };
@@ -116,7 +126,7 @@ const getTestCasesService = async (question_id, role) => {
       return Promise.resolve({
         code: 200,
         message: `testcases found`,
-        testcases,
+        testcasesDetails: { id: testcases._id, testcases: testcases.testcases },
       });
     } else {
       return Promise.resolve({

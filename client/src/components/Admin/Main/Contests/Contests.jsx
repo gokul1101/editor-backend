@@ -9,28 +9,44 @@ import CustomButton from "../../../Reducer/CustomButton/CustomButton";
 const Contests = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [contests, setContests] = useState({
-    upcoming:[],
-    ongoing:[],
-    past:[],
-    pastContestsCount:0
+    upcoming: [],
+    ongoing: [],
+    past: [],
+    pastContestsCount: 0,
   });
-  const fetchContests = async () => {
+  const [page, setPage] = useState(1);
+  const handlePagination = (e,value) => {
+    if(page !== value){
+    setPage(value)
+    fetchContests(value,true)
+    }
+  };
+  const fetchContests = async (page = 1,past=false,limit=1) => {
     try {
       const { status, data } = await helperService.getAllContests(
-        {},
+        {page,past,limit},
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        const {pastContests,ongoingContests,upcomingContests,pastContestsCount} = data.message
+        const {
+          pastContests,
+          ongoingContests,
+          upcomingContests,
+          pastContestsCount,
+        } = data.message;
         // console.log(data);
-        setContests({pastContestsCount ,past:pastContests,ongoing:ongoingContests,upcoming:upcomingContests,});
+        setContests({
+          pastContestsCount,
+          past: pastContests,
+          ongoing: [...contests.ongoing, ...ongoingContests],
+          upcoming: [...contests.upcoming, ...upcomingContests],
+        });
       }
     } catch (err) {
       console.log(err);
     }
   };
   useEffect(() => {
-    console.log("contest snackbar",props.snackBar);
     fetchContests();
   }, []);
   const setContest = (contest) => {
@@ -183,10 +199,11 @@ const Contests = (props) => {
       </div>
       <div>
         <Pagination
-          count={contests?.pastContestsCount/10}
+          count={contests?.pastContestsCount / 1}
           color="primary"
           variant="text"
           className="mt-5 d-flex justify-content-center"
+          onChange={(e, value) => handlePagination(e,value)}
         />
       </div>
     </div>

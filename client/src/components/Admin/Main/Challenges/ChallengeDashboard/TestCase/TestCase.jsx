@@ -37,6 +37,10 @@ const TestCase = (props) => {
     input: "",
     output: "",
   });
+  const [DBTestcase, setDBTestcase] = useState({
+    sample: [],
+    hidden: [],
+  });
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -56,31 +60,39 @@ const TestCase = (props) => {
     props.snackBar("Sucessfully added","success")
     console.log(testcases, testcase);
     if (checked) {
-      setTestcases({ ...testcases, hidden: [...testcases?.hidden, testcase] });
+      setTestcases({ ...testcases, hidden: [...testcases.hidden, testcase] });
+      setDBTestcase({...DBTestcase,hidden:[testcase]})
     } else {
-      setTestcases({ ...testcases, sample: [...testcases?.sample, testcase] });
+      setDBTestcase({...DBTestcase,sample:[testcase]})
+      setTestcases({ ...testcases, sample: [...testcases.sample, testcase] });
     }
   };
   const createTestcase = async () => {
     props.snackBar("Sucessfully added","success")
     try {
       const { data, status } = await helperService.createTestcase(
-        { question_id: authState?.challenge?._id, testcase: testcases },
+        { question_id: authState?.challenge?._id, testcase: DBTestcase },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
-        if (data?.testcases.length > 0) setTestcases(data.testcases);
+        if (data?.testcases) setTestcases(...data.testcases);
       }
     } catch (err) {
       console.log(err);
+    }finally{
+      setDBTestcase({
+        sample: [],
+        hidden: [],
+      })
     }
   };
   useEffect(() => {
-    console.log(authState?.challenge?.testcases?.testcases);
-      setTestcases(authState?.challenge?.testcases?.testcases?.sample || {
+    setTestcases(
+      authState?.challenge?.testcases?.testcases || {
         sample: [],
         hidden: [],
-      });
+      }
+    );
   }, [authState]);
   return (
     <div>

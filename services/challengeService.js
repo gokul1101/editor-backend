@@ -47,9 +47,9 @@ const getChallenge = async (id, role) => {
       });
     } else {
       try{
-        const {code,message,testcases} = (await getTestCasesService(question._id, role))
+        const {code,message,testcasesDetails} = (await getTestCasesService(question._id, role))
         if(code === 200) {
-          question = {...question._doc,testcases}
+          question = {...question._doc,testcasesDetails}
         }
       } catch(err){
         if(err.code !==404){
