@@ -156,7 +156,7 @@ const challengeSubmissionService = async (
           testcases?.sample[i].input,
           lang
         );
-        output = output.replace(/\n+$/, "");
+        output = output.replace(/[\n\r]+$/, "");
         let testCaseOutput = {
           expectedOutput: testcases?.sample[i].output,
           actualOutput: output,
@@ -197,7 +197,7 @@ const challengeSubmissionService = async (
       testcases?.hidden?.map(async (testcase) => {
         try {
           let { output } = await compilerService(code, testcase.input, lang);
-          output = output.replace(/\n+$/, "");
+          output = output.replace(/[\n\r]+$/, "");
           if (output === testcase.output) {
             if (submission) score++;
             return true;

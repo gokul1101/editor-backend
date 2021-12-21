@@ -1,5 +1,4 @@
 .loader-main {
-  font-size: 62.5%;
   background: rgb(255, 255, 255);
   opacity: 0.6;
   z-index: 999;
@@ -11,7 +10,8 @@
   bottom: 0;
   right: 0;
   width: 100vw;
-  pointer-events: none;
+  pointer-events: none !important;
+  cursor: not-allowed !important;
 }
 
 #outline {

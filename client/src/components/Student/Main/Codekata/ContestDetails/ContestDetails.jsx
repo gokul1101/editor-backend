@@ -1,16 +1,22 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Male from "../../../../Images/man.png";
 import { useParams, useHistory } from "react-router-dom";
 import "./ContestDetails.css";
 import QuizImage from "../../../../Images/Quiz.png";
 import ProblemImage from "../../../../Images/problem.png";
 import Timer from "../Timer/Timer";
-import { AuthContext } from "../../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import ContestCard from "./ContestCard/ContestCard";
 import helperService from "../../../../../services/helperService";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
+import { Dialog } from "@material-ui/core";
+import DialogBox from "../../../../Reducer/DialogBox/DialogBox";
 
 const ContestDetails = ({ setSideToggle }) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [loader, showLoader, hideLoader] = useLoader();
   const { id } = useParams();
   const history = useHistory();
   const [authState] = useContext(AuthContext);
@@ -34,6 +40,13 @@ const ContestDetails = ({ setSideToggle }) => {
     history.push(`/codekata/${id}/${type}/${_id}`);
   };
   const sumbitContest = async () => {
+    try {
+      setOpen(false);
+      showLoader();
+    } catch (error) {
+      hideLoader();
+    }
+    return;
     let payload = {
       user_id: authState?.user?._id,
       contest_id: authState?.contest?.contest._id,
@@ -63,6 +76,7 @@ const ContestDetails = ({ setSideToggle }) => {
 
   return (
     <div className="container-fluid dashboard" style={{ overflow: "hidden" }}>
+      {loader}
       <div className="d-flex">
         <div
           className="back-btn mr-auto mt-3 ml-4"
@@ -106,10 +120,15 @@ const ContestDetails = ({ setSideToggle }) => {
         </div>
         <CustomButton
           className="btn-hover color-11 mt-2"
-          onClickHandler={sumbitContest}
+          onClickHandler={handleOpen}
         >
           <i className="fas fa-rocket pr-2 pl-2"></i> SUBMIT CONTEST
         </CustomButton>
+        <DialogBox
+          open={open}
+          handleClose={handleClose}
+          handleOpen={sumbitContest}
+        />
       </div>
       <div className="d-flex">
         <div
