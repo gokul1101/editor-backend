@@ -85,7 +85,7 @@ const AddUser = (props) => {
       return;
     }
     if(user.regno.length !== 7){
-      props.snackBar("Register Number is Incorrect","error");
+      props.snackBar("Please check the register Number","error");
       return;
     }
     if(user.stream_id === ""){

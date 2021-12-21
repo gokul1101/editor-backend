@@ -87,6 +87,26 @@ const TestCase = (props) => {
       });
     }
   };
+
+//edit and delete the testcases
+const sampleTestCaseEdit = () => {
+  setOpen(true);
+}
+const sampleTestCaseDelete = () => {
+  props.snackBar("Selected Sample Test case is deleted successfully","success")
+}
+
+const hiddenTestCaseEdit = () => {
+  setOpen(true);
+}
+const hiddenTestCaseDelete = () => {
+  props.snackBar("Selected Hidden Test case is deleted successfully","success")
+}
+
+
+
+
+
   useEffect(() => {
     setTestcases(
       authState?.challenge?.testcases?.testcases || {
@@ -135,8 +155,8 @@ const TestCase = (props) => {
               >
                 <div className="edit-delete d-flex ml-auto p-2 m-2">
                   
-                  <i class="fas fa-edit"></i>
-                  <i class="fas fa-trash ml-2 "></i>
+                  <i class="fas fa-edit" onClick={sampleTestCaseEdit}></i>
+                  <i class="fas fa-trash ml-2 " onClick={sampleTestCaseDelete}></i>
                 </div>
                 <div className="input">
                   <h4 className="font-weight-bolder text-highlight">Input</h4>
@@ -172,8 +192,8 @@ const TestCase = (props) => {
            >
              <div className="edit-delete d-flex ml-auto p-2 m-2">
                
-               <i class="fas fa-edit"></i>
-               <i class="fas fa-trash ml-2 "></i>
+               <i class="fas fa-edit" onClick={hiddenTestCaseEdit}></i>
+               <i class="fas fa-trash ml-2 " onClick={hiddenTestCaseDelete}></i>
              </div>
              <div className="input">
                <h4 className="font-weight-bolder text-highlight">Input</h4>
