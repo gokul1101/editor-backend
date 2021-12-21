@@ -18,7 +18,7 @@ const ContestDetails = ({ setSideToggle }) => {
     const checkQuestion = (question) => question === name;
     if (type === "problem") {
       let completedChallenges = JSON.parse(
-        localStorage.getItem("problems") || "[]"
+        localStorage.getItem("challenges") || "[]"
       );
       if (completedChallenges.some(checkQuestion)) {
         return;
@@ -44,7 +44,7 @@ const ContestDetails = ({ setSideToggle }) => {
       return JSON.parse(localStorage.getItem(quiz?.name) || "[]");
     });
     payload.challenges = contestChallenges.map((challenge) => {
-      return JSON.parse(localStorage.getItem(challenge?.name) || "[]");
+      return JSON.parse(localStorage.getItem(challenge?.name) || "{}");
     });
     try {
       const response = await helperService.createSubmission(

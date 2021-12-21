@@ -26,30 +26,39 @@ const createSubmissionService = async (submissionDetails) => {
         code: 403,
         message: `Contest already submitted.`,
       });
-    // const reducer = (previousValue, currentValue) =>
-    //   previousValue + currentValue;
+    const reducer = (previousValue, currentValue) =>
+      previousValue + currentValue;
     let total_score = 0;
-    // let quizScore = await Promise.all(
-    //   quizzes.map(async (quiz) => {
+    let quizScore = await Promise.all(
+      quizzes.map(async (quiz) => {
+        try {
+          const { score } = await quizSubmissionService(quiz);
+          return score;
+        } catch (err) {
+          console.log(err);
+        }
+        return 0;
+      })
+    );
+    total_score += quizScore.reduce(reducer);
+    // let challengeScore = await Promise.all(
+    //   challenges.map(async (challenge) => {
     //     try {
-    //       const { score } = await quizSubmissionService(quiz);
+    //       const { score } = await challengeSubmissionService(
+    //         challenge.question_id,
+    //         challenge.code,
+    //         challenge.lang,
+    //         true
+    //       );
     //       return score;
     //     } catch (err) {
     //       console.log(err);
     //     }
+
     //     return 0;
     //   })
     // );
-    // total_score += quizScore.reduce(reducer);
-    // challenges.map(async (challenge) => {
-    //   challenge.submission = true;
-    //   try {
-    //     const { score } = await challengeSubmissionService(challenge);
-    //     total_score += score;
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // });
+    // total_score += challengeScore.reduce(reducer);
     let newSubmission = new Submission({
       user_id,
       contest_id,
@@ -156,7 +165,7 @@ const challengeSubmissionService = async (
           testcases?.sample[i].input,
           lang
         );
-        output = output.replace(/\n+$/, "");
+        output = output.replace(/[\n\r]+$/, "");
         let testCaseOutput = {
           expectedOutput: testcases?.sample[i].output,
           actualOutput: output,
@@ -197,7 +206,7 @@ const challengeSubmissionService = async (
       testcases?.hidden?.map(async (testcase) => {
         try {
           let { output } = await compilerService(code, testcase.input, lang);
-          output = output.replace(/\n+$/, "");
+          output = output.replace(/[\n\r]+$/, "");
           if (output === testcase.output) {
             if (submission) score++;
             return true;

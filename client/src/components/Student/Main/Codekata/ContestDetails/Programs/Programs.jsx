@@ -12,7 +12,7 @@ import GoBack from "../../../../../Reducer/GoBack/GoBack";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 const Programs = (props) => {
   let history = useHistory();
-  const { questionId } = useParams();
+  const { id, questionId } = useParams();
   const [authState] = useContext(AuthContext);
   let [difficulty, setDifficulty] = useState("");
   const findChallenge = () => {
@@ -26,8 +26,8 @@ const Programs = (props) => {
   const [themeName, setThemeName] = useState("nord_dark");
   const [language, setLanguage] = useState("java");
   const [code, setCode] = useState(
-    sessionStorage.getItem(challenge?.name)
-      ? JSON.parse(sessionStorage.getItem(challenge?.name))?.code
+    localStorage.getItem(challenge?.name)
+      ? JSON.parse(localStorage.getItem(challenge?.name))?.code
       : template[language]
   );
   const [isError, setIsError] = useState(true);
@@ -56,7 +56,7 @@ const Programs = (props) => {
       setTabClick(false);
       setIsLoading(true);
       let parsedCode = parseCode(code);
-      sessionStorage.setItem(
+      localStorage.setItem(
         challenge?.name,
         JSON.stringify({ code, lang: language })
       );
@@ -79,7 +79,12 @@ const Programs = (props) => {
       setIsLoading(false);
     }
   };
-  const submitChallenge = () => {}
+  const submitChallenge = () => {
+    let challenges = JSON.parse(localStorage.getItem("challenges") || "[]");
+    challenges.push(challenge?.name);
+    localStorage.setItem("challenges", JSON.stringify(challenges));
+    history.push(`/codekata/${id}`);
+  }
   useEffect(() => {
     setDifficulty(challenge?.difficulty_id.level);
     getTestCases();
@@ -89,7 +94,7 @@ const Programs = (props) => {
   const handleLanguage = (event) => {
     setLanguage(event.target.value);
     setCode(template[event.target.value]);
-    sessionStorage.removeItem(challenge?.name);
+    localStorage.removeItem(challenge?.name);
   };
   return (
     <>
@@ -159,6 +164,7 @@ const Programs = (props) => {
                     role="tab"
                     aria-controls="pills-problem"
                     aria-selected="true"
+                    onClick={() => setTabClick(true)}
                   >
                     Problem
                   </a>
@@ -172,6 +178,7 @@ const Programs = (props) => {
                     role="tab"
                     aria-controls="pills-submissions"
                     aria-selected="false"
+                    onClick={() => setTabClick(false)}
                   >
                     TestCase
                   </a>
