@@ -64,7 +64,7 @@ const ChallengeDashboard = (props) => {
               />
             </Route>
             <Route path={`/challenges/:id/create-testcase`} exact>
-              <TestCase />
+              <TestCase snackBar={props.snackBar}/>
             </Route>
             <Route
               exact

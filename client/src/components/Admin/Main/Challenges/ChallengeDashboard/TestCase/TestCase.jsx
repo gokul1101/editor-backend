@@ -15,6 +15,7 @@ import InputReducer from "../../../../../Reducer/InputReducer";
 import helperService from "../../../../../../services/helperService";
 import { useContext } from "react";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
+import "./TestCase.css";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -57,18 +58,18 @@ const TestCase = (props) => {
     setOpen(false);
   };
   const addTestcase = () => {
-    props.snackBar("Sucessfully added","success")
+    props.snackBar("Sucessfully added", "success");
     console.log(testcases, testcase);
     if (checked) {
       setTestcases({ ...testcases, hidden: [...testcases.hidden, testcase] });
-      setDBTestcase({...DBTestcase,hidden:[testcase]})
+      setDBTestcase({ ...DBTestcase, hidden: [testcase] });
     } else {
-      setDBTestcase({...DBTestcase,sample:[testcase]})
+      setDBTestcase({ ...DBTestcase, sample: [testcase] });
       setTestcases({ ...testcases, sample: [...testcases.sample, testcase] });
     }
   };
   const createTestcase = async () => {
-    props.snackBar("Sucessfully added","success")
+    props.snackBar("Sucessfully added", "success");
     try {
       const { data, status } = await helperService.createTestcase(
         { question_id: authState?.challenge?._id, testcase: DBTestcase },
@@ -79,11 +80,11 @@ const TestCase = (props) => {
       }
     } catch (err) {
       console.log(err);
-    }finally{
+    } finally {
       setDBTestcase({
         sample: [],
         hidden: [],
-      })
+      });
     }
   };
   useEffect(() => {
@@ -95,7 +96,7 @@ const TestCase = (props) => {
     );
   }, [authState]);
   return (
-    <div>
+    <div className="container">
       <div className="d-flex flex-column" style={{ marginTop: "40px" }}>
         <p className="text-left dash-title-category pb-2">Create Testcase</p>
         <span className="create-con-text mt-1">
@@ -114,52 +115,80 @@ const TestCase = (props) => {
         </button>
         {/* </Link> */}
       </div>
-      <h1>Sample</h1>
-      {testcases?.sample?.map((testcase) => (
-        <div class="text_hovering_cards text_hovering_cards-1 d-flex flex-wrap align-items-center justify-content-center m-1">
-          <div class="text_hovering_card text_hovering_card">
-            <div class="text_hovering_card_content">
-              <section>
-                <span class="section_left">
-                  <h3>{testcase.input}</h3>
-                  <h5>{testcase.output}</h5>
-                </span>
-                <span class="section_right">
-                  <Link
-                    to="/challenges/challenges-dashboard/create-challenge"
-                    class="card_but"
-                  >
-                    <i class="fa fa-pen"></i>
-                  </Link>
-                </span>
-              </section>
+      <h4 className="m-2 p-2 text-uppercase text-center font-weight-bolder">Sample Test Cases</h4>
+      {testcases?.sample?.length === 0 ? (
+        <div className="alert alert-primary" role="alert">
+       Till now No Sample test Case is added
+      </div>
+      ) : (
+        <div className="d-flex p-2 flex-wrap">
+          {testcases?.sample?.map((testcase) => (
+            <div className="p-2">
+              <div
+                class="card test-card p-3"
+                style={{
+                  height: "250px",
+                  width: "300px",
+                  borderBottom: "5px solid #21A366",
+                  
+                }}
+              >
+                <div className="edit-delete d-flex ml-auto p-2 m-2">
+                  
+                  <i class="fas fa-edit"></i>
+                  <i class="fas fa-trash ml-2 "></i>
+                </div>
+                <div className="input">
+                  <h4 className="font-weight-bolder text-highlight">Input</h4>
+                  <h6>{testcase.input}</h6>
+                </div>
+                <div className="output">
+                  <h4 className="font-weight-bolder text-highlight">Output</h4>
+                  <h6>{testcase.output}</h6>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
-      ))}
-      <h1>Hidden </h1>
-      {testcases?.hidden?.map((testcase) => (
-        <div class="text_hovering_cards text_hovering_cards-1 d-flex flex-wrap align-items-center justify-content-center m-1">
-          <div class="text_hovering_card text_hovering_card">
-            <div class="text_hovering_card_content">
-              <section>
-                <span class="section_left">
-                  <h3>{testcase.input}</h3>
-                  <h5>{testcase.output}</h5>
-                </span>
-                <span class="section_right">
-                  <Link
-                    to="/challenges/challenges-dashboard/create-challenge"
-                    class="card_but"
-                  >
-                    <i class="fa fa-pen"></i>
-                  </Link>
-                </span>
-              </section>
-            </div>
-          </div>
+      )}
+
+<h4 className="m-2 p-2  text-uppercase text-center font-weight-bolder">Hidden Test Cases</h4>
+      {testcases?.hidden.length === 0 ? (
+        <div className="alert alert-primary" role="alert">
+        Till now No Hidden test Case is added
+       </div>
+      ) : (
+        <div className="d-flex flex-wrap">
+          {testcases?.hidden?.map((testcase) => (
+           <div className="p-2">
+           <div
+             class="card test-card p-3"
+             style={{
+               height: "250px",
+               width: "300px",
+               borderBottom: "5px solid #21A366",
+               
+             }}
+           >
+             <div className="edit-delete d-flex ml-auto p-2 m-2">
+               
+               <i class="fas fa-edit"></i>
+               <i class="fas fa-trash ml-2 "></i>
+             </div>
+             <div className="input">
+               <h4 className="font-weight-bolder text-highlight">Input</h4>
+               <h6>{testcase.input}</h6>
+             </div>
+             <div className="output">
+               <h4 className="font-weight-bolder text-highlight">Output</h4>
+               <h6>{testcase.output}</h6>
+             </div>
+           </div>
+         </div>
+          ))}
         </div>
-      ))}
+      )}
+
       <Dialog
         open={open}
         TransitionComponent={Transition}
