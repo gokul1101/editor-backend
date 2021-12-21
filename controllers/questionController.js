@@ -42,7 +42,7 @@ const getQuestion = async (req, res) => {
   if (type === "mcq") index = 0;
   else if (type === "problem") index = 1;
   try {
-    let response = await functions[index](id, req.user.role);
+    let response = await functions[index](id, req.user.role_id);
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting question
