@@ -30,13 +30,14 @@ const GreenCheckbox = withStyles({
 })((props) => <Checkbox color="default" {...props} />);
 let type = null;
 let oldTestcase = null;
+let testcase_id = null;
 const testcasesDefaultValue = {
   id: null,
   sample: [],
   hidden: [],
 };
 const TestCase = (props) => {
-  const [authState] = useContext(AuthContext);
+  const [authState, authDispatch] = useContext(AuthContext);
   const [update, setUpdate] = useState(false);
   const [testcases, setTestcases] = useState(testcasesDefaultValue);
   const [testcase, setTestcase] = useState({
@@ -80,6 +81,7 @@ const TestCase = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
+        console.log(testcases);
         setTestcases({
           ...testcases,
           sample: DBTestcase.sample
@@ -89,6 +91,9 @@ const TestCase = (props) => {
             ? [...testcases.hidden, { ...DBTestcase.hidden }]
             : [...testcases.hidden],
         });
+        if (data.testcase_id) {
+          testcase_id = data.testcase_id
+        }
       }
     } catch (err) {
       console.log(err);
@@ -97,7 +102,6 @@ const TestCase = (props) => {
       setOpen(false);
     }
   };
-
   //edit and delete the testcases
   const updateTestcaseHandler = (testcaseType, testcase) => {
     setOpen(true);
@@ -124,13 +128,44 @@ const TestCase = (props) => {
     }
   };
 
-  const deleteTestcaseHandler = () => {
-    props.snackBar(
-      "Selected Hidden Test case is deleted successfully",
-      "success"
-    );
+  const deleteTestcaseHandler = async (testcaseType, testcase) => {
+    try {
+      const { data, status } = await helperService.deleteTestcase(
+        {
+          type: testcaseType,
+          testcase,
+          testcase_id: authState.challenge.testcases.id || testcase_id,
+        },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 202) {
+        if (testcaseType === "sample")
+          setTestcases({
+            ...testcases,
+            sample: [
+              ...testcases[testcaseType].filter(
+                (e) => e.input !== testcase.input
+              ),
+            ],
+          });
+        else 
+          setTestcases({
+            ...testcases,
+            hidden: [
+              ...testcases[testcaseType].filter(
+                (e) => e.input !== testcase.input
+              ),
+            ],
+          });
+        props.snackBar(
+          "Selected Hidden Test case is deleted successfully",
+          "success"
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
-
   useEffect(() => {
     setTestcases(authState?.challenge?.testcases || testcasesDefaultValue);
   }, [authState]);
@@ -187,7 +222,11 @@ const TestCase = (props) => {
                 </div>
                 <div className="output">
                   <h4 className="font-weight-bolder text-highlight">Output</h4>
-                  <h6>{testcase?.output && JSON.parse(testcase?.output)}</h6>
+                  <h6>
+                    <pre>
+                      {testcase?.output && JSON.parse(testcase?.output)}
+                    </pre>
+                  </h6>
                 </div>
               </div>
             </div>
@@ -230,7 +269,11 @@ const TestCase = (props) => {
                 </div>
                 <div className="output">
                   <h4 className="font-weight-bolder text-highlight">Output</h4>
-                  <h6>{testcase?.output && JSON.parse(testcase?.output)}</h6>
+                  <h6>
+                    <pre>
+                      {testcase?.output && JSON.parse(testcase?.output)}
+                    </pre>
+                  </h6>
                 </div>
               </div>
             </div>
