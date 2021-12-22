@@ -7,6 +7,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
 
 const Contests = (props) => {
+  const limit = 3;
   const [authState, authDispatch] = useContext(AuthContext);
   const [contests, setContests] = useState({
     upcoming: [],
@@ -21,7 +22,7 @@ const Contests = (props) => {
     fetchContests(value,true)
     }
   };
-  const fetchContests = async (page = 1,past=false,limit=1) => {
+  const fetchContests = async (page = 1,past=false) => {
     try {
       const { status, data } = await helperService.getAllContests(
         {page,past,limit},
@@ -38,8 +39,8 @@ const Contests = (props) => {
         setContests({
           pastContestsCount,
           past: pastContests,
-          ongoing: [...ongoingContests],
-          upcoming: [...upcomingContests],
+          ongoing: ongoingContests.length > 0 ? [...contests.ongoing,...ongoingContests] : contests.ongoing,
+          upcoming:upcomingContests.length > 0 ?  [...contests.upcoming,...upcomingContests] : contests.upcoming,
         });
       }
     } catch (err) {
@@ -199,7 +200,7 @@ const Contests = (props) => {
       </div>
       <div>
         <Pagination
-          count={contests?.pastContestsCount / 1}
+          count={Math.round(contests?.pastContestsCount / limit)+(contests?.pastContestsCount%limit)}
           color="primary"
           variant="text"
           className="mt-5 d-flex justify-content-center"

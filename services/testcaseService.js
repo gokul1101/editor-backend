@@ -13,8 +13,8 @@ const createMultipleTestCasesService = async ({ question_id, testcase }) => {
       });
     } else {
       let testcases = {};
-      if (sample) testcases.sample = sample;
-      if (hidden) testcases.hidden = hidden;
+      testcases["sample"] = sample ? [{ ...sample }] : [];
+      testcases["hidden"] = hidden ? [{ ...hidden }] : [];
       const new_testcase = new Answer({
         question_id,
         testcases,
@@ -35,30 +35,48 @@ const createTestCaseService = async ({
   question_id,
 }) => {
   let idx = 0;
-  const { sample, hidden } = testcase;
+  let { sample, hidden } = testcase;
+  if (sample) sample = { ...sample, output: JSON.parse(sample.output) };
+  else if (hidden) hidden = { ...hidden, output: JSON.parse(hidden.output) };
   const input = ["sample", "hidden"];
-  if (hidden.length > 0) idx = 1;
+  if (hidden) idx = 1;
   try {
     let testcases = await Answer.findOne({ question_id });
+    console.log(testcases);
     if (
       !testcases ||
       (testcases && !testcases.testcases.hidden && !testcases.testcases.sample)
     ) {
       return createMultipleTestCasesService({ question_id, testcase });
     }
+    console.log([
+      ...testcases.testcases["sample"],
+      ...testcases.testcases["hidden"],
+    ]);
+    const isTestcaseAlreadyExist = [
+      ...testcases.testcases["sample"],
+      ...testcases.testcases["hidden"],
+    ].find((e) => e.input == testcase[input[idx]].input);
+    // console.log(isTestcaseAlreadyExist);
+    if (isTestcaseAlreadyExist) {
+      return Promise.reject({
+        code: 403,
+        message: `Testcase given already exist`,
+      });
+    }
     let new_testcases = null;
-    if (sample.length > 0) {
+    if (sample) {
       new_testcases = await Answer.findOneAndUpdate(
         { question_id },
         {
-          $push: { "testcases.sample": testcase[input[idx]][0] },
+          $push: { "testcases.sample": testcase[input[idx]] },
         }
       );
-    } else if (hidden.length > 0) {
+    } else if (hidden) {
       new_testcases = await Answer.findOneAndUpdate(
         { question_id },
         {
-          $push: { "testcases.hidden": testcase[input[idx]][0] },
+          $push: { "testcases.hidden": testcase[input[idx]] },
         }
       );
     }
@@ -71,9 +89,13 @@ const createTestCaseService = async ({
     return Promise.reject({ code: 500, message: "Unable to create testcases" });
   }
 };
-const updateTestCaseService = async ({ testcase_id, oldInput, testcase }) => {
-  const { sample, hidden } = testcase;
-  if (!oldInput && !sample && !hidden) {
+const updateTestCaseService = async ({
+  testcase_id,
+  oldTestcase,
+  testcase,
+  type,
+}) => {
+  if (!oldTestcase && !sample && !hidden) {
     //Not sure about err code
     return Promise.reject({
       code: 403,
@@ -81,9 +103,6 @@ const updateTestCaseService = async ({ testcase_id, oldInput, testcase }) => {
     });
   }
   try {
-    let idx = 0;
-    const input = ["sample", "hidden"];
-    if (hidden) idx = 1;
     //Fetching all testcases
     const exist_testcases = await Answer.findById(testcase_id);
     if (!exist_testcases) {
@@ -92,18 +111,31 @@ const updateTestCaseService = async ({ testcase_id, oldInput, testcase }) => {
         message: `Testcase with id ${testcase_id} not found`,
       });
     } else {
+      console.log(exist_testcases.testcases[type]);
+      const isUpdatePresent = exist_testcases.testcases[type].find(
+        (e) => e.input == testcase.input && e.output === testcase.output
+      );
+      if (isUpdatePresent) {
+        return Promise.reject({
+          code: 403,
+          message: `Given testcase already present`,
+        });
+      }
       //updating in array
-      exist_testcases["testcases"][input[idx]] = exist_testcases["testcases"][
-        input[idx]
+      exist_testcases["testcases"][type] = exist_testcases["testcases"][
+        type
       ].map((e) => {
-        if (e.input === oldInput) return testcase[input[idx]][0];
+        if (e.input === oldTestcase.input && e.output === oldTestcase.output)
+          return testcase;
         return e;
       });
-      const updated_result = await Answer.findByIdAndUpdate(testcase_id, {
-        $set: {
-          testcases: exist_testcases["testcases"],
-        },
-      });
+      console.log(exist_testcases.testcases[type]);
+      console.log(JSON.stringify(exist_testcases[type]));
+      // const updated_result = await Answer.findByIdAndUpdate(testcase_id, {
+      //   $set: {
+      //     testcases: exist_testcases["testcases"],
+      //   },
+      // });
       if (!updated_result) {
         return Promise.reject({
           code: 403,

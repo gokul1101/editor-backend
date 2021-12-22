@@ -1,6 +1,6 @@
 import axios from "axios";
-// const baseURL = "http://localhost:5000";
-const baseURL = "http://03ba-103-70-191-34.ngrok.io";
+const baseURL = "http://localhost:5000";
+// const baseURL = "http://03ba-103-70-191-34.ngrok.io";
 
 const helperService = {
   rejectionHandler: ({ response }) => {
