@@ -122,8 +122,10 @@ const ContestDetails = ({ setSideToggle }) => {
         </CustomButton>
         <DialogBox
           open={open}
+          headerMsg={"This is a warning message !"}
+          bodyMsg={`Are you sure do you want to exit from the ${authState?.contest?.contest.name}`}
           handleClose={handleClose}
-          sumbitContest={sumbitContest}
+          handleOpen={sumbitContest}
         />
       </div>
       <div className="d-flex">

@@ -9,7 +9,11 @@ import { AuthContext } from "../../../../../../contexts/AuthContext";
 import helperService from "../../../../../../services/helperService";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import GoBack from "../../../../../Reducer/GoBack/GoBack";
+import DialogBox from "../../../../../Reducer/DialogBox/DialogBox";
 const Quiz = ({ setSideToggle }) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const location = useParams();
   const history = useHistory();
   const [authState] = useContext(AuthContext);
@@ -95,6 +99,9 @@ const Quiz = ({ setSideToggle }) => {
         <div className="mr-auto mt-3 ml-4">
           <GoBack />
         </div>
+        <div className="mr-auto">
+          <p className="text-left mb-0 mt-4 problem-article">{quiz?.name}</p>
+        </div>
         <div className="user-info position-relative">
           <div className="d-flex mx-4 pt-3 user-det justify-content-end">
             <div className="gender-info mr-3">
@@ -109,10 +116,6 @@ const Quiz = ({ setSideToggle }) => {
       </div>
       <div className="d-flex p-2" style={{ marginTop: "40px" }}>
         <div className="col-md-8 p-3 pl-5">
-          <p className="text-left dash-title-category">
-            ROOM CODE : <span className="room-code p-2">{location.id}</span>
-          </p>
-          <p className="text-left problem-article">{quiz?.name}</p>
           <div className="col p-0">
             <div className="col question-outoff p-0">
               <span className="question-order p-2 bg-dark text-white">
@@ -132,9 +135,9 @@ const Quiz = ({ setSideToggle }) => {
             <div className="d-flex">
               <div className="numberCircle ml-3">{currentQuestionNumber}</div>
               <div className="question-up ml-3">
-                <span className="span-question font-weight-bolder">
+                <pre className="span-question font-weight-bolder">
                   {currentQuestion?.statement}
-                </span>
+                </pre>
               </div>
             </div>
             <div className="d-flex flex-column align-items-center justify-content-center mt-3">
@@ -162,11 +165,11 @@ const Quiz = ({ setSideToggle }) => {
             {!isLast ? (
               <div className="mt-2 d-flex justify-content-end mr-4">
                 <CustomButton
-                  className="btn-hover color-11 mt-3"
+                  className="btn-hover color-11"
                   onClickHandler={handleNext}
                   disabled={isLast}
                 >
-                  <i className="fas fa-forward pr-2 pl-2"></i> NEXT
+                  <i className="fas fa-forward px-2"></i> NEXT
                 </CustomButton>
               </div>
             ) : null}
@@ -194,10 +197,10 @@ const Quiz = ({ setSideToggle }) => {
                 <span className="timer-hand mr-2 ml-3 font-weight-bolder">
                   Hours
                 </span>
-                <span className="timer-hand mr-2 font-weight-bolder">
+                <span className="timer-hand mr-2 ml-3 font-weight-bolder">
                   Minutes
                 </span>
-                <span className="timer-hand mr-2 font-weight-bolder">
+                <span className="timer-hand mr-2 ml-3 font-weight-bolder">
                   Seconds
                 </span>
               </div>
@@ -227,10 +230,17 @@ const Quiz = ({ setSideToggle }) => {
             <div className="d-flex justify-content-end mt-2">
               <CustomButton
                 className="btn-hover color-11 mt-3"
-                onClickHandler={submitQuiz}
+                onClickHandler={handleOpen}
               >
                 <i className="fas fa-rocket pr-2 pl-2"></i> SUBMIT QUIZ
               </CustomButton>
+              <DialogBox
+                headerMsg={"This is a warning message !"}
+                bodyMsg={`Are you sure do you want to exit from the ${quiz?.name}`}
+                open={open}
+                handleClose={handleClose}
+                handleOpen={submitQuiz}
+              />
             </div>
           </div>
         </div>
