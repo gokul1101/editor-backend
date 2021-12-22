@@ -51,21 +51,28 @@ const Programs = (props) => {
       setTestCases(testcases || {});
     } catch (err) {}
   };
+  const setCodeInLocal = (code) => {
+    let parsedCode = parseCode(code);
+    localStorage.setItem(
+      challenge?.name,
+      JSON.stringify({
+        question_id: challenge?._id,
+        code: parsedCode,
+        lang: language,
+      })
+    );
+    return parsedCode;
+  };
   const compile = async () => {
     try {
       setTabClick(false);
       setIsLoading(true);
-      let parsedCode = parseCode(code);
-      localStorage.setItem(
-        challenge?.name,
-        JSON.stringify({ code, lang: language })
-      );
+      let parsedCode = setCodeInLocal(code);
       const { status, data } = await helperService.runCode(
         { id: challenge?._id, code: parsedCode, lang: language },
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 200) {
-        console.log(data);
         if (data?.errors) setIsError(true);
         else setIsError(false);
         if (data?.err) setErrors(data?.err);
@@ -80,11 +87,12 @@ const Programs = (props) => {
     }
   };
   const submitChallenge = () => {
+    setCodeInLocal(code);
     let challenges = JSON.parse(localStorage.getItem("challenges") || "[]");
     challenges.push(challenge?.name);
     localStorage.setItem("challenges", JSON.stringify(challenges));
     history.push(`/codekata/${id}`);
-  }
+  };
   useEffect(() => {
     setDifficulty(challenge?.difficulty_id.level);
     getTestCases();
@@ -157,7 +165,9 @@ const Programs = (props) => {
               >
                 <li className="nav-item program-item" role="presentation">
                   <a
-                    className={`nav-link ${tabClick? "active" : ""} program-link`}
+                    className={`nav-link ${
+                      tabClick ? "active" : ""
+                    } program-link`}
                     id="pills-problem-tab"
                     data-toggle="pill"
                     href="#pills-problem"
@@ -171,7 +181,9 @@ const Programs = (props) => {
                 </li>
                 <li className="nav-item program-item" role="presentation">
                   <a
-                    className={`nav-link ${!tabClick? "active" : ""} program-link`}
+                    className={`nav-link ${
+                      !tabClick ? "active" : ""
+                    } program-link`}
                     id="pills-submissions-tab"
                     data-toggle="pill"
                     href="#pills-submissions"
@@ -186,7 +198,7 @@ const Programs = (props) => {
               </ul>
               <div className="tab-content p-2" id="pills-tabContent">
                 <div
-                  className={`tab-pane fade ${tabClick? "show active" : ""}`}
+                  className={`tab-pane fade ${tabClick ? "show active" : ""}`}
                   id="pills-problem"
                   role="tabpanel"
                   aria-labelledby="pills-problem-tab"
@@ -259,7 +271,7 @@ const Programs = (props) => {
                 </div>
                 {/* /TESTCASE/ */}
                 <div
-                  className={`tab-pane fade ${!tabClick? "show active" : ""}`}
+                  className={`tab-pane fade ${!tabClick ? "show active" : ""}`}
                   id="pills-submissions"
                   role="tabpanel"
                   aria-labelledby="pills-submissions-tab"
@@ -283,11 +295,11 @@ const Programs = (props) => {
                 onChangeHandler={(value) => setCode(value)}
                 value={code}
               />
-              <div className="mt-3 d-flex justify-content-end">                
+              <div className="mt-3 d-flex justify-content-end">
                 <CustomButton
                   className="btn-hover color-11 mt-2 mr-2"
                   onClickHandler={compile}
-                  >
+                >
                   <i className="fas fa-code px-2"></i>RUN CODE
                 </CustomButton>
                 <CustomButton

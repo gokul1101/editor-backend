@@ -41,24 +41,23 @@ const createSubmissionService = async (submissionDetails) => {
       })
     );
     total_score += quizScore.reduce(reducer);
-    // let challengeScore = await Promise.all(
-    //   challenges.map(async (challenge) => {
-    //     try {
-    //       const { score } = await challengeSubmissionService(
-    //         challenge.question_id,
-    //         challenge.code,
-    //         challenge.lang,
-    //         true
-    //       );
-    //       return score;
-    //     } catch (err) {
-    //       console.log(err);
-    //     }
-
-    //     return 0;
-    //   })
-    // );
-    // total_score += challengeScore.reduce(reducer);
+    let challengeScore = await Promise.all(
+      challenges.map(async (challenge) => {
+        try {
+          const { score } = await challengeSubmissionService(
+            challenge.question_id,
+            challenge.code,
+            challenge.lang,
+            true
+          );
+          return score;
+        } catch (err) {
+          console.log(err);
+        }
+        return 0;
+      })
+    );
+    total_score += challengeScore.reduce(reducer);
     let newSubmission = new Submission({
       user_id,
       contest_id,
@@ -149,6 +148,7 @@ const challengeSubmissionService = async (
   lang,
   submission = false
 ) => {
+  if(submission && !question_id) return Promise.resolve({ code: 200, score: 0 }); 
   let complilationError = false,
     isSampleFailed = false;
   score = 0;
