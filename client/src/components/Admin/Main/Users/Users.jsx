@@ -8,13 +8,13 @@ const Users = (props) => {
   console.log(props);
   return (
     <div className="container-fluid add-user-container mt-4">
-      <ul class="list-group d-flex  p-2 mt-3 mb-3">
+      <ul className="list-group d-flex  p-2 mt-3 mb-3">
         <div className="d-flex">
           <div className=" mr-auto">
             <GoBack />
           </div>
           <div className="add-user-nav d-flex">
-            <li class="list-group-item user-group-pill">
+            <li className="list-group-item user-group-pill">
               <NavLink
                 exact
                 className="user-navlink pr-3 pl-3 m-2 btn nav-button d-flex justify-content-center align-items-center"

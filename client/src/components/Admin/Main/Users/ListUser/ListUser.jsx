@@ -299,7 +299,7 @@ const ListUser = (props) => {
 
             <div>
               <button className="pr-4 pl-4 mr-2 d-load-btn ml-3">
-                <i class="fas fa-download"></i>
+                <i className="fas fa-download"></i>
                 <span className="ml-2 font-weight-bolder">
                   Download Details
                 </span>
@@ -417,11 +417,11 @@ const ListUser = (props) => {
                         className="pr-4 pl-4 mr-2 edit-btn "
                         onClick={() => editUserDetail(e)}
                       >
-                        <i class="fas fa-pencil-alt"></i>
+                        <i className="fas fa-pencil-alt"></i>
                         <span className="ml-2">Edit</span>
                       </button>
                       <button className="pr-4 pl-4 delete-btn" disabled>
-                        <i class="fas fa-trash"></i>
+                        <i className="fas fa-trash"></i>
                         <span className="ml-2">Delete</span>
                       </button>
                     </div>

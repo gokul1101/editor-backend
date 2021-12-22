@@ -164,7 +164,7 @@ const TestCase = (props) => {
           {testcases?.sample?.map((testcase) => (
             <div className="p-2">
               <div
-                class="card test-card p-3"
+                className="card test-card p-3"
                 style={{
                   height: "250px",
                   width: "300px",
@@ -173,11 +173,11 @@ const TestCase = (props) => {
               >
                 <div className="edit-delete d-flex ml-auto p-2 m-2">
                   <i
-                    class="fas fa-edit"
+                    className="fas fa-edit"
                     onClick={() => updateTestcaseHandler("sample", testcase)}
                   ></i>
                   <i
-                    class="fas fa-trash ml-2 "
+                    className="fas fa-trash ml-2 "
                     onClick={() => deleteTestcaseHandler("sample", testcase)}
                   ></i>
                 </div>
@@ -187,7 +187,11 @@ const TestCase = (props) => {
                 </div>
                 <div className="output">
                   <h4 className="font-weight-bolder text-highlight">Output</h4>
-                  <h6>{testcase?.output && JSON.parse(testcase?.output)}</h6>
+                  <h6>
+                    <pre>
+                      {testcase?.output && JSON.parse(testcase?.output)}
+                    </pre>
+                  </h6>
                 </div>
               </div>
             </div>
@@ -207,7 +211,7 @@ const TestCase = (props) => {
           {testcases?.hidden?.map((testcase) => (
             <div className="p-2">
               <div
-                class="card test-card p-3"
+                className="card test-card p-3"
                 style={{
                   height: "250px",
                   width: "300px",
@@ -216,11 +220,11 @@ const TestCase = (props) => {
               >
                 <div className="edit-delete d-flex ml-auto p-2 m-2">
                   <i
-                    class="fas fa-edit"
+                    className="fas fa-edit"
                     onClick={() => updateTestcaseHandler("hidden", testcase)}
                   ></i>
                   <i
-                    class="fas fa-trash ml-2 "
+                    className="fas fa-trash ml-2 "
                     onClick={() => deleteTestcaseHandler("hidden", testcase)}
                   ></i>
                 </div>
@@ -230,7 +234,11 @@ const TestCase = (props) => {
                 </div>
                 <div className="output">
                   <h4 className="font-weight-bolder text-highlight">Output</h4>
-                  <h6>{testcase?.output && JSON.parse(testcase?.output)}</h6>
+                  <h6>
+                    <pre>
+                      {testcase?.output && JSON.parse(testcase?.output)}
+                    </pre>
+                  </h6>
                 </div>
               </div>
             </div>

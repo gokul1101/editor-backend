@@ -39,14 +39,14 @@ const ErrorLogs = () => {
             NO. OF LOGS
           </div>
           <div className="col-md-2 text-center content-nav-title">
-            <i class="fas fa-check-circle"></i>
+            <i className="fas fa-check-circle"></i>
           </div>
           <div className="col-md-2 text-center content-nav-title">
-            <i class="fas fa-times-circle"></i>
+            <i className="fas fa-times-circle"></i>
           </div>
           <div className="col-md-2 text-center content-nav-title">
             SHOW
-            {/* <i class="fas fa-external-link-alt"></i> */}
+            {/* <i className="fas fa-external-link-alt"></i> */}
           </div>
         </div>
         <div className="d-flex border-top border-bottom mt-1 p-2 mb-1">
@@ -57,7 +57,7 @@ const ErrorLogs = () => {
           <div className="col-md-2 text-center content-nav-title">100</div>
           <div className="col-md-2 text-center content-nav-title">80</div>
           <div className="col-md-2 text-center content-nav-title">
-            <i class="fas fa-external-link-alt" onClick={handleClickOpen}></i>
+            <i className="fas fa-external-link-alt" onClick={handleClickOpen}></i>
           </div>
           <Dialog
             open={open}

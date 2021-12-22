@@ -212,8 +212,8 @@ const Contests = (props) => {
       <div>
         <Pagination
           count={
-            Math.round(contests?.pastContestsCount / limit) +
-            (contests?.pastContestsCount % limit)
+            Math.floor(contests?.pastContestsCount / limit) +
+            (contests?.pastContestsCount % limit !== 0 ? 1 : 0)
           }
           color="primary"
           variant="text"

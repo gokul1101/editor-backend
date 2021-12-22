@@ -102,7 +102,7 @@ const ContestDetails = ({ setSideToggle }) => {
         </div>
         <div className="mt-3 p-2">
           <h3 className="font-weight-bolder color-highlight">
-            <i class="fas fa-star"></i>Max Score :{" "}
+            <i className="fas fa-star"></i>Max Score :{" "}
             <span className="max-score p-2">{40}</span>
           </h3>
         </div>

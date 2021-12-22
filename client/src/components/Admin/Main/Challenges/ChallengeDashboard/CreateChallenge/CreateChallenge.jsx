@@ -14,38 +14,38 @@ const CreateChallenge = (props) => {
   const history = useHistory();
   const { id } = useParams();
   const [challenge, setChallenge] = useState({});
+  const [difficultyId, setDifficultyId] = useState("");
   const createChallenge = async () => {
-    console.log(challenge);
-    if (challenge.name === undefined) {
+    if (challenge?.name?.length === 0) {
       props.snackBar("Challenge Name is Empty", "error");
       return;
     }
-    if (challenge.description === undefined) {
+    if (challenge?.description?.length === 0) {
       props.snackBar("Challenge Description is Empty", "error");
       return;
     }
-    if (challenge.statement === undefined) {
+    if (challenge?.statement?.length === 0) {
       props.snackBar("Challenge Statement is Empty", "error");
       return;
     }
 
-    if (challenge.input_format === undefined) {
+    if (challenge?.input_format?.length === 0) {
       props.snackBar("Input is Empty", "error");
       return;
     }
-    if (challenge.output_format === undefined) {
+    if (challenge?.output_format?.length === 0) {
       props.snackBar("Output is Empty", "error");
       return;
     }
-    if (challenge.constraints === undefined) {
+    if (challenge?.constraints?.length === 0) {
       props.snackBar("contraints is Empty", "error");
       return;
     }
-    if (challenge.difficulty_id === undefined) {
+    if (!challenge?.difficulty_id) {
       props.snackBar("Difficulty is not Selected", "error");
       return;
     }
-    if (challenge.max_score === undefined) {
+    if (!challenge?.max_score || challenge.max_score < 0) {
       props.snackBar("Maximum Score is Empty", "error");
       return;
     }
@@ -82,27 +82,23 @@ const CreateChallenge = (props) => {
     }
   };
   useEffect(() => {
-    console.log(props);
     setChallenge({
-      name: authState?.challenge?.name,
+      name: authState?.challenge?.name ?? "",
       type_id: "problem",
-      contest_id: authState?.challenge?._id,
-      statement: authState?.challenge?.statement,
-      description: authState?.challenge?.description,
-      input_format: authState?.challenge?.input_format,
-      output_format: authState?.challenge?.output_format,
-      constraints: authState?.challenge?.constraints,
-      difficulty_id: authState?.challenge?.difficulty_id.level,
+      contest_id: authState?.challenge?._id ?? "",
+      statement: authState?.challenge?.statement ?? "",
+      description: authState?.challenge?.description ?? "",
+      input_format: authState?.challenge?.input_format ?? "",
+      output_format: authState?.challenge?.output_format ?? "",
+      constraints: authState?.challenge?.constraints ?? "",
+      difficulty_id: authState?.challenge?.difficulty_id?.level,
       max_score: authState?.challenge?.max_score,
     });
-
+    setDifficultyId(authState?.challenge?.difficulty_id?.level)
     return () => {
       if (authState?.challenge) setChallenge({});
     };
   }, [authState]);
-  useEffect(() => {
-    console.log(props);
-  }, [challenge]);
   return (
     <div
       className="container-fluid"
@@ -121,7 +117,7 @@ const CreateChallenge = (props) => {
               label="Challenge name"
               name="Challenge name"
               type="text"
-              value={challenge.name}
+              value={challenge?.name}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -131,28 +127,7 @@ const CreateChallenge = (props) => {
             />
           </div>
         </div>
-        <div className="d-flex mt-2 mb-2">
-          <span className="contest-line-height mr-2 col-md-3">
-            Description <span className="contest-star">*</span>
-          </span>
-          <div className="col-md-7">
-            <InputReducer
-              fullWidth
-              id="outlined-multiline-static"
-              label="Enter Description"
-              multiline
-              rows={10}
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={challenge.description}
-              onClickHandler={(value) =>
-                setChallenge({ ...challenge, description: value })
-              }
-            />
-          </div>
-        </div>
+        
         <div className="d-flex mt-2 mb-2">
           <span className="contest-line-height mr-2 col-md-3">
             Problem Statement <span className="contest-star">*</span>
@@ -221,6 +196,28 @@ const CreateChallenge = (props) => {
         </div>
         <div className="d-flex mt-2 mb-2">
           <span className="contest-line-height mr-2 col-md-3">
+            Description <span className="contest-star">*</span>
+          </span>
+          <div className="col-md-7">
+            <InputReducer
+              fullWidth
+              id="outlined-multiline-static"
+              label="Enter Description"
+              multiline
+              rows={10}
+              variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={challenge.description}
+              onClickHandler={(value) =>
+                setChallenge({ ...challenge, description: value })
+              }
+            />
+          </div>
+        </div>
+        <div className="d-flex mt-2 mb-2">
+          <span className="contest-line-height mr-2 col-md-3">
             Constraints <span className="contest-star">*</span>
           </span>
           <div className="col-md-7">
@@ -244,14 +241,15 @@ const CreateChallenge = (props) => {
             Difficulty <span className="contest-star">*</span>
           </span>
           <div className="col-md-7">
+            {console.log(difficultyId)}
             <SelectReducer
-              value={challenge.difficulty_id}
-              defaultValue={challenge.difficulty_id}
+              value={difficultyId}
+              defaultValue={difficultyId}
               className="w-100"
               array={["easy", "medium", "hard"]}
               name="Difficulty Level"
               handleSelect={(e) => {
-                console.log(e.target.value);
+                setDifficultyId(e.target.value)
                 setChallenge({ ...challenge, difficulty_id: e.target.value });
               }}
             />

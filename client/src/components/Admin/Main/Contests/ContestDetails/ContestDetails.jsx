@@ -15,8 +15,8 @@ const ContestDetails = (props) => {
   console.log(props);
   return (
     <>
-      <ul class="container-fluid list-group d-flex flex-row py-2 my-3 border">
-        <li class="list-group-item user-group-pill">
+      <ul className="container-fluid list-group d-flex flex-row py-2 my-3 border">
+        <li className="list-group-item user-group-pill">
           <NavLink
             exact
             className="edit-contest-li pr-3 pl-3 mt-2 mb-2"

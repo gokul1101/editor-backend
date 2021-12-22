@@ -86,7 +86,7 @@ const Login = (props) => {
               <p className="text-muted">Learn , code , repeat</p>
 
               <div className="input-field mb-2">
-              <i class="fas fa-id-card-alt"></i>  
+              <i className="fas fa-id-card-alt"></i>  
                 <input
                   type="text"
                   placeholder="Register number"
@@ -114,7 +114,7 @@ const Login = (props) => {
               <h2 className="title">Admin Sign in</h2>
               <p className="highlight">Learn , Code , Repeat</p>
               <div className="input-field">
-              <i class="fas fa-id-card-alt"></i>
+              <i className="fas fa-id-card-alt"></i>
                 <input
                   type="text"
                   placeholder="Register no"

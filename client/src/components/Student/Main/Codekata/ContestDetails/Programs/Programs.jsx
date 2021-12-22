@@ -247,17 +247,21 @@ const Programs = (props) => {
                     </span>
                     <div className="example-input mt-2">
                       <span className="font-weight-bolder ip-highlight">
-                        input format :{" "}
+                        input format :
                       </span>{" "}
                       <br />
-                      <p className="mt-2">{challenge?.input_format}</p>
+                      <p className="mt-2">
+                        <pre>{challenge?.input_format}</pre>
+                      </p>
                     </div>
                     <div className="example-output mt-2">
                       <span className="font-weight-bolder op-highlight">
-                        output format :{" "}
+                        output format :
                       </span>{" "}
                       <br />
-                      <p className="mt-2 ">{challenge?.output_format}</p>
+                      <p className="mt-2 ">
+                        <pre>{challenge?.output_format}</pre>
+                      </p>
                     </div>
                   </div>
                   <div className="hints mt-2 d-flex flex-column">
@@ -265,7 +269,9 @@ const Programs = (props) => {
                       Description :
                     </span>
                     <div className="problem-statement text-justify mt-2">
-                      <p>{challenge?.description}</p>
+                      <p>
+                        <pre>{challenge?.description}</pre>
+                      </p>
                     </div>
                   </div>
                 </div>
