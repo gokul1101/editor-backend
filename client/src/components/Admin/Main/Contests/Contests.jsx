@@ -16,16 +16,16 @@ const Contests = (props) => {
     pastContestsCount: 0,
   });
   const [page, setPage] = useState(1);
-  const handlePagination = (e,value) => {
-    if(page !== value){
-    setPage(value)
-    fetchContests(value,true)
+  const handlePagination = (e, value) => {
+    if (page !== value) {
+      setPage(value);
+      fetchContests(value, true);
     }
   };
-  const fetchContests = async (page = 1,past=false) => {
+  const fetchContests = async (page = 1, past = false) => {
     try {
       const { status, data } = await helperService.getAllContests(
-        {page,past,limit},
+        { page, past, limit },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
@@ -39,8 +39,14 @@ const Contests = (props) => {
         setContests({
           pastContestsCount,
           past: pastContests,
-          ongoing: ongoingContests.length > 0 ? [...contests.ongoing,...ongoingContests] : contests.ongoing,
-          upcoming:upcomingContests.length > 0 ?  [...contests.upcoming,...upcomingContests] : contests.upcoming,
+          ongoing:
+            ongoingContests.length > 0
+              ? [...contests.ongoing, ...ongoingContests]
+              : contests.ongoing,
+          upcoming:
+            upcomingContests.length > 0
+              ? [...contests.upcoming, ...upcomingContests]
+              : contests.upcoming,
         });
       }
     } catch (err) {
@@ -200,11 +206,14 @@ const Contests = (props) => {
       </div>
       <div>
         <Pagination
-          count={Math.round(contests?.pastContestsCount / limit)+(contests?.pastContestsCount%limit)}
+          count={
+            Math.floor(contests?.pastContestsCount / limit) +
+            (contests?.pastContestsCount % limit !== 0 ? 1 : 0)
+          }
           color="primary"
           variant="text"
           className="mt-5 d-flex justify-content-center"
-          onChange={(e, value) => handlePagination(e,value)}
+          onChange={(e, value) => handlePagination(e, value)}
         />
       </div>
     </div>

@@ -99,7 +99,7 @@ const updateTestCaseService = async ({
     //Not sure about err code
     return Promise.reject({
       code: 403,
-      message: "Invalid parameters for updating testcase",
+      message: "Invalid parameters",
     });
   }
   try {
@@ -111,7 +111,6 @@ const updateTestCaseService = async ({
         message: `Testcase with id ${testcase_id} not found`,
       });
     } else {
-      console.log(exist_testcases.testcases[type]);
       const isUpdatePresent = exist_testcases.testcases[type].find(
         (e) => e.input == testcase.input && e.output === testcase.output
       );
@@ -129,13 +128,11 @@ const updateTestCaseService = async ({
           return testcase;
         return e;
       });
-      console.log(exist_testcases.testcases[type]);
-      console.log(JSON.stringify(exist_testcases[type]));
-      // const updated_result = await Answer.findByIdAndUpdate(testcase_id, {
-      //   $set: {
-      //     testcases: exist_testcases["testcases"],
-      //   },
-      // });
+      const updated_result = await Answer.findByIdAndUpdate(testcase_id, {
+        $set: {
+          testcases: exist_testcases["testcases"],
+        },
+      });
       if (!updated_result) {
         return Promise.reject({
           code: 403,
@@ -143,7 +140,7 @@ const updateTestCaseService = async ({
         });
       } else {
         return Promise.resolve({
-          code: 201,
+          code: 200,
           message: `Testcase update successfully`,
         });
       }
@@ -177,18 +174,17 @@ const getTestCasesService = async (question_id, role) => {
     return Promise.reject({ code: 500, message: "Unable to get testcases" });
   }
 };
-const deleteTestCaseService = async (question_id) => {
+const deleteTestCaseService = async ({ type, testcase, testcase_id }) => {
   try {
-    const exist_testcases = await Answer.findOne({ question_id });
+    const exist_testcases = await Answer.findById({
+      testcase_id,
+    });
     if (!exist_testcases) {
       return Promise.reject({ code: 404, message: "No testcases found" });
     }
-    exist_testcases["testcases"][input[idx]] = exist_testcases["testcases"][
-      input[idx]
-    ].filter((e) => {
-      if (e.input !== oldInput) return testcase[input[idx]][0];
-      return e;
-    });
+    exist_testcases["testcases"][type] = exist_testcases["testcases"][
+      type
+    ].filter((e) => e.input !== testcase.input);
     const updated_result = await Answer.findByIdAndUpdate(testcase_id, {
       $set: {
         testcases: exist_testcases["testcases"],
