@@ -41,7 +41,7 @@ const Codekata = ({ setSideToggle, ...props }) => {
           type: "SET_DURATION",
           payload: contest?.session?.ends_at,
         });
-        showLoader();
+        hideLoader();
         history.push(`/codekata/${code}`);
       }
     } catch (err) {

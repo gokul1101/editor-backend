@@ -5,7 +5,7 @@ import helperService from "../../../../../services/helperService";
 import CreateChallenge from "./CreateChallenge/CreateChallenge";
 import TestCase from "./TestCase/TestCase";
 const ChallengeDashboard = (props) => {
-  console.log("At line challenge dashboard", props)
+  console.log("At line challenge dashboard", props);
   const [authState, authDispatch] = useContext(AuthContext);
   const { id } = useParams();
   const fetchChallenge = async () => {
