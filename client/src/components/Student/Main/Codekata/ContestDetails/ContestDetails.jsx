@@ -9,7 +9,6 @@ import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import ContestCard from "./ContestCard/ContestCard";
 import helperService from "../../../../../services/helperService";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
-import { Dialog } from "@material-ui/core";
 import DialogBox from "../../../../Reducer/DialogBox/DialogBox";
 
 const ContestDetails = ({ setSideToggle }) => {
@@ -40,14 +39,8 @@ const ContestDetails = ({ setSideToggle }) => {
     history.push(`/codekata/${id}/${type}/${_id}`);
   };
   const sumbitContest = async (e) => {
-    try {
-      setOpen(false);
-      showLoader();
-    } catch (error) {
-      hideLoader();
-      console.log(e);
-    }
-    return;
+    setOpen(false);
+    showLoader();
     let payload = {
       user_id: authState?.user?._id,
       contest_id: authState?.contest?.contest._id,
@@ -69,6 +62,8 @@ const ContestDetails = ({ setSideToggle }) => {
       // history.push("/codekata");
     } catch (err) {
       console.log(err);
+    } finally {
+      hideLoader();
     }
   };
   useEffect(() => {

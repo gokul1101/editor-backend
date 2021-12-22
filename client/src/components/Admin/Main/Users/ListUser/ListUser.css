@@ -80,3 +80,8 @@
   .data:nth-of-type(even) {
   background-color:#fff;
   } */
+
+
+  .highlight-text{
+    color: #21a366 !important;
+  }

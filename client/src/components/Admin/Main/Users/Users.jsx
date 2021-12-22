@@ -43,7 +43,7 @@ const Users = (props) => {
             <AddUser snackBar={props.snackBar} />
           </Route>
           <Route path="/users/list-user" exact>
-            <ListUser />
+            <ListUser snackBar={props.snackBar}/>
           </Route>
           <Route
             exact

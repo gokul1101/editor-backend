@@ -147,7 +147,9 @@ const ListUser = (props) => {
     course_id: "",
     college_id: "",
     phone_no: "",
+    batch_id: "",
   });
+  const [updateDetails, setUpdateDetails] = useState({});
   const [open, setOpen] = React.useState(false);
   //   const [posts, setPosts] = useState([]);
   //   const [page, setPage] = useState(1);
@@ -193,6 +195,7 @@ const ListUser = (props) => {
   // };
   const [authState] = useContext(AuthContext);
   const [users, setUsers] = useState([]);
+  const [regno, setRegno] = useState("");
   const [pagination, setPagination] = useState({ page: 1, limit: 10 });
   const fetchUsers = async () => {
     try {
@@ -203,6 +206,7 @@ const ListUser = (props) => {
       if (status === 200) {
         setUsers(data.users);
         hideLoader();
+        setRegno(data.users.reg_no);
       }
     } catch (err) {
       console.log(err);
@@ -223,6 +227,34 @@ const ListUser = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const updateUser = async () => {
+    console.log(updateDetails);
+    try {
+      const { status, data } = await helperService.updateUser(
+        {
+          id: user._id,
+          updateDetails,
+        },
+        {
+          headers: { Authorization: authState.user.token },
+        }
+      );
+      if (status == 200) {
+        props.snackBar("Updated Successfully", "success");
+        handleClose();
+        console.log(users, user);
+        setUsers(
+          users.map((e) => {
+            if (e.regno === user.regno) return user;
+            return e;
+          })
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       <div className="container-fluid">
@@ -231,7 +263,7 @@ const ListUser = (props) => {
           <div>
             <div className="filter d-flex">
               <i className="fas fa-filter mt-3"></i>
-              <h6 className="ml-4 font-weight-bolder mt-3 highlight-textz ">
+              <h6 className="ml-4 font-weight-bolder mt-3 highlight-text ">
                 Filter By :{" "}
               </h6>
               <div className="dropdown mx-3">
@@ -420,9 +452,9 @@ const ListUser = (props) => {
                       label="Register Name"
                       variant="outlined"
                       value={user.regno}
-                      onClickHandler={(value) =>
-                        setUser({ ...user, regno: value.trim() })
-                      }
+                      // onClickHandler={(value) =>
+                      //   setUser({ ...user, regno: value })
+                      // }
                     />
                   </div>
                   <div className="col-md-6">
@@ -431,9 +463,10 @@ const ListUser = (props) => {
                       label="Name"
                       variant="outlined"
                       value={user.name}
-                      onClickHandler={(value) =>
-                        setUser({ ...user, name: value.trim() })
-                      }
+                      onClickHandler={(value) => {
+                        setUpdateDetails({ ...updateDetails, name: value });
+                        setUser({ ...user, name: value });
+                      }}
                     />
                   </div>
                 </div>
@@ -444,9 +477,10 @@ const ListUser = (props) => {
                       label="Email"
                       variant="outlined"
                       value={user.email}
-                      onClickHandler={(value) =>
-                        setUser({ ...user, email: value.trim() })
-                      }
+                      onClickHandler={(value) => {
+                        setUpdateDetails({ ...updateDetails, email: value });
+                        setUser({ ...user, email: value });
+                      }}
                     />
                   </div>
                   <div className="col-md-6">
@@ -456,9 +490,13 @@ const ListUser = (props) => {
                       name="Gender"
                       className="w-100"
                       value={user.gender_id}
-                      onClickHandler={(value) =>
-                        setUser({ ...user, gender_id: value.trim() })
-                      }
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          gender_id: e.target.value,
+                        });
+                        setUser({ ...user, gender_id: e.target.value });
+                      }}
                     />
                   </div>
                 </div>
@@ -469,35 +507,59 @@ const ListUser = (props) => {
                       name="Stream"
                       label="Stream"
                       className="w-100"
+                      defaultValue={user.stream_id}
                       value={user.stream_id}
-                      onClickHandler={(value) =>
-                        setUser({ ...user, stream_id: value.trim() })
-                      }
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          stream_id: e.target.value,
+                        });
+                        setUser({ ...user, stream_id: e.target.value });
+                      }}
                     />
                   </div>
                   <div className="col-md-6">
                     <SelectReducer
-                      array={["CSE", "IT", "CIVIL"]}
+                      array={[
+                        "Computer Science & Engineering",
+                        "Information Technology",
+                        "Civil Engineering",
+                      ]}
                       name="Course Name"
-                      label="course"
+                      label="Course Name"
+                      defaultValue={user.course_id}
                       className="w-100"
                       value={user.course_id}
-                      onClickHandler={(value) =>
-                        setUser({ ...user, course_id: value.trim() })
-                      }
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          course_id: e.target.value,
+                        });
+                        setUser({ ...user, course_id: e.target.value });
+                      }}
                     />
                   </div>
                 </div>
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <SelectReducer
-                      array={["KSRCT", "KSRCE", "KSRIET"]}
+                      array={[
+                        "KSR College of Engineering",
+                        "KSR College of Technology",
+                        "KSR Institute for Engineering & Technology",
+                      ]}
                       name="College Name"
+                      label="college name"
                       className="w-100"
+                      defaultValue={user.college_id}
                       value={user.college_id}
-                      onClickHandler={(value) =>
-                        setUser({ ...user, college_id: value.trim() })
-                      }
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          college_id: e.target.value,
+                        });
+                        setUser({ ...user, college_id: e.target.value });
+                      }}
                     />
                   </div>
                   <div className="col-md-6">
@@ -508,32 +570,33 @@ const ListUser = (props) => {
                       type="text"
                       className="w-100"
                       value={user.phone_no}
-                      onClickHandler={(value) =>
-                        setUser({ ...user, phone_no: value.trim() })
-                      }
+                      onClickHandler={(value) => {
+                        setUpdateDetails({ ...updateDetails, phone_no: value });
+                        setUser({ ...user, phone_no: value });
+                      }}
                     />
                   </div>
                 </div>
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
-                    <TextField
-                      id="date"
-                      label="Batch starts"
-                      type="month"
-                      defaultValue="2017-05-24"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <TextField
-                      id="date"
-                      label="Batch ends"
-                      type="month"
-                      defaultValue="2017-05-24"
-                      InputLabelProps={{
-                        shrink: true,
+                    <SelectReducer
+                      array={[
+                        "2018-2022",
+                        "2019-2023",
+                        "2020-2024",
+                        "2021-2025",
+                        "2022-2026",
+                      ]}
+                      name="Batch year"
+                      label="Batch year"
+                      defaultValue={user.batch_id}
+                      value={user.batch_id}
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          batch_id: e.target.value,
+                        });
+                        setUser({ ...user, batch_id: e.target.value });
                       }}
                     />
                   </div>
@@ -541,7 +604,9 @@ const ListUser = (props) => {
               </DialogContent>
 
               <DialogActions>
-                <button className="btn btn-success">Update User</button>
+                <button className="btn btn-success" onClick={updateUser}>
+                  Update User
+                </button>
 
                 <Button onClick={handleClose} color="primary">
                   CLOSE
