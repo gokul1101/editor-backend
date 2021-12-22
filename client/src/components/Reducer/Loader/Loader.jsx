@@ -8,8 +8,8 @@ const Loader = () => {
     };
     window.addEventListener("click", handler, true);
     return () => {
-      window.removeEventListener('click',handler,true)
-    }
+      window.removeEventListener("click", handler, true);
+    };
   }, []);
   return (
     <div className="loader-main">
