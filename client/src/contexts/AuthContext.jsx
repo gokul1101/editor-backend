@@ -33,14 +33,18 @@ const AuthReducer = (state, action) => {
 
 const useLoader = () => {
   const [loading, setLoading] = useState(false);
-  console.log(loading);
+
   return [
     loading ? <Loader /> : null,
-    () => setLoading(true),
-    () => setLoading(false),
+    () => {
+      setLoading(true);
+      
+    },
+    () => {
+      setLoading(false);
+    },
   ];
 };
-
 const AuthContext = createContext(initialState);
 const AuthProvider = (props) => {
   const [authState, authDispatch] = useReducer(

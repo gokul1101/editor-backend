@@ -30,7 +30,7 @@ const DialogBox = (props) => {
             No
           </Button>
           <Button
-            onClick={props.handleOpen}
+            onClick={props.sumbitContest}
             color="primary"
             variant="contained"
           >

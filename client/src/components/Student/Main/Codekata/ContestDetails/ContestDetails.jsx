@@ -39,12 +39,13 @@ const ContestDetails = ({ setSideToggle }) => {
     }
     history.push(`/codekata/${id}/${type}/${_id}`);
   };
-  const sumbitContest = async () => {
+  const sumbitContest = async (e) => {
     try {
       setOpen(false);
       showLoader();
     } catch (error) {
       hideLoader();
+      console.log(e);
     }
     return;
     let payload = {
@@ -127,7 +128,7 @@ const ContestDetails = ({ setSideToggle }) => {
         <DialogBox
           open={open}
           handleClose={handleClose}
-          handleOpen={sumbitContest}
+          sumbitContest={sumbitContest}
         />
       </div>
       <div className="d-flex">
