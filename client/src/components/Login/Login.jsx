@@ -63,8 +63,8 @@ const Login = (props) => {
         props.snackBar(message, "success");
       }
     } catch (err) {
-      if (!err.status) props.snackBar("Network Error", "error");
-      else props.snackBar(err.message, "error");
+      // if (!err.status) props.snackBar("Network Error", "error");
+      props.snackBar(err.message, "error");
     }
   };
   React.useEffect(() => {
@@ -86,7 +86,7 @@ const Login = (props) => {
               <p className="text-muted">Learn , code , repeat</p>
 
               <div className="input-field mb-2">
-              <i className="fas fa-id-card-alt"></i>  
+                <i class="fas fa-id-card-alt"></i>
                 <input
                   type="text"
                   placeholder="Register number"
@@ -114,7 +114,7 @@ const Login = (props) => {
               <h2 className="title">Admin Sign in</h2>
               <p className="highlight">Learn , Code , Repeat</p>
               <div className="input-field">
-              <i className="fas fa-id-card-alt"></i>
+                <i class="fas fa-id-card-alt"></i>
                 <input
                   type="text"
                   placeholder="Register no"

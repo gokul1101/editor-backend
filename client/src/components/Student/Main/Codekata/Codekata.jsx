@@ -14,6 +14,7 @@ const Codekata = ({ setSideToggle, ...props }) => {
   useEffect(() => {
     setSideToggle(false);
     authDispatch({ type: "REMOVE_CONTEST" });
+    authDispatch({ type: "REMOVE_DURATION" });
   }, [setSideToggle, authDispatch]);
   const submitCode = async (e) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ const Codekata = ({ setSideToggle, ...props }) => {
       showLoader();
       const {
         status,
-        data: { contest },
+        data : {contest, message}
       } = await helperService.getContestWithCode(
         { code },
         { headers: { Authorization: authState.user.token } }
@@ -39,11 +40,12 @@ const Codekata = ({ setSideToggle, ...props }) => {
           type: "SET_DURATION",
           payload: contest?.session?.ends_at,
         });
-        hideLoader();
         history.push(`/codekata/${code}`);
       }
-    } catch (err) {
-      console.log(err);
+      props.snackBar(message || "", "success");
+    } catch ({message}) {
+      props.snackBar(message || "Internal Error", "error");
+    } finally {
       hideLoader();
     }
   };

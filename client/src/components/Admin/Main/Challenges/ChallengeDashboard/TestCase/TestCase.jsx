@@ -30,7 +30,6 @@ const GreenCheckbox = withStyles({
 })((props) => <Checkbox color="default" {...props} />);
 let type = null;
 let oldTestcase = null;
-let testcase_id = null;
 const testcasesDefaultValue = {
   id: null,
   sample: [],
@@ -84,6 +83,7 @@ const TestCase = (props) => {
         console.log(testcases);
         setTestcases({
           ...testcases,
+          id: data.testcase_id,
           sample: DBTestcase.sample
             ? [...testcases.sample, { ...DBTestcase.sample }]
             : [...testcases.sample],
@@ -91,9 +91,6 @@ const TestCase = (props) => {
             ? [...testcases.hidden, { ...DBTestcase.hidden }]
             : [...testcases.hidden],
         });
-        if (data.testcase_id) {
-          testcase_id = data.testcase_id
-        }
       }
     } catch (err) {
       console.log(err);
@@ -102,6 +99,9 @@ const TestCase = (props) => {
       setOpen(false);
     }
   };
+  useEffect(() => {
+    console.log(testcases);
+  }, [testcases]);
   //edit and delete the testcases
   const updateTestcaseHandler = (testcaseType, testcase) => {
     setOpen(true);
@@ -113,18 +113,43 @@ const TestCase = (props) => {
   };
   const updateTestcase = async () => {
     try {
-      console.log(type, oldTestcase);
+      console.log("at line 116",authState?.challenge?.testcases?.id,testcases)
       const { data, status } = await helperService.updateTestcase(
         {
-          testcase_id: authState.challenge.testcases.id,
+          testcase_id: testcases.id || authState?.challenge?.testcases?.id,
           type,
           oldTestcase,
           testcase: testcase,
         },
         { headers: { Authorization: authState.user.token } }
       );
+      if (status === 200) {
+        if (type === "sample")
+          setTestcases({
+            ...testcases,
+            sample: [
+              ...testcases[type].map((e) => {
+                if (e.input === oldTestcase.input) return testcase;
+                return e;
+              }),
+            ],
+          });
+        else
+          setTestcases({
+            ...testcases,
+            hidden: [
+              ...testcases[type].map((e) => {
+                if (e.input === oldTestcase.input) return testcase;
+                return e;
+              }),
+            ],
+          });
+      }
     } catch (err) {
       console.log(err);
+    }finally{
+      setOpen(false)
+      setUpdate(false)
     }
   };
 
@@ -134,7 +159,8 @@ const TestCase = (props) => {
         {
           type: testcaseType,
           testcase,
-          testcase_id: authState.challenge.testcases.id || testcase_id,
+          testcase_id: testcases.id || authState?.challenge?.testcases?.id,
+          question_id: authState?.challenge?._id,
         },
         { headers: { Authorization: authState.user.token } }
       );
@@ -148,7 +174,7 @@ const TestCase = (props) => {
               ),
             ],
           });
-        else 
+        else
           setTestcases({
             ...testcases,
             hidden: [
