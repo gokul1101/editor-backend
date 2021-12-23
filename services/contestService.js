@@ -151,7 +151,7 @@ const getAllContestWithFilter = async (page, limit, past) => {
       end_date: { $lte: new Date() },
     }).countDocuments();
     const pastContests = await Contest.find({ end_date: { $lte: new Date() } })
-      .sort({ start_date: "asc" })
+      .sort({ start_date: "desc" })
       .limit(limit * 1)
       .skip((page - 1) * limit);
     //**ongoing contests */

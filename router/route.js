@@ -34,6 +34,7 @@ const {
   createMultipleTestCases,
   updateTestCase,
   getTestCases,
+  deleteTestCase,
 } = require("../controllers/testcaseController");
 const { createSubmission } = require("../controllers/submissionController");
 const { getErrorLogs } = require("../controllers/errorLogsController");
@@ -195,6 +196,12 @@ router.post(
   userAuth,
   routeAuth("updateTestCase"),
   updateTestCase
+);
+router.post(
+  "/api/v1/testcase/delete",
+  userAuth,
+  routeAuth("deleteTestCase"),
+  deleteTestCase
 );
 //* =============Submission===============*//
 router.post(

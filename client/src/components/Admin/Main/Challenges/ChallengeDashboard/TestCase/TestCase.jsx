@@ -28,19 +28,20 @@ const GreenCheckbox = withStyles({
   },
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
+let type = null;
+let oldTestcase = null;
+const testcasesDefaultValue = {
+  id: null,
+  sample: [],
+  hidden: [],
+};
 const TestCase = (props) => {
-  const [authState] = useContext(AuthContext);
-  const [testcases, setTestcases] = useState({
-    sample: [],
-    hidden: [],
-  });
+  const [authState, authDispatch] = useContext(AuthContext);
+  const [update, setUpdate] = useState(false);
+  const [testcases, setTestcases] = useState(testcasesDefaultValue);
   const [testcase, setTestcase] = useState({
     input: "",
     output: "",
-  });
-  const [DBTestcase, setDBTestcase] = useState({
-    sample: [],
-    hidden: [],
   });
   const [open, setOpen] = React.useState(false);
 
@@ -58,62 +59,141 @@ const TestCase = (props) => {
     setOpen(false);
   };
   const addTestcase = () => {
-    props.snackBar("Sucessfully added", "success");
-    console.log(testcases, testcase);
+    // props.snackBar("Sucessfully added","success")
+    let DBTestcase = {};
     if (checked) {
-      setTestcases({ ...testcases, hidden: [...testcases.hidden, testcase] });
-      setDBTestcase({ ...DBTestcase, hidden: [testcase] });
+      DBTestcase = {
+        hidden: { ...testcase, output: testcase.output.replace(/\n+$/, "") },
+      };
     } else {
-      setDBTestcase({ ...DBTestcase, sample: [testcase] });
-      setTestcases({ ...testcases, sample: [...testcases.sample, testcase] });
+      DBTestcase = {
+        sample: { ...testcase, output: testcase.output.replace(/\n+$/, "") },
+      };
     }
+    createTestcase(DBTestcase);
+    DBTestcase = {};
   };
-  const createTestcase = async () => {
-    props.snackBar("Sucessfully added", "success");
+  const createTestcase = async (DBTestcase) => {
     try {
       const { data, status } = await helperService.createTestcase(
         { question_id: authState?.challenge?._id, testcase: DBTestcase },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
-        if (data?.testcases) setTestcases(...data.testcases);
+        console.log(testcases);
+        setTestcases({
+          ...testcases,
+          id: data.testcase_id,
+          sample: DBTestcase.sample
+            ? [...testcases.sample, { ...DBTestcase.sample }]
+            : [...testcases.sample],
+          hidden: DBTestcase.hidden
+            ? [...testcases.hidden, { ...DBTestcase.hidden }]
+            : [...testcases.hidden],
+        });
       }
     } catch (err) {
       console.log(err);
     } finally {
-      setDBTestcase({
-        sample: [],
-        hidden: [],
-      });
+      setTestcase({ input: "", output: "" });
+      setOpen(false);
+    }
+  };
+  useEffect(() => {
+    console.log(testcases);
+  }, [testcases]);
+  //edit and delete the testcases
+  const updateTestcaseHandler = (testcaseType, testcase) => {
+    setOpen(true);
+    setUpdate(true);
+    oldTestcase = testcase;
+    type = testcaseType;
+
+    setTestcase(testcase);
+  };
+  const updateTestcase = async () => {
+    try {
+      console.log("at line 116",authState?.challenge?.testcases?.id,testcases)
+      const { data, status } = await helperService.updateTestcase(
+        {
+          testcase_id: testcases.id || authState?.challenge?.testcases?.id,
+          type,
+          oldTestcase,
+          testcase: testcase,
+        },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 200) {
+        if (type === "sample")
+          setTestcases({
+            ...testcases,
+            sample: [
+              ...testcases[type].map((e) => {
+                if (e.input === oldTestcase.input) return testcase;
+                return e;
+              }),
+            ],
+          });
+        else
+          setTestcases({
+            ...testcases,
+            hidden: [
+              ...testcases[type].map((e) => {
+                if (e.input === oldTestcase.input) return testcase;
+                return e;
+              }),
+            ],
+          });
+      }
+    } catch (err) {
+      console.log(err);
+    }finally{
+      setOpen(false)
+      setUpdate(false)
     }
   };
 
-//edit and delete the testcases
-const sampleTestCaseEdit = () => {
-  setOpen(true);
-}
-const sampleTestCaseDelete = () => {
-  props.snackBar("Selected Sample Test case is deleted successfully ","success")
-}
-
-const hiddenTestCaseEdit = () => {
-  setOpen(true);
-}
-const hiddenTestCaseDelete = () => {
-  props.snackBar("Selected Hidden Test case is deleted successfully","success")
-}
-
-
-
-
-
-  useEffect(() => {
-    setTestcases(
-      authState?.challenge?.testcases?.testcases || {
-        sample: [],
-        hidden: [],
+  const deleteTestcaseHandler = async (testcaseType, testcase) => {
+    try {
+      const { data, status } = await helperService.deleteTestcase(
+        {
+          type: testcaseType,
+          testcase,
+          testcase_id: testcases.id || authState?.challenge?.testcases?.id,
+          question_id: authState?.challenge?._id,
+        },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 202) {
+        if (testcaseType === "sample")
+          setTestcases({
+            ...testcases,
+            sample: [
+              ...testcases[testcaseType].filter(
+                (e) => e.input !== testcase.input
+              ),
+            ],
+          });
+        else
+          setTestcases({
+            ...testcases,
+            hidden: [
+              ...testcases[testcaseType].filter(
+                (e) => e.input !== testcase.input
+              ),
+            ],
+          });
+        props.snackBar(
+          "Selected Hidden Test case is deleted successfully",
+          "success"
+        );
       }
-    );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    setTestcases(authState?.challenge?.testcases || testcasesDefaultValue);
   }, [authState]);
   return (
     <div className="container">
@@ -129,17 +209,17 @@ const hiddenTestCaseDelete = () => {
         </span>
       </div>
       <div className="create-con">
-        {/* <Link to="/contests/create-contest"> */}
         <button className="p-2 mt-3" onClick={handleClickOpen}>
           <i className="fas fa-plus pr-2 pl-2"></i>ADD TESTCASE
         </button>
-        {/* </Link> */}
       </div>
-      <h4 className="m-2 p-2 text-uppercase text-center font-weight-bolder">Sample Test Cases</h4>
+      <h4 className="m-2 p-2 text-uppercase text-center font-weight-bolder">
+        Sample Test Cases
+      </h4>
       {testcases?.sample?.length === 0 ? (
         <div className="alert alert-primary" role="alert">
-       Till now No Sample test Case is added !!!!!
-      </div>
+          Till now No Sample test Case is added
+        </div>
       ) : (
         <div className="d-flex p-2 flex-wrap">
           {testcases?.sample?.map((testcase) => (
@@ -150,13 +230,17 @@ const hiddenTestCaseDelete = () => {
                   height: "250px",
                   width: "300px",
                   borderBottom: "5px solid #21A366",
-                  
                 }}
               >
                 <div className="edit-delete d-flex ml-auto p-2 m-2">
-                  
-                  <i class="fas fa-edit" onClick={sampleTestCaseEdit}></i>
-                  <i class="fas fa-trash ml-2 " onClick={sampleTestCaseDelete}></i>
+                  <i
+                    class="fas fa-edit"
+                    onClick={() => updateTestcaseHandler("sample", testcase)}
+                  ></i>
+                  <i
+                    class="fas fa-trash ml-2 "
+                    onClick={() => deleteTestcaseHandler("sample", testcase)}
+                  ></i>
                 </div>
                 <div className="input">
                   <h4 className="font-weight-bolder text-highlight">Input</h4>
@@ -164,7 +248,11 @@ const hiddenTestCaseDelete = () => {
                 </div>
                 <div className="output">
                   <h4 className="font-weight-bolder text-highlight">Output</h4>
-                  <h6>{testcase.output}</h6>
+                  <h6>
+                    <pre>
+                      {testcase?.output && JSON.parse(testcase?.output)}
+                    </pre>
+                  </h6>
                 </div>
               </div>
             </div>
@@ -172,39 +260,49 @@ const hiddenTestCaseDelete = () => {
         </div>
       )}
 
-<h4 className="m-2 p-2  text-uppercase text-center font-weight-bolder">Hidden Test Cases</h4>
-      {testcases?.hidden.length === 0 ? (
+      <h4 className="m-2 p-2  text-uppercase text-center font-weight-bolder">
+        Hidden Test Cases
+      </h4>
+      {testcases?.hidden?.length === 0 ? (
         <div className="alert alert-primary" role="alert">
-        Till now No Hidden test Case is added !!!!!
-       </div>
+          Till now No Hidden test Case is added
+        </div>
       ) : (
         <div className="d-flex flex-wrap">
           {testcases?.hidden?.map((testcase) => (
-           <div className="p-2">
-           <div
-             class="card test-card p-3"
-             style={{
-               height: "250px",
-               width: "300px",
-               borderBottom: "5px solid #21A366",
-               
-             }}
-           >
-             <div className="edit-delete d-flex ml-auto p-2 m-2">
-               
-               <i class="fas fa-edit" onClick={hiddenTestCaseEdit}></i>
-               <i class="fas fa-trash ml-2 " onClick={hiddenTestCaseDelete}></i>
-             </div>
-             <div className="input">
-               <h4 className="font-weight-bolder text-highlight">Input</h4>
-               <h6>{testcase.input}</h6>
-             </div>
-             <div className="output">
-               <h4 className="font-weight-bolder text-highlight">Output</h4>
-               <h6>{testcase.output}</h6>
-             </div>
-           </div>
-         </div>
+            <div className="p-2">
+              <div
+                class="card test-card p-3"
+                style={{
+                  height: "250px",
+                  width: "300px",
+                  borderBottom: "5px solid #21A366",
+                }}
+              >
+                <div className="edit-delete d-flex ml-auto p-2 m-2">
+                  <i
+                    class="fas fa-edit"
+                    onClick={() => updateTestcaseHandler("hidden", testcase)}
+                  ></i>
+                  <i
+                    class="fas fa-trash ml-2 "
+                    onClick={() => deleteTestcaseHandler("hidden", testcase)}
+                  ></i>
+                </div>
+                <div className="input">
+                  <h4 className="font-weight-bolder text-highlight">Input</h4>
+                  <h6>{testcase.input}</h6>
+                </div>
+                <div className="output">
+                  <h4 className="font-weight-bolder text-highlight">Output</h4>
+                  <h6>
+                    <pre>
+                      {testcase?.output && JSON.parse(testcase?.output)}
+                    </pre>
+                  </h6>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       )}
@@ -229,6 +327,7 @@ const hiddenTestCaseDelete = () => {
               multiline
               rows={4}
               variant="outlined"
+              value={testcase.input}
               onClickHandler={(value) =>
                 setTestcase({ ...testcase, input: value })
               }
@@ -242,31 +341,38 @@ const hiddenTestCaseDelete = () => {
               multiline
               rows={4}
               variant="outlined"
+              value={testcase?.output && JSON.parse(testcase?.output)}
               onClickHandler={(value) =>
-                setTestcase({ ...testcase, output: value })
+                setTestcase({ ...testcase, output: JSON.stringify(value) })
               }
             />
           </DialogContentText>
         </DialogContent>
-        <DialogContentText id="alert-dialog-slide-description" className="pl-4">
-          <FormControlLabel
-            control={
-              <GreenCheckbox
-                checked={checked}
-                onChange={handleChange}
-                name="Hidden"
-                color="primary"
-              />
-            }
-            label="Enable Hidden"
-          />
-        </DialogContentText>
+        {!update && (
+          <DialogContentText
+            id="alert-dialog-slide-description"
+            className="pl-4"
+          >
+            <FormControlLabel
+              control={
+                <GreenCheckbox
+                  checked={checked}
+                  onChange={handleChange}
+                  name="Hidden"
+                  color="primary"
+                />
+              }
+              label="Enable Hidden"
+            />
+          </DialogContentText>
+        )}
         <DialogActions>
-          <Button onClick={addTestcase} color="primary" variant="contained">
-            ADD TESTCASE
-          </Button>
-          <Button onClick={createTestcase} color="primary" variant="contained">
-            SAVE TESTCASES
+          <Button
+            onClick={update ? updateTestcase : addTestcase}
+            color="primary"
+            variant="contained"
+          >
+            {update ? "UPDATE TESTCASE" : "ADD TESTCASE"}
           </Button>
           <Button onClick={handleClose} color="primary">
             CLOSE

@@ -24,6 +24,7 @@ const helperService = {
         });
       }
     } catch (err) {
+      console.log(err,err.response)
       let { status, data } = err.response;
       return Promise.reject({
         status,
@@ -393,6 +394,7 @@ const helperService = {
         });
       }
     } catch (err) {
+      
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -462,6 +464,7 @@ const helperService = {
       });
     }
   },
+  //** TESTCASE */
   createTestcase: async (payload, config) => {
     try {
       const { data, status } = await axios.post(
@@ -483,7 +486,6 @@ const helperService = {
       });
     }
   },
-
   getTestCases: async ({ questionId }, config) => {
     try {
       const { data, status } = await axios.get(
@@ -503,18 +505,48 @@ const helperService = {
       });
     }
   },
-  getErrorLogs: async(payload,config) => {
-    console.log(payload,config);
-  try{
-    const data = await axios.get(`${baseURL}/api/v1/errorLogs`,config);
-    if(data.status === 200){
-      console.log(data);
-
+  updateTestcase: async (payload, config) => {
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/testcase/update`,
+        payload,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          data,
+          status,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
     }
-  }
-  catch(err){
-
-  }
+  },
+  deleteTestcase: async (payload, config) => {
+    console.log(payload)
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/testcase/delete`,
+        payload,
+        config
+      );
+      if (status === 202) {
+        return Promise.resolve({
+          data,
+          status,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
   },
   createSubmission: async (payload, config) => {
     try {
@@ -539,5 +571,27 @@ const helperService = {
       });
     }
   },
+  getErrorLogs: async(payload,config) => {
+    try {
+      const {
+        data: { message },
+        status,
+      } = await axios.get(
+        `${baseURL}/api/v1/errorLogs?created_by=${payload.created_by}`,
+        config
+      );
+      if (status === 201) {
+        return Promise.resolve({
+          message,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  }
 };
 export default helperService;

@@ -8,6 +8,7 @@ import CustomButton from "../../../Reducer/CustomButton/CustomButton";
 
 const Contests = (props) => {
   const [loader, showLoader, hideLoader] = useLoader();
+  const limit = 3;
   const [authState, authDispatch] = useContext(AuthContext);
   const [contests, setContests] = useState({
     upcoming: [],
@@ -22,7 +23,7 @@ const Contests = (props) => {
       fetchContests(value, true);
     }
   };
-  const fetchContests = async (page = 1, past = false, limit = 1) => {
+  const fetchContests = async (page = 1, past = false) => {
     try {
       showLoader();
       const { status, data } = await helperService.getAllContests(
@@ -40,8 +41,14 @@ const Contests = (props) => {
         setContests({
           pastContestsCount,
           past: pastContests,
-          ongoing: [...ongoingContests],
-          upcoming: [...upcomingContests],
+          ongoing:
+            ongoingContests.length > 0
+              ? [...contests.ongoing, ...ongoingContests]
+              : contests.ongoing,
+          upcoming:
+            upcomingContests.length > 0
+              ? [...contests.upcoming, ...upcomingContests]
+              : contests.upcoming,
         });
          hideLoader();
       }
@@ -204,7 +211,10 @@ const Contests = (props) => {
       </div>
       <div>
         <Pagination
-          count={contests?.pastContestsCount / 1}
+          count={
+            Math.floor(contests?.pastContestsCount / limit) +
+            (contests?.pastContestsCount % limit !== 0 ? 1 : 0)
+          }
           color="primary"
           variant="text"
           className="mt-5 d-flex justify-content-center"

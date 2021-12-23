@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddUser = (props) => {
+  console.log(props);
   const [loader, showLoader, hideLoader] = useLoader();
   const [authState] = useContext(AuthContext);
   const [user, setUser] = useState({
@@ -54,7 +55,8 @@ const AddUser = (props) => {
     const formData = new FormData()
     console.log(files[0]);
     formData.append("file",files[0])
-    
+    formData.get("file")
+    console.log(formData.get("file"));
     try {
       const { data, status } = await helperService.createBulkUsers(
         {file:formData},
@@ -69,10 +71,10 @@ const AddUser = (props) => {
   const createUser = async () => {
     //Regex
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let charRegex = /^[A-Za-z0-9]+$/;
-
-    if (!user.name.length >= 3 && !user.name.length <= 25) {
-      props.snackBar("Username is Incorrect", "error");
+    let charRegex =  /^[A-Za-z0-9]+$/;
+  
+    if(!user.name.length >=3 && !user.name.length <=25){
+      props.snackBar("Username is Incorrect","error")
       return;
     }
     if (user.regno.length !== 7) {

@@ -29,11 +29,16 @@ const ErrorLogs = () => {
   };
 
   const fetchErrorLogs = async () => {
-    
-    await helperService.getErrorLogs(
-      {created_by:authState.user.name},
-      { headers: { Authorization: authState?.user?.token } }
-    );
+    console.log(authState?.user);
+    try{
+      await helperService.getErrorLogs(
+        {created_by:authState?.user?._id},
+        { headers: { Authorization: authState?.user?.token } }
+      );
+    }
+    catch(err){
+      console.log(err,"at error logs");
+    }
   };
 
   useEffect(() => {

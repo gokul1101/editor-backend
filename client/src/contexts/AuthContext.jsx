@@ -18,7 +18,6 @@ const AuthReducer = (state, action) => {
     case "SET_CHALLENGE":
       return { ...state, challenge: action.payload };
     case "REMOVE_CHALLENGE":
-      console.log("working");
       return { ...state, challenge: null };
     case "REMOVE_CONTEST":
       return { ...state, contest: null };
