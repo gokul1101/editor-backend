@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -16,7 +16,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const DropFileInput = (props) => {
-  console.log();
+  useEffect(() => {
+    console.log(props);
+  }, []);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const wrapperRef = useRef(null);
@@ -31,11 +33,11 @@ const DropFileInput = (props) => {
 
   const onFileDrop = (e) => {
     const newFile = e.target.files[0];
-    
+
     if (
       newFile &&
       newFile.type ===
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
       // const updatedList = [newFile];
       console.log([newFile]);
@@ -45,14 +47,14 @@ const DropFileInput = (props) => {
     }
   };
 
-   const bulkUser = () => {
+  const bulkUser = () => {
     console.log(fileList);
     props.onFileChange(fileList);
-    setUpload(true)
-   }
+    setUpload(true);
+  };
 
   const [open, setOpen] = React.useState(false);
-  const [upload,setUpload] = useState(false)
+  const [upload, setUpload] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -117,19 +119,26 @@ const DropFileInput = (props) => {
           ))}
 
           <div className="d-flex align-items-center justify-content-center mt-3">
-            <CustomButton className="btn-hover color-11 mt-2" onClickHandler={bulkUser}>
-              <i className="fas fa-upload pr-2 pl-2"  ></i>{upload === true ? "create Users":"upload file"}
+            <CustomButton
+              className="btn-hover color-11 mt-2"
+              onClickHandler={bulkUser}
+            >
+              <i className="fas fa-upload pr-2 pl-2"></i>
+              {upload ? "create Users" : "upload file"}
             </CustomButton>
           </div>
           <div className="d-flex align-items-end justify-content-end mt-3 p-2">
-            <div className="log-file">
-              <span
-                className="badge badge-pill badge-secondary"
-                onClick={handleClickOpen}
-              >
-                Logs
-              </span>
-            </div>
+            {props.logs.total > 0 && 
+              <div className="log-file">
+                <span
+                  className="badge badge-pill badge-secondary"
+                  onClick={handleClickOpen}
+                >
+                  Logs
+                </span>
+              </div>
+            }
+
             <Dialog
               open={open}
               fullScreen={fullScreen}
@@ -147,14 +156,17 @@ const DropFileInput = (props) => {
               <DialogContent>
                 <DialogContentText id="alert-dialog-slide-description">
                   <span className="model-correct p-2">
-                    <i className="fas fa-check-circle pr-3 pl-3"></i>12 students
-                    data added successfully
+                    <i className="fas fa-check-circle pr-3 pl-3"></i>
+                    {console.log("at line 157", props.logs)}
+                    {+props.logs?.total - +props.logs?.errorLogs?.length}{" "}
+                    students data created successfully
                   </span>
                 </DialogContentText>
                 <DialogContentText id="alert-dialog-slide-description">
                   <span className="model-wrong p-2">
-                    <i className="fas fa-bug pr-3 pl-3"></i>12 students data
-                    having some error
+                    <i className="fas fa-bug pr-3 pl-3"></i>
+                    {+props.logs?.errorLogs?.length} students data having some
+                    error
                   </span>
                 </DialogContentText>
                 <DialogContentText
@@ -162,20 +174,9 @@ const DropFileInput = (props) => {
                   className="mt-3"
                 >
                   <div className="p-2 d-flex flex-wrap">
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
+                    {props.logs?.errorLogs.map((log) => (
+                      <Chip key={log} label={log} className="m-1" />
+                    ))}
                   </div>
                 </DialogContentText>
               </DialogContent>

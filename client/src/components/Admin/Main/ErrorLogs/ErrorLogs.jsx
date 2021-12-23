@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -11,14 +11,17 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import helperService from "../../../../services/helperService";
 import { AuthContext } from "../../../../contexts/AuthContext";
+import { useParams } from "react-router-dom";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const ErrorLogs = () => {
+  const { id } = useParams();
   const [authState] = useContext(AuthContext);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [open, setOpen] = React.useState(false);
+  const [errorLogs, setErrorLogs] = useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,18 +32,22 @@ const ErrorLogs = () => {
   };
 
   const fetchErrorLogs = async () => {
-    console.log(authState?.user);
-    try{
-      await helperService.getErrorLogs(
-        {created_by:authState?.user?._id},
+    // console.log(authState?.user);
+    try {
+      const { data, status } = await helperService.getErrorLogs(
+        { created_by: id },
         { headers: { Authorization: authState?.user?.token } }
       );
-    }
-    catch(err){
-      console.log(err,"at error logs");
+      if (status === 200) {
+        
+        
+        setErrorLogs([...data.errorLogs]);
+      }
+    } catch (err) {
+      console.log(err, "at error logs");
     }
   };
-
+  useEffect(() => {console.log(errorLogs)},[errorLogs])
   useEffect(() => {
     fetchErrorLogs();
   }, []);
@@ -69,16 +76,22 @@ const ErrorLogs = () => {
             {/* <i class="fas fa-external-link-alt"></i> */}
           </div>
         </div>
-        <div className="d-flex border-top border-bottom mt-1 p-2 mb-1">
-          <div className="col-md-3 text-center content-nav-title">
-            Dhanush Karthick
-          </div>
-          <div className="col-md-3 text-center content-nav-title">190</div>
-          <div className="col-md-2 text-center content-nav-title">100</div>
-          <div className="col-md-2 text-center content-nav-title">80</div>
-          <div className="col-md-2 text-center content-nav-title">
-            <i class="fas fa-external-link-alt" onClick={handleClickOpen}></i>
-          </div>
+        <div className="d-flex flex-column border-top border-bottom mt-1 p-2 mb-1">
+          {errorLogs.map((log) => <div className="d-flex">
+              <div className="col-md-3 text-center content-nav-title" key = {log._id}>
+                {authState?.user?.name}
+              </div>
+              <div className="col-md-3 text-center content-nav-title">{log.totalLogs}</div>
+              <div className="col-md-2 text-center content-nav-title">{+log.totalLogs - log.errorLogs.length}</div>
+              <div className="col-md-2 text-center content-nav-title">{log.errorLogs.length}</div>
+              <div className="col-md-2 text-center content-nav-title">
+                <i
+                  class="fas fa-external-link-alt"
+                  onClick={handleClickOpen}
+                ></i>
+              </div>
+            </div>
+          )}
           <Dialog
             open={open}
             fullScreen={fullScreen}

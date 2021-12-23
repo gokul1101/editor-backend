@@ -579,15 +579,16 @@ const helperService = {
   getErrorLogs: async (payload, config) => {
     try {
       const {
-        data: { message },
+        data,
         status,
       } = await axios.get(
         `${baseURL}/api/v1/errorLogs?created_by=${payload.created_by}`,
         config
       );
-      if (status === 201) {
+      if (status === 200) {
         return Promise.resolve({
-          message,
+          status,
+          data,
         });
       }
     } catch (err) {

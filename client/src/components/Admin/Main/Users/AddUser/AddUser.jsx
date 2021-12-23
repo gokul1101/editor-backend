@@ -36,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
 const AddUser = (props) => {
   console.log(props);
   const [loader, showLoader, hideLoader] = useLoader();
+  const [logs,setLogs] = useState({
+    total:0,
+    errorLogs:[]
+  })
   const [authState] = useContext(AuthContext);
   const [user, setUser] = useState({
     regno: "",
@@ -46,17 +50,15 @@ const AddUser = (props) => {
     course_id: "",
     college_id: "",
     phone_no: "",
+    batch_id: "",
   });
-  const [batchStart, setBatchStart] = useState("");
-  const [batchEnd, setBatchEnd] = useState("");
   const classes = useStyles();
 
   const onFileChange = async (files) => {
     const formData = new FormData();
-    console.log(files[0]);
     formData.append("file", files[0]);
     formData.get("file");
-    console.log(formData.get("file"));
+    //**This is modified when compare to other api calls*/
     try {
       const { data, status } = await helperService.createBulkUsers(
         { file: formData },
@@ -66,6 +68,7 @@ const AddUser = (props) => {
         }
       );
       if (status === 201) {
+        setLogs({errorLogs:[...data.errorLogs.errorLogs],total:data.errorLogs.totalLogs})
       }
     } catch (err) {
       console.log(err);
@@ -110,18 +113,15 @@ const AddUser = (props) => {
       props.snackBar("Gender is not Selected", "error");
       return;
     }
+    console.log(user)
+    if (!user.batch_id ) {
+      props.snackBar("Batch is not Selected", "error");
+      return;
+    }
 
     try {
       showLoader();
-      console.log({
-        ...user,
-        college_id: user.college_id,
-        course_id: user.course_id,
-        batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(
-          user.batch_id.length - 4,
-          user.batch_id.length
-        )}`,
-      });
+      
       const { status, data } = await helperService.createUser(
         {
           ...user,
@@ -305,6 +305,7 @@ const AddUser = (props) => {
         </div>
         <div className="col-md-4 p-2 border m-1">
           <DropFileInput
+            logs = {logs}
             onFileChange={onFileChange}
             snackBar={props.snackBar}
           />
