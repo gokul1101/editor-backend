@@ -10,6 +10,7 @@ import ContestCard from "./ContestCard/ContestCard";
 import helperService from "../../../../../services/helperService";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 import DialogBox from "../../../../Reducer/DialogBox/DialogBox";
+import { parseCode } from "../../../../../services/utils";
 
 const ContestDetails = ({ setSideToggle }) => {
   const [open, setOpen] = useState(false);
@@ -48,17 +49,26 @@ const ContestDetails = ({ setSideToggle }) => {
     let contestQuizzes = authState?.contest?.quizzes || [];
     let contestChallenges = authState?.contest?.challenges || [];
     payload.quizzes = contestQuizzes.map((quiz) => {
+      let localQuizzes = JSON.parse(localStorage.getItem("quizzes") || "[]");
+      if(!localQuizzes.find(localQuiz => localQuiz === quiz.name)) return [];
       return JSON.parse(localStorage.getItem(quiz?.name) || "[]");
     });
     payload.challenges = contestChallenges.map((challenge) => {
-      return JSON.parse(localStorage.getItem(challenge?.name) || "{}");
+      let localChallenges = JSON.parse(localStorage.getItem("challenges") || "[]");
+      if(!localChallenges.find(localChallenge => localChallenge === challenge.name)) return [];
+      let localCode = JSON.parse(localStorage.getItem(challenge?.name) || "{}");
+      console.log(localCode);
+      let parsedCode = parseCode(localCode.code);
+      console.log(parsedCode);
+      return parsedCode;
     });
     try {
-      const response = await helperService.createSubmission(
+      const {code, message} = await helperService.createSubmission(
         { ...payload },
         { headers: { Authorization: authState.user.token } }
       );
-      console.log(response);
+      if(code === 201)
+      console.log(message);
       // history.push("/codekata");
     } catch (err) {
       console.log(err);

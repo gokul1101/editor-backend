@@ -57,7 +57,7 @@ const Programs = (props) => {
       challenge?.name,
       JSON.stringify({
         question_id: challenge?._id,
-        code: parsedCode,
+        code: code,
         lang: language,
       })
     );
@@ -72,6 +72,7 @@ const Programs = (props) => {
         { id: challenge?._id, code: parsedCode, lang: language },
         { headers: { Authorization: authState?.user?.token } }
       );
+      console.log(data);
       if (status === 200) {
         if (data?.errors) setIsError(true);
         else setIsError(false);

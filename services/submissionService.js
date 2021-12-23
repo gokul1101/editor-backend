@@ -166,12 +166,12 @@ const challengeSubmissionService = async (
           lang
         );
         output = JSON.stringify(output.replace(/[\n\r]$/, "")) || "";
-        console.log(output)
         let testCaseOutput = {
           expectedOutput: testcases?.sample[i].output,
           actualOutput: output,
         };
-        if (testcases?.sample[i].output === output) {
+        console.log(testCaseOutput)
+        if (testCaseOutput.expectedOutput === output) {
           if (submission) score++;
           testCaseOutput.errors = false;
         } else {

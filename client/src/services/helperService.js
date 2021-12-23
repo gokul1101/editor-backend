@@ -547,7 +547,7 @@ const helperService = {
   createSubmission: async (payload, config) => {
     try {
       const {
-        data: { message },
+        data: { code, message },
         status,
       } = await axios.post(
         `${baseURL}/api/v1/submission/create`,
@@ -556,6 +556,7 @@ const helperService = {
       );
       if (status === 201) {
         return Promise.resolve({
+          code,
           message,
         });
       }
