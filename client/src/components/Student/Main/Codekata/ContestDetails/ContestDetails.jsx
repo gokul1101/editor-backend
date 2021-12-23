@@ -65,9 +65,8 @@ const ContestDetails = ({ setSideToggle }) => {
       if(!localChallenges.find(localChallenge => localChallenge === challenge.name)) return [];
       let localCode = JSON.parse(localStorage.getItem(challenge?.name) || "{}");
       console.log(localCode);
-      let parsedCode = parseCode(localCode.code);
-      console.log(parsedCode);
-      return parsedCode;
+      localCode.code = parseCode(localCode.code);
+      return localCode;
     });
     try {
       const {code, message} = await helperService.createSubmission(
@@ -76,7 +75,7 @@ const ContestDetails = ({ setSideToggle }) => {
       );
       if(code === 201)
       console.log(message);
-      // history.push("/codekata");
+      history.push("/codekata");
     } catch (err) {
       console.log(err);
     } finally {

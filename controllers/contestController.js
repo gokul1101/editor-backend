@@ -90,7 +90,7 @@ const getContestForDashboard = async (req, res) => {
     response.quizzes = contestQuizzes.quizzes;
     let ContestChallenges = await getAllChallengesWithContestId(contest._id);
     response.challenges = ContestChallenges.challenges;
-    return res.status(status).send({ contest: response });
+    return res.status(status).send({ contest: response, message : "Your session is started." });
   } catch ({ status, code, message }) {
     console.log(message);
     if (!status && !code) {
