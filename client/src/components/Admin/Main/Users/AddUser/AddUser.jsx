@@ -52,15 +52,18 @@ const AddUser = (props) => {
   const classes = useStyles();
 
   const onFileChange = async (files) => {
-    const formData = new FormData()
+    const formData = new FormData();
     console.log(files[0]);
-    formData.append("file",files[0])
-    formData.get("file")
+    formData.append("file", files[0]);
+    formData.get("file");
     console.log(formData.get("file"));
     try {
       const { data, status } = await helperService.createBulkUsers(
-        {file:formData},
-        { headers: { Authorization: authState?.user?.token } }
+        { file: formData },
+        {
+          Authorization: authState?.user?.token,
+          "Content-Type": "multipart/form-data",
+        }
       );
       if (status === 201) {
       }
@@ -71,10 +74,10 @@ const AddUser = (props) => {
   const createUser = async () => {
     //Regex
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let charRegex =  /^[A-Za-z0-9]+$/;
-  
-    if(!user.name.length >=3 && !user.name.length <=25){
-      props.snackBar("Username is Incorrect","error")
+    let charRegex = /^[A-Za-z0-9]+$/;
+
+    if (!user.name.length >= 3 && !user.name.length <= 25) {
+      props.snackBar("Username is Incorrect", "error");
       return;
     }
     if (user.regno.length !== 7) {
@@ -114,13 +117,19 @@ const AddUser = (props) => {
         ...user,
         college_id: user.college_id,
         course_id: user.course_id,
-        batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(user.batch_id.length-4, user.batch_id.length)}`,
+        batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(
+          user.batch_id.length - 4,
+          user.batch_id.length
+        )}`,
       });
       const { status, data } = await helperService.createUser(
         {
           ...user,
           college_id: user.college_id,
-          batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(user.batch_id.length-4, user.batch_id.length)}`,
+          batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(
+            user.batch_id.length - 4,
+            user.batch_id.length
+          )}`,
         },
         { headers: { Authorization: authState?.user?.token } }
       );
@@ -197,7 +206,11 @@ const AddUser = (props) => {
             <div className="col-md-6 p-1">
               <SelectReducer
                 className={classes.fieldColor}
-                array={["Computer Science & Engineering", "Information Technology", "Civil Engineering"]}
+                array={[
+                  "Computer Science & Engineering",
+                  "Information Technology",
+                  "Civil Engineering",
+                ]}
                 name="Course Name"
                 handleSelect={(e) =>
                   setUser({ ...user, course_id: e.target.value })
@@ -211,7 +224,11 @@ const AddUser = (props) => {
               <SelectReducer
                 value={user.college_id}
                 className={classes.fieldColor}
-                array={["KSR College of Engineering", "KSR College of Technology", "KSR Institute for Engineering & Technology"]}
+                array={[
+                  "KSR College of Engineering",
+                  "KSR College of Technology",
+                  "KSR Institute for Engineering & Technology",
+                ]}
                 name="College Name"
                 handleSelect={(e) =>
                   setUser({ ...user, college_id: e.target.value })
@@ -261,18 +278,23 @@ const AddUser = (props) => {
           </div>
           <div className="d-flex mt-3 mb-2">
             <div className="col-md-6 p-1">
-            <SelectReducer
-                       className={classes.fieldColor} 
-                array={["2018-2022", "2019-2023","2020-2024","2021-2025","2022-2026"]}
+              <SelectReducer
+                className={classes.fieldColor}
+                array={[
+                  "2018-2022",
+                  "2019-2023",
+                  "2020-2024",
+                  "2021-2025",
+                  "2022-2026",
+                ]}
                 name="batch year"
                 label="Batch year"
                 handleSelect={(e) =>
                   setUser({ ...user, batch_id: e.target.value })
                 }
-                 value={user.batch_id}
+                value={user.batch_id}
               />
             </div>
-            
           </div>
           <CustomButton
             className="btn-hover color-11 mt-4"

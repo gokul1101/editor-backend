@@ -274,8 +274,8 @@ const deleteUser = async (req, res) => {
   }
 };
 const createBulkUsers = async (req, res) => {
-  let userDetails = req.user._doc;
-  const file = req.files.excel;
+  let userDetails = req.user;
+  const file = req.files.file;
   const dirCodes = join(__dirname, "/../static", "resources");
   if (!fs.existsSync(dirCodes)) fs.mkdirSync(dirCodes, { recursive: true });
   const fileName = `${UUID()}.xlsx`;
@@ -316,7 +316,7 @@ const createBulkUsers = async (req, res) => {
       });
       await errorLogs.save();
     }
-    res.status(200).json({ errorLogs });
+    res.status(201).json({ errorLogs });
   } catch (err) {
     //! Error in creating user
     console.log(err);
