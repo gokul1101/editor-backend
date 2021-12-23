@@ -14,7 +14,6 @@ const Codekata = ({ setSideToggle, ...props }) => {
   useEffect(() => {
     setSideToggle(false);
     authDispatch({ type: "REMOVE_CONTEST" });
-    authDispatch({ type: "REMOVE_DURATION" });
   }, [setSideToggle, authDispatch]);
   const submitCode = async (e) => {
     e.preventDefault();

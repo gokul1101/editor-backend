@@ -10,6 +10,7 @@ import Timer from "../../Timer/Timer";
 import { parseCode, template } from "../../../../../../services/utils";
 import GoBack from "../../../../../Reducer/GoBack/GoBack";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
+import DialogBox from "../../../../../Reducer/DialogBox/DialogBox";
 const Programs = (props) => {
   let history = useHistory();
   const { id, questionId } = useParams();
@@ -36,6 +37,10 @@ const Programs = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [output, setOutput] = useState({});
   const [tabClick, setTabClick] = useState(true);
+  const [quizOpen, setQuizOpen] = useState(false);
+  const handleOpenQuiz = () => setQuizOpen(true);
+  const quizRedirect = () => history.goBack();
+  const handleCloseQuiz = () => setQuizOpen(false);
   useEffect(() => {
     props.setSideToggle(true);
   });
@@ -111,7 +116,13 @@ const Programs = (props) => {
         <div className="problem-header p-2 d-flex border-bottom border-left">
           <div className="problem-title d-flex">
             <div className="mt-1 mr-2 ml-2">
-              <GoBack />
+              <GoBack onClickHandler={handleOpenQuiz} />
+              <DialogBox
+                open={quizOpen}
+                bodyMsg={`Are you sure do you want to exit from ${challenge?.name}`}
+                handleClose={handleCloseQuiz}
+                handleOpen={quizRedirect}
+              />
             </div>
           </div>
           <div className="timer mt-3 ml-4">

@@ -66,7 +66,7 @@ const Testcase = ({
   }, [testCaseOutput]);
   return (
     <div className="h-100">
-      {isError ? (
+      {(!isError && Object.keys(output).length <= 0) || isError ? (
         <CompilerError errors={errors} />
       ) : (
         <>
