@@ -24,6 +24,7 @@ const helperService = {
         });
       }
     } catch (err) {
+      console.log(err,err.response)
       let { status, data } = err.response;
       return Promise.reject({
         status,
@@ -392,6 +393,7 @@ const helperService = {
         });
       }
     } catch (err) {
+      
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -524,6 +526,7 @@ const helperService = {
     }
   },
   deleteTestcase: async (payload, config) => {
+    console.log(payload)
     try {
       const { data, status } = await axios.post(
         `${baseURL}/api/v1/testcase/delete`,

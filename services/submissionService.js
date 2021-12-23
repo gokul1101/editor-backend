@@ -170,7 +170,6 @@ const challengeSubmissionService = async (
           expectedOutput: testcases?.sample[i].output,
           actualOutput: output,
         };
-        console.log(testCaseOutput)
         if (testCaseOutput.expectedOutput === output) {
           if (submission) score++;
           testCaseOutput.errors = false;

@@ -117,14 +117,16 @@ const Testcase = ({
                       )}
                     </Typography>
                   </AccordionSummary>
-                  <AccordionDetails>
+                  <AccordionDetails className="d-flex flex-column">
                     <p>{`Input : ${testcase?.input}`}</p>
-                    <p>{`Output : ${testcase?.output}`}</p>
-                    <p>
+                    <p>Output :</p>
+                    <pre>{JSON.parse(testcase?.output || '""')}</pre>
+                    <p>Your output :</p>
+                    <pre>
                       {sampleOutput?.actualOutput
-                        ? `Your output : ${sampleOutput?.actualOutput}`
+                        ? JSON.parse(sampleOutput?.actualOutput || '""')
                         : ""}
-                    </p>
+                    </pre>
                   </AccordionDetails>
                 </Accordion>
               );

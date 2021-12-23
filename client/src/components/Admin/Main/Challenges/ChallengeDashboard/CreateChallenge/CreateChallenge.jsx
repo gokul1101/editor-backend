@@ -68,7 +68,7 @@ const CreateChallenge = (props) => {
         {
           ...challenge,
           id: authState?.challenge?._id,
-          contest_id: authState?.challenge?.contest._id,
+          contest_id: authState?.challenge?.contest_id,
         },
         {
           headers: { Authorization: authState.user.token },
@@ -78,10 +78,12 @@ const CreateChallenge = (props) => {
         console.log(data);
       }
     } catch (err) {
-      props.snackBar(err, "error");
+      // props.snackBar(err,"error")
+     
     }
   };
   useEffect(() => {
+    console.log(authState?.challenge);
     setChallenge({
       name: authState?.challenge?.name ?? "",
       type_id: "problem",
