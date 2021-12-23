@@ -1,4 +1,5 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useState } from "react";
+import Loader from "../components/Reducer/Loader/Loader";
 
 const initialState = {
   user: null,
@@ -30,6 +31,16 @@ const AuthReducer = (state, action) => {
   }
 };
 
+const useLoader = () => {
+  const [loading, setLoading] = useState(false);
+  console.log(loading)
+  return [
+    loading ? <Loader /> : null,
+    () => setLoading(true),
+    () => setLoading(false),
+  ];
+};
+
 const AuthContext = createContext(initialState);
 const AuthProvider = (props) => {
   const [authState, authDispatch] = useReducer(
@@ -43,4 +54,4 @@ const AuthProvider = (props) => {
   );
 };
 
-export { AuthProvider, AuthContext, initialState, AuthReducer };
+export { AuthProvider, AuthContext, initialState, AuthReducer, useLoader };

@@ -1,7 +1,8 @@
 const { getErrorLogsService } = require("../services/errorLogsService");
 
 const getErrorLogs = async (req, res) => {
-  const created_by = req.body;
+  const {created_by} = req.query;
+  console.log(created_by);
   try {
     const response = await getErrorLogsService(created_by);
     res.status(response.code).json(response);

@@ -22,7 +22,6 @@ const Timer = () => {
   };
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   useEffect(() => {
-    
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
@@ -35,17 +34,15 @@ const Timer = () => {
     if (!timeLeft[interval]) {
       return;
     }
-    timerComponents.push(
-      `${timeLeft[interval]}${interval.charAt(0)}`
-    );
+    timerComponents.push(`${timeLeft[interval]}${interval.charAt(0)}`);
   });
   return (
-    <div className="d-flex">
+    <div className="d-flex align-items-center justify-content-center">
+      
       {timerComponents.length === 0 ? (
-        <span>Time's up</span>
+        <span style={{lineHeight:'34px'}}>Time's up</span>
       ) : (
         <div className="d-flex align-items-center justify-content-center countdown-timer">
-          
           {timerComponents.map((component, index) => {
             let suffix = index + 1 !== timerComponents.length ? " : " : "";
             return (

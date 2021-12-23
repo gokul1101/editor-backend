@@ -11,12 +11,12 @@ import Chip from "@material-ui/core/Chip";
 import "./DropFileInput.css";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-import { NavLink } from "react-router-dom";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const DropFileInput = (props) => {
+  console.log();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const wrapperRef = useRef(null);
@@ -31,21 +31,28 @@ const DropFileInput = (props) => {
 
   const onFileDrop = (e) => {
     const newFile = e.target.files[0];
+    
     if (
       newFile &&
       newFile.type ===
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
       // const updatedList = [newFile];
+      console.log([newFile]);
       setFileList([newFile]);
-      props.onFileChange([newFile]);
     } else {
-      alert("Please select a valid excel file");
+      props.snackBar("Please select a valid  excel file", "error");
     }
   };
 
-  const [open, setOpen] = React.useState(false);
+   const bulkUser = () => {
+    console.log(fileList);
+    props.onFileChange(fileList);
+    setUpload(true)
+   }
 
+  const [open, setOpen] = React.useState(false);
+  const [upload,setUpload] = useState(false)
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -110,8 +117,8 @@ const DropFileInput = (props) => {
           ))}
 
           <div className="d-flex align-items-center justify-content-center mt-3">
-            <CustomButton className="btn-hover color-11 mt-2">
-              <i className="fas fa-upload pr-2 pl-2"></i>Upload Excel file
+            <CustomButton className="btn-hover color-11 mt-2" onClickHandler={bulkUser}>
+              <i className="fas fa-upload pr-2 pl-2"  ></i>{upload === true ? "create Users":"upload file"}
             </CustomButton>
           </div>
           <div className="d-flex align-items-end justify-content-end mt-3 p-2">

@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import helperService from "../../../../../services/helperService";
 import InputReducer from "../../../../Reducer/InputReducer";
-import { AuthContext } from "../../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import "./CreateContest.css";
 import { useHistory, useParams } from "react-router-dom";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 const CreateContest = (props) => {
+  const [loader, showLoader, hideLoader] = useLoader();
   const history = useHistory();
   const { id } = useParams();
   const convertDate = (date) => {
@@ -49,7 +50,6 @@ const CreateContest = (props) => {
     }
   };
 
-  
   const createContest = async () => {
     // if(name.length === 0){
     //   props.snackBar("Contest Name is Empty","error")
@@ -58,9 +58,10 @@ const CreateContest = (props) => {
     //     if(new Date(`${date.start_date}`) >= new Date()){
     //         console.log("already day Ends");
     //     }
-    
+
     try {
-      const { status, data } = await helperService.createContest(
+      showLoader();
+      const { status } = await helperService.createContest(
         {
           name,
           start_date: date.start_date,
@@ -71,19 +72,19 @@ const CreateContest = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
+        hideLoader();
         props.snackBar("Contest created successfully", "success");
         history.push(`/contests`);
       }
     } catch (error) {
       console.log(error);
-      props.snackBar(error.data, "error");
+      hideLoader();
       // props.snackBar(error.error,"error")
     }
   };
   const updateContest = async () => {
-
-   
     try {
+      showLoader();
       const { data, status } = await helperService.updateContest(
         {
           id,
@@ -98,14 +99,12 @@ const CreateContest = (props) => {
       if (status === 200) {
         console.log(data);
         props.snackBar("Contest updated successfully", "success");
+        hideLoader();
       }
     } catch (error) {
       console.log(error);
-      props.snackBar(error.data, "success");
-      // props.snackBar(error.error,"error")
+      hideLoader();
     }
-
-
   };
   useEffect(() => {
     if (props?.title && !authState?.contest) fetchContest();
@@ -118,6 +117,7 @@ const CreateContest = (props) => {
   }, [date, time]);
   return (
     <div className="container mt-5">
+      {loader}
       <div className="d-flex flex-column">
         <p className="text-left dash-title-category pb-2">{props?.title}</p>
         <span className="create-con-text mt-1">
@@ -161,7 +161,7 @@ const CreateContest = (props) => {
               onClickHandler={(e) => setDate({ ...date, start_date: e })}
             />
           </div>
-          
+
           <span className="contest-line-height mr-2">at</span>
           <div className="col-md-4">
             <InputReducer

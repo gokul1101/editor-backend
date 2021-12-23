@@ -2,28 +2,48 @@ import React, { useEffect, useState } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
+
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import InputReducer from "../../../../Reducer/InputReducer";
 import SelectReducer from "../../../../Reducer/SelectReducer/SelectReducer";
-import { Button, TextField } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+
 import Pagination from "@material-ui/lab/Pagination";
 import "./ListUser.css";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
-import { AuthContext } from "../../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    border: "1px solid #1E2D64",
+  },
+  fieldColor: {
+    width: "100%",
+    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#00511B",
+    },
+    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#00511B",
+    },
+    "& .MuiInputLabel-outlined.Mui-focused": {
+      color: "#00511B",
+    },
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
+  },
+}));
+
+
 const tableData = [
   {
     reg_no: 1813015,
@@ -137,6 +157,8 @@ const tableData = [
   },
 ];
 const ListUser = (props) => {
+  const classes = useStyles();
+  const [loader, showLoader, hideLoader] = useLoader();
   const [user, setUser] = useState({
     regno: "",
     name: "",
@@ -198,15 +220,18 @@ const ListUser = (props) => {
   const [pagination, setPagination] = useState({ page: 1, limit: 10 });
   const fetchUsers = async () => {
     try {
+      showLoader();
       const { status, data } = await helperService.getUsers(pagination, {
         headers: { Authorization: authState.user.token },
       });
       if (status === 200) {
         setUsers(data.users);
         setRegno(data.users.reg_no)
+        hideLoader();
       }
     } catch (err) {
       console.log(err);
+      hideLoader();
     }
   };
   useEffect(() => {
@@ -252,6 +277,7 @@ const ListUser = (props) => {
   return (
     <>
       <div className="container-fluid">
+        {loader}
         <div className="d-flex justify-content-between p-3 m-3">
           <div>
             <div className="filter d-flex">
@@ -441,6 +467,7 @@ const ListUser = (props) => {
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <InputReducer
+                     className={classes.fieldColor}
                       id="outlined-multiline-static"
                       label="Register Name"
                       variant="outlined"
@@ -452,6 +479,7 @@ const ListUser = (props) => {
                   </div>
                   <div className="col-md-6">
                     <InputReducer
+                     className={classes.fieldColor}
                       id="outlined-multiline-static"
                       label="Name"
                       variant="outlined"
@@ -467,6 +495,7 @@ const ListUser = (props) => {
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <InputReducer
+                     className={classes.fieldColor}
                       id="outlined-multiline-static"
                       label="Email"
                       variant="outlined"
@@ -480,10 +509,11 @@ const ListUser = (props) => {
                   </div>
                   <div className="col-md-6">
                     <SelectReducer
+                     className={classes.fieldColor}
                       label="gender"
                       array={["male", "female"]}
                       name="Gender"
-                      className="w-100"
+                    
                       value={user.gender_id}
                       handleSelect={(e) =>{
                         setUpdateDetails({...updateDetails,gender_id:e.target.value})     
@@ -496,10 +526,11 @@ const ListUser = (props) => {
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <SelectReducer
+                     className={classes.fieldColor}
                       array={["B.E", "B.Tech"]}
                       name="Stream"
                       label="Stream"
-                      className="w-100"
+                      
                       defaultValue={user.stream_id}
                       value={user.stream_id}
                       handleSelect={(e) =>{
@@ -511,6 +542,7 @@ const ListUser = (props) => {
                   </div>
                   <div className="col-md-6">
                     <SelectReducer
+                     className={classes.fieldColor}
                       array={[
                         "Computer Science & Engineering",
                         "Information Technology",
@@ -519,7 +551,7 @@ const ListUser = (props) => {
                       name="Course Name"
                       label="Course Name"
                       defaultValue={user.course_id}
-                      className="w-100"
+                      
                       value={user.course_id}
                       handleSelect={(e) =>{
                         setUpdateDetails({...updateDetails,course_id:e.target.value})
@@ -532,6 +564,7 @@ const ListUser = (props) => {
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <SelectReducer
+                     className={classes.fieldColor}
                       array={[
                         "KSR College of Engineering",
                         "KSR College of Technology",
@@ -539,7 +572,7 @@ const ListUser = (props) => {
                       ]}
                       name="College Name"
                       label="college name"
-                      className="w-100"
+                      
                       defaultValue={user.college_id}
                       value={user.college_id}
                       handleSelect={(e) =>{
@@ -551,11 +584,12 @@ const ListUser = (props) => {
                   </div>
                   <div className="col-md-6">
                     <InputReducer
+                     className={classes.fieldColor}
                       placeholder="Phone number"
                       label="Phone number"
                       name="Phone number"
                       type="text"
-                      className="w-100"
+               
                       value={user.phone_no}
                       onClickHandler={(value) =>{
                         setUpdateDetails({...updateDetails,phone_no:value})
@@ -568,6 +602,7 @@ const ListUser = (props) => {
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <SelectReducer
+                     className={classes.fieldColor}
                       array={[
                         "2018-2022",
                         "2019-2023",

@@ -1,5 +1,5 @@
 import "./App.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Login from "./components/Login/Login";
 import AdminMain from "./components/Admin/Main/Main";
 import Main from "./components/Student/Main/Main";
@@ -8,18 +8,19 @@ import {
   Route,
   Switch,
   withRouter,
-  useHistory,
+  // useHistory,
 } from "react-router-dom";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { AuthContext } from "./contexts/AuthContext";
 import helperService from "./services/helperService";
+// import Loader from "./components/Reducer/Loader/Loader";
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
 const App = () => {
-  const history = useHistory();
+  // const history = useHistory();
   //** Context Consumer */
   const [authState, authDispatch] = useContext(AuthContext);
   const [open, setOpen] = useState(false);
@@ -60,15 +61,15 @@ const App = () => {
       // snackBar(err.data, "error");
     }
   };
-  const disabledEvent = (e) => {
-    if (e.stopPropagation) {
-      e.stopPropagation();
-    } else if (window.event) {
-      window.event.cancelBubble = true;
-    }
-    e.preventDefault();
-    return false;
-  };
+  // const disabledEvent = (e) => {
+  //   if (e.stopPropagation) {
+  //     e.stopPropagation();
+  //   } else if (window.event) {
+  //     window.event.cancelBubble = true;
+  //   }
+  //   e.preventDefault();
+  //   return false;
+  // };
 
   // useEffect(() => {
   //   document.addEventListener("contextmenu", (e) => disabledEvent(e));
@@ -110,6 +111,7 @@ const App = () => {
                 authState.user.role === "student" ? (
                   <Main snackBar={snackBar} fetchUser={fetchUser} />
                 ) : (
+                  // <Loader />
                   <AdminMain snackBar={snackBar} fetchUser={fetchUser} />
                 ),
               ]

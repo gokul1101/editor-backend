@@ -88,7 +88,7 @@ const AddQuiz = (props) => {
   const deleteQuestion = async (question) => {
     console.log(question);
     try {
-      const { data, status } = await helperService.deleteQuestion(
+      const { status } = await helperService.deleteQuestion(
         { ...question, type_id: "mcq" },
         { headers: { Authorization: authState.user.token } }
       );

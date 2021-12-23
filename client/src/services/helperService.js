@@ -1,5 +1,6 @@
 import axios from "axios";
 const baseURL = "http://localhost:5000";
+// const baseURL = "https://03ba-103-70-191-34.ngrok.io";
 
 const helperService = {
   rejectionHandler: ({ response }) => {
@@ -52,9 +53,10 @@ const helperService = {
     }
   },
   createBulkUsers: async (payload, config) => {
+    console.log(payload);
     try {
       const { data, status } = await axios.post(
-        `${baseURL}/api/v1/user/create/all`,
+        `${baseURL}/api/v1/users/createAll`,
         payload,
         config
       );
@@ -211,7 +213,7 @@ const helperService = {
       });
     }
   },
-  getAllContests: async ({page,past,limit}, config) => {
+  getAllContests: async ({ page, past, limit }, config) => {
     try {
       const { data, status } = await axios.get(
         `${baseURL}/api/v1/contests/getAll?page=${page}&limit=${limit}&past=${past}`,
@@ -500,6 +502,19 @@ const helperService = {
         data: err.response.data,
       });
     }
+  },
+  getErrorLogs: async(payload,config) => {
+    console.log(payload,config);
+  try{
+    const data = await axios.get(`${baseURL}/api/v1/errorLogs`,config);
+    if(data.status === 200){
+      console.log(data);
+
+    }
+  }
+  catch(err){
+
+  }
   },
   createSubmission: async (payload, config) => {
     try {

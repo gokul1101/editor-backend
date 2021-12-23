@@ -4,10 +4,10 @@ import DropFileInput from "./DropFileInput/DropFileInput";
 import SelectReducer from "../../../../Reducer/SelectReducer/SelectReducer";
 import "../../../../Student/Main/Dashboard/Dashboard.css";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+// import TextField from "@material-ui/core/TextField";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
-import { AuthContext } from "../../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,22 +32,9 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
   },
 }));
-const colleges = {
-  KSRCE: "KSR College of Engineering",
-  KSRCT: "KSR College of Technology",
-  KSRIET: "KSR Institute for Engineering & Technology",
-};
-const courses = {
-  CSE: "Computer Science & Engineering",
-  IT: "Information Technology",
-  ECE: "Electronics and Communication Engineering",
-  EEE: "Electrical & Electronics Engineering",
-  CIVIL: "Civil Engineering",
-  MECH: "Mechanical Engineering",
-  SF: "Safety & Fire Engineering",
-  AUTO: "Automobile Engineering",
-};
+
 const AddUser = (props) => {
+  const [loader, showLoader, hideLoader] = useLoader();
   const [authState] = useContext(AuthContext);
   const [user, setUser] = useState({
     regno: "",
@@ -64,9 +51,13 @@ const AddUser = (props) => {
   const classes = useStyles();
 
   const onFileChange = async (files) => {
+    const formData = new FormData()
+    console.log(files[0]);
+    formData.append("file",files[0])
+    
     try {
       const { data, status } = await helperService.createBulkUsers(
-        {},
+        {file:formData},
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 201) {
@@ -78,43 +69,45 @@ const AddUser = (props) => {
   const createUser = async () => {
     //Regex
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let charRegex =  /^[A-Za-z0-9]+$/;
-  
-    if(!user.name.length >=3 && !user.name.length <=25){
-      props.snackBar("Username is Incorrect","error")
+    let charRegex = /^[A-Za-z0-9]+$/;
+
+    if (!user.name.length >= 3 && !user.name.length <= 25) {
+      props.snackBar("Username is Incorrect", "error");
       return;
     }
-    if(user.regno.length !== 7){
-      props.snackBar("Please check the register Number","error");
+    if (user.regno.length !== 7) {
+      props.snackBar("Register Number is Incorrect", "error");
       return;
     }
-    if(user.stream_id === ""){
-      props.snackBar("Stream is not selected","error")
+    if (user.stream_id === "") {
+      props.snackBar("Stream is not selected", "error");
       return;
     }
-    if(user.course_id === ""){
-      props.snackBar(" Course is not selected","error")
-      return
-    }
-    if(user.college_id === ""){
-      props.snackBar("College is not selected","error")
-      return
-    }
-    if(!emailRegex.test(user.email)){
-      props.snackBar("Email is Incorrect","error")
+    if (user.course_id === "") {
+      props.snackBar(" Course is not selected", "error");
       return;
     }
-    if(user.phone_no.length !== 10){
-      console.log(user.phone_no.length );
-      props.snackBar("Phone Number is Incorrect","error")
+    if (user.college_id === "") {
+      props.snackBar("College is not selected", "error");
       return;
     }
-    if(user.gender_id === ""){
-      props.snackBar("Gender is not Selected","error")
+    if (!emailRegex.test(user.email)) {
+      props.snackBar("Email is Incorrect", "error");
       return;
     }
-    
+
+    if (user.phone_no.length !== 10) {
+      console.log(user.phone_no.length);
+      props.snackBar("Phone Number is Incorrect", "error");
+      return;
+    }
+    if (user.gender_id === "") {
+      props.snackBar("Gender is not Selected", "error");
+      return;
+    }
+
     try {
+      showLoader();
       console.log({
         ...user,
         college_id: user.college_id,
@@ -131,11 +124,12 @@ const AddUser = (props) => {
       );
       if (status === 201) {
         console.log(data, status);
+        hideLoader();
         props.snackBar("Successfully user created", "success");
       }
     } catch (err) {
       props.snackBar(err.data, "error");
-
+      hideLoader();
     }
   };
   return (
@@ -165,7 +159,9 @@ const AddUser = (props) => {
                 name="Name"
                 type="text"
                 value={user.name}
-                onClickHandler={(value) => setUser({ ...user, name: value.trim() })}
+                onClickHandler={(value) =>
+                  setUser({ ...user, name: value.trim() })
+                }
               />
             </div>
             <div className="col-md-6 p-1">
@@ -176,7 +172,9 @@ const AddUser = (props) => {
                 name="Register Number"
                 type="text"
                 value={user.regno}
-                onClickHandler={(value) => setUser({ ...user, regno: value.trim() })}
+                onClickHandler={(value) =>
+                  setUser({ ...user, regno: value.trim() })
+                }
               />
             </div>
           </div>
@@ -226,7 +224,9 @@ const AddUser = (props) => {
                 name="Email"
                 type="email"
                 value={user.email}
-                onClickHandler={(value) => setUser({ ...user, email: value.trim() })}
+                onClickHandler={(value) =>
+                  setUser({ ...user, email: value.trim() })
+                }
               />
             </div>
           </div>
@@ -280,7 +280,10 @@ const AddUser = (props) => {
           </CustomButton>
         </div>
         <div className="col-md-4 p-2 border m-1">
-          <DropFileInput onFileChange={onFileChange} />
+          <DropFileInput
+            onFileChange={onFileChange}
+            snackBar={props.snackBar}
+          />
         </div>
       </div>
     </div>

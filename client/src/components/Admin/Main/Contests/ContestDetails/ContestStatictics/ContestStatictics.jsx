@@ -136,7 +136,7 @@ const ContestStatictics = (props) => {
           </div>
           <div className="top-part mt-2 mb-2 p-3">
             <div className="submissions d-flex flex-column align-items-center justify-content-center">
-              <img src={SubmissionGif} height="98" width="96" />
+              <img src={SubmissionGif} height="98" width="96" alt="submission" />
               <span className="mt-4">Total no. of submissions : <span className="submission-count">40</span></span>
               <span>No. of submissions Left : <span className="submission-count">20</span></span>
               <span>Ena vaikrathunu therla : <span className="submission-count">10</span></span>

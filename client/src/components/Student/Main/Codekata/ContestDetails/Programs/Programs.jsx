@@ -8,6 +8,8 @@ import helperService from "../../../../../../services/helperService";
 import Testcase from "./Testcase/Testcase";
 import Timer from "../../Timer/Timer";
 import { parseCode, template } from "../../../../../../services/utils";
+import GoBack from "../../../../../Reducer/GoBack/GoBack";
+import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 const Programs = (props) => {
   let history = useHistory();
   const { questionId } = useParams();
@@ -54,16 +56,16 @@ const Programs = (props) => {
         JSON.stringify({ code, lang: language })
       );
       const { status, data } = await helperService.runCode(
-        { id : challenge?._id, code: parsedCode, lang: language },
+        { id: challenge?._id, code: parsedCode, lang: language },
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 200) {
         console.log(data);
-        if(data?.errors) setIsError(true);
+        if (data?.errors) setIsError(true);
         else setIsError(false);
-        if(data?.isSampleFailed) setIsSampleFailed(true);
+        if (data?.isSampleFailed) setIsSampleFailed(true);
         else setIsSampleFailed(false);
-        if(data?.err) setErrors(data?.err);
+        if (data?.err) setErrors(data?.err);
       }
     } catch (err) {
       console.log(err);
@@ -76,31 +78,29 @@ const Programs = (props) => {
   const handleChange = (event) => setThemeName(event.target.value);
 
   const handleLanguage = (event) => {
-    setLanguage(event.target.value)
+    setLanguage(event.target.value);
     setCode(template[event.target.value]);
     sessionStorage.removeItem(challenge?.name);
-  }
+  };
   return (
     <>
       <div className="container-fluid" id={challenge?._id}>
         <div className="problem-header p-2 d-flex border-bottom border-left">
           <div className="problem-title d-flex">
-            <div
-              className="back-btn mt-2 ml-2 mr-2"
-              onClick={() => history.goBack()}
-            >
-              <div className="triangle"></div>
-              <div className="halfcircle"></div>
+            <div className="mt-1 mr-2 ml-2">
+              <GoBack />
             </div>
           </div>
-          <div className="timer mt-1 ml-2">
+          <div className="timer mt-3 ml-4">
             <h6 className="timer-text" style={{ width: "230px" }}>
               <Timer />
             </h6>
           </div>
           <div className="w-100 d-flex flex-row-reverse mt-3 mb-2">
             <div>
-              <h5 className="mt-2 score-card">Maximum Score : <span className="program-score p-2">80</span></h5>
+              <h5 className="mt-2 score-card">
+                Maximum Score : <span className="program-score p-2">80</span>
+              </h5>
             </div>
             <div className="w-25 mx-2">
               <SelectReducer
@@ -176,7 +176,9 @@ const Programs = (props) => {
                   aria-labelledby="pills-problem-tab"
                 >
                   <div className="d-flex mt-2">
-                    <h5 className="problem-state mr-2 font-weight-bolder">{challenge?.name}</h5>
+                    <h5 className="problem-state mr-2 font-weight-bolder">
+                      {challenge?.name}
+                    </h5>
                     <div
                       className={`problem-badge-${difficulty} d-flex align-items-center justify-content-center mr-2`}
                     >
@@ -220,18 +222,14 @@ const Programs = (props) => {
                         input format :{" "}
                       </span>{" "}
                       <br />
-                      <p className="mt-2">
-                        {challenge?.input_format}
-                      </p>
+                      <p className="mt-2">{challenge?.input_format}</p>
                     </div>
                     <div className="example-output mt-2">
                       <span className="font-weight-bolder op-highlight">
                         output format :{" "}
                       </span>{" "}
                       <br />
-                      <p className="mt-2 ">
-                        {challenge?.output_format}
-                      </p>
+                      <p className="mt-2 ">{challenge?.output_format}</p>
                     </div>
                   </div>
                   <div className="hints mt-2 d-flex flex-column">
@@ -250,7 +248,12 @@ const Programs = (props) => {
                   role="tabpanel"
                   aria-labelledby="pills-submissions-tab"
                 >
-                  <Testcase isError={isError} testcases={testCases} isSampleFailed={isSampleFailed} errors={errors}/>
+                  <Testcase
+                    isError={isError}
+                    testcases={testCases}
+                    isSampleFailed={isSampleFailed}
+                    errors={errors}
+                  />
                 </div>
               </div>
             </div>
@@ -258,16 +261,25 @@ const Programs = (props) => {
               <Editor
                 language={language}
                 theme={themeName}
+                height="80vh"
                 onChangeHandler={(value) => setCode(value)}
                 value={code}
               />
               <div className="mt-3 d-flex justify-content-end">
-                <button className="btn-hover color-11 mr-2" onClick={compile}>
+                {/* <button className="btn-hover color-11 mr-2" onClick={compile}>
                   RUN CODE <i className="fas fa-code mr-2 ml-2"></i>
-                </button>
-                <button className="btn-hover color-11">
-                  SUBMIT <i className="fas fa-rocket mr-2 ml-2"></i>
-                </button>
+                </button> */}
+                <CustomButton
+                  className="btn-hover color-11 mt-2 mr-2"
+                  onClickHandler={compile}
+                >
+                  <i className="fas fa-code pr-2 pl-2"></i>RUN CODE
+                </CustomButton>
+                <CustomButton
+                  className="btn-hover color-11 mt-2"
+                >
+                  <i className="fas fa-code pr-2 pl-2"></i>SUBMIT
+                </CustomButton>
               </div>
             </div>
           </div>
