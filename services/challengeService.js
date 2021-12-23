@@ -99,7 +99,7 @@ const updateChallenge = async (question) => {
         update_at: new Date(),
       });
       return Promise.resolve({
-        code: 201,
+        code: 200,
         message: `Question updated successfully`,
       });
     }

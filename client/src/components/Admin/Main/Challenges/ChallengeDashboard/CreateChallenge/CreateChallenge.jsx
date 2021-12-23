@@ -63,6 +63,40 @@ const CreateChallenge = (props) => {
     }
   };
   const updateChallenge = async () => {
+    console.log(challenge);
+    if (challenge.name.length <=0) {
+      props.snackBar("Challenge Name is Empty", "error")
+      return
+    }
+    if(challenge.description.length <=0){
+      props.snackBar("Challenge Description is Empty", "error")
+      return;
+    }
+    if(challenge.statement.length <=0){
+      props.snackBar("Challenge Statement is Empty", "error")
+      return;
+    }
+
+   if(challenge.input_format.length <=0){
+     props.snackBar("Input is Empty","error")
+     return;
+   } 
+   if(challenge.output_format.length <= 0){
+    props.snackBar("Output is Empty","error")
+    return;
+  } 
+  if(challenge.constraints.length <=0){
+    props.snackBar("contraints is Empty","error")
+    return;
+  } 
+  if(challenge.difficulty_id === undefined){
+    props.snackBar("Difficulty is not Selected","error")
+    return;
+  } 
+  if(challenge.max_score === undefined){
+    props.snackBar("Maximum Score is Empty","error")
+    return;
+  } 
     try {
       const { data, status } = await helperService.updateQuestion(
         {
@@ -76,6 +110,8 @@ const CreateChallenge = (props) => {
       );
       if (status === 200) {
         console.log(data);
+        props.snackBar("Challenge updated Sucessfully","success")
+        
       }
     } catch (err) {
       // props.snackBar(err,"error")
