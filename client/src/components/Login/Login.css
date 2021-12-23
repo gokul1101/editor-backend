@@ -336,7 +336,8 @@ form.sign-in-form {
     left: 50%;
   }
 }
-.btn-hover {
+.btn-hover,
+.btn-grad {
   width: max-content;
   font-size: 16px;
   font-weight: 600;
@@ -368,7 +369,25 @@ form.sign-in-form {
   );
   box-shadow: 0 4px 15px 0 rgba(23, 168, 108, 0.4);
 }
-.btn-hover:hover i {
+
+.btn-grad {
+  background-image: linear-gradient(
+    to right,
+    #cb2d3e 0%,
+    #ef473a 51%,
+    #cb2d3e 100%
+  );
+  box-shadow: 0 4px 15px 0 rgba(248, 71, 48, 0.4);
+}
+
+.btn-grad:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
+}
+
+.btn-hover:hover i,
+.btn-grad:hover i {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;

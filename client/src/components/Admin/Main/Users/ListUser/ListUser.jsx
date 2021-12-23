@@ -170,7 +170,7 @@ const ListUser = (props) => {
     phone_no: "",
     batch_id: "",
   });
-  const [updateDetails, setUpdateDetails] = useState({})
+  const [updateDetails, setUpdateDetails] = useState({});
   const [open, setOpen] = React.useState(false);
   //   const [posts, setPosts] = useState([]);
   //   const [page, setPage] = useState(1);
@@ -226,8 +226,8 @@ const ListUser = (props) => {
       });
       if (status === 200) {
         setUsers(data.users);
-        setRegno(data.users.reg_no)
         hideLoader();
+        setRegno(data.users.reg_no);
       }
     } catch (err) {
       console.log(err);
@@ -262,13 +262,15 @@ const ListUser = (props) => {
         }
       );
       if (status == 200) {
-         props.snackBar("Updated Successfully", "success");
-        handleClose()
-        console.log(users,user);
-        setUsers(users.map(e => {
-          if(e.regno === user.regno) return user;
-          return e;
-        }))
+        props.snackBar("Updated Successfully", "success");
+        handleClose();
+        console.log(users, user);
+        setUsers(
+          users.map((e) => {
+            if (e.regno === user.regno) return user;
+            return e;
+          })
+        );
       }
     } catch (err) {
       console.log(err);
@@ -318,7 +320,7 @@ const ListUser = (props) => {
 
             <div>
               <button className="pr-4 pl-4 mr-2 d-load-btn ml-3">
-                <i class="fas fa-download"></i>
+                <i className="fas fa-download"></i>
                 <span className="ml-2 font-weight-bolder">
                   Download Details
                 </span>
@@ -436,11 +438,11 @@ const ListUser = (props) => {
                         className="pr-4 pl-4 mr-2 edit-btn "
                         onClick={() => editUserDetail(e)}
                       >
-                        <i class="fas fa-pencil-alt"></i>
+                        <i className="fas fa-pencil-alt"></i>
                         <span className="ml-2">Edit</span>
                       </button>
                       <button className="pr-4 pl-4 delete-btn" disabled>
-                        <i class="fas fa-trash"></i>
+                        <i className="fas fa-trash"></i>
                         <span className="ml-2">Delete</span>
                       </button>
                     </div>
@@ -485,10 +487,9 @@ const ListUser = (props) => {
                       variant="outlined"
                       value={user.name}
                       onClickHandler={(value) => {
-                        setUpdateDetails({...updateDetails,name:value})
-                        setUser({ ...user, name: value })
-                      }
-                      }
+                        setUpdateDetails({ ...updateDetails, name: value });
+                        setUser({ ...user, name: value });
+                      }}
                     />
                   </div>
                 </div>
@@ -500,11 +501,10 @@ const ListUser = (props) => {
                       label="Email"
                       variant="outlined"
                       value={user.email}
-                      onClickHandler={(value) =>{
-                        setUpdateDetails({...updateDetails,email:value})
-                        setUser({ ...user, email: value })
-                      }
-                      }
+                      onClickHandler={(value) => {
+                        setUpdateDetails({ ...updateDetails, email: value });
+                        setUser({ ...user, email: value });
+                      }}
                     />
                   </div>
                   <div className="col-md-6">
@@ -515,11 +515,13 @@ const ListUser = (props) => {
                       name="Gender"
                     
                       value={user.gender_id}
-                      handleSelect={(e) =>{
-                        setUpdateDetails({...updateDetails,gender_id:e.target.value})     
-                         setUser({ ...user, gender_id: e.target.value })
-                      }
-                      }
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          gender_id: e.target.value,
+                        });
+                        setUser({ ...user, gender_id: e.target.value });
+                      }}
                     />
                   </div>
                 </div>
@@ -533,11 +535,13 @@ const ListUser = (props) => {
                       
                       defaultValue={user.stream_id}
                       value={user.stream_id}
-                      handleSelect={(e) =>{
-                        setUpdateDetails({...updateDetails,stream_id:e.target.value})
-                        setUser({ ...user, stream_id: e.target.value })
-                      }
-                      }
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          stream_id: e.target.value,
+                        });
+                        setUser({ ...user, stream_id: e.target.value });
+                      }}
                     />
                   </div>
                   <div className="col-md-6">
@@ -553,11 +557,13 @@ const ListUser = (props) => {
                       defaultValue={user.course_id}
                       
                       value={user.course_id}
-                      handleSelect={(e) =>{
-                        setUpdateDetails({...updateDetails,course_id:e.target.value})
-                        setUser({ ...user, course_id: e.target.value })
-                      }
-                      }
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          course_id: e.target.value,
+                        });
+                        setUser({ ...user, course_id: e.target.value });
+                      }}
                     />
                   </div>
                 </div>
@@ -575,11 +581,13 @@ const ListUser = (props) => {
                       
                       defaultValue={user.college_id}
                       value={user.college_id}
-                      handleSelect={(e) =>{
-                        setUpdateDetails({...updateDetails,college_id:e.target.value})
-                        setUser({ ...user, college_id: e.target.value })
-                      }
-                      }
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          college_id: e.target.value,
+                        });
+                        setUser({ ...user, college_id: e.target.value });
+                      }}
                     />
                   </div>
                   <div className="col-md-6">
@@ -591,11 +599,10 @@ const ListUser = (props) => {
                       type="text"
                
                       value={user.phone_no}
-                      onClickHandler={(value) =>{
-                        setUpdateDetails({...updateDetails,phone_no:value})
-                        setUser({ ...user, phone_no: value })
-                      }
-                      }
+                      onClickHandler={(value) => {
+                        setUpdateDetails({ ...updateDetails, phone_no: value });
+                        setUser({ ...user, phone_no: value });
+                      }}
                     />
                   </div>
                 </div>
@@ -614,11 +621,13 @@ const ListUser = (props) => {
                       label="Batch year"
                       defaultValue={user.batch_id}
                       value={user.batch_id}
-                      handleSelect={(e) =>{
-                        setUpdateDetails({...updateDetails,batch_id:e.target.value})    
-                        setUser({ ...user, batch_id: e.target.value })
-                      }
-                      }
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          batch_id: e.target.value,
+                        });
+                        setUser({ ...user, batch_id: e.target.value });
+                      }}
                     />
                   </div>
                 </div>

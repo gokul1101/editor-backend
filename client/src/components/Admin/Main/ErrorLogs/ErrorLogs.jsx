@@ -66,14 +66,14 @@ const ErrorLogs = () => {
             NO. OF LOGS
           </div>
           <div className="col-md-2 text-center content-nav-title">
-            <i class="fas fa-check-circle"></i>
+            <i className="fas fa-check-circle"></i>
           </div>
           <div className="col-md-2 text-center content-nav-title">
-            <i class="fas fa-times-circle"></i>
+            <i className="fas fa-times-circle"></i>
           </div>
           <div className="col-md-2 text-center content-nav-title">
             SHOW
-            {/* <i class="fas fa-external-link-alt"></i> */}
+            {/* <i className="fas fa-external-link-alt"></i> */}
           </div>
         </div>
         <div className="d-flex flex-column border-top border-bottom mt-1 p-2 mb-1">

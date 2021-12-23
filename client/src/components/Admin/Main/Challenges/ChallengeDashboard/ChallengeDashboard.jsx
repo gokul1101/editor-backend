@@ -5,7 +5,7 @@ import helperService from "../../../../../services/helperService";
 import CreateChallenge from "./CreateChallenge/CreateChallenge";
 import TestCase from "./TestCase/TestCase";
 const ChallengeDashboard = (props) => {
-  console.log("At line challenge dashboard", props)
+  console.log("At line challenge dashboard", props);
   const [authState, authDispatch] = useContext(AuthContext);
   const { id } = useParams();
   const fetchChallenge = async () => {
@@ -32,8 +32,8 @@ const ChallengeDashboard = (props) => {
   return (
     <>
       <div className="challenge-container" style={{overflowY:'scroll',height:'100vh'}}>
-        <ul class="list-group d-flex align-items-center justify-content-center flex-row p-2 mt-3 mb-3">
-          <li class="list-group-item user-group-pill" style={{"height":"300px !important"}}>
+        <ul className="list-group d-flex align-items-center justify-content-center flex-row p-2 mt-3 mb-3">
+          <li className="list-group-item user-group-pill">
             <NavLink
               exact
               className="user-navlink pr-3 pl-3 m-2 border border-success "

@@ -1,24 +1,36 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Male from "../../../../Images/man.png";
 import { useParams, useHistory } from "react-router-dom";
 import "./ContestDetails.css";
 import QuizImage from "../../../../Images/Quiz.png";
 import ProblemImage from "../../../../Images/problem.png";
 import Timer from "../Timer/Timer";
-import { AuthContext } from "../../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import ContestCard from "./ContestCard/ContestCard";
 import helperService from "../../../../../services/helperService";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
+import DialogBox from "../../../../Reducer/DialogBox/DialogBox";
 
 const ContestDetails = ({ setSideToggle }) => {
+  const [loader, showLoader, hideLoader] = useLoader();
   const { id } = useParams();
   const history = useHistory();
+  const [open, setOpen] = useState(false);
+  const [flag, setFlag] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const backAlert = () => setFlag(true);
+  const onBackAlert = () => {
+    history.push("/codekata");
+  };
+  const handleClose = () => setOpen(false);
+  const backClose = () => setFlag(false);
+  const ref = useRef();
   const [authState] = useContext(AuthContext);
   const routeQuestion = (_id, name, type) => {
     const checkQuestion = (question) => question === name;
     if (type === "problem") {
       let completedChallenges = JSON.parse(
-        localStorage.getItem("problems") || "[]"
+        localStorage.getItem("challenges") || "[]"
       );
       if (completedChallenges.some(checkQuestion)) {
         return;
@@ -33,7 +45,9 @@ const ContestDetails = ({ setSideToggle }) => {
     }
     history.push(`/codekata/${id}/${type}/${_id}`);
   };
-  const sumbitContest = async () => {
+  const sumbitContest = async (e) => {
+    setOpen(false);
+    showLoader();
     let payload = {
       user_id: authState?.user?._id,
       contest_id: authState?.contest?.contest._id,
@@ -44,7 +58,7 @@ const ContestDetails = ({ setSideToggle }) => {
       return JSON.parse(localStorage.getItem(quiz?.name) || "[]");
     });
     payload.challenges = contestChallenges.map((challenge) => {
-      return JSON.parse(localStorage.getItem(challenge?.name) || "[]");
+      return JSON.parse(localStorage.getItem(challenge?.name) || "{}");
     });
     try {
       const response = await helperService.createSubmission(
@@ -55,22 +69,51 @@ const ContestDetails = ({ setSideToggle }) => {
       // history.push("/codekata");
     } catch (err) {
       console.log(err);
+    } finally {
+      hideLoader();
     }
   };
   useEffect(() => {
     setSideToggle(true);
+    // console.log(ref.current);
+    // if (ref.current.focus) {
+    //   ref.current.dispatchEvent(
+    //     new KeyboardEvent("keypress", {
+    //       key: "F11",
+    //     })
+    //   );
+    // }
+    // console.log(full);
+
+    // return () => {};
+    // window.addEventListener("onload", () => {});
   }, [setSideToggle]);
 
+  const handleUserKeyPress = (event) => {
+    const { key, keyCode } = event;
+    console.log(key);
+    if (keyCode === 122) {
+      console.log("triggered");
+    }
+  };
   return (
-    <div className="container-fluid dashboard" style={{ overflow: "hidden" }}>
+    <div
+      className="container-fluid dashboard"
+      ref={ref}
+      style={{ overflow: "hidden" }}
+    >
+      {loader}
       <div className="d-flex">
-        <div
-          className="back-btn mr-auto mt-3 ml-4"
-          onClick={() => history.push("/codekata")}
-        >
+        <div className="back-btn mr-auto mt-3 ml-4" onClick={backAlert}>
           <div className="triangle"></div>
           <div className="halfcircle"></div>
         </div>
+        <DialogBox
+          open={flag}
+          bodyMsg={`Are you sure do you want to Go Back`}
+          handleClose={backClose}
+          handleOpen={onBackAlert}
+        />
         <div className="timer mt-4">
           <Timer />
         </div>
@@ -92,7 +135,7 @@ const ContestDetails = ({ setSideToggle }) => {
         </div>
         <div className="mt-3 p-2">
           <h3 className="font-weight-bolder color-highlight">
-            <i class="fas fa-star"></i>Max Score :{" "}
+            <i className="fas fa-star"></i>Max Score :{" "}
             <span className="max-score p-2">{40}</span>
           </h3>
         </div>
@@ -106,10 +149,17 @@ const ContestDetails = ({ setSideToggle }) => {
         </div>
         <CustomButton
           className="btn-hover color-11 mt-2"
-          onClickHandler={sumbitContest}
+          onClickHandler={handleOpen}
         >
           <i className="fas fa-rocket pr-2 pl-2"></i> SUBMIT CONTEST
         </CustomButton>
+        <DialogBox
+          open={open}
+          headerMsg={"This is a warning message !"}
+          bodyMsg={`Are you sure do you want to exit from the ${authState?.contest?.contest.name}`}
+          handleClose={handleClose}
+          handleOpen={sumbitContest}
+        />
       </div>
       <div className="d-flex">
         <div
