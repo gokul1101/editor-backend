@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Male from "../../../../Images/man.png";
 import { useParams, useHistory } from "react-router-dom";
 import "./ContestDetails.css";
@@ -12,12 +12,19 @@ import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 import DialogBox from "../../../../Reducer/DialogBox/DialogBox";
 
 const ContestDetails = ({ setSideToggle }) => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const [loader, showLoader, hideLoader] = useLoader();
   const { id } = useParams();
   const history = useHistory();
+  const [open, setOpen] = useState(false);
+  const [flag, setFlag] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const backAlert = () => setFlag(true);
+  const onBackAlert = () => {
+    history.push("/codekata");
+  };
+  const handleClose = () => setOpen(false);
+  const backClose = () => setFlag(false);
+  const ref = useRef();
   const [authState] = useContext(AuthContext);
   const routeQuestion = (_id, name, type) => {
     const checkQuestion = (question) => question === name;
@@ -68,19 +75,45 @@ const ContestDetails = ({ setSideToggle }) => {
   };
   useEffect(() => {
     setSideToggle(true);
+    // console.log(ref.current);
+    // if (ref.current.focus) {
+    //   ref.current.dispatchEvent(
+    //     new KeyboardEvent("keypress", {
+    //       key: "F11",
+    //     })
+    //   );
+    // }
+    // console.log(full);
+
+    // return () => {};
+    // window.addEventListener("onload", () => {});
   }, [setSideToggle]);
 
+  const handleUserKeyPress = (event) => {
+    const { key, keyCode } = event;
+    console.log(key);
+    if (keyCode === 122) {
+      console.log("triggered");
+    }
+  };
   return (
-    <div className="container-fluid dashboard" style={{ overflow: "hidden" }}>
+    <div
+      className="container-fluid dashboard"
+      ref={ref}
+      style={{ overflow: "hidden" }}
+    >
       {loader}
       <div className="d-flex">
-        <div
-          className="back-btn mr-auto mt-3 ml-4"
-          onClick={() => history.push("/codekata")}
-        >
+        <div className="back-btn mr-auto mt-3 ml-4" onClick={backAlert}>
           <div className="triangle"></div>
           <div className="halfcircle"></div>
         </div>
+        <DialogBox
+          open={flag}
+          bodyMsg={`Are you sure do you want to Go Back`}
+          handleClose={backClose}
+          handleOpen={onBackAlert}
+        />
         <div className="timer mt-4">
           <Timer />
         </div>
