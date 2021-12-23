@@ -98,7 +98,7 @@ const Quiz = ({ setSideToggle }) => {
     history.push(`/codekata/${location.id}`);
   };
   return (
-    <div className="container-fluid p-0 Quiz-question-container">
+    <div className="container-fluid p-0 Quiz-question-container" style={{height:'100vh',overflowY:'scroll'}}>
       <div className="d-flex">
         <div className="mr-auto mt-3 ml-4">
           <GoBack onClickHandler={handleOpenQuiz} />
@@ -145,7 +145,7 @@ const Quiz = ({ setSideToggle }) => {
             <div className="d-flex">
               <div className="numberCircle ml-3">{currentQuestionNumber}</div>
               <div className="question-up ml-3">
-                <pre className="span-question font-weight-bolder">
+                <pre className="span-question">
                   {currentQuestion?.statement}
                 </pre>
               </div>

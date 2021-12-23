@@ -13,3 +13,9 @@
     transform: scale(1.1);
   }
 }
+@media (max-width: 1200px) {
+  .timer-span {
+    font-size: 18px !important;
+    width: max-content;
+  }
+}

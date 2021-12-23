@@ -7,7 +7,6 @@ import Select from "@material-ui/core/Select";
 import "./Compiler.css";
 import Male from "../../../Images/man.png";
 import TextField from "@material-ui/core/TextField";
-import { Button } from "@material-ui/core";
 import ComImg from "../../../Images/Loop1.jpg";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import helperService from "../../../../services/helperService";
@@ -15,7 +14,9 @@ import { parseCode, template } from "../../../../services/utils";
 import Editor from "../../../Reducer/Editor/Editor";
 import GoBack from "../../../Reducer/GoBack/GoBack";
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
+import { useHistory } from "react-router-dom";
 const Compiler = (props) => {
+  const history = useHistory();
   const [authState] = useContext(AuthContext);
   const themes = [
     "xcode",
@@ -45,7 +46,6 @@ const Compiler = (props) => {
       : template.java
   );
 
-  // const [compilerInput, setCompilerInput] = React.useState("");
   const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -95,7 +95,7 @@ const Compiler = (props) => {
     <div className="container-fluid p-0 compiler-container">
       <div className="d-flex">
         <div className="d-flex mr-auto mt-2">
-          <GoBack />
+          <GoBack onClickHandler={() => history.goBack()} />
           <div className="complier-img">
             <img
               src={ComImg}
