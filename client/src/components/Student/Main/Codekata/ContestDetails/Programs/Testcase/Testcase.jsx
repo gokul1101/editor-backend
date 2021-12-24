@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import MuiAccordion from "@material-ui/core/Accordion";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
@@ -48,13 +48,22 @@ const AccordionDetails = withStyles((theme) => ({
   },
 }))(MuiAccordionDetails);
 
-const Testcase = ({ testcases, isError, isSampleFailed, errors }) => {
-  const [expanded, setExpanded] = React.useState("panel1");
-
+const Testcase = ({
+  testCaseOutput,
+  testcases,
+  isError,
+  isSampleFailed,
+  errors,
+  isLoading,
+}) => {
+  const [expanded, setExpanded] = useState("");
+  const [output, setOutput] = useState({});
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-
+  useEffect(() => {
+    setOutput(testCaseOutput);
+  }, [testCaseOutput]);
   return (
     <div className="h-100">
       {isError ? (
@@ -66,6 +75,8 @@ const Testcase = ({ testcases, isError, isSampleFailed, errors }) => {
           </h6>
           <div className="position-relative">
             {testcases?.sample?.map((testcase, index) => {
+              let sampleOutput =
+                (output?.sample && output?.sample[index]) || {};
               return (
                 <Accordion
                   square
@@ -77,18 +88,43 @@ const Testcase = ({ testcases, isError, isSampleFailed, errors }) => {
                     id={`panel${index + 1}d-header`}
                   >
                     <Typography classname="test-case-heading ">
-                      <img
-                        src={Loader}
-                        alt="loader"
-                        height={40}
-                        className="p-2 rounded-circle"
-                      />
-                      <span className="ml-3">Test Case {index + 1}</span>
+                      {isLoading ? (
+                        <img
+                          src={Loader}
+                          alt="loader"
+                          height={40}
+                          className="p-2 rounded-circle"
+                        />
+                      ) : (
+                        <>
+                          <button
+                            className={`btn btn-${
+                              sampleOutput?.errors ? "danger" : "success"
+                            }`}
+                          >
+                            <i
+                              className={
+                                sampleOutput?.errors
+                                  ? "fas fa-times-circle"
+                                  : "far fa-check-circle"
+                              }
+                            ></i>
+                          </button>
+                          <span className="ml-3 text-dark">
+                            Test Case {index + 1}
+                          </span>
+                        </>
+                      )}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>{testcase?.input}</Typography>
-                    <Typography>{testcase?.output}</Typography>
+                    <p>{`Input : ${testcase?.input}`}</p>
+                    <p>{`Output : ${testcase?.output}`}</p>
+                    <p>
+                      {sampleOutput?.actualOutput
+                        ? `Your output : ${sampleOutput?.actualOutput}`
+                        : ""}
+                    </p>
                   </AccordionDetails>
                 </Accordion>
               );
@@ -104,6 +140,8 @@ const Testcase = ({ testcases, isError, isSampleFailed, errors }) => {
                 {Array.apply(0, Array(testcases?.hidden || 0)).map(
                   (testcase, index) => {
                     let length = (testcases?.sample?.length || 0) + index + 1;
+                    let hiddenOutput =
+                      (output?.hidden && output?.hidden[index]) || false;
                     return (
                       <Accordion
                         square
@@ -114,21 +152,39 @@ const Testcase = ({ testcases, isError, isSampleFailed, errors }) => {
                           id={`panel${length}d-header`}
                         >
                           <Typography className="test-case-heading w-100 mr-auto">
-                            <button className="btn btn-danger">
-                              <i className="fas fa-times-circle"></i>
-                            </button>
-                            <span className="ml-3 text-dark">
-                              Test Case {length}
-                            </span>
+                            {isLoading ? (
+                              <img
+                                src={Loader}
+                                alt="loader"
+                                height={40}
+                                className="p-2 rounded-circle"
+                              />
+                            ) : (
+                              <>
+                                <button
+                                  className={`btn btn-${
+                                    hiddenOutput ? "success" : "danger"
+                                  }`}
+                                >
+                                  <i
+                                    className={
+                                      hiddenOutput
+                                        ? "far fa-check-circle"
+                                        : "fas fa-times-circle"
+                                    }
+                                  ></i>
+                                </button>
+                                <span className="ml-3 text-dark">
+                                  Test Case {length}
+                                </span>
+                              </>
+                            )}
                           </Typography>
 
                           <div className="lock-icon p-2 float-right">
                             <i className="fas fa-lock"></i>
                           </div>
                         </AccordionSummary>
-                        <AccordionDetails>
-                          <Typography></Typography>
-                        </AccordionDetails>
                       </Accordion>
                     );
                   }

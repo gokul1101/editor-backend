@@ -24,6 +24,7 @@ const createChallenge = async (question) => {
       });
     }
   } catch (err) {
+    console.log(err)
     return Promise.reject({
       code: 500,
       message: `Challenge cannot be created `,

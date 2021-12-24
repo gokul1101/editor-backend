@@ -14,48 +14,48 @@ const CreateChallenge = (props) => {
   const history = useHistory();
   const { id } = useParams();
   const [challenge, setChallenge] = useState({});
+  const [difficultyId, setDifficultyId] = useState("");
   const createChallenge = async () => {
-    console.log(challenge)
-    if (challenge.name === undefined) {
-      props.snackBar("Challenge Name is Empty", "error")
-      return
-    }
-    if(challenge.description === undefined){
-      props.snackBar("Challenge Description is Empty", "error")
+    if (challenge?.name?.length === 0) {
+      props.snackBar("Challenge Name is Empty", "error");
       return;
     }
-    if(challenge.statement === undefined){
-      props.snackBar("Challenge Statement is Empty", "error")
+    if (challenge?.description?.length === 0) {
+      props.snackBar("Challenge Description is Empty", "error");
+      return;
+    }
+    if (challenge?.statement?.length === 0) {
+      props.snackBar("Challenge Statement is Empty", "error");
       return;
     }
 
-   if(challenge.input_format === undefined){
-     props.snackBar("Input is Empty","error")
-     return;
-   } 
-   if(challenge.output_format === undefined){
-    props.snackBar("Output is Empty","error")
-    return;
-  } 
-  if(challenge.constraints === undefined){
-    props.snackBar("contraints is Empty","error")
-    return;
-  } 
-  if(challenge.difficulty_id === undefined){
-    props.snackBar("Difficulty is not Selected","error")
-    return;
-  } 
-  if(challenge.max_score === undefined){
-    props.snackBar("Maximum Score is Empty","error")
-    return;
-  } 
+    if (challenge?.input_format?.length === 0) {
+      props.snackBar("Input is Empty", "error");
+      return;
+    }
+    if (challenge?.output_format?.length === 0) {
+      props.snackBar("Output is Empty", "error");
+      return;
+    }
+    if (challenge?.constraints?.length === 0) {
+      props.snackBar("contraints is Empty", "error");
+      return;
+    }
+    if (!challenge?.difficulty_id) {
+      props.snackBar("Difficulty is not Selected", "error");
+      return;
+    }
+    if (!challenge?.max_score || challenge.max_score < 0) {
+      props.snackBar("Maximum Score is Empty", "error");
+      return;
+    }
     try {
       const { status } = await helperService.createChallenge(
         { ...challenge, contest_id: id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
-        props.snackBar("Challenge is created Successfully","success")
+        props.snackBar("Challenge is created Successfully", "success");
         history.push(`/contests/${id}/challenges`);
       }
     } catch (err) {
@@ -114,32 +114,27 @@ const CreateChallenge = (props) => {
         
       }
     } catch (err) {
-      // props.snackBar(err,"error")
-     
+      props.snackBar(err, "error");
     }
   };
   useEffect(() => {
-    console.log(authState?.challenge);
     setChallenge({
-      name: authState?.challenge?.name,
+      name: authState?.challenge?.name ?? "",
       type_id: "problem",
-      contest_id: authState?.challenge?._id,
-      statement: authState?.challenge?.statement,
-      description: authState?.challenge?.description,
-      input_format: authState?.challenge?.input_format,
-      output_format: authState?.challenge?.output_format,
-      constraints: authState?.challenge?.constraints,
-      difficulty_id: authState?.challenge?.difficulty_id.level,
+      contest_id: authState?.challenge?._id ?? "",
+      statement: authState?.challenge?.statement ?? "",
+      description: authState?.challenge?.description ?? "",
+      input_format: authState?.challenge?.input_format ?? "",
+      output_format: authState?.challenge?.output_format ?? "",
+      constraints: authState?.challenge?.constraints ?? "",
+      difficulty_id: authState?.challenge?.difficulty_id?.level,
       max_score: authState?.challenge?.max_score,
     });
-
+    setDifficultyId(authState?.challenge?.difficulty_id?.level)
     return () => {
       if (authState?.challenge) setChallenge({});
     };
   }, [authState]);
-  useEffect(() => {
-    console.log(props);
-  }, [challenge]);
   return (
     <div
       className="container-fluid"
@@ -158,7 +153,7 @@ const CreateChallenge = (props) => {
               label="Challenge name"
               name="Challenge name"
               type="text"
-              value={challenge.name}
+              value={challenge?.name}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -168,28 +163,7 @@ const CreateChallenge = (props) => {
             />
           </div>
         </div>
-        <div className="d-flex mt-2 mb-2">
-          <span className="contest-line-height mr-2 col-md-3">
-            Description <span className="contest-star">*</span>
-          </span>
-          <div className="col-md-7">
-            <InputReducer
-              fullWidth
-              id="outlined-multiline-static"
-              label="Enter Description"
-              multiline
-              rows={10}
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={challenge.description}
-              onClickHandler={(value) =>
-                setChallenge({ ...challenge, description: value })
-              }
-            />
-          </div>
-        </div>
+        
         <div className="d-flex mt-2 mb-2">
           <span className="contest-line-height mr-2 col-md-3">
             Problem Statement <span className="contest-star">*</span>
@@ -258,6 +232,28 @@ const CreateChallenge = (props) => {
         </div>
         <div className="d-flex mt-2 mb-2">
           <span className="contest-line-height mr-2 col-md-3">
+            Description <span className="contest-star">*</span>
+          </span>
+          <div className="col-md-7">
+            <InputReducer
+              fullWidth
+              id="outlined-multiline-static"
+              label="Enter Description"
+              multiline
+              rows={10}
+              variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={challenge.description}
+              onClickHandler={(value) =>
+                setChallenge({ ...challenge, description: value })
+              }
+            />
+          </div>
+        </div>
+        <div className="d-flex mt-2 mb-2">
+          <span className="contest-line-height mr-2 col-md-3">
             Constraints <span className="contest-star">*</span>
           </span>
           <div className="col-md-7">
@@ -281,14 +277,15 @@ const CreateChallenge = (props) => {
             Difficulty <span className="contest-star">*</span>
           </span>
           <div className="col-md-7">
+            {console.log(difficultyId)}
             <SelectReducer
-              value={challenge.difficulty_id}
-              defaultValue={challenge.difficulty_id}
+              value={difficultyId}
+              defaultValue={difficultyId}
               className="w-100"
               array={["easy", "medium", "hard"]}
               name="Difficulty Level"
               handleSelect={(e) => {
-                console.log(e.target.value);
+                setDifficultyId(e.target.value)
                 setChallenge({ ...challenge, difficulty_id: e.target.value });
               }}
             />

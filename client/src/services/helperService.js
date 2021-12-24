@@ -1,6 +1,6 @@
 import axios from "axios";
 const baseURL = "http://localhost:5000";
-// const baseURL = "https://03ba-103-70-191-34.ngrok.io";
+// const baseURL = "http://03ba-103-70-191-34.ngrok.io";
 
 const helperService = {
   rejectionHandler: ({ response }) => {
@@ -258,7 +258,7 @@ const helperService = {
   },
   getQuizzes: async ({ id }, config) => {
     try {
-      const { data, status } = await axios.get(
+      const {status, data} = await axios.get(
         `${baseURL}/api/v1/quiz/all?id=${id}`,
         config
       );

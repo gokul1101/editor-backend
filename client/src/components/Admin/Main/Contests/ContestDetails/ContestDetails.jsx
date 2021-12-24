@@ -15,8 +15,8 @@ const ContestDetails = (props) => {
   console.log(props);
   return (
     <>
-      <ul class="container-fluid list-group d-flex flex-row py-2 my-3 border">
-        <li class="list-group-item user-group-pill">
+      <ul className="container-fluid list-group d-flex flex-row py-2 my-3 border">
+        <li className="list-group-item user-group-pill">
           <NavLink
             exact
             className="edit-contest-li pr-3 pl-3 mt-2 mb-2"
@@ -63,18 +63,18 @@ const ContestDetails = (props) => {
             <CreateContest title="Update Contest" />
           </Route>
           <Route path={`/contests/:id/quizzes`} exact>
-            <ContestQuizzes />
+            <ContestQuizzes snackBar={props.snackBar} />
           </Route>
           <Route path={`/contests/:id/challenges`}>
             <Route path="/contests/:id/challenges" exact>
-              <ContestChallenges />
+              <ContestChallenges snackBar={props.snackBar}/>
             </Route>
             <Route path="/contests/:id/challenges/create" exact>
               <CreateChallenge snackBar={props.snackBar} />
             </Route>
           </Route>
           <Route path={`/contests/:id/statistics`} exact>
-            <ContestStatictics />
+            <ContestStatictics snackBar={props.snackBar}/>
           </Route>
 
           {/* <Route

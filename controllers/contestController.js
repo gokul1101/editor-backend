@@ -73,7 +73,7 @@ const getContestForDashboard = async (req, res) => {
         let now = +new Date();
         let end_date = +session.ends_at;
         if (now > end_date) {
-          res.status(403).send({ message: "Your session was expired." });
+          return res.status(403).send({ message: "Your session was expired." });
         }
       } catch (err) {
         if (err.code === 404) {
@@ -90,14 +90,14 @@ const getContestForDashboard = async (req, res) => {
     response.quizzes = contestQuizzes.quizzes;
     let ContestChallenges = await getAllChallengesWithContestId(contest._id);
     response.challenges = ContestChallenges.challenges;
-    res.status(status).send({ contest: response });
+    return res.status(status).send({ contest: response });
   } catch ({ status, code, message }) {
     console.log(message);
     if (!status && !code) {
       status = 500;
       message = `Internal server Error on getting contest`;
     }
-    res.status(status ? status : code).send(message);
+    return res.status(status ? status : code).send(message);
   }
 };
 const updateContest = async (req, res) => {

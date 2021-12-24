@@ -12,31 +12,34 @@ import GoBack from "../../../../../Reducer/GoBack/GoBack";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 const Programs = (props) => {
   let history = useHistory();
-  const { questionId } = useParams();
+  const { id, questionId } = useParams();
   const [authState] = useContext(AuthContext);
-  const [challenge, setChallenge] = useState({});
   let [difficulty, setDifficulty] = useState("");
+  const findChallenge = () => {
+    const problem = authState?.contest?.challenges?.find(
+      (problem) => problem._id === questionId
+    );
+    return problem || {};
+  };
+  const [challenge, setChallenge] = useState(findChallenge());
   let [testCases, setTestCases] = useState({});
-  const [themeName, setThemeName] = React.useState("nord_dark");
-  const [language, setLanguage] = React.useState("java");
-  const [code, setCode] = React.useState(
-    sessionStorage.getItem(challenge?.name)
-      ? JSON.parse(sessionStorage.getItem(challenge?.name))?.code
+  const [themeName, setThemeName] = useState("nord_dark");
+  const [language, setLanguage] = useState("java");
+  const [code, setCode] = useState(
+    localStorage.getItem(challenge?.name)
+      ? JSON.parse(localStorage.getItem(challenge?.name))?.code
       : template[language]
   );
   const [isError, setIsError] = useState(true);
   const [isSampleFailed, setIsSampleFailed] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [output, setOutput] = useState({});
+  const [tabClick, setTabClick] = useState(true);
   useEffect(() => {
     props.setSideToggle(true);
   });
-  const findChallenge = () => {
-    const problem = authState?.contest?.challenges?.find(
-      (problem) => problem._id === questionId
-    );
-    setChallenge(problem);
-    setDifficulty(problem?.difficulty_id.level);
-  };
+
   const getTestCases = async () => {
     try {
       const {
@@ -45,34 +48,53 @@ const Programs = (props) => {
         { questionId },
         { headers: { Authorization: authState.user.token } }
       );
-      setTestCases(testcases?.testcases || {});
+      setTestCases(testcases || {});
     } catch (err) {}
+  };
+  const setCodeInLocal = (code) => {
+    let parsedCode = parseCode(code);
+    localStorage.setItem(
+      challenge?.name,
+      JSON.stringify({
+        question_id: challenge?._id,
+        code: parsedCode,
+        lang: language,
+      })
+    );
+    return parsedCode;
   };
   const compile = async () => {
     try {
-      let parsedCode = parseCode(code);
-      sessionStorage.setItem(
-        challenge?.name,
-        JSON.stringify({ code, lang: language })
-      );
+      setTabClick(false);
+      setIsLoading(true);
+      let parsedCode = setCodeInLocal(code);
       const { status, data } = await helperService.runCode(
         { id: challenge?._id, code: parsedCode, lang: language },
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 200) {
-        console.log(data);
         if (data?.errors) setIsError(true);
         else setIsError(false);
+        if (data?.err) setErrors(data?.err);
         if (data?.isSampleFailed) setIsSampleFailed(true);
         else setIsSampleFailed(false);
-        if (data?.err) setErrors(data?.err);
+        setOutput({ sample: data?.sample || [], hidden: data?.hidden || [] });
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
+  const submitChallenge = () => {
+    setCodeInLocal(code);
+    let challenges = JSON.parse(localStorage.getItem("challenges") || "[]");
+    challenges.push(challenge?.name);
+    localStorage.setItem("challenges", JSON.stringify(challenges));
+    history.push(`/codekata/${id}`);
+  };
   useEffect(() => {
-    findChallenge();
+    setDifficulty(challenge?.difficulty_id.level);
     getTestCases();
   }, []);
   const handleChange = (event) => setThemeName(event.target.value);
@@ -80,7 +102,7 @@ const Programs = (props) => {
   const handleLanguage = (event) => {
     setLanguage(event.target.value);
     setCode(template[event.target.value]);
-    sessionStorage.removeItem(challenge?.name);
+    localStorage.removeItem(challenge?.name);
   };
   return (
     <>
@@ -143,26 +165,32 @@ const Programs = (props) => {
               >
                 <li className="nav-item program-item" role="presentation">
                   <a
-                    className="nav-link active program-link"
+                    className={`nav-link ${
+                      tabClick ? "active" : ""
+                    } program-link`}
                     id="pills-problem-tab"
                     data-toggle="pill"
                     href="#pills-problem"
                     role="tab"
                     aria-controls="pills-problem"
                     aria-selected="true"
+                    onClick={() => setTabClick(true)}
                   >
                     Problem
                   </a>
                 </li>
                 <li className="nav-item program-item" role="presentation">
                   <a
-                    className="nav-link program-link"
+                    className={`nav-link ${
+                      !tabClick ? "active" : ""
+                    } program-link`}
                     id="pills-submissions-tab"
                     data-toggle="pill"
                     href="#pills-submissions"
                     role="tab"
                     aria-controls="pills-submissions"
                     aria-selected="false"
+                    onClick={() => setTabClick(false)}
                   >
                     TestCase
                   </a>
@@ -170,7 +198,7 @@ const Programs = (props) => {
               </ul>
               <div className="tab-content p-2" id="pills-tabContent">
                 <div
-                  className="tab-pane fade show active p-2"
+                  className={`tab-pane fade ${tabClick ? "show active" : ""}`}
                   id="pills-problem"
                   role="tabpanel"
                   aria-labelledby="pills-problem-tab"
@@ -219,17 +247,21 @@ const Programs = (props) => {
                     </span>
                     <div className="example-input mt-2">
                       <span className="font-weight-bolder ip-highlight">
-                        input format :{" "}
+                        input format :
                       </span>{" "}
                       <br />
-                      <p className="mt-2">{challenge?.input_format}</p>
+                      <p className="mt-2">
+                        <pre>{challenge?.input_format}</pre>
+                      </p>
                     </div>
                     <div className="example-output mt-2">
                       <span className="font-weight-bolder op-highlight">
-                        output format :{" "}
+                        output format :
                       </span>{" "}
                       <br />
-                      <p className="mt-2 ">{challenge?.output_format}</p>
+                      <p className="mt-2 ">
+                        <pre>{challenge?.output_format}</pre>
+                      </p>
                     </div>
                   </div>
                   <div className="hints mt-2 d-flex flex-column">
@@ -237,18 +269,22 @@ const Programs = (props) => {
                       Description :
                     </span>
                     <div className="problem-statement text-justify mt-2">
-                      <p>{challenge?.description}</p>
+                      <p>
+                        <pre>{challenge?.description}</pre>
+                      </p>
                     </div>
                   </div>
                 </div>
                 {/* /TESTCASE/ */}
                 <div
-                  className="tab-pane fade"
+                  className={`tab-pane fade ${!tabClick ? "show active" : ""}`}
                   id="pills-submissions"
                   role="tabpanel"
                   aria-labelledby="pills-submissions-tab"
                 >
                   <Testcase
+                    testCaseOutput={output}
+                    isLoading={isLoading}
                     isError={isError}
                     testcases={testCases}
                     isSampleFailed={isSampleFailed}
@@ -266,19 +302,17 @@ const Programs = (props) => {
                 value={code}
               />
               <div className="mt-3 d-flex justify-content-end">
-                {/* <button className="btn-hover color-11 mr-2" onClick={compile}>
-                  RUN CODE <i className="fas fa-code mr-2 ml-2"></i>
-                </button> */}
                 <CustomButton
                   className="btn-hover color-11 mt-2 mr-2"
                   onClickHandler={compile}
                 >
-                  <i className="fas fa-code pr-2 pl-2"></i>RUN CODE
+                  <i className="fas fa-code px-2"></i>RUN CODE
                 </CustomButton>
                 <CustomButton
                   className="btn-hover color-11 mt-2"
+                  onClickHandler={submitChallenge}
                 >
-                  <i className="fas fa-code pr-2 pl-2"></i>SUBMIT
+                  <i className="fas fa-code px-2"></i>SUBMIT
                 </CustomButton>
               </div>
             </div>

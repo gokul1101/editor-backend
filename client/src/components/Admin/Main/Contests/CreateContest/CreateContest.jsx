@@ -27,6 +27,7 @@ const CreateContest = (props) => {
   //**state declartion end */
   const fetchContest = async () => {
     try {
+      showLoader();
       const { data, status } = await helperService.getContest(
         { id },
         { headers: { Authorization: authState.user.token } }
@@ -42,11 +43,12 @@ const CreateContest = (props) => {
           start_time: data?.contest?.start_time,
           end_time: data?.contest?.end_time,
         });
-
+        hideLoader();
         // authDispatch({})
       }
     } catch (err) {
       console.log(err);
+      hideLoader();
     }
   };
 

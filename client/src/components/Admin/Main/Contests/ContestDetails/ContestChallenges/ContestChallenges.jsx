@@ -16,7 +16,8 @@ import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const ContestChallenges = () => {
+const ContestChallenges = (props) => {
+  console.log(props);
   const [authState, authDispatch] = useContext(AuthContext);
   const { id } = useParams();
   const [challenges, setChallenges] = useState([]);
@@ -27,7 +28,9 @@ const ContestChallenges = () => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
+        console.log(data);
         setChallenges(data.challenges);
+        props.snackBar(data.message,"success")
       }
     } catch (err) {
       console.log(err);

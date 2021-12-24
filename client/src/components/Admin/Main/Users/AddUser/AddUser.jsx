@@ -4,7 +4,6 @@ import DropFileInput from "./DropFileInput/DropFileInput";
 import SelectReducer from "../../../../Reducer/SelectReducer/SelectReducer";
 import "../../../../Student/Main/Dashboard/Dashboard.css";
 import { makeStyles } from "@material-ui/core/styles";
-// import TextField from "@material-ui/core/TextField";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
@@ -34,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddUser = (props) => {
-  console.log(props);
   const [loader, showLoader, hideLoader] = useLoader();
   const [authState] = useContext(AuthContext);
   const [user, setUser] = useState({
@@ -46,6 +44,7 @@ const AddUser = (props) => {
     course_id: "",
     college_id: "",
     phone_no: "",
+    batch_id:""
   });
   const [batchStart, setBatchStart] = useState("");
   const [batchEnd, setBatchEnd] = useState("");
@@ -71,14 +70,14 @@ const AddUser = (props) => {
   const createUser = async () => {
     //Regex
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let charRegex =  /^[A-Za-z0-9]+$/;
-  
-    if(!user.name.length >=3 && !user.name.length <=25){
-      props.snackBar("Username is Incorrect","error")
+    let charRegex = /^[A-Za-z0-9]+$/;
+
+    if (!user.name.length >= 3 && !user.name.length <= 25 || (user.name.length <= 0)) {
+      props.snackBar("Username is Incorrect", "error");
       return;
     }
     if (user.regno.length !== 7) {
-      props.snackBar("Register Number is Incorrect", "error");
+      props.snackBar("Please check the register Number", "error");
       return;
     }
     if (user.stream_id === "") {
@@ -97,7 +96,6 @@ const AddUser = (props) => {
       props.snackBar("Email is Incorrect", "error");
       return;
     }
-
     if (user.phone_no.length !== 10) {
       console.log(user.phone_no.length);
       props.snackBar("Phone Number is Incorrect", "error");
@@ -107,6 +105,12 @@ const AddUser = (props) => {
       props.snackBar("Gender is not Selected", "error");
       return;
     }
+    if (user.batch_id === "") {
+      props.snackBar("batch  is not Selected", "error");
+      return;
+    }
+
+
 
     try {
       showLoader();
@@ -114,13 +118,19 @@ const AddUser = (props) => {
         ...user,
         college_id: user.college_id,
         course_id: user.course_id,
-        batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(user.batch_id.length-4, user.batch_id.length)}`,
+        batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(
+          user.batch_id.length - 4,
+          user.batch_id.length
+        )}`,
       });
       const { status, data } = await helperService.createUser(
         {
           ...user,
           college_id: user.college_id,
-          batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(user.batch_id.length-4, user.batch_id.length)}`,
+          batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(
+            user.batch_id.length - 4,
+            user.batch_id.length
+          )}`,
         },
         { headers: { Authorization: authState?.user?.token } }
       );
@@ -197,7 +207,11 @@ const AddUser = (props) => {
             <div className="col-md-6 p-1">
               <SelectReducer
                 className={classes.fieldColor}
-                array={["Computer Science & Engineering", "Information Technology", "Civil Engineering"]}
+                array={[
+                  "Computer Science & Engineering",
+                  "Information Technology",
+                  "Civil Engineering",
+                ]}
                 name="Course Name"
                 handleSelect={(e) =>
                   setUser({ ...user, course_id: e.target.value })
@@ -211,7 +225,11 @@ const AddUser = (props) => {
               <SelectReducer
                 value={user.college_id}
                 className={classes.fieldColor}
-                array={["KSR College of Engineering", "KSR College of Technology", "KSR Institute for Engineering & Technology"]}
+                array={[
+                  "KSR College of Engineering",
+                  "KSR College of Technology",
+                  "KSR Institute for Engineering & Technology",
+                ]}
                 name="College Name"
                 handleSelect={(e) =>
                   setUser({ ...user, college_id: e.target.value })
@@ -261,18 +279,23 @@ const AddUser = (props) => {
           </div>
           <div className="d-flex mt-3 mb-2">
             <div className="col-md-6 p-1">
-            <SelectReducer
-                       className={classes.fieldColor} 
-                array={["2018-2022", "2019-2023","2020-2024","2021-2025","2022-2026"]}
+              <SelectReducer
+                className={classes.fieldColor}
+                array={[
+                  "2018-2022",
+                  "2019-2023",
+                  "2020-2024",
+                  "2021-2025",
+                  "2022-2026",
+                ]}
                 name="batch year"
                 label="Batch year"
                 handleSelect={(e) =>
                   setUser({ ...user, batch_id: e.target.value })
                 }
-                 value={user.batch_id}
+                value={user.batch_id}
               />
             </div>
-            
           </div>
           <CustomButton
             className="btn-hover color-11 mt-4"
