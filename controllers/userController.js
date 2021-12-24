@@ -37,7 +37,6 @@ const getUser = async (req, res) => {
   let userDetails = user;
   const { id, regno } = req.query;
   try {
-
     if (id || regno) {
       if (id) {
         user = await User.findById(id).populate([
@@ -107,8 +106,7 @@ const getUser = async (req, res) => {
           },
         ]);
       }
-      if(user)
-        userDetails = serializeUser(user);
+      if (user) userDetails = serializeUser(user);
     }
     //! User not found
     if (!user)
@@ -274,8 +272,8 @@ const deleteUser = async (req, res) => {
   }
 };
 const createBulkUsers = async (req, res) => {
-  let userDetails = req.user._doc;
-  const file = req.files.excel;
+  let userDetails = req.user;
+  const file = req.files.file;
   const dirCodes = join(__dirname, "/../static", "resources");
   if (!fs.existsSync(dirCodes)) fs.mkdirSync(dirCodes, { recursive: true });
   const fileName = `${UUID()}.xlsx`;
@@ -286,37 +284,30 @@ const createBulkUsers = async (req, res) => {
   const schema = {
     regno: { prop: "regno", type: String },
     name: { prop: "name", type: String },
-    email: { prop: "email", type: String },
-    role_id: { prop: "role_id", type: String },
-    gender_id: { prop: "gender_id", type: String },
-    stream_id: { prop: "stream_id", type: String },
-    course_id: { prop: "course_id", type: String },
-    college_id: { prop: "college_id", type: String },
-    phone_no: { prop: "phone_no", type: Number },
-    batch_id: { prop: "batch_id", type: String },
   };
   try {
     let errors = [],
       errorLogs;
-    console.log("error");
     let { rows, err } = await xlsx(filePath, { schema });
-    console.log("error1");
     for (let i in rows) {
       try {
-        await createUserService(rows[i]);
+        if (!rows[i]["regno"] || rows[i]["regno"].length !== 7) {
+          throw { code: 403, regno: rows[i]["regno"] };
+        } else {
+          await createUserService(rows[i]);
+        }
       } catch (err) {
+        console.log(err);
         if (err.code === 403 || err.code === 500) errors.push(err.regno);
       }
     }
-    if (errors.length !== 0) {
-      errorLogs = new ErrorLogs({
-        errorLogs: errors,
-        totalLogs: rows.length,
-        created_by: userDetails._id,
-      });
-      await errorLogs.save();
-    }
-    res.status(200).json({ errorLogs });
+    errorLogs = new ErrorLogs({
+      errorLogs: errors,
+      totalLogs: rows.length,
+      created_by: userDetails._id,
+    });
+    await errorLogs.save();
+    res.status(201).json({ errorLogs });
   } catch (err) {
     //! Error in creating user
     console.log(err);
@@ -371,7 +362,9 @@ const getAllUsers = async (req, res) => {
         },
       ]);
     response.total = users.length;
-    response.users = users.filter(user => user.role_id.name === "student").map(user => serializeUser(user));
+    response.users = users
+      .filter((user) => user.role_id.name === "student")
+      .map((user) => serializeUser(user));
     res.status(200).json(response);
   } catch (err) {
     //! Error in finding user details

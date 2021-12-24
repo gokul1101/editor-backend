@@ -25,7 +25,7 @@ const Contests = (props) => {
   };
   const fetchContests = async (page = 1, past = false) => {
     try {
-      showLoader();
+      if(!past)showLoader();
       const { status, data } = await helperService.getAllContests(
         { page, past, limit },
         { headers: { Authorization: authState.user.token } }
@@ -50,7 +50,7 @@ const Contests = (props) => {
               ? [...contests.upcoming, ...upcomingContests]
               : contests.upcoming,
         });
-        hideLoader();
+        if(!past) hideLoader();
       }
     } catch (err) {
       console.log(err);

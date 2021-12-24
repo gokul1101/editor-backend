@@ -150,7 +150,7 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
     });
   }
 };
-const deleteMCQ = async ({ question_id, answer_id }) => {
+const deleteMCQ = async ({ question_id, answer_id, quiz_id }) => {
   try {
     if (!question_id || !answer_id) {
       return Promise.reject({
@@ -159,6 +159,7 @@ const deleteMCQ = async ({ question_id, answer_id }) => {
       });
     }
     const question_result = await Question.findByIdAndDelete(question_id);
+    await updateQuizService({ id: quiz_id, total_mcqs: -1 });
     if (question_result) {
       const answer_result = await Answer.findByIdAndDelete(answer_id);
       if (answer_result) {

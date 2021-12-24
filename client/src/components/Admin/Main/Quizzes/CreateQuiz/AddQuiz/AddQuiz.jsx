@@ -86,14 +86,12 @@ const AddQuiz = (props) => {
     }
   };
   const deleteQuestion = async (question) => {
-    console.log(question);
     try {
-      const { data, status } = await helperService.deleteQuestion(
-        { ...question, type_id: "mcq" },
+      const { status } = await helperService.deleteQuestion(
+        { ...question, quiz_id : id, type_id: "mcq" },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 202) {
-        console.log(questions, question);
         props.snackBar("Question deleted successfully", "success");
         setQuestions(
           questions.filter((ques) => ques.question_id !== question.question_id)

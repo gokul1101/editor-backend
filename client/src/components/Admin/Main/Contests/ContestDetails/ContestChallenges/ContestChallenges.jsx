@@ -16,7 +16,7 @@ import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const ContestChallenges = () => {
+const ContestChallenges = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const { id } = useParams();
   const [challenges, setChallenges] = useState([]);
@@ -27,18 +27,39 @@ const ContestChallenges = () => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
+        console.log(data);
         setChallenges(data.challenges);
+        props.snackBar(data.message,"success")
       }
     } catch (err) {
       console.log(err);
     }
   };
+  const deleteQuestion = async (challenge) => {
+    console.log(challenge);
+    try {
+      const { status } = await helperService.deleteQuestion(
+        { ...challenge, type_id: "problem" },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 202) {
+        console.log(challenge);
+        props.snackBar("Question deleted successfully", "success");
+        setChallenges(
+          challenges.filter((ques) => ques.question_id !== challenge.question_id)
+        );
+      }
+    } catch (err) {
+      console.log(err);
+      props.snackBar(err.data, "error");
+    }
+  };
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    console.log("button clicked");
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   console.log("button clicked");
+  //   setOpen(true);
+  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -110,7 +131,7 @@ const ContestChallenges = () => {
                     borderRadius: "10px",
                   }}
                 >
-                  <DeleteOutlineIcon />
+                  <DeleteOutlineIcon onClick = {() => deleteQuestion(challenge)}/>
                   <Link
                     to={`/challenges/${challenge._id}`}
                     style={{ color: "white" }}

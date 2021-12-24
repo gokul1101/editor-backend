@@ -8,6 +8,7 @@ import {
   Container,
 } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
+import "./Articles.css"
 import { useState, useEffect } from "react";
 const Articles = (props) => {
   const [posts, setPosts] = useState([]);
@@ -29,6 +30,10 @@ const Articles = (props) => {
   }, [page]);
   return (
     <div>
+      <div className="jumbotron text-center tab-class">
+        <h1 className="text-white text-italic">Articles</h1>
+        <p className="font-italic">Let's get or acquire some knowledge</p>
+      </div>
       <Container component={Box} py={3} className="mt-5">
         <Grid container spacing={2}>
           {posts.map((post) => (

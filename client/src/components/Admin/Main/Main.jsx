@@ -17,7 +17,7 @@ import Report from "./Report/Report";
 import ErrorLogs from "./ErrorLogs/ErrorLogs";
 import CreateChallenge from "./Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
 const Main = (props) => {
-  const [, authDispatch] = useContext(AuthContext);
+  const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle] = useState(false);
   useEffect(() => {
     props.fetchUser();
@@ -80,7 +80,7 @@ const Main = (props) => {
             <li className="nav-item dash-item mb-2 color-11">
               <NavLink
                 activeClassName="active-class color-11"
-                to="/report"
+                to={`/report`}
                 className="nav-link dash-li"
               >
                 <i className="fas fa-road pr-4 pl-4 dash-icon shake"></i>
@@ -91,7 +91,7 @@ const Main = (props) => {
             <li className="nav-item dash-item mb-2 color-11">
               <NavLink
                 activeClassName="active-class color-11"
-                to="/error-logs"
+                to={`/error-logs/${authState?.user?._id}`}
                 className="nav-link dash-li"
               >
                 <i className="fas fa-road pr-4 pl-4 dash-icon shake"></i>
@@ -171,7 +171,7 @@ const Main = (props) => {
             <Route path="/report" exact>
               <Report snackBar={props.snackBar} />
             </Route>
-            <Route path="/error-logs" exact>
+            <Route path="/error-logs/:id" exact>
               <ErrorLogs snackBar={props.snackBar} />
             </Route>
             <Route

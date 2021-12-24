@@ -1,21 +1,18 @@
-import React from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Slide from "@material-ui/core/Slide";
-import Chip from "@material-ui/core/Chip";
-import Button from "@material-ui/core/Button";
+import React, { useContext, useEffect, useState } from "react";
+
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import helperService from "../../../../services/helperService";
+import { AuthContext } from "../../../../contexts/AuthContext";
+import { useParams } from "react-router-dom";
+import ErrorLogDialogBox from "../../../Reducer/ErrorLogDialogBox/ErrorLogDialogBox";
+
 const ErrorLogs = () => {
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const { id } = useParams();
+  const [authState] = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
+  const [errorLogs, setErrorLogs] = useState([]);
+  const [errorLog, setErrorLog] = useState({});
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,7 +20,26 @@ const ErrorLogs = () => {
 
   const handleClose = () => {
     setOpen(false);
+    setErrorLog({})
   };
+
+  const fetchErrorLogs = async () => {
+    // console.log(authState?.user);
+    try {
+      const { data, status } = await helperService.getErrorLogs(
+        { created_by: id },
+        { headers: { Authorization: authState?.user?.token } }
+      );
+      if (status === 200) {
+        setErrorLogs(data.errorLogs);
+      }
+    } catch (err) {
+      console.log(err, "at error logs");
+    }
+  };
+  useEffect(() => {
+    fetchErrorLogs();
+  }, []);
   return (
     <div className="container">
       <p className="text-left dash-title-category pb-2 mt-5">Error Logs</p>
@@ -49,71 +65,42 @@ const ErrorLogs = () => {
             {/* <i className="fas fa-external-link-alt"></i> */}
           </div>
         </div>
-        <div className="d-flex border-top border-bottom mt-1 p-2 mb-1">
-          <div className="col-md-3 text-center content-nav-title">
-            Dhanush Karthick
-          </div>
-          <div className="col-md-3 text-center content-nav-title">190</div>
-          <div className="col-md-2 text-center content-nav-title">100</div>
-          <div className="col-md-2 text-center content-nav-title">80</div>
-          <div className="col-md-2 text-center content-nav-title">
-            <i className="fas fa-external-link-alt" onClick={handleClickOpen}></i>
-          </div>
-          <Dialog
-            open={open}
-            fullScreen={fullScreen}
-            TransitionComponent={Transition}
-            keepMounted
-            maxWidth="sm"
-            fullWidth
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-slide-title"
-            aria-describedby="alert-dialog-slide-description"
-          >
-            <DialogTitle id="alert-dialog-slide-title">
-              {"Error logs"}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-slide-description">
-                <span className="model-correct p-2">
-                  <i className="fas fa-check-circle pr-3 pl-3"></i>12 students
-                  data added successfully
-                </span>
-              </DialogContentText>
-              <DialogContentText id="alert-dialog-slide-description">
-                <span className="model-wrong p-2">
-                  <i className="fas fa-bug pr-3 pl-3"></i>12 students data
-                  having some error
-                </span>
-              </DialogContentText>
-              <DialogContentText
-                id="alert-dialog-slide-description"
-                className="mt-3"
+        <div className="d-flex flex-column border-top border-bottom mt-1 p-2 mb-1">
+          {errorLogs.map((log) => (
+            <div className="d-flex">
+              <div
+                className="col-md-3 text-center content-nav-title"
+                key={log._id}
               >
-                <div className="p-2 d-flex flex-wrap">
-                  <Chip label="1813015" className="m-1" />
-                  <Chip label="1813015" className="m-1" />
-                  <Chip label="1813015" className="m-1" />
-                  <Chip label="1813015" className="m-1" />
-                  <Chip label="1813015" className="m-1" />
-                  <Chip label="1813015" className="m-1" />
-                  <Chip label="1813015" className="m-1" />
-                  <Chip label="1813015" className="m-1" />
-                  <Chip label="1813015" className="m-1" />
-                  <Chip label="1813015" className="m-1" />
-                  <Chip label="1813015" className="m-1" />
-                  <Chip label="1813015" className="m-1" />
-                  <Chip label="1813015" className="m-1" />
-                  <Chip label="1813015" className="m-1" />
-                </div>
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary" variant="outlined">
-                CLOSE
-              </Button>
-            </DialogActions>
-          </Dialog>
+                {authState?.user?.name}
+              </div>
+              <div className="col-md-3 text-center content-nav-title">
+                {log.totalLogs}
+              </div>
+              <div className="col-md-2 text-center content-nav-title">
+                {+log.totalLogs - log.errorLogs.length}
+              </div>
+              <div className="col-md-2 text-center content-nav-title">
+                {log.errorLogs.length}
+              </div>
+              <div className="col-md-2 text-center content-nav-title">
+                <i
+                  style={{ cursor: "pointer" }}
+                  class="fas fa-external-link-alt"
+                  onClick={() => {
+                    setErrorLog(log);
+                    handleClickOpen();
+                  }}
+                ></i>
+              </div>
+            </div>
+          ))}
+          <ErrorLogDialogBox
+            open={open}
+            handleClickOpen={handleClickOpen}
+            handleClose={handleClose}
+            log={errorLog}
+          />
         </div>
       </div>
     </div>

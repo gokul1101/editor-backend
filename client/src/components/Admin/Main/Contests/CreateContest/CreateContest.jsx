@@ -63,7 +63,7 @@ const CreateContest = (props) => {
 
     try {
       showLoader();
-      const { status, data } = await helperService.createContest(
+      const { status } = await helperService.createContest(
         {
           name,
           start_date: date.start_date,

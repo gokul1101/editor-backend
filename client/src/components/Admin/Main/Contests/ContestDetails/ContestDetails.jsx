@@ -4,14 +4,14 @@ import ContestChallenges from "./ContestChallenges/ContestChallenges";
 import ContestQuizzes from "./ContestQuizzes/ContestQuizzes";
 import ContestStatictics from "./ContestStatictics/ContestStatictics";
 import CreateContest from "../CreateContest/CreateContest";
-import ChallengeDashboard from "../../Challenges/ChallengeDashboard/ChallengeDashboard";
-import Challenges from "../../Challenges/Challenges";
+// import ChallengeDashboard from "../../Challenges/ChallengeDashboard/ChallengeDashboard";
+// import Challenges from "../../Challenges/Challenges";
 import CreateChallenge from "../../Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
 const ContestDetails = (props) => {
   const { id } = useParams();
-  const selectedTags = (tags) => {
-    console.log(tags);
-  };
+  // const selectedTags = (tags) => {
+  //   console.log(tags);
+  // };
   console.log(props);
   return (
     <>
@@ -63,18 +63,18 @@ const ContestDetails = (props) => {
             <CreateContest title="Update Contest" />
           </Route>
           <Route path={`/contests/:id/quizzes`} exact>
-            <ContestQuizzes />
+            <ContestQuizzes snackBar={props.snackBar}/>
           </Route>
           <Route path={`/contests/:id/challenges`}>
             <Route path="/contests/:id/challenges" exact>
-              <ContestChallenges />
+              <ContestChallenges snackBar={props.snackBar}/>
             </Route>
             <Route path="/contests/:id/challenges/create" exact>
               <CreateChallenge snackBar={props.snackBar} />
             </Route>
           </Route>
           <Route path={`/contests/:id/statistics`} exact>
-            <ContestStatictics />
+            <ContestStatictics snackBar={props.snackBar}/>
           </Route>
 
           {/* <Route
