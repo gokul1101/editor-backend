@@ -12,6 +12,7 @@ const {
   getChallenge,
   updateChallenge,
   getAllChallengesWithContestId,
+  deleteChallenge,
 } = require("../services/challengeService");
 const createQuestion = async (req, res) => {
   let questionDetails = req.body;
@@ -77,7 +78,7 @@ const updateQuestion = async (req, res) => {
 const deleteQuestion = async (req, res) => {
   let questionDetails = req.body;
   let { type } = req.query;
-  let functions = [deleteMCQ],
+  let functions = [deleteMCQ,deleteChallenge],
     index;
   if (type === "mcq") index = 0;
   else if (type === "problem") index = 1;
