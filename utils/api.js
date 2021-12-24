@@ -32,6 +32,7 @@ const admin = [
   "updateTestCase",
   "createMultipleTestCases",
   "deleteQuestion",
+  "errorLogs",
   "deleteTestCase"
 ];
 

@@ -4,7 +4,7 @@ import DropFileInput from "./DropFileInput/DropFileInput";
 import SelectReducer from "../../../../Reducer/SelectReducer/SelectReducer";
 import "../../../../Student/Main/Dashboard/Dashboard.css";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+// import TextField from "@material-ui/core/TextField";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
@@ -32,23 +32,14 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
   },
 }));
-const colleges = {
-  KSRCE: "KSR College of Engineering",
-  KSRCT: "KSR College of Technology",
-  KSRIET: "KSR Institute for Engineering & Technology",
-};
-const courses = {
-  CSE: "Computer Science & Engineering",
-  IT: "Information Technology",
-  ECE: "Electronics and Communication Engineering",
-  EEE: "Electrical & Electronics Engineering",
-  CIVIL: "Civil Engineering",
-  MECH: "Mechanical Engineering",
-  SF: "Safety & Fire Engineering",
-  AUTO: "Automobile Engineering",
-};
+
 const AddUser = (props) => {
+  console.log(props);
   const [loader, showLoader, hideLoader] = useLoader();
+  const [logs,setLogs] = useState({
+    total:0,
+    errorLogs:[]
+  })
   const [authState] = useContext(AuthContext);
   const [user, setUser] = useState({
     regno: "",
@@ -59,18 +50,25 @@ const AddUser = (props) => {
     course_id: "",
     college_id: "",
     phone_no: "",
+    batch_id: "",
   });
-  const [batchStart, setBatchStart] = useState("");
-  const [batchEnd, setBatchEnd] = useState("");
   const classes = useStyles();
 
   const onFileChange = async (files) => {
+    const formData = new FormData();
+    formData.append("file", files[0]);
+    formData.get("file");
+    //**This is modified when compare to other api calls*/
     try {
       const { data, status } = await helperService.createBulkUsers(
-        {},
-        { headers: { Authorization: authState?.user?.token } }
+        { file: formData },
+        {
+          Authorization: authState?.user?.token,
+          "Content-Type": "multipart/form-data",
+        }
       );
       if (status === 201) {
+        setLogs({errorLogs:[...data.errorLogs.errorLogs],total:data.errorLogs.totalLogs})
       }
     } catch (err) {
       console.log(err);
@@ -114,18 +112,15 @@ const AddUser = (props) => {
       props.snackBar("Gender is not Selected", "error");
       return;
     }
+    console.log(user)
+    if (!user.batch_id ) {
+      props.snackBar("Batch is not Selected", "error");
+      return;
+    }
 
     try {
       showLoader();
-      console.log({
-        ...user,
-        college_id: user.college_id,
-        course_id: user.course_id,
-        batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(
-          user.batch_id.length - 4,
-          user.batch_id.length
-        )}`,
-      });
+      
       const { status, data } = await helperService.createUser(
         {
           ...user,
@@ -309,6 +304,7 @@ const AddUser = (props) => {
         </div>
         <div className="col-md-4 p-2 border m-1">
           <DropFileInput
+            logs = {logs}
             onFileChange={onFileChange}
             snackBar={props.snackBar}
           />

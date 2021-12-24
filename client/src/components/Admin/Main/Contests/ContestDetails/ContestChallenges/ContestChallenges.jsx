@@ -35,10 +35,10 @@ const ContestChallenges = () => {
   };
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    console.log("button clicked");
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   console.log("button clicked");
+  //   setOpen(true);
+  // };
 
   const handleClose = () => {
     setOpen(false);

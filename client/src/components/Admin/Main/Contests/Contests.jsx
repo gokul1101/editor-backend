@@ -50,7 +50,7 @@ const Contests = (props) => {
               ? [...contests.upcoming, ...upcomingContests]
               : contests.upcoming,
         });
-        hideLoader();
+         hideLoader();
       }
     } catch (err) {
       console.log(err);

@@ -1,4 +1,4 @@
-import { Snackbar } from "@material-ui/core";
+// import { Snackbar } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useContext } from "react";
 import { useState } from "react";
@@ -78,12 +78,10 @@ const CreateChallenge = (props) => {
         console.log(data);
       }
     } catch (err) {
-      // props.snackBar(err,"error")
-     
+      props.snackBar(err, "error");
     }
   };
   useEffect(() => {
-    console.log(authState?.challenge);
     setChallenge({
       name: authState?.challenge?.name ?? "",
       type_id: "problem",

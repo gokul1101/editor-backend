@@ -93,6 +93,7 @@ const updateContestService = async ({
   end_date,
   start_time,
   end_time,
+  max_score
 }) => {
   try {
     let contest = await Contest.findById(id);
@@ -101,6 +102,9 @@ const updateContestService = async ({
         status: 404,
         message: "Contest not found",
       });
+    if(max_score) {
+      contest.max_score += max_score
+    }
     if (name) {
       let contestNameExists = await Contest.findOne({ name });
       if (contestNameExists)
@@ -110,26 +114,28 @@ const updateContestService = async ({
         });
       contest.name = name;
     }
-    if (start_time) contest.start_time = start_time;
-    if (!start_date) {
-      let date = contest.start_date;
-      start_date = `${
-        date.getMonth() + 1
-      }-${date.getDate()}-${date.getFullYear()}`;
+    if(start_time || start_date || end_date || end_time) {
+      if (start_time) contest.start_time = start_time;
+      if (!start_date) {
+        let date = contest.start_date;
+        start_date = `${
+          date.getMonth() + 1
+        }-${date.getDate()}-${date.getFullYear()}`;
+      }
+      contest.start_date = new Date(start_date + " " + contest.start_time);
+  
+      if (end_time) contest.end_time = end_time;
+      if (!end_date) {
+        let date = contest.end_date;
+        end_date = `${
+          date.getMonth() + 1
+        }-${date.getDate()}-${date.getFullYear()}`;
+      }
+      contest.end_date = new Date(end_date + " " + contest.end_time);
+  
+      //* Calculating duration
+      contest.duration = getDuration(contest.start_date, contest.end_date);
     }
-    contest.start_date = new Date(start_date + " " + contest.start_time);
-
-    if (end_time) contest.end_time = end_time;
-    if (!end_date) {
-      let date = contest.end_date;
-      end_date = `${
-        date.getMonth() + 1
-      }-${date.getDate()}-${date.getFullYear()}`;
-    }
-    contest.end_date = new Date(end_date + " " + contest.end_time);
-
-    //* Calculating duration
-    contest.duration = getDuration(contest.start_date, contest.end_date);
     await contest.save();
     return Promise.resolve({
       code: 200,

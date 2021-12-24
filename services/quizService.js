@@ -1,4 +1,5 @@
 const Quiz = require("../models/quizzes");
+const { updateContestService } = require("./contestService");
 const createQuizService = async (name, contest_id) => {
   if (!name)
     return Promise.reject({
@@ -14,7 +15,7 @@ const createQuizService = async (name, contest_id) => {
       });
     } else {
       const newQuiz = new Quiz({ name, contest_id });
-      newQuiz.save();
+      await newQuiz.save();
       return Promise.resolve({
         code: 201,
         message: `${name} Quiz created.`,
@@ -62,7 +63,13 @@ const updateQuizService = async ({ id, name, total_mcqs, contest_id }) => {
       });
     } else {
       if (name) quiz.name = name;
-      if (total_mcqs) quiz.total_mcqs = quiz.total_mcqs + 1;
+      if (total_mcqs) {
+        quiz.total_mcqs = quiz.total_mcqs + total_mcqs;
+        await updateContestService({
+          id: quiz.contest_id,
+          max_score: total_mcqs,
+        });
+      }
       if (contest_id) quiz.contest_id = contest_id;
       await quiz.save();
       return Promise.resolve({
@@ -71,6 +78,7 @@ const updateQuizService = async ({ id, name, total_mcqs, contest_id }) => {
       });
     }
   } catch (err) {
+    console.log(err);
     //! Error in updating quiz
     return Promise.reject({
       code: 500,
