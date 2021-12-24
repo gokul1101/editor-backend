@@ -264,7 +264,7 @@ const helperService = {
   },
   getQuizzes: async ({ id }, config) => {
     try {
-      const { data, status } = await axios.get(
+      const {status, data} = await axios.get(
         `${baseURL}/api/v1/quiz/all?id=${id}`,
         config
       );

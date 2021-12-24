@@ -112,7 +112,7 @@ const updateChallenge = async (question) => {
         update_at: new Date(),
       });
       return Promise.resolve({
-        code: 201,
+        code: 200,
         message: `Question updated successfully`,
       });
     }
@@ -151,10 +151,27 @@ const getAllChallengesWithContestId = async (id) => {
     });
   }
 };
-
+const deleteChallenge = async ({_id}) => {
+  try{
+    const {max_score,contest_id} = (await Question.findByIdAndDelete(_id))
+    if(!max_score || !contest_id) return Promise.reject({code:404,message:`Challenge not found`})
+    await updateContestService({max_score,id:contest_id})
+    return Promise.resolve({
+      code : 202,
+      message:`Challenge deleted successfully`
+    })
+  }
+  catch(err){
+    return Promise.reject({
+      code : 500,
+      message:`Internal server error`
+    })
+  }
+}
 module.exports = {
   createChallenge,
   getChallenge,
   getAllChallengesWithContestId,
   updateChallenge,
+  deleteChallenge
 };
