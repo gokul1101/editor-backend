@@ -74,7 +74,7 @@ const ContestDetails = (props) => {
             </Route>
           </Route>
           <Route path={`/contests/:id/statistics`} exact>
-            <ContestStatictics />
+            <ContestStatictics snackBar={props.snackBar}/>
           </Route>
 
           {/* <Route

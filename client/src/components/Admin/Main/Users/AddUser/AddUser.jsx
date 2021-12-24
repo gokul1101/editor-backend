@@ -4,7 +4,6 @@ import DropFileInput from "./DropFileInput/DropFileInput";
 import SelectReducer from "../../../../Reducer/SelectReducer/SelectReducer";
 import "../../../../Student/Main/Dashboard/Dashboard.css";
 import { makeStyles } from "@material-ui/core/styles";
-// import TextField from "@material-ui/core/TextField";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
@@ -82,7 +81,7 @@ const AddUser = (props) => {
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     let charRegex = /^[A-Za-z0-9]+$/;
 
-    if (!user.name.length >= 3 && !user.name.length <= 25) {
+    if (!user.name.length >= 3 && !user.name.length <= 25 || (user.name.length <= 0)) {
       props.snackBar("Username is Incorrect", "error");
       return;
     }

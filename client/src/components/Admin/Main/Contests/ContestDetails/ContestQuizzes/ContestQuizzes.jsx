@@ -17,6 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const ContestQuizzes = (props) => {
+  console.log(props);
   const { id } = useParams();
   const [authState] = useContext(AuthContext);
   const [quizName, setQuizName] = useState("");
@@ -26,7 +27,7 @@ const ContestQuizzes = (props) => {
     try {
       const {
         status,
-        data: { quiz },
+        data: { quiz,message },
       } = await helperService.createQuizz(
         { name: quizName, contest_id: id },
         { headers: { Authorization: authState.user.token } }
@@ -34,7 +35,7 @@ const ContestQuizzes = (props) => {
       if (status === 201) {
         // TODO:
         console.log(quiz);
-        
+        props.snackBar(message,"success")
         // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
         setQuizzArr((existing) => [...existing, quiz]);
         
@@ -49,18 +50,19 @@ const ContestQuizzes = (props) => {
   };
   const fetchQuizzes = async () => {
     try {
-      const { status, data } = await helperService.getQuizzes(
+      const { status,data : { message , quizzes}} = await helperService.getQuizzes(
         { id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        // TODO:
-        // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
-        setQuizzArr(data.quizzes);
+     
+        props.snackBar(message ,"success")
+        setQuizzArr(quizzes);
         setOpen(false);
       }
     } catch (err) {
-      console.log(err);
+      props.snackBar(err,"error")
+      console.log(err); 
     }
   };
   const handleClickOpen = () => {

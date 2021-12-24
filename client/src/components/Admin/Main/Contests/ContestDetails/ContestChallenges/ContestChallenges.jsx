@@ -27,7 +27,9 @@ const ContestChallenges = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
+        console.log(data);
         setChallenges(data.challenges);
+        props.snackBar(data.message,"success")
       }
     } catch (err) {
       console.log(err);
