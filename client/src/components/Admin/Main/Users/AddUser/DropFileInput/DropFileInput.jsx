@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -12,11 +12,14 @@ import "./DropFileInput.css";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
+import ErrorLogDialogBox from "../../../../../Reducer/ErrorLogDialogBox/ErrorLogDialogBox";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const DropFileInput = (props) => {
-  console.log();
+  useEffect(() => {
+    console.log(props);
+  }, []);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const wrapperRef = useRef(null);
@@ -31,11 +34,11 @@ const DropFileInput = (props) => {
 
   const onFileDrop = (e) => {
     const newFile = e.target.files[0];
-    
+
     if (
       newFile &&
       newFile.type ===
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
       // const updatedList = [newFile];
       console.log([newFile]);
@@ -45,29 +48,39 @@ const DropFileInput = (props) => {
     }
   };
 
-   const bulkUser = () => {
+  const bulkUser = () => {
     console.log(fileList);
     props.onFileChange(fileList);
-    setUpload(true)
-   }
+    setUpload(true);
+  };
 
   const [open, setOpen] = React.useState(false);
-  const [upload,setUpload] = useState(false)
+  const [upload, setUpload] = useState(false);
+  const [logs,setLogs] = useState({})
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-  };
+    };
 
   const fileRemove = (file) => {
     const updatedList = [fileList];
     updatedList.splice(fileList.indexOf(file), 1);
     setFileList(updatedList);
-    props.onFileChange(updatedList);
+    // props.onFileChange(updatedList);
   };
-
+  useEffect(()=>{
+    if(props.reqflag) {
+      props.removeFileHandler(setFileList)
+      props.setReqflag(false)
+    } 
+  },[props.reqflag])
+  useEffect(() => {
+    setLogs(props?.logs)
+    console.log(props)
+  })
   return (
     <>
       <div
@@ -91,7 +104,7 @@ const DropFileInput = (props) => {
           accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
         />
       </div>
-      {fileList.length > 0 ? (
+      {fileList.length > 0  ? (
         <div className="drop-file-preview">
           <p className="drop-file-preview__title">Ready to upload</p>
           {fileList.map((item, index) => (
@@ -117,78 +130,32 @@ const DropFileInput = (props) => {
           ))}
 
           <div className="d-flex align-items-center justify-content-center mt-3">
-            <CustomButton className="btn-hover color-11 mt-2" onClickHandler={bulkUser}>
-              <i className="fas fa-upload pr-2 pl-2"  ></i>{upload === true ? "create Users":"upload file"}
+            <CustomButton
+              className="btn-hover color-11 mt-2"
+              onClickHandler={bulkUser}
+            >
+              <i className="fas fa-upload pr-2 pl-2"></i>
+              {"create Users"}
             </CustomButton>
           </div>
           <div className="d-flex align-items-end justify-content-end mt-3 p-2">
-            <div className="log-file">
-              <span
-                className="badge badge-pill badge-secondary"
-                onClick={handleClickOpen}
-              >
-                Logs
-              </span>
-            </div>
-            <Dialog
+            {console.log('at line 142',props?.logs?.totalLogs)}
+            {props?.logs?.totalLogs >= 0 && (
+              <div className="log-file">
+                <span
+                  className="badge badge-pill badge-secondary"
+                  onClick={handleClickOpen}
+                >
+                  Logs
+                </span>
+              </div>
+            )}
+
+            <ErrorLogDialogBox
               open={open}
-              fullScreen={fullScreen}
-              TransitionComponent={Transition}
-              keepMounted
-              maxWidth="sm"
-              fullWidth
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-slide-title"
-              aria-describedby="alert-dialog-slide-description"
-            >
-              <DialogTitle id="alert-dialog-slide-title">
-                {"Error logs"}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-slide-description">
-                  <span className="model-correct p-2">
-                    <i className="fas fa-check-circle pr-3 pl-3"></i>12 students
-                    data added successfully
-                  </span>
-                </DialogContentText>
-                <DialogContentText id="alert-dialog-slide-description">
-                  <span className="model-wrong p-2">
-                    <i className="fas fa-bug pr-3 pl-3"></i>12 students data
-                    having some error
-                  </span>
-                </DialogContentText>
-                <DialogContentText
-                  id="alert-dialog-slide-description"
-                  className="mt-3"
-                >
-                  <div className="p-2 d-flex flex-wrap">
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                  </div>
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={handleClose}
-                  color="primary"
-                  variant="outlined"
-                >
-                  CLOSE
-                </Button>
-              </DialogActions>
-            </Dialog>
+              handleClose={handleClose}
+              log={props?.logs}
+            />
           </div>
         </div>
       ) : (

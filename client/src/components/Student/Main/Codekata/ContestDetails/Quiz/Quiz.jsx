@@ -27,6 +27,10 @@ const Quiz = ({ setSideToggle }) => {
   let [currentQuestion, setCurrentQuestion] = useState({});
   const [status, setStatus] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [quizOpen, setQuizOpen] = useState(false);
+  const handleOpenQuiz = () => setQuizOpen(true);
+  const quizRedirect = () => history.goBack();
+  const handleCloseQuiz = () => setQuizOpen(false);
   const parseQuiz = () => JSON.parse(localStorage.getItem(quiz?.name) || "[]");
   let [currentQuestionNumber, setCurrentQuestionNumber] = useState(
     parseQuiz().length
@@ -97,7 +101,13 @@ const Quiz = ({ setSideToggle }) => {
     <div className="container-fluid p-0 Quiz-question-container">
       <div className="d-flex">
         <div className="mr-auto mt-3 ml-4">
-          <GoBack />
+          <GoBack onClickHandler={handleOpenQuiz} />
+          <DialogBox
+            open={quizOpen}
+            bodyMsg={`Are you sure do you want to exit from ${quiz?.name}`}
+            handleClose={handleCloseQuiz}
+            handleOpen={quizRedirect}
+          />
         </div>
         <div className="mr-auto">
           <p className="text-left mb-0 mt-4 problem-article">{quiz?.name}</p>

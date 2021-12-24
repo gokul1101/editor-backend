@@ -66,7 +66,7 @@ const Testcase = ({
   }, [testCaseOutput]);
   return (
     <div className="h-100">
-      {isError ? (
+      {(!isError && Object.keys(output).length <= 0) || isError ? (
         <CompilerError errors={errors} />
       ) : (
         <>
@@ -117,7 +117,7 @@ const Testcase = ({
                       )}
                     </Typography>
                   </AccordionSummary>
-                  <AccordionDetails>
+                  <AccordionDetails className="d-flex flex-column">
                     <p>{`Input : ${testcase?.input}`}</p>
                     <p>{`Output : ${testcase?.output}`}</p>
                     <p>

@@ -33,7 +33,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddUser = (props) => {
+  console.log(props);
   const [loader, showLoader, hideLoader] = useLoader();
+  const[reqflag,setReqflag] = useState(false)
+  const [logs,setLogs] = useState({})
   const [authState] = useContext(AuthContext);
   const [user, setUser] = useState({
     regno: "",
@@ -44,27 +47,33 @@ const AddUser = (props) => {
     course_id: "",
     college_id: "",
     phone_no: "",
-    batch_id:""
+    batch_id: "",
   });
-  const [batchStart, setBatchStart] = useState("");
-  const [batchEnd, setBatchEnd] = useState("");
   const classes = useStyles();
-
+  const removeFileHandler = (setFileList) => {
+    setFileList([])
+  }
   const onFileChange = async (files) => {
-    const formData = new FormData()
-    console.log(files[0]);
-    formData.append("file",files[0])
-    formData.get("file")
-    console.log(formData.get("file"));
+    const formData = new FormData();
+    formData.append("file", files[0]);
+    formData.get("file");
+    //**This is modified when compare to other api calls*/
     try {
       const { data, status } = await helperService.createBulkUsers(
-        {file:formData},
-        { headers: { Authorization: authState?.user?.token } }
+        { file: formData },
+        {
+          Authorization: authState?.user?.token,
+          "Content-Type": "multipart/form-data",
+        }
       );
       if (status === 201) {
+        setLogs(data.errorLogs)
       }
     } catch (err) {
       console.log(err);
+    }
+    finally{
+      setReqflag(true)
     }
   };
   const createUser = async () => {
@@ -105,24 +114,15 @@ const AddUser = (props) => {
       props.snackBar("Gender is not Selected", "error");
       return;
     }
-    if (user.batch_id === "") {
-      props.snackBar("batch  is not Selected", "error");
+    console.log(user)
+    if (!user.batch_id ) {
+      props.snackBar("Batch is not Selected", "error");
       return;
     }
 
-
-
     try {
       showLoader();
-      console.log({
-        ...user,
-        college_id: user.college_id,
-        course_id: user.course_id,
-        batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(
-          user.batch_id.length - 4,
-          user.batch_id.length
-        )}`,
-      });
+      
       const { status, data } = await helperService.createUser(
         {
           ...user,
@@ -306,8 +306,12 @@ const AddUser = (props) => {
         </div>
         <div className="col-md-4 p-2 border m-1">
           <DropFileInput
+            logs = {logs}
             onFileChange={onFileChange}
             snackBar={props.snackBar}
+            removeFileHandler = {removeFileHandler}
+            reqflag = {reqflag}
+            setReqflag ={setReqflag}
           />
         </div>
       </div>

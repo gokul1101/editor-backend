@@ -23,11 +23,11 @@ const ContestQuizzes = (props) => {
   const [quizName, setQuizName] = useState("");
   const [open, setOpen] = React.useState(false);
   const [quizzArr, setQuizzArr] = useState([]);
-  const createQuizz = async (props) => {
+  const createQuizz = async () => {
     try {
       const {
         status,
-        data: { quiz },
+        data: { quiz,message },
       } = await helperService.createQuizz(
         { name: quizName, contest_id: id },
         { headers: { Authorization: authState.user.token } }
@@ -35,13 +35,17 @@ const ContestQuizzes = (props) => {
       if (status === 201) {
         // TODO:
         console.log(quiz);
-        
+        props.snackBar(message,"success")
         // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
         setQuizzArr((existing) => [...existing, quiz]);
-        setOpen(false);
+        
       }
     } catch (err) {
-      props.snackBar(err,"error")
+      console.log(err)
+      props.snackBar(err?.data, "error");
+    }finally{
+      setQuizName("")
+      setOpen(false);
     }
   };
   const fetchQuizzes = async () => {

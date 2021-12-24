@@ -1,6 +1,6 @@
 import axios from "axios";
 const baseURL = "http://localhost:5000";
-// const baseURL = "http://03ba-103-70-191-34.ngrok.io";
+// const baseURL = "https://03ba-103-70-191-34.ngrok.io";
 
 const helperService = {
   rejectionHandler: ({ response }) => {
@@ -24,7 +24,7 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err,err.response)
+      console.log(err, err.response);
       let { status, data } = err.response;
       return Promise.reject({
         status,
@@ -53,14 +53,20 @@ const helperService = {
       });
     }
   },
-  createBulkUsers: async (payload, config) => {
-    console.log(payload);
+  createBulkUsers: async ({ file }, headers) => {
+    console.log(headers);
     try {
-      const { data, status } = await axios.post(
-        `${baseURL}/api/v1/users/createAll`,
-        payload,
-        config
-      );
+      const { data, status } = await axios({
+        url: `${baseURL}/api/v1/users/createAll`,
+        method: "POST",
+        headers,
+        data: file,
+      });
+      // post(
+      //   `${baseURL}/api/v1/users/createAll`,
+      //   {file},
+      //   config
+      // );
       if (status === 201) {
         return Promise.resolve({
           status,
@@ -116,7 +122,7 @@ const helperService = {
     }
   },
 
-  updateUser :  async (payload,config) => {
+  updateUser: async (payload, config) => {
     try {
       const { data, status } = await axios.post(
         `${baseURL}/api/v1/user/update`,
@@ -394,7 +400,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -527,7 +532,7 @@ const helperService = {
     }
   },
   deleteTestcase: async (payload, config) => {
-    console.log(payload)
+    console.log(payload);
     try {
       const { data, status } = await axios.post(
         `${baseURL}/api/v1/testcase/delete`,
@@ -571,18 +576,19 @@ const helperService = {
       });
     }
   },
-  getErrorLogs: async(payload,config) => {
+  getErrorLogs: async (payload, config) => {
     try {
       const {
-        data: { message },
+        data,
         status,
       } = await axios.get(
         `${baseURL}/api/v1/errorLogs?created_by=${payload.created_by}`,
         config
       );
-      if (status === 201) {
+      if (status === 200) {
         return Promise.resolve({
-          message,
+          status,
+          data,
         });
       }
     } catch (err) {
@@ -592,6 +598,6 @@ const helperService = {
         data: err.response.data,
       });
     }
-  }
+  },
 };
 export default helperService;
