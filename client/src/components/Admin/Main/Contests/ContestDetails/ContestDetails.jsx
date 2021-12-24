@@ -57,7 +57,7 @@ const ContestDetails = (props) => {
           </NavLink>
         </li>
       </ul>
-      <div className="h-auto">
+      <div>
         <Switch>
           <Route path={`/contests/:id/edit`} exact>
             <CreateContest title="Update Contest" />

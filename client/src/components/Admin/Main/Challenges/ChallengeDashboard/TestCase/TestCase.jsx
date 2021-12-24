@@ -10,12 +10,13 @@ import { Button, FormControlLabel, TextField } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import helperService from "../../../../../../services/helperService";
 import { useContext } from "react";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import "./TestCase.css";
+import GoBack from "../../../../../Reducer/GoBack/GoBack";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -36,6 +37,7 @@ const testcasesDefaultValue = {
   hidden: [],
 };
 const TestCase = (props) => {
+  const history = useHistory();
   const [authState, authDispatch] = useContext(AuthContext);
   const [update, setUpdate] = useState(false);
   const [testcases, setTestcases] = useState(testcasesDefaultValue);
@@ -113,7 +115,11 @@ const TestCase = (props) => {
   };
   const updateTestcase = async () => {
     try {
-      console.log("at line 116",authState?.challenge?.testcases?.id,testcases)
+      console.log(
+        "at line 116",
+        authState?.challenge?.testcases?.id,
+        testcases
+      );
       const { data, status } = await helperService.updateTestcase(
         {
           testcase_id: testcases.id || authState?.challenge?.testcases?.id,
@@ -147,9 +153,9 @@ const TestCase = (props) => {
       }
     } catch (err) {
       console.log(err);
-    }finally{
-      setOpen(false)
-      setUpdate(false)
+    } finally {
+      setOpen(false);
+      setUpdate(false);
     }
   };
 
@@ -198,7 +204,13 @@ const TestCase = (props) => {
   return (
     <div className="container">
       <div className="d-flex flex-column" style={{ marginTop: "40px" }}>
-        <p className="text-left dash-title-category pb-2">Create Testcase</p>
+        <div className="d-flex">
+          <GoBack onClickHandler={() => history.goBack()} />
+          <p className="text-left dash-title-category pb-2 mt-2 mx-3">
+            Create Testcase
+          </p>
+        </div>
+
         <span className="create-con-text mt-1">
           Add testcase to the challenge to the contest by selecting challenge
           from our library or create

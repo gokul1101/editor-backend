@@ -130,10 +130,10 @@ const Main = (props) => {
             <Route path="/admin-dashboard" exact>
               <AdminDashboard snackBar={props.snackBar} />
             </Route>
-            <Route path="/users" >
-              <Users snackBar={props.snackBar}/>
+            <Route path="/users">
+              <Users snackBar={props.snackBar} />
             </Route>
-            <Route path="/contests" >
+            <Route path="/contests">
               <Switch>
                 <Route path="/contests/create-contest" exact>
                   <CreateContest
@@ -160,14 +160,14 @@ const Main = (props) => {
                 <Quizzes snackBar={props.snackBar} />
               </Route>
             </Route>
-            <Route path="/challenges">
-              <Route path="/challenges/:id">
-                <ChallengeDashboard snackBar={props.snackBar} />
+              <Route path="/challenges">
+                <Route path="/challenges/:id">
+                  <ChallengeDashboard snackBar={props.snackBar} />
+                </Route>
+                <Route path="/challenges/:id/challenge/create">
+                  <CreateChallenge snackBar={props.snackBar} />
+                </Route>
               </Route>
-              <Route path="/challenges/:id/challenge/create">
-                <CreateChallenge snackBar={props.snackBar} />
-              </Route>
-            </Route>
             <Route path="/report" exact>
               <Report snackBar={props.snackBar} />
             </Route>

@@ -3,10 +3,7 @@ import { Link } from "react-router-dom";
 
 const Challenges = () => {
   return (
-    <div
-      className="container-fluid quiz-cards"
-      style={{ marginTop: "20px", height: "100vh", overflowY: "scroll" }}
-    >
+    <div className="container quiz-cards">
       <div className="d-flex">
         <div className="contest-header mr-auto">
           <p className="text-left dash-title-category pb-2">Challenges</p>
@@ -28,7 +25,10 @@ const Challenges = () => {
                 <h5>Lorem Ipsum is simply dummy text to the heaven...</h5>
               </span>
               <span className="section_right">
-                <Link to="/challenges/challenges-dashboard/create-challenge" className="card_but">
+                <Link
+                  to="/challenges/challenges-dashboard/create-challenge"
+                  className="card_but"
+                >
                   <i className="fa fa-pen"></i>
                 </Link>
               </span>
@@ -40,4 +40,4 @@ const Challenges = () => {
   );
 };
 
-export default Challenges
+export default Challenges;

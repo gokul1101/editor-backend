@@ -25,18 +25,21 @@ const ChallengeDashboard = (props) => {
     }
   };
   useEffect(async () => {
-    console.log('inside dashboard')
+    console.log("inside dashboard");
     if (!authState?.challenge) await fetchChallenge();
   }, []);
 
   return (
     <>
-      <div className="challenge-container" style={{overflowY:'scroll',height:'100vh'}}>
+      <div
+        className="challenge-container container"
+        style={{ height: "100vh", overflowY: "scroll" }}
+      >
         <ul className="list-group d-flex align-items-center justify-content-center flex-row p-2 mt-3 mb-3">
           <li className="list-group-item user-group-pill">
             <NavLink
               exact
-              className="user-navlink pr-3 pl-3 m-2"
+              className="user-navlink pr-3 pl-3 m-2 btn nav-button d-flex justify-content-center align-items-center"
               to={`/challenges/${id}/update`}
               activeClassName="active-user-pill"
             >
@@ -46,7 +49,7 @@ const ChallengeDashboard = (props) => {
           <li className="list-group-item user-group-pill">
             <NavLink
               exact
-              className="user-navlink pr-3 pl-3 m-2"
+              className="user-navlink pr-3 pl-3 m-2 btn nav-button d-flex justify-content-center align-items-center"
               to={`/challenges/${id}/create-testcase`}
               activeClassName="active-user-pill"
             >
@@ -55,7 +58,7 @@ const ChallengeDashboard = (props) => {
             </NavLink>
           </li>
         </ul>
-        <div className=" p-0">
+        <div>
           <Switch>
             <Route path={`/challenges/:id/update`} exact>
               <CreateChallenge
@@ -65,7 +68,7 @@ const ChallengeDashboard = (props) => {
               />
             </Route>
             <Route path={`/challenges/:id/create-testcase`} exact>
-              <TestCase snackBar={props.snackBar}/>
+              <TestCase snackBar={props.snackBar} />
             </Route>
             <Route
               exact

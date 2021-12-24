@@ -6,6 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import helperService from "../../../../../../services/helperService";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
+import GoBack from "../../../../../Reducer/GoBack/GoBack";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
 import "./CreateChallenge.css";
@@ -79,7 +80,6 @@ const CreateChallenge = (props) => {
       }
     } catch (err) {
       // props.snackBar(err,"error")
-     
     }
   };
   useEffect(() => {
@@ -96,25 +96,26 @@ const CreateChallenge = (props) => {
       difficulty_id: authState?.challenge?.difficulty_id?.level,
       max_score: authState?.challenge?.max_score,
     });
-    setDifficultyId(authState?.challenge?.difficulty_id?.level)
+    setDifficultyId(authState?.challenge?.difficulty_id?.level);
     return () => {
       if (authState?.challenge) setChallenge({});
     };
   }, [authState]);
   return (
-    <div
-      className="container-fluid"
-      style={{ overflowY: "scroll", height: "100vh" }}
-    >
-      <p className="text-left dash-title-category pb-2">
-        {props?.title ? props?.title : "Create Challenge"}
-      </p>
+    <div className="container" style={{ height: "100vh", overflowY: "scroll" }}>
+      <div className="d-flex">
+        <GoBack onClickHandler={() => history.goBack()} />
+        <p className="text-left dash-title-category mx-4 mt-2">
+          {props?.title ? props?.title : "Create Challenge"}
+        </p>
+      </div>
+
       <div className="d-flex flex-column mb-5">
         <div className="d-flex mt-2 mb-2">
-          <span className="contest-line-height mr-2 col-md-3">
+          <span className="contest-line-height mr-2 col-md-4">
             Challenge name <span className="contest-star">*</span>
           </span>
-          <div className="col-md-7">
+          <div className="col-md-8">
             <InputReducer
               label="Challenge name"
               name="Challenge name"
@@ -129,12 +130,12 @@ const CreateChallenge = (props) => {
             />
           </div>
         </div>
-        
+
         <div className="d-flex mt-2 mb-2">
-          <span className="contest-line-height mr-2 col-md-3">
+          <span className="contest-line-height mr-2 col-md-4">
             Problem Statement <span className="contest-star">*</span>
           </span>
-          <div className="col-md-7">
+          <div className="col-md-8">
             <InputReducer
               fullWidth
               id="outlined-multiline-static"
@@ -153,10 +154,10 @@ const CreateChallenge = (props) => {
           </div>
         </div>
         <div className="d-flex mt-2 mb-2">
-          <span className="contest-line-height mr-2 col-md-3">
+          <span className="contest-line-height mr-2 col-md-4">
             Input format <span className="contest-star">*</span>
           </span>
-          <div className="col-md-7">
+          <div className="col-md-8">
             <InputReducer
               fullWidth
               id="outlined-multiline-static"
@@ -175,10 +176,10 @@ const CreateChallenge = (props) => {
           </div>
         </div>
         <div className="d-flex mt-2 mb-2">
-          <span className="contest-line-height mr-2 col-md-3">
+          <span className="contest-line-height mr-2 col-md-4">
             Output format <span className="contest-star">*</span>
           </span>
-          <div className="col-md-7">
+          <div className="col-md-8">
             <InputReducer
               fullWidth
               id="outlined-multiline-static"
@@ -197,10 +198,10 @@ const CreateChallenge = (props) => {
           </div>
         </div>
         <div className="d-flex mt-2 mb-2">
-          <span className="contest-line-height mr-2 col-md-3">
+          <span className="contest-line-height mr-2 col-md-4">
             Description <span className="contest-star">*</span>
           </span>
-          <div className="col-md-7">
+          <div className="col-md-8">
             <InputReducer
               fullWidth
               id="outlined-multiline-static"
@@ -219,10 +220,10 @@ const CreateChallenge = (props) => {
           </div>
         </div>
         <div className="d-flex mt-2 mb-2">
-          <span className="contest-line-height mr-2 col-md-3">
+          <span className="contest-line-height mr-2 col-md-4">
             Constraints <span className="contest-star">*</span>
           </span>
-          <div className="col-md-7">
+          <div className="col-md-8">
             <InputReducer
               fullWidth
               id="outlined-multiline-static"
@@ -239,10 +240,10 @@ const CreateChallenge = (props) => {
           </div>
         </div>
         <div className="d-flex mt-2 mb-2">
-          <span className="contest-line-height mr-2 col-md-3">
+          <span className="contest-line-height mr-2 col-md-4">
             Difficulty <span className="contest-star">*</span>
           </span>
-          <div className="col-md-7">
+          <div className="col-md-8">
             {console.log(difficultyId)}
             <SelectReducer
               value={difficultyId}
@@ -251,17 +252,17 @@ const CreateChallenge = (props) => {
               array={["easy", "medium", "hard"]}
               name="Difficulty Level"
               handleSelect={(e) => {
-                setDifficultyId(e.target.value)
+                setDifficultyId(e.target.value);
                 setChallenge({ ...challenge, difficulty_id: e.target.value });
               }}
             />
           </div>
         </div>
         <div className="d-flex mt-2 mb-2">
-          <span className="contest-line-height mr-2 col-md-3">
+          <span className="contest-line-height mr-2 col-md-4">
             Max Score <span className="contest-star">*</span>
           </span>
-          <div className="col-md-7">
+          <div className="col-md-8">
             <InputReducer
               fullWidth
               type="number"
@@ -276,9 +277,9 @@ const CreateChallenge = (props) => {
             />
           </div>
         </div>
-        <div className="my-5">
+        <div className="m-0">
           <CustomButton
-            className="btn-hover color-11 mt-4 float-right"
+            className="btn-hover color-11 mt-2 mb-5 float-right"
             onClickHandler={props?.title ? updateChallenge : createChallenge}
           >
             <i className="fas fa-plus pr-2 pl-2"></i>{" "}

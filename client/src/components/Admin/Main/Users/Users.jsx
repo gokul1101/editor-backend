@@ -1,17 +1,18 @@
 import React from "react";
 import "./Users.css";
-import { NavLink, Switch, Route, Redirect } from "react-router-dom";
+import { NavLink, Switch, Route, Redirect, useHistory } from "react-router-dom";
 import AddUser from "./AddUser/AddUser";
 import ListUser from "./ListUser/ListUser";
-import GoBack from '../../../Reducer/GoBack/GoBack'
+import GoBack from "../../../Reducer/GoBack/GoBack";
 const Users = (props) => {
+  const history = useHistory();
   console.log(props);
   return (
     <div className="container-fluid add-user-container mt-4">
       <ul className="list-group d-flex  p-2 mt-3 mb-3">
         <div className="d-flex">
           <div className=" mr-auto">
-            <GoBack />
+            <GoBack onClickHandler={() => history.goBack()} />
           </div>
           <div className="add-user-nav d-flex">
             <li className="list-group-item user-group-pill">
@@ -43,7 +44,7 @@ const Users = (props) => {
             <AddUser snackBar={props.snackBar} />
           </Route>
           <Route path="/users/list-user" exact>
-            <ListUser snackBar={props.snackBar}/>
+            <ListUser snackBar={props.snackBar} />
           </Route>
           <Route
             exact

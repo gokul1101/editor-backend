@@ -67,8 +67,8 @@ const ContestStatictics = (props) => {
   ];
   return (
     <div className="container-fluid w-100 mt-5">
-      <div className="d-flex">
-        <div className="col-md-9 d-flex flex-column border">
+      <div className="d-flex stats-main">
+        <div className="col-md-9 mb-5 stats-left d-flex flex-column border">
           <div className="statistics-nav d-flex justify-content-center mt-3 mb-2 w-100">
             <div className="col-md-2 inner-stat-nav">S.NO</div>
             <div className="col-md-2 inner-stat-nav">REG.NO</div>
@@ -88,14 +88,21 @@ const ContestStatictics = (props) => {
               </div>
             );
           })}
-
+          <div>
+            <Pagination
+              count={13}
+              color="primary"
+              variant="text"
+              className="my-3 d-flex justify-content-end"
+            />
+          </div>
         </div>
-        
-        <div className="col-md-3 d-flex flex-column m-1">
-          <div className="top-part mt-2 mb-2 p-2">
+
+        <div className="col-md-3 stats-right d-flex flex-column m-1">
+          <div className="top-part mx-2 my-2 p-2">
             <div className="d-flex align-items-center justify-content-center mt-2 mb-2">
               <img
-              alt="someImage"
+                alt="someImage"
                 src="https://img.icons8.com/emoji/30/000000/trophy-emoji.png"
                 className="pr-3 img-fluid"
               />
@@ -108,7 +115,10 @@ const ContestStatictics = (props) => {
                 </div>
                 <div className="col-md-6 top-scorer">Dhanush Karthick</div>
                 <div className="col-md-4 d-flex justify-content-between align-items-center">
-                  <img alt="someImage" src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
+                  <img
+                    alt="someImage"
+                    src="https://img.icons8.com/emoji/30/000000/coin-emoji.png"
+                  />
                   <span className="score-point">1029</span>
                 </div>
               </div>
@@ -118,7 +128,10 @@ const ContestStatictics = (props) => {
                 </div>
                 <div className="col-md-6 top-scorer">Dhanush Karthick</div>
                 <div className="col-md-4 d-flex justify-content-between align-items-center">
-                  <img alt="someImage" src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
+                  <img
+                    alt="someImage"
+                    src="https://img.icons8.com/emoji/30/000000/coin-emoji.png"
+                  />
                   <span className="score-point">102</span>
                 </div>
               </div>
@@ -128,33 +141,34 @@ const ContestStatictics = (props) => {
                 </div>
                 <div className="col-md-6 top-scorer">Dhanush Karthick</div>
                 <div className="col-md-4 d-flex justify-content-between align-items-center">
-                  <img alt="someImage" src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
+                  <img
+                    alt="someImage"
+                    src="https://img.icons8.com/emoji/30/000000/coin-emoji.png"
+                  />
                   <span className="score-point">10</span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="top-part mt-2 mb-2 p-3">
+          <div className="top-part mx-2 my-2 p-3">
             <div className="submissions d-flex flex-column align-items-center justify-content-center">
               <img src={SubmissionGif} height="98" width="96" />
-              <span className="mt-4">Total no. of submissions : <span className="submission-count">40</span></span>
-              <span>No. of submissions Left : <span className="submission-count">20</span></span>
-              <span>Ena vaikrathunu therla : <span className="submission-count">10</span></span>
+              <span className="mt-4">
+                Total no. of submissions :{" "}
+                <span className="submission-count">40</span>
+              </span>
+              <span>
+                No. of submissions Left :{" "}
+                <span className="submission-count">20</span>
+              </span>
+              <span>
+                Ena vaikrathunu therla :{" "}
+                <span className="submission-count">10</span>
+              </span>
             </div>
-
           </div>
         </div>
-
       </div>
-      <div>
-      <Pagination
-            count={13}
-            color="primary"
-            variant="text"
-          className="mt-5 d-flex justify-content-end"
-          />
-      </div>
-
     </div>
   );
 };
