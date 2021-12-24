@@ -59,7 +59,8 @@ const CreateChallenge = (props) => {
         history.push(`/contests/${id}/challenges`);
       }
     } catch (err) {
-      console.log(err);
+      console.log(err)
+      props.snackBar(err?.data?.message, "error");
     }
   };
   const updateChallenge = async () => {
@@ -78,7 +79,7 @@ const CreateChallenge = (props) => {
         console.log(data);
       }
     } catch (err) {
-      props.snackBar(err, "error");
+      props.snackBar(err.response.message, "error");
     }
   };
   useEffect(() => {

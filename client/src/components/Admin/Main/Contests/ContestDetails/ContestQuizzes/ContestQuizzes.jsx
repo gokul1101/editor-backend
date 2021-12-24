@@ -16,7 +16,7 @@ import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const ContestQuizzes = () => {
+const ContestQuizzes = (props) => {
   const { id } = useParams();
   const [authState] = useContext(AuthContext);
   const [quizName, setQuizName] = useState("");
@@ -37,10 +37,14 @@ const ContestQuizzes = () => {
         
         // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
         setQuizzArr((existing) => [...existing, quiz]);
-        setOpen(false);
+        
       }
     } catch (err) {
-      console.log(err);
+      console.log(err)
+      props.snackBar(err?.data, "error");
+    }finally{
+      setQuizName("")
+      setOpen(false);
     }
   };
   const fetchQuizzes = async () => {

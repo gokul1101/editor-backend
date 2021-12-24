@@ -36,10 +36,8 @@ const useStyles = makeStyles((theme) => ({
 const AddUser = (props) => {
   console.log(props);
   const [loader, showLoader, hideLoader] = useLoader();
-  const [logs,setLogs] = useState({
-    total:0,
-    errorLogs:[]
-  })
+  const[reqflag,setReqflag] = useState(false)
+  const [logs,setLogs] = useState({})
   const [authState] = useContext(AuthContext);
   const [user, setUser] = useState({
     regno: "",
@@ -53,7 +51,9 @@ const AddUser = (props) => {
     batch_id: "",
   });
   const classes = useStyles();
-
+  const removeFileHandler = (setFileList) => {
+    setFileList([])
+  }
   const onFileChange = async (files) => {
     const formData = new FormData();
     formData.append("file", files[0]);
@@ -68,10 +68,13 @@ const AddUser = (props) => {
         }
       );
       if (status === 201) {
-        setLogs({errorLogs:[...data.errorLogs.errorLogs],total:data.errorLogs.totalLogs})
+        setLogs(data.errorLogs)
       }
     } catch (err) {
       console.log(err);
+    }
+    finally{
+      setReqflag(true)
     }
   };
   const createUser = async () => {
@@ -307,6 +310,9 @@ const AddUser = (props) => {
             logs = {logs}
             onFileChange={onFileChange}
             snackBar={props.snackBar}
+            removeFileHandler = {removeFileHandler}
+            reqflag = {reqflag}
+            setReqflag ={setReqflag}
           />
         </div>
       </div>
