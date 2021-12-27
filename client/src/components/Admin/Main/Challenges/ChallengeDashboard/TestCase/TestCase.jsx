@@ -105,12 +105,7 @@ const TestCase = (props) => {
         });
       }
     } catch (err) {
-<<<<<<< HEAD
       props.snackBar(err.data.message,"error");
-=======
-      props.snackBar(err.data.message,"error")
-      console.log(err);
->>>>>>> 94af2cd6ca008c97599541371bc269f1b7b4d544
     } finally {
       setTestcase({ input: "", output: "" });
       setOpen(false);
