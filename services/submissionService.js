@@ -180,6 +180,7 @@ const challengeSubmissionService = async (
         sampleTestCaseOutput.push(testCaseOutput);
       } catch (err) {
         console.log(err);
+        if(err.code) 
         if (i == 0) {
           return Promise.resolve({
             code: 200,

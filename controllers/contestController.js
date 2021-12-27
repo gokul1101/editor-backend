@@ -106,7 +106,6 @@ const updateContest = async (req, res) => {
     let { code, message } = await updateContestService(updateDetails);
     res.status(code).send({ message });
   } catch (err) {
-    console.log(err);
     if (!err.code) {
       err.code = 500;
       err.message = `Internal server Error on update contest`;

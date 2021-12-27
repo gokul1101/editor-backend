@@ -86,7 +86,7 @@ const ErrorLogs = () => {
               <div className="col-md-2 text-center content-nav-title">
                 <i
                   style={{ cursor: "pointer" }}
-                  class="fas fa-external-link-alt"
+                  className="fas fa-external-link-alt"
                   onClick={() => {
                     setErrorLog(log);
                     handleClickOpen();

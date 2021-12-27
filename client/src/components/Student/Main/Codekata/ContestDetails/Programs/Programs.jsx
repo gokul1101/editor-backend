@@ -133,7 +133,7 @@ const Programs = (props) => {
           <div className="w-100 d-flex flex-row-reverse mt-3 mb-2">
             <div>
               <h5 className="mt-2 score-card">
-                Maximum Score : <span className="program-score p-2">80</span>
+                Maximum Score : <span className="program-score p-2">{challenge?.max_score}</span>
               </h5>
             </div>
             <div className="w-25 mx-2">

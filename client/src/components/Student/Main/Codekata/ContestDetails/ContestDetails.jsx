@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Male from "../../../../Images/man.png";
 import { useParams, useHistory } from "react-router-dom";
 import "./ContestDetails.css";
@@ -18,6 +18,7 @@ const ContestDetails = ({ setSideToggle }) => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [flag, setFlag] = useState(false);
+  const [isTimeUp, setIsTimeUp] = useState(false);
   const handleOpen = () => setOpen(true);
   const backAlert = () => setFlag(true);
   const onBackAlert = () => {
@@ -25,7 +26,6 @@ const ContestDetails = ({ setSideToggle }) => {
   };
   const handleClose = () => setOpen(false);
   const backClose = () => setFlag(false);
-  const ref = useRef();
   const [authState] = useContext(AuthContext);
   const routeQuestion = (_id, name, type) => {
     const checkQuestion = (question) => question === name;
@@ -46,6 +46,11 @@ const ContestDetails = ({ setSideToggle }) => {
     }
     history.push(`/codekata/${id}/${type}/${_id}`);
   };
+  const timeoutSubmit = () => {
+    setIsTimeUp(true);
+    history.push(`/codekata/${id}`);
+    sumbitContest()
+  };
   const sumbitContest = async (e) => {
     setOpen(false);
     showLoader();
@@ -57,24 +62,30 @@ const ContestDetails = ({ setSideToggle }) => {
     let contestChallenges = authState?.contest?.challenges || [];
     payload.quizzes = contestQuizzes.map((quiz) => {
       let localQuizzes = JSON.parse(localStorage.getItem("quizzes") || "[]");
-      if(!localQuizzes.find(localQuiz => localQuiz === quiz.name)) return [];
+      if (!localQuizzes.find((localQuiz) => localQuiz === quiz.name)) return [];
       return JSON.parse(localStorage.getItem(quiz?.name) || "[]");
     });
     payload.challenges = contestChallenges.map((challenge) => {
-      let localChallenges = JSON.parse(localStorage.getItem("challenges") || "[]");
-      if(!localChallenges.find(localChallenge => localChallenge === challenge.name)) return [];
+      let localChallenges = JSON.parse(
+        localStorage.getItem("challenges") || "[]"
+      );
+      if (
+        !localChallenges.find(
+          (localChallenge) => localChallenge === challenge.name
+        )
+      )
+        return [];
       let localCode = JSON.parse(localStorage.getItem(challenge?.name) || "{}");
       console.log(localCode);
       localCode.code = parseCode(localCode.code);
       return localCode;
     });
     try {
-      const {code, message} = await helperService.createSubmission(
+      const { code, message } = await helperService.createSubmission(
         { ...payload },
         { headers: { Authorization: authState.user.token } }
       );
-      if(code === 201)
-      console.log(message);
+      if (code === 201) console.log(message);
       history.push("/codekata");
     } catch (err) {
       console.log(err);
@@ -84,19 +95,7 @@ const ContestDetails = ({ setSideToggle }) => {
   };
   useEffect(() => {
     setSideToggle(true);
-    // console.log(ref.current);
-    // if (ref.current.focus) {
-    //   ref.current.dispatchEvent(
-    //     new KeyboardEvent("keypress", {
-    //       key: "F11",
-    //     })
-    //   );
-    // }
-    // console.log(full);
-
-    // return () => {};
-    // window.addEventListener("onload", () => {});
-  }, [setSideToggle]);
+  });
 
   const handleUserKeyPress = (event) => {
     const { key, keyCode } = event;
@@ -106,11 +105,7 @@ const ContestDetails = ({ setSideToggle }) => {
     }
   };
   return (
-    <div
-      className="container-fluid dashboard"
-      ref={ref}
-      style={{ overflow: "hidden" }}
-    >
+    <div className="container-fluid dashboard" style={{ overflow: "hidden" }}>
       {loader}
       <div className="d-flex">
         <div className="back-btn mr-auto mt-3 ml-4" onClick={backAlert}>
@@ -124,7 +119,11 @@ const ContestDetails = ({ setSideToggle }) => {
           handleOpen={onBackAlert}
         />
         <div className="timer mt-4">
-          <Timer />
+          {isTimeUp ? (
+            <p>Time's up</p>
+          ) : (
+            <Timer timeoutSubmit={timeoutSubmit} />
+          )}
         </div>
         <div className="user-info position-relative">
           <div className="d-flex mx-4 pt-3 user-det justify-content-end">
@@ -145,7 +144,9 @@ const ContestDetails = ({ setSideToggle }) => {
         <div className="mt-3 p-2">
           <h3 className="font-weight-bolder color-highlight">
             <i className="fas fa-star"></i>Max Score :{" "}
-            <span className="max-score p-2">{40}</span>
+            <span className="max-score p-2">
+              {authState?.contest?.contest?.max_score}
+            </span>
           </h3>
         </div>
       </div>

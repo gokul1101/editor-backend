@@ -77,7 +77,7 @@ const getChallenge = async (id, role) => {
 };
 
 const updateChallenge = async (question) => {
-  const { id, max_score } = question;
+  const { id, max_score, contest_id } = question;
   try {
     const exist_question = await Question.findById(id);
     if (!exist_question) {
@@ -106,6 +106,7 @@ const updateChallenge = async (question) => {
       if (max_score)
         await updateContestService({
           max_score: max_score - exist_question.max_score,
+          id : contest_id
         });
       await Question.findByIdAndUpdate(id, {
         ...question,
@@ -151,27 +152,27 @@ const getAllChallengesWithContestId = async (id) => {
     });
   }
 };
-const deleteChallenge = async ({_id}) => {
-  try{
-    const {max_score,contest_id} = (await Question.findByIdAndDelete(_id))
-    if(!max_score || !contest_id) return Promise.reject({code:404,message:`Challenge not found`})
-    await updateContestService({max_score,id:contest_id})
+const deleteChallenge = async ({ _id }) => {
+  try {
+    const { max_score, contest_id } = await Question.findByIdAndDelete(_id);
+    if (!max_score || !contest_id)
+      return Promise.reject({ code: 404, message: `Challenge not found` });
+    await updateContestService({ max_score : -(max_score), id: contest_id });
     return Promise.resolve({
-      code : 202,
-      message:`Challenge deleted successfully`
-    })
-  }
-  catch(err){
+      code: 202,
+      message: `Challenge deleted successfully`,
+    });
+  } catch (err) {
     return Promise.reject({
-      code : 500,
-      message:`Internal server error`
-    })
+      code: 500,
+      message: `Internal server error`,
+    });
   }
-}
+};
 module.exports = {
   createChallenge,
   getChallenge,
   getAllChallengesWithContestId,
   updateChallenge,
-  deleteChallenge
+  deleteChallenge,
 };

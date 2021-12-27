@@ -170,15 +170,17 @@ const helperService = {
     try {
       const { data, status } = await axios.get(url, config);
       if (status === 200) {
+        console.log(data)
         return Promise.resolve({
           status,
           data,
         });
       }
     } catch (err) {
+      console.log(err.response)
       return Promise.reject({
         status: err?.response?.status,
-        message: err?.response?.data.message,
+        message: err?.response?.data,
       });
     }
   },

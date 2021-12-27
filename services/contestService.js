@@ -109,7 +109,7 @@ const updateContestService = async ({
       let contestNameExists = await Contest.findOne({ name });
       if (contestNameExists)
         return Promise.reject({
-          status: 403,
+          code: 403,
           message: `Contest name ${name} already taken`,
         });
       contest.name = name;
@@ -142,6 +142,7 @@ const updateContestService = async ({
       message: "Contest updated.",
     });
   } catch (err) {
+    console.log(err)
     return Promise.reject({
       status: 500,
       message: "Unable to find contest.",

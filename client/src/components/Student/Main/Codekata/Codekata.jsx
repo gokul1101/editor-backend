@@ -43,8 +43,9 @@ const Codekata = ({ setSideToggle, ...props }) => {
         history.push(`/codekata/${code}`);
       }
       props.snackBar(message || "", "success");
-    } catch ({message}) {
-      props.snackBar(message || "Internal Error", "error");
+    } catch (message) {
+      console.log(message)
+      // props.snackBar(message || "Internal Error", "error");
     } finally {
       hideLoader();
     }
