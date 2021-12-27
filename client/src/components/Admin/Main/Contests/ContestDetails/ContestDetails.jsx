@@ -60,7 +60,7 @@ const ContestDetails = (props) => {
       <div>
         <Switch>
           <Route path={`/contests/:id/edit`} exact>
-            <CreateContest title="Update Contest" />
+            <CreateContest title="Update Contest" snackBar={props.snackBar} />
           </Route>
           <Route path={`/contests/:id/quizzes`} exact>
             <ContestQuizzes snackBar={props.snackBar}/>

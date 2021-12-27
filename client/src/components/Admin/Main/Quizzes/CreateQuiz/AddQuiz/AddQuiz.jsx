@@ -3,11 +3,16 @@ import { useParams } from "react-router";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import helperService from "../../../../../../services/helperService";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
+import GoBack from "../../../../../Reducer/GoBack/GoBack";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
 import "./AddQuiz.css";
 import QuizQuestion from "./QuizQuestion/QuizQuestion";
+import { useHistory} from "react-router-dom";
+
 const AddQuiz = (props) => {
+  const history = useHistory();
+
   const [question, setQuestion] = useState({
     statement: "",
     options: {
@@ -151,7 +156,13 @@ const AddQuiz = (props) => {
   }, []);
 
   return (
+    <>
+    <div className="d-flex m-2 p-2">
+    <GoBack className="mt-2" onClickHandler={() => history.goBack()} />
+   <h5 className="m-3 text-highlight font-weight-bolder">Back</h5>
+   </div>
     <div className="container" style={{ height: "100vh", overflowY: "scroll" }}>
+     
       <p className="text-left dash-title-category pb-2 mt-5">Add Quiz</p>
       <span className="create-con-text mt-1">
         By adding the quiz name you can add Multiple Choice Questions (MCQ's)
@@ -287,7 +298,9 @@ const AddQuiz = (props) => {
         })}
       </div>
     </div>
-  );
+
+    </>
+      );
 };
 
 export default AddQuiz;

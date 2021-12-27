@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AddUser = (props) => {
   console.log(props);
-  const [loader, showLoader, hideLoader] = useLoader();
+  const [ showLoader, hideLoader] = useLoader();
   const[reqflag,setReqflag] = useState(false)
   const [logs,setLogs] = useState({})
   const [authState] = useContext(AuthContext);
@@ -79,9 +79,8 @@ const AddUser = (props) => {
   const createUser = async () => {
     //Regex
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let charRegex = /^[A-Za-z0-9]+$/;
 
-    if (!user.name.length >= 3 && !user.name.length <= 25 || (user.name.length <= 0)) {
+    if ((!user.name.length >= 3 && !user.name.length <= 25) || (user.name.length <= 0)) {
       props.snackBar("Username is Incorrect", "error");
       return;
     }

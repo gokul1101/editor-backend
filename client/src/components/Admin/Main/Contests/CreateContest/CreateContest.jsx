@@ -6,6 +6,7 @@ import "./CreateContest.css";
 import { useHistory, useParams } from "react-router-dom";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 const CreateContest = (props) => {
+  console.log(props);
   const [loader, showLoader, hideLoader] = useLoader();
   const history = useHistory();
   const { id } = useParams();
@@ -44,6 +45,8 @@ const CreateContest = (props) => {
           end_time: data?.contest?.end_time,
         });
         hideLoader();
+        props.snackBar(data.message,"success")
+
         // authDispatch({})
       }
     } catch (err) {
