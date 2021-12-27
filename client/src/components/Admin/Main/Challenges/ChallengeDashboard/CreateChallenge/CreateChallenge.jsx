@@ -116,7 +116,7 @@ const CreateChallenge = (props) => {
         
       }
     } catch (err) {
-      props.snackBar(err.response.message, "error");
+      props.snackBar(err.data, "error");
     }
   };
   useEffect(() => {

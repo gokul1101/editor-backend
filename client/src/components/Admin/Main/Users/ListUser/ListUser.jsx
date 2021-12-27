@@ -44,119 +44,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const tableData = [
-  {
-    reg_no: 1813015,
-    name: "Dhanush Kaarthick  ",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018-2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813016,
-    name: "Dhusanthan R",
-    email: "dhusanthanr1999g@gmail.com",
-    gender: "Female",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813017,
-    name: "Gajendhiran M",
-    email: "gajendhiranmohan@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813018,
-    name: "Gobinath S",
-    email: "gobigobi@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813019,
-    name: "Gokul S",
-    email: "gokul@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813046,
-    name: "Nanthakumar B",
-    email: "codingnanthu@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813076,
-    name: " Vasanthan P",
-    email: "vasausa@gmail.com",
-    gender: "Female",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-];
+
 const ListUser = (props) => {
+  console.log(props);
   const classes = useStyles();
   const [loader, showLoader, hideLoader] = useLoader();
   const [user, setUser] = useState({
@@ -221,10 +111,13 @@ const ListUser = (props) => {
   const fetchUsers = async () => {
     try {
       showLoader();
-      const { status, data } = await helperService.getUsers(pagination, {
+      const { status, data} = await helperService.getUsers(pagination, {
         headers: { Authorization: authState.user.token },
       });
+      console.log(data);
       if (status === 200) {
+        //TODO : 
+        props.snackBar("List of Users","success")
         setUsers(data.users);
         hideLoader();
         setRegno(data.users.reg_no);

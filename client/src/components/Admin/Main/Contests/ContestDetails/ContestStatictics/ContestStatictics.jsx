@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./ContestStatictics.css";
 import SubmissionGif from "../../../../../Images/submission.gif";
 import Pagination from "@material-ui/lab/Pagination";
 const ContestStatictics = (props) => {
+  console.log(props);
   const stats = [
     {
       reg: 1813015,
@@ -65,6 +66,12 @@ const ContestStatictics = (props) => {
       points: 98,
     },
   ];
+  useEffect(() => {
+    
+   
+      props.snackBar("Current challenge Statistics","success")
+    
+  }, [])
   return (
     <div className="container-fluid w-100 mt-5">
       <div className="d-flex stats-main">

@@ -38,13 +38,13 @@ const Articles = (props) => {
         <Grid container spacing={2}>
           {posts.map((post) => (
             <Grid item sm={3}>
-              <Card key={post.id} style={{ height: 150 }}>
+              <div key={post.id} style={{ height: 150 }} classname="card border-outline">
                 <CardContent>
                   <Typography variant="h6">
                     {post.id}. {post.name}
                   </Typography>
                 </CardContent>
-              </Card>
+              </div>
             </Grid>
           ))}
         </Grid>

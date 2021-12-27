@@ -72,6 +72,14 @@ const TestCase = (props) => {
         sample: { ...testcase, output: testcase.output.replace(/\n+$/, "") },
       };
     }
+    if(DBTestcase?.sample?.input?.length <= 0){
+      props.snackBar("Expected Input is empty","error")
+      return;
+    } 
+    if(DBTestcase?.sample?.output?.length <= 0){
+      props.snackBar("Expected Output is empty","error")
+      return;
+    } 
     createTestcase(DBTestcase);
     DBTestcase = {};
   };
@@ -82,7 +90,7 @@ const TestCase = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
-        console.log(testcases);
+        props.snackBar(data.message,"success")
         setTestcases({
           ...testcases,
           id: data.testcase_id,
@@ -95,6 +103,7 @@ const TestCase = (props) => {
         });
       }
     } catch (err) {
+      props.snackBar(err.data.message,"error")
       console.log(err);
     } finally {
       setTestcase({ input: "", output: "" });
@@ -130,6 +139,7 @@ const TestCase = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
+        props.snackBar(data.message,"success")
         if (type === "sample")
           setTestcases({
             ...testcases,
@@ -152,6 +162,7 @@ const TestCase = (props) => {
           });
       }
     } catch (err) {
+      props.snackBar(err.data.message,"error")
       console.log(err);
     } finally {
       setOpen(false);
@@ -190,11 +201,12 @@ const TestCase = (props) => {
             ],
           });
         props.snackBar(
-          "Selected Hidden Test case is deleted successfully",
+         data.message,
           "success"
         );
       }
     } catch (err) {
+      props.snackBar(err.data.message,"error")
       console.log(err);
     }
   };
