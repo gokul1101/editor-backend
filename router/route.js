@@ -36,7 +36,7 @@ const {
   getTestCases,
   deleteTestCase,
 } = require("../controllers/testcaseController");
-const { createSubmission } = require("../controllers/submissionController");
+const { createSubmission, getSubmission } = require("../controllers/submissionController");
 const { getErrorLogs } = require("../controllers/errorLogsController");
 const { compile, executeContestChallenge } = require("../controllers/compileController");
 
@@ -209,6 +209,12 @@ router.post(
   userAuth,
   routeAuth("createSubmission"),
   createSubmission
+);
+router.post(
+  "/api/v1/submission/get",
+  userAuth,
+  routeAuth("getSubmission"),
+  getSubmission
 );
 //* ==============Compiler===============*//
 router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compile);

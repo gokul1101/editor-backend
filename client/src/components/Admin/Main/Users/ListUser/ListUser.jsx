@@ -43,120 +43,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-const tableData = [
-  {
-    reg_no: 1813015,
-    name: "Dhanush Kaarthick  ",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018-2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813016,
-    name: "Dhusanthan R",
-    email: "dhusanthanr1999g@gmail.com",
-    gender: "Female",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813017,
-    name: "Gajendhiran M",
-    email: "gajendhiranmohan@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813018,
-    name: "Gobinath S",
-    email: "gobigobi@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813019,
-    name: "Gokul S",
-    email: "gokul@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813046,
-    name: "Nanthakumar B",
-    email: "codingnanthu@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813076,
-    name: " Vasanthan P",
-    email: "vasausa@gmail.com",
-    gender: "Female",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-];
+const limit = 3;
 const ListUser = (props) => {
+  const [page, setPage] = useState(1);
+  const [total,setTotal] =  useState(0)
+  const handlePagination = (e, value) => {
+    if (page !== value) {
+      setPage(value);
+      fetchUsers(value);
+    }
+  };
   const classes = useStyles();
   const [loader, showLoader, hideLoader] = useLoader();
   const [user, setUser] = useState({
@@ -172,62 +68,21 @@ const ListUser = (props) => {
   });
   const [updateDetails, setUpdateDetails] = useState({});
   const [open, setOpen] = React.useState(false);
-  //   const [posts, setPosts] = useState([]);
-  //   const [page, setPage] = useState(1);
-  //   const loadPosts = async () => {
-  //     const res = await fetch(
-  //       `https://jsonplaceholder.typicode.com/todos?_page=${page}`,
-  //       {
-  //         method: "GET",
-  //       }
-  //     );
-  //     const data = await res.json();
-  //     console.log(data);
-  //     setPosts(data);
-  //   };
-  //   useEffect(() => {
-  //     loadPosts();
-  //   }, [page]);
-  //   const classes = useStyles();
-  // const sortTypes = {
-  //   up: {
-  //     class: "sort-up",
-  //     fn: (a, b) => a.register_number - b.register_number,
-  //   },
-  //   down: {
-  //     class: "sort-down",
-  //     fn: (a, b) => b.register_number - a.register_number,
-  //   },
-  //   default: {
-  //     class: "sort",
-  //     fn: (a, b) => a,
-  //   },
-  // };
-
-  // const [currentSort, setCurrentSort] = useState("default");
-  // const onSortChange = () => {
-  //   let nextSort;
-
-  //   if (currentSort === "down") nextSort = "up";
-  //   else if (currentSort === "up") nextSort = "default";
-  //   else if (currentSort === "default") nextSort = "down";
-
-  //   setCurrentSort(nextSort);
-  // };
+  
   const [authState] = useContext(AuthContext);
   const [users, setUsers] = useState([]);
   const [regno, setRegno] = useState("");
-  const [pagination, setPagination] = useState({ page: 1, limit: 10 });
-  const fetchUsers = async () => {
+  const fetchUsers = async (page=1) => {
     try {
       showLoader();
-      const { status, data } = await helperService.getUsers(pagination, {
+      const { status, data } = await helperService.getUsers({page,limit}, {
         headers: { Authorization: authState.user.token },
       });
       if (status === 200) {
         setUsers(data.users);
-        hideLoader();
         setRegno(data.users.reg_no);
+        if(!total) setTotal(data?.modelCount || 0)
+        hideLoader();
       }
     } catch (err) {
       console.log(err);
@@ -242,7 +97,6 @@ const ListUser = (props) => {
   const editUserDetail = (data) => {
     console.log("at line", data);
     setUser(data);
-
     setOpen(true);
   };
   const handleClose = () => {
@@ -646,10 +500,14 @@ const ListUser = (props) => {
           </div>
         </div>
         <Pagination
-          count={13}
+          count={
+            Math.floor(total / limit) +
+            (total % limit !== 0 ? 1 : 0)
+          }
           color="primary"
           variant="text"
-          className="mt-5 d-flex justify-content-end"
+          className="mt-5 d-flex justify-content-center"
+          onChange={(e, value) => handlePagination(e, value)}
         />
       </div>
     </>

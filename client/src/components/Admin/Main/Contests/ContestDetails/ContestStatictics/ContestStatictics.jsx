@@ -1,70 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./ContestStatictics.css";
 import SubmissionGif from "../../../../../Images/submission.gif";
 import Pagination from "@material-ui/lab/Pagination";
+import { useContext } from "react";
+import { AuthContext } from "../../../../../../contexts/AuthContext";
+import { useParams } from "react-router-dom";
+import helperService from "../../../../../../services/helperService";
+import { useState } from "react";
+const limit = 10;
 const ContestStatictics = (props) => {
-  const stats = [
-    {
-      reg: 1813015,
-      name: "Dhanush",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813016,
-      name: "Dhusanthan",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813017,
-      name: "Gajendhiran M",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813018,
-      name: "Gobi",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813019,
-      name: "Gokul",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813015,
-      name: "Dhanush",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813016,
-      name: "Dhusanthan",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813017,
-      name: "Gajendhiran M",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813018,
-      name: "Gobi",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813019,
-      name: "Gokul",
-      time: 120,
-      points: 98,
-    },
-  ];
+  const {id} = useParams()
+  const [authState,] = useContext(AuthContext);
+  const fethContestSubmissions = async () => {
+    try {
+      const { data, status } = await helperService.getContestSubmissions(
+        {page,limit,contest_id:id},
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 200) {
+        setSubmissions(data?.submissions?.submissions || [])
+        if(!total) setTotal(data?.submissions?.totalCount || 0)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    fethContestSubmissions();
+  }, []);
+  const [page, setPage] = useState(1);
+  const [total,setTotal] =  useState(0)
+  const [submissions,setSubmissions] = useState([])
+  const handlePagination = (e, value) => {
+    if (page !== value) {
+      setPage(value);
+      fethContestSubmissions(value);
+    }
+  };
   return (
     <div className="container-fluid w-100 mt-5">
       <div className="d-flex stats-main">
@@ -77,7 +49,7 @@ const ContestStatictics = (props) => {
             <div className="col-md-3 inner-stat-nav">POINTS</div>
           </div>
 
-          {stats.map((e, id) => {
+          {submissions.map((e, id) => {
             return (
               <div className="stats d-flex w-100">
                 <div className="col-md-2 stats-detail">{id + 1}</div>
@@ -89,12 +61,16 @@ const ContestStatictics = (props) => {
             );
           })}
           <div>
-            <Pagination
-              count={13}
-              color="primary"
-              variant="text"
-              className="my-3 d-flex justify-content-end"
-            />
+          <Pagination
+          count={
+            Math.floor(total / limit) +
+            (total % limit !== 0 ? 1 : 0)
+          }
+          color="primary"
+          variant="text"
+          className="mt-5 d-flex justify-content-center"
+          onChange={(e, value) => handlePagination(e, value)}
+        />
           </div>
         </div>
 

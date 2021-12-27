@@ -59,6 +59,8 @@ const TestCase = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+    if(update) setUpdate(false)
+    setTestcase({input:"",output:""})
   };
   const addTestcase = () => {
     // props.snackBar("Sucessfully added","success")
@@ -95,7 +97,7 @@ const TestCase = (props) => {
         });
       }
     } catch (err) {
-      console.log(err);
+      props.snackBar(err.data.message,"error");
     } finally {
       setTestcase({ input: "", output: "" });
       setOpen(false);
@@ -156,6 +158,10 @@ const TestCase = (props) => {
     } finally {
       setOpen(false);
       setUpdate(false);
+      setTestcase({
+        input: "",
+        output: "",
+      })
     }
   };
 

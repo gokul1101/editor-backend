@@ -19,9 +19,14 @@ const createSubmission = async (req, res) => {
   }
 };
 const getSubmission = async (req, res) => {
+  const { page, limit } = req.query;
   let submissionDetails = req.body;
   try {
-    const response = await getSubmissionsService(submissionDetails);
+    const response = await getSubmissionsService(
+      page,
+      limit,
+      submissionDetails
+    );
     res.status(response.code).send(response);
   } catch (err) {
     //! Error in getting submissions
