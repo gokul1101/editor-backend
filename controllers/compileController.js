@@ -18,6 +18,7 @@ const executeContestChallenge = async (req, res) => {
   try {
     const { id, code, lang } = req.body;
     const result = await challengeSubmissionService(id, code, lang);
+    console.log(result);
     res.send(result)
     // if (result.code === 200) res.status(result.code).json(result.output);
   } catch (err) {
