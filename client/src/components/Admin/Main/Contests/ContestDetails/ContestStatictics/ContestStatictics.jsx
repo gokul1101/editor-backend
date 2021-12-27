@@ -9,6 +9,7 @@ import helperService from "../../../../../../services/helperService";
 import { useState } from "react";
 const limit = 10;
 const ContestStatictics = (props) => {
+<<<<<<< HEAD
   const {id} = useParams()
   const [authState,] = useContext(AuthContext);
   const fethContestSubmissions = async () => {
@@ -37,6 +38,77 @@ const ContestStatictics = (props) => {
       fethContestSubmissions(value);
     }
   };
+=======
+  console.log(props);
+  const stats = [
+    {
+      reg: 1813015,
+      name: "Dhanush",
+      time: 120,
+      points: 98,
+    },
+    {
+      reg: 1813016,
+      name: "Dhusanthan",
+      time: 120,
+      points: 98,
+    },
+    {
+      reg: 1813017,
+      name: "Gajendhiran M",
+      time: 120,
+      points: 98,
+    },
+    {
+      reg: 1813018,
+      name: "Gobi",
+      time: 120,
+      points: 98,
+    },
+    {
+      reg: 1813019,
+      name: "Gokul",
+      time: 120,
+      points: 98,
+    },
+    {
+      reg: 1813015,
+      name: "Dhanush",
+      time: 120,
+      points: 98,
+    },
+    {
+      reg: 1813016,
+      name: "Dhusanthan",
+      time: 120,
+      points: 98,
+    },
+    {
+      reg: 1813017,
+      name: "Gajendhiran M",
+      time: 120,
+      points: 98,
+    },
+    {
+      reg: 1813018,
+      name: "Gobi",
+      time: 120,
+      points: 98,
+    },
+    {
+      reg: 1813019,
+      name: "Gokul",
+      time: 120,
+      points: 98,
+    },
+  ];
+  useEffect(() => {
+    
+   
+      props.snackBar("Current challenge Statistics","success")
+    
+  }, [])
+>>>>>>> 94af2cd6ca008c97599541371bc269f1b7b4d544
   return (
     <div className="container-fluid w-100 mt-5">
       <div className="d-flex stats-main">

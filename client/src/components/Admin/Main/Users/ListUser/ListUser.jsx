@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+<<<<<<< HEAD
 const limit = 3;
 const ListUser = (props) => {
   const [page, setPage] = useState(1);
@@ -53,6 +54,12 @@ const ListUser = (props) => {
       fetchUsers(value);
     }
   };
+=======
+
+
+const ListUser = (props) => {
+  console.log(props);
+>>>>>>> 94af2cd6ca008c97599541371bc269f1b7b4d544
   const classes = useStyles();
   const [loader, showLoader, hideLoader] = useLoader();
   const [user, setUser] = useState({
@@ -75,10 +82,17 @@ const ListUser = (props) => {
   const fetchUsers = async (page=1) => {
     try {
       showLoader();
+<<<<<<< HEAD
       const { status, data } = await helperService.getUsers({page,limit}, {
+=======
+      const { status, data} = await helperService.getUsers(pagination, {
+>>>>>>> 94af2cd6ca008c97599541371bc269f1b7b4d544
         headers: { Authorization: authState.user.token },
       });
+      console.log(data);
       if (status === 200) {
+        //TODO : 
+        props.snackBar("List of Users","success")
         setUsers(data.users);
         setRegno(data.users.reg_no);
         if(!total) setTotal(data?.modelCount || 0)
