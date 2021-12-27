@@ -169,7 +169,10 @@ const Programs = (props) => {
         </div>
         <div className="problem-toggler">
           <div className="d-flex">
-            <div className="col-md-4 p-0 border-left border-right border-bottom">
+            <div
+              className="col-md-4 p-0 border-left border-right border-bottom"
+              style={{ height: "80vh", overflowY: "scroll" }}
+            >
               <ul
                 className="nav nav-pills program-pills p-3 border-bottom"
                 id="pills-tab"
