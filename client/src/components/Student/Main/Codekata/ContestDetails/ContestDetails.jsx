@@ -12,13 +12,15 @@ import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 import DialogBox from "../../../../Reducer/DialogBox/DialogBox";
 import { parseCode } from "../../../../../services/utils";
 
-const ContestDetails = ({ setSideToggle }) => {
+const ContestDetails = ({ setSideToggle, snackBar }) => {
   const [loader, showLoader, hideLoader] = useLoader();
   const { id } = useParams();
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [flag, setFlag] = useState(false);
   const [isTimeUp, setIsTimeUp] = useState(false);
+  const [dialogBoxMessage, setDialogBoxMessage] = useState({})
+
   const handleOpen = () => setOpen(true);
   const backAlert = () => setFlag(true);
   const onBackAlert = () => {
@@ -34,6 +36,7 @@ const ContestDetails = ({ setSideToggle }) => {
         localStorage.getItem("challenges") || "[]"
       );
       if (completedChallenges.some(checkQuestion)) {
+        snackBar("Challenge already submitted.", "info");
         return;
       }
     } else {
@@ -41,6 +44,7 @@ const ContestDetails = ({ setSideToggle }) => {
         localStorage.getItem("quizzes") || "[]"
       );
       if (completedQuizzes.some(checkQuestion)) {
+        snackBar("Quiz already submitted.", "info");
         return;
       }
     }
@@ -85,10 +89,13 @@ const ContestDetails = ({ setSideToggle }) => {
         { ...payload },
         { headers: { Authorization: authState.user.token } }
       );
-      if (code === 201) console.log(message);
-      history.push("/codekata");
+      if (code === 201) {
+        snackBar(message, "success");
+        history.push("/codekata");
+      }
     } catch (err) {
       console.log(err);
+      snackBar(err.message || "", "success");
     } finally {
       hideLoader();
     }
@@ -96,14 +103,6 @@ const ContestDetails = ({ setSideToggle }) => {
   useEffect(() => {
     setSideToggle(true);
   });
-
-  const handleUserKeyPress = (event) => {
-    const { key, keyCode } = event;
-    console.log(key);
-    if (keyCode === 122) {
-      console.log("triggered");
-    }
-  };
   return (
     <div className="container-fluid dashboard" style={{ overflow: "hidden" }}>
       {loader}

@@ -16,7 +16,7 @@ const createUserService = async (userDetails) => {
     let registerNumberNotTaken = await validate({ regno });
     if (registerNumberNotTaken) {
       return Promise.reject({
-        code: 403,
+        status: 403,
         message: `Register number already exists.`,
         regno,
       });
@@ -57,7 +57,7 @@ const createUserService = async (userDetails) => {
     const newUser = new User({ ...userDetails });
     await newUser.save();
     return Promise.resolve({
-      code: 201,
+      status: 201,
       message: `New user created.`,
       regno,
     });
@@ -65,7 +65,7 @@ const createUserService = async (userDetails) => {
     //! Error in creating user
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `unable to create user`,
       err,
     });

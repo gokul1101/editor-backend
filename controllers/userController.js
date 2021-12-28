@@ -22,18 +22,13 @@ const createUser = async (req, res) => {
   let userDetails = req.body;
   try {
     let reponse = await createUserService(userDetails);
-    return res.status(reponse.code).json(reponse);
+    return res.status(reponse.status).json(reponse);
   } catch (err) {
     //! Error in creating user
-    if (!err.code) {
-      err.code = 500;
-      err.message = `Internal server Error on creating user`;
-    }
-    return res.status(err.code).send(err.message);
+    return res.status(err.status).send(err.message);
   }
 };
 const getUser = async (req, res) => {
-  // console.log(req,user)
   let { user } = req;
   let userDetails = user;
   const { id, regno } = req.query;
@@ -293,13 +288,13 @@ const createBulkUsers = async (req, res) => {
     for (let i in rows) {
       try {
         if (!rows[i]["regno"] || rows[i]["regno"].length !== 7) {
-          throw { code: 403, regno: rows[i]["regno"] };
+          throw { status: 403, regno: rows[i]["regno"] };
         } else {
           await createUserService(rows[i]);
         }
       } catch (err) {
         console.log(err);
-        if (err.code === 403 || err.code === 500) errors.push(err.regno);
+        if (err.status === 403 || err.status === 500) errors.push(err.regno);
       }
     }
     errorLogs = new ErrorLogs({

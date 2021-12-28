@@ -24,16 +24,12 @@ const createQuestion = async (req, res) => {
     questionDetails.type_id = (
       await TestType.findOne({ name: questionDetails.type_id })
     )._id;
-    let { code, message, mcq } = await functions[index](questionDetails);
-    if (mcq) return res.status(code).json({ message, mcq });
-    res.status(code).send(message);
+    let { status, message, mcq } = await functions[index](questionDetails);
+    if (mcq) return res.status(status).json({ message, mcq });
+    res.status(status).send(message);
   } catch (err) {
     //! Error in creating question
-    if (!err.code) {
-      err.code = 500;
-      err.message = `Internal server error`;
-    }
-    return res.status(err.code).json({ message: err.message });
+    return res.status(err.status).json({ message: err.message });
   }
 };
 const getQuestion = async (req, res) => {
@@ -44,14 +40,10 @@ const getQuestion = async (req, res) => {
   else if (type === "problem") index = 1;
   try {
     let response = await functions[index](id, req.user.role_id);
-    res.status(response.code).send(response);
+    res.status(response.status).send(response);
   } catch (err) {
     //! Error in getting question
-    if (!err.code) {
-      err.code = 500;
-      err.message = `Internal server Error`;
-    }
-    return res.status(err.code).send(err.message);
+    return res.status(err.status).send(err.message);
   }
 };
 const updateQuestion = async (req, res) => {
@@ -63,15 +55,10 @@ const updateQuestion = async (req, res) => {
   else if (type === "problem") index = 1;
   try {
     let response = await functions[index](questionDetails);
-    res.status(response.code).send(response);
+    res.status(response.status).send(response);
   } catch (err) {
     //! Error in updating question
-    console.log(err);
-    if (!err.code) {
-      err.code = 500;
-      err.message = `Internal server Error on updating mcqs`;
-    }
-    return res.status(err.code).send(err.message);
+    return res.status(err.status).send(err.message);
   }
 };
 
@@ -84,15 +71,11 @@ const deleteQuestion = async (req, res) => {
   else if (type === "problem") index = 1;
   try {
     let response = await functions[index](questionDetails);
-    res.status(response.code).send(response);
+    res.status(response.status).send(response);
   } catch (err) {
     //! Error in updating question
     console.log(err);
-    if (!err.code) {
-      err.code = 500;
-      err.message = `Internal server Error on deleting mcqs`;
-    }
-    return res.status(err.code).send(err.message);
+    return res.status(err.status).send(err.message);
   }
 };
 
@@ -102,28 +85,20 @@ const getAllMCQS = async (req, res) => {
   limit = flag ? 10 : 1;
   try {
     const response = await getAllMcqWithQuizID(id, page, limit, flag);
-    res.status(response.code).send(response);
+    res.status(response.status).send(response);
   } catch (err) {
     //! Error in getting mcqs with quiz id
-    if (!err.code) {
-      err.code = 500;
-      err.message = `Internal server Error on fetching mcqs`;
-    }
-    return res.status(err.code).send(err.message);
+    return res.status(err.status).send(err.message);
   }
 };
 const getAllChallenges = async (req, res) => {
   const { id } = req.query;
   try {
     const response = await getAllChallengesWithContestId(id);
-    res.status(response.code).send(response);
+    res.status(response.status).send(response);
   } catch (err) {
     //! Error in getting mcqs with quiz id
-    if (!err.code) {
-      err.code = 500;
-      err.message = `Internal server Error on fetching mcqs`;
-    }
-    return res.status(err.code).send(err.message);
+    return res.status(err.status).send(err.message);
   }
 };
 

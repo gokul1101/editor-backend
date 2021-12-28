@@ -18,7 +18,7 @@ const createContestService = async (contest) => {
     //* Creating new contest with given details
     else {
       const uuid = UUID().split("-").pop();
-      contest.code = uuid.substr(uuid.length - 6, 6).toUpperCase();
+      contest.code = uuid.substring(uuid.length - 6, uuid.length).toUpperCase();
       //* Start datetime & End datetime of the contest
       let start = new Date(contest.start_date + " " + contest.start_time);
       let end = new Date(contest.end_date + " " + contest.end_time);
@@ -30,7 +30,7 @@ const createContestService = async (contest) => {
       const newContest = new Contest(contest);
       await newContest.save();
       return Promise.resolve({
-        code: 201,
+        status: 201,
         message: "Contest created successfully",
         contestCode: contest.code,
       });
@@ -38,7 +38,7 @@ const createContestService = async (contest) => {
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: "Can't create contest",
     });
   }
@@ -112,7 +112,7 @@ const updateContestService = async ({
         JSON.stringify(contest._id) !== JSON.stringify(contestNameExists._id)
       )
         return Promise.reject({
-          code: 403,
+          status: 403,
           message: `Contest name ${name} already taken`,
         });
       contest.name = name;
@@ -141,7 +141,7 @@ const updateContestService = async ({
     }
     await contest.save();
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: "Contest updated.",
     });
   } catch (err) {
@@ -177,7 +177,7 @@ const getAllContestWithFilter = async (page, limit, past) => {
     }
     //**promise result */
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: {
         pastContestsCount,
         pastContests,
@@ -187,7 +187,7 @@ const getAllContestWithFilter = async (page, limit, past) => {
     });
   } catch (err) {
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `Internal Server Error`,
     });
   }
@@ -204,7 +204,7 @@ const getAllContestService = async (page, limit) => {
     response.total = contests.length;
     response.contests = contests;
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: response,
     });
   } catch (err) {
