@@ -74,41 +74,42 @@ const ContestStatictics = (props) => {
         </div>
 
         <div className="col-md-3 stats-right d-flex flex-column m-1">
-          <div className="top-part mx-2 my-2 p-2">
-            <div className="d-flex align-items-center justify-content-center mt-2 mb-2">
-              <img
-                alt="someImage"
-                src="https://img.icons8.com/emoji/30/000000/trophy-emoji.png"
-                className="pr-3 img-fluid"
-              />
-              <span className="top-participants">Top 3 Participants</span>
-            </div>
-            <div className="d-flex flex-column mt-4">
-              {leaderBoard.map((submission) => (
-                <div className="d-flex mt-2 mb-2">
-                  <div className="col-md-2">
-                    <button className="correct">1</button>
+            <div className="top-part mx-2 my-2 p-2">
+              <div className="d-flex align-items-center justify-content-center mt-2 mb-2">
+                <img
+                  alt="someImage"
+                  src="https://img.icons8.com/emoji/30/000000/trophy-emoji.png"
+                  className="pr-3 img-fluid"
+                />
+                <span className="top-participants">Top 3 Participants</span>
+              </div>
+              <div className="d-flex flex-column mt-4">
+                {leaderBoard.map((submission) => (
+                  <div className="d-flex mt-2 mb-2">
+                    <div className="col-md-2">
+                      <button className="correct">1</button>
+                    </div>
+                    <div className="col-md-6 top-scorer">Dhanush Karthick</div>
+                    <div className="col-md-4 d-flex justify-content-between align-items-center">
+                      <img
+                        alt="someImage"
+                        src="https://img.icons8.com/emoji/30/000000/coin-emoji.png"
+                      />
+                      <span className="score-point">1029</span>
+                    </div>
                   </div>
-                  <div className="col-md-6 top-scorer">Dhanush Karthick</div>
-                  <div className="col-md-4 d-flex justify-content-between align-items-center">
-                    <img
-                      alt="someImage"
-                      src="https://img.icons8.com/emoji/30/000000/coin-emoji.png"
-                    />
-                    <span className="score-point">1029</span>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
           <div className="top-part mx-2 my-2 p-3">
             <div className="submissions d-flex flex-column align-items-center justify-content-center">
               <img src={SubmissionGif} height="98" width="96" />
               <span className="mt-4">
                 Total no. of submissions :{" "}
-                <h1 className="submission-count d-flex justify-content-center">{total}</h1>
+                <h1 className="submission-count d-flex justify-content-center">
+                  {total}
+                </h1>
               </span>
-              
             </div>
           </div>
         </div>

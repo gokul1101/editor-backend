@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AddUser = (props) => {
   console.log(props);
-  const [ showLoader, hideLoader] = useLoader();
+  const [ loader,showLoader, hideLoader] = useLoader();
   const[reqflag,setReqflag] = useState(false)
   const [logs,setLogs] = useState({})
   const [authState] = useContext(AuthContext);
@@ -113,13 +113,13 @@ const AddUser = (props) => {
       props.snackBar("Gender is not Selected", "error");
       return;
     }
-    console.log(user)
     if (!user.batch_id ) {
       props.snackBar("Batch is not Selected", "error");
       return;
     }
-
+    
     try {
+      console.log(user)
       showLoader();
       
       const { status, data } = await helperService.createUser(
@@ -145,6 +145,7 @@ const AddUser = (props) => {
   };
   return (
     <div className="container">
+      {loader}
       <p className="text-left dash-title-category pb-2">Add Details *</p>
       <div className="col p-0" style={{ marginTop: "-20px" }}>
         <div className="hr">
