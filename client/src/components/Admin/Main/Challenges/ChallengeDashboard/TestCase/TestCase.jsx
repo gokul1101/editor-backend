@@ -10,7 +10,7 @@ import { Button, FormControlLabel } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import helperService from "../../../../../../services/helperService";
 import { useContext } from "react";
@@ -38,25 +38,34 @@ const testcasesDefaultValue = {
 };
 const TestCase = (props) => {
   const history = useHistory();
+  const {id} = useParams()
   const [authState, authDispatch] = useContext(AuthContext);
   const [update, setUpdate] = useState(false);
   const [testcases, setTestcases] = useState(testcasesDefaultValue);
+  const [checked, setChecked] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
   const [testcase, setTestcase] = useState({
     input: "",
     output: "",
   });
-  const [open, setOpen] = React.useState(false);
-
+  const fetchTestcases = async () => {
+    try{
+      const {data,status} = await helperService.getTestCases({questionId:id},{headers:{Authorization:authState?.user?.token}})
+      if(status === 200){
+        console.log(data)
+        setTestcases(data.testcases)
+      } 
+    }catch(err){
+      console.log(err)
+    }
+  }
+  useEffect(() =>{fetchTestcases()},[])
   const handleClickOpen = () => {
     setOpen(true);
   };
-
-  const [checked, setChecked] = React.useState(false);
-
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
-
   const handleClose = () => {
     setOpen(false);
     if(update) setUpdate(false)
@@ -111,9 +120,7 @@ const TestCase = (props) => {
       setOpen(false);
     }
   };
-  useEffect(() => {
-    console.log(testcases);
-  }, [testcases]);
+
   //edit and delete the testcases
   const updateTestcaseHandler = (testcaseType, testcase) => {
     setOpen(true);
@@ -215,9 +222,7 @@ const TestCase = (props) => {
       console.log(err);
     }
   };
-  useEffect(() => {
-    setTestcases(authState?.challenge?.testcases || testcasesDefaultValue);
-  }, [authState]);
+
   return (
     <div className="container">
       <div className="d-flex flex-column" style={{ marginTop: "40px" }}>

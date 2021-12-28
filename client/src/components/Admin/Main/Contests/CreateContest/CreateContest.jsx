@@ -6,7 +6,6 @@ import "./CreateContest.css";
 import { useHistory, useParams } from "react-router-dom";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 const CreateContest = (props) => {
-  console.log(props);
   const [loader, showLoader, hideLoader] = useLoader();
   const history = useHistory();
   const { id } = useParams();
@@ -56,14 +55,6 @@ const CreateContest = (props) => {
   };
 
   const createContest = async () => {
-    // if(name.length === 0){
-    //   props.snackBar("Contest Name is Empty","error")
-    // }
-
-    //     if(new Date(`${date.start_date}`) >= new Date()){
-    //         console.log("already day Ends");
-    //     }
-
     try {
       showLoader();
       const { status } = await helperService.createContest(
@@ -73,6 +64,7 @@ const CreateContest = (props) => {
           end_date: date.end_date,
           start_time: time.start_time,
           end_time: time.end_time,
+          created_by : authState?.user?._id
         },
         { headers: { Authorization: authState.user.token } }
       );
@@ -102,7 +94,6 @@ const CreateContest = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        console.log(data);
         props.snackBar("Contest updated successfully", "success");
         hideLoader();
       }
@@ -112,14 +103,12 @@ const CreateContest = (props) => {
     }
   };
   useEffect(() => {
-    if (props?.title && !authState?.contest) fetchContest();
+    if (props?.title !== "Create Contest" && !authState?.contest) fetchContest();
     return () => {
       authDispatch({ type: "REMOVE_CONTEST" });
     };
   }, []);
-  useEffect(() => {
-    console.log(date, time);
-  }, [date, time]);
+
   return (
     <div className="container mt-5">
       {loader}
@@ -187,8 +176,8 @@ const CreateContest = (props) => {
           </span>
           <div className="col-md-4">
             <InputReducer
-              placeholder="Ends at"
-              name="Ends at"
+              placeholder="Starts at"
+              name="Starts at"
               type="time"
               value={time.start_time}
               onClickHandler={(e) => setTime({ ...time, start_time: e })}

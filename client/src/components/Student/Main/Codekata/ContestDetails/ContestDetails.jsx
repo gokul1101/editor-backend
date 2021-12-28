@@ -19,8 +19,6 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
   const [open, setOpen] = useState(false);
   const [flag, setFlag] = useState(false);
   const [isTimeUp, setIsTimeUp] = useState(false);
-  const [dialogBoxMessage, setDialogBoxMessage] = useState({})
-
   const handleOpen = () => setOpen(true);
   const backAlert = () => setFlag(true);
   const onBackAlert = () => {

@@ -84,32 +84,37 @@ const getSubmissionsService = async (
 ) => {
   let { user_id, contest_id } = submissionDetails;
   try {
-    const submissions =  {
-    }
+    const submissions = {};
     submissions["leaderBoard"] = await Submission.find({ contest_id })
-                      .sort({ score: "desc" ,created_at:"asc" })
-                      .limit(limit * 1)
-                      .skip((page - 1) * limit);
-      if (page == 1) {
-      submissions["totalCount"] = 0;
-      user_id && contest_id
-        ? await Submission.countDocuments({ user_id, contest_id })
-        : user_id
-        ? await Submission.countDocuments({ user_id })
-        : contest_id
-        ? await Submission.countDocuments({ contest_id })
-        : 0;
+      .sort({ score: "desc", created_at: "asc" })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+    if (page == 1) {
+      submissions["totalCount"] =
+        user_id && contest_id
+          ? await Submission.countDocuments({ user_id, contest_id })
+          : user_id
+          ? await Submission.countDocuments({ user_id })
+          : contest_id
+          ? await Submission.countDocuments({ contest_id })
+          : 0;
     }
     submissions["submissions"] =
       user_id && contest_id
-        ? await Submission.find({ user_id, contest_id })
+        ? await Submission.find({ user_id, contest_id }).populate({
+            path: "user_id",
+            model: "users",
+            select: "name regno",
+          })
         : user_id
         ? await Submission.find({ user_id })
+            .populate({ path: "user_id", model: "users", select: "name regno" })
             .sort({ score: "desc" })
             .limit(limit * 1)
             .skip((page - 1) * limit)
         : contest_id
         ? await Submission.find({ contest_id })
+            .populate({ path: "user_id", model: "users", select: "name regno" })
             .sort({ score: "desc" })
             .limit(limit * 1)
             .skip((page - 1) * limit)
@@ -117,7 +122,7 @@ const getSubmissionsService = async (
     return Promise.resolve({
       status: 200,
       message: `Submissions found!`,
-      submissions
+      submissions,
     });
   } catch (err) {
     console.log(err);
@@ -228,7 +233,7 @@ const challengeSubmissionService = async (
         status: 200,
         isSampleFailed,
         sample: sampleTestCaseOutput,
-        message : "Sample testCases Failed."
+        message: "Sample testCases Failed.",
       });
     const hiddenTestCaseOutput = await Promise.all(
       testcases?.hidden?.map(async (testcase) => {
@@ -252,7 +257,7 @@ const challengeSubmissionService = async (
       status: 200,
       sample: sampleTestCaseOutput,
       hidden: hiddenTestCaseOutput,
-      message : "Compiled Successfully"
+      message: "Compiled Successfully",
     });
   } catch (err) {
     console.log(err);
