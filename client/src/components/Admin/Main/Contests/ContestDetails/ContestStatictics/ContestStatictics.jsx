@@ -9,17 +9,22 @@ import helperService from "../../../../../../services/helperService";
 import { useState } from "react";
 const limit = 10;
 const ContestStatictics = (props) => {
-  const {id} = useParams()
-  const [authState,] = useContext(AuthContext);
+  const { id } = useParams();
+  const [authState] = useContext(AuthContext);
+  const [leaderBoard, setLeaderBoard] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
   const fethContestSubmissions = async () => {
     try {
       const { data, status } = await helperService.getContestSubmissions(
-        {page,limit,contest_id:id},
+        { page, limit, contest_id: id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        setSubmissions(data?.submissions?.submissions || [])
-        if(!total) setTotal(data?.submissions?.totalCount || 0)
+        setSubmissions(data?.submissions?.submissions || []);
+        if (!total) setTotal(data?.submissions?.totalCount || 0);
+        if (data?.leaderBoard) setLeaderBoard(data?.leaderBoard || []);
       }
     } catch (err) {
       console.log(err);
@@ -28,9 +33,6 @@ const ContestStatictics = (props) => {
   useEffect(() => {
     fethContestSubmissions();
   }, []);
-  const [page, setPage] = useState(1);
-  const [total,setTotal] =  useState(0)
-  const [submissions,setSubmissions] = useState([])
   const handlePagination = (e, value) => {
     if (page !== value) {
       setPage(value);
@@ -61,16 +63,13 @@ const ContestStatictics = (props) => {
             );
           })}
           <div>
-          <Pagination
-          count={
-            Math.floor(total / limit) +
-            (total % limit !== 0 ? 1 : 0)
-          }
-          color="primary"
-          variant="text"
-          className="mt-5 d-flex justify-content-center"
-          onChange={(e, value) => handlePagination(e, value)}
-        />
+            <Pagination
+              count={Math.floor(total / limit) + (total % limit !== 0 ? 1 : 0)}
+              color="primary"
+              variant="text"
+              className="mt-5 d-flex justify-content-center"
+              onChange={(e, value) => handlePagination(e, value)}
+            />
           </div>
         </div>
 
@@ -85,45 +84,21 @@ const ContestStatictics = (props) => {
               <span className="top-participants">Top 3 Participants</span>
             </div>
             <div className="d-flex flex-column mt-4">
-              <div className="d-flex mt-2 mb-2">
-                <div className="col-md-2">
-                  <button className="correct">1</button>
+              {leaderBoard.map((submission) => (
+                <div className="d-flex mt-2 mb-2">
+                  <div className="col-md-2">
+                    <button className="correct">1</button>
+                  </div>
+                  <div className="col-md-6 top-scorer">Dhanush Karthick</div>
+                  <div className="col-md-4 d-flex justify-content-between align-items-center">
+                    <img
+                      alt="someImage"
+                      src="https://img.icons8.com/emoji/30/000000/coin-emoji.png"
+                    />
+                    <span className="score-point">1029</span>
+                  </div>
                 </div>
-                <div className="col-md-6 top-scorer">Dhanush Karthick</div>
-                <div className="col-md-4 d-flex justify-content-between align-items-center">
-                  <img
-                    alt="someImage"
-                    src="https://img.icons8.com/emoji/30/000000/coin-emoji.png"
-                  />
-                  <span className="score-point">1029</span>
-                </div>
-              </div>
-              <div className="d-flex mt-2 mb-2">
-                <div className="col-md-2">
-                  <button className="correct">2</button>
-                </div>
-                <div className="col-md-6 top-scorer">Dhanush Karthick</div>
-                <div className="col-md-4 d-flex justify-content-between align-items-center">
-                  <img
-                    alt="someImage"
-                    src="https://img.icons8.com/emoji/30/000000/coin-emoji.png"
-                  />
-                  <span className="score-point">102</span>
-                </div>
-              </div>
-              <div className="d-flex mt-2 mb-2">
-                <div className="col-md-2">
-                  <button className="correct">3</button>
-                </div>
-                <div className="col-md-6 top-scorer">Dhanush Karthick</div>
-                <div className="col-md-4 d-flex justify-content-between align-items-center">
-                  <img
-                    alt="someImage"
-                    src="https://img.icons8.com/emoji/30/000000/coin-emoji.png"
-                  />
-                  <span className="score-point">10</span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
           <div className="top-part mx-2 my-2 p-3">
@@ -131,16 +106,9 @@ const ContestStatictics = (props) => {
               <img src={SubmissionGif} height="98" width="96" />
               <span className="mt-4">
                 Total no. of submissions :{" "}
-                <span className="submission-count">40</span>
+                <h1 className="submission-count d-flex justify-content-center">{total}</h1>
               </span>
-              <span>
-                No. of submissions Left :{" "}
-                <span className="submission-count">20</span>
-              </span>
-              <span>
-                Ena vaikrathunu therla :{" "}
-                <span className="submission-count">10</span>
-              </span>
+              
             </div>
           </div>
         </div>

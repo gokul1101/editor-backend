@@ -19,6 +19,8 @@ const AuthReducer = (state, action) => {
       return { ...state, challenge: action.payload };
     case "REMOVE_CHALLENGE":
       return { ...state, challenge: null };
+    case "ADD_TESTCASE":
+      return {...state,challenge:{...state.challenge,testcases:action.payload}}
     case "REMOVE_CONTEST":
       return { ...state, contest: null };
     case "SET_END_DATE":

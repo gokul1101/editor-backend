@@ -73,7 +73,7 @@ const AddUser = (props) => {
       console.log(err);
     }
     finally{
-      setReqflag(true)
+      // setReqflag(true)
     }
   };
   const createUser = async () => {

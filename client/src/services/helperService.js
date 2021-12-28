@@ -500,6 +500,7 @@ const helperService = {
       if (status === 200) {
         return Promise.resolve({
           data,
+          status
         });
       }
     } catch (err) {

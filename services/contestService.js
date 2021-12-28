@@ -151,15 +151,19 @@ const updateContestService = async ({
     });
   }
 };
-const getAllContestWithFilter = async (page, limit, past) => {
+const getAllContestWithFilter = async (created_by, page, limit, past) => {
   try {
     let ongoingContests = [];
     let upcomingContests = [];
     //**past contests */
     const pastContestsCount = await Contest.find({
       end_date: { $lte: new Date() },
+      created_by,
     }).countDocuments();
-    const pastContests = await Contest.find({ end_date: { $lte: new Date() } })
+    const pastContests = await Contest.find({
+      end_date: { $lte: new Date() },
+      created_by,
+    })
       .sort({ start_date: "desc" })
       .limit(limit * 1)
       .skip((page - 1) * limit);
@@ -168,10 +172,12 @@ const getAllContestWithFilter = async (page, limit, past) => {
       ongoingContests = await Contest.find({
         start_date: { $lte: new Date() },
         end_date: { $gte: new Date() },
+        created_by,
       }).sort();
       //**upcoming contests */
       upcomingContests = await Contest.find({
         start_date: { $gte: new Date() },
+        created_by,
       }).sort({ start_date: "asc" });
     }
     //**promise result */
@@ -185,6 +191,7 @@ const getAllContestWithFilter = async (page, limit, past) => {
       },
     });
   } catch (err) {
+    console.log(err);
     return Promise.reject({
       code: 500,
       message: `Internal Server Error`,
