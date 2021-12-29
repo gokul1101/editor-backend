@@ -19,7 +19,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     border: "1px solid #1E2D64",
@@ -46,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 const limit = 3;
 const ListUser = (props) => {
   const [page, setPage] = useState(1);
-  const [total,setTotal] =  useState(0)
+  const [total, setTotal] = useState(0);
   const handlePagination = (e, value) => {
     if (page !== value) {
       setPage(value);
@@ -68,22 +67,25 @@ const ListUser = (props) => {
   });
   const [updateDetails, setUpdateDetails] = useState({});
   const [open, setOpen] = React.useState(false);
-  
+
   const [authState] = useContext(AuthContext);
   const [users, setUsers] = useState([]);
-  const [regno, setRegno] = useState("");
-  const fetchUsers = async (page=1) => {
+  const [, setRegno] = useState("");
+  const fetchUsers = async (page = 1) => {
     try {
       showLoader();
-      const { status, data } = await helperService.getUsers({page,limit}, {
-        headers: { Authorization: authState.user.token },
-      });
+      const { status, data } = await helperService.getUsers(
+        { page, limit },
+        {
+          headers: { Authorization: authState.user.token },
+        }
+      );
       if (status === 200) {
-        //TODO : 
-        props.snackBar("List of Users","success")
+        //TODO :
+        props.snackBar("List of Users", "success");
         setUsers(data.users);
         setRegno(data.users.reg_no);
-        if(!total) setTotal(data?.modelCount || 0)
+        if (!total) setTotal(data?.modelCount || 0);
         hideLoader();
       }
     } catch (err) {
@@ -113,18 +115,17 @@ const ListUser = (props) => {
           headers: { Authorization: authState.user.token },
         }
       );
-      if (status == 200) {
+      if (status === 200) {
         props.snackBar("Updated Successfully", "success");
         handleClose();
         setUsers(
-          users.map((e) => {
-            if (e.regno === user.regno) return user;
-            return e;
+          users.map((exist_user) => {
+            if (exist_user.regno === user.regno) return user;
+            return exist_user;
           })
         );
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   };
   return (
     <>
@@ -137,7 +138,7 @@ const ListUser = (props) => {
               <h6 className="ml-4 font-weight-bolder mt-3 highlight-text ">
                 Filter By :{" "}
               </h6>
-              <div className="dropdown mx-3">
+              {/* <div className="dropdown mx-3">
                 <button
                   className="drop-button dropdown-toggle"
                   type="button"
@@ -155,7 +156,7 @@ const ListUser = (props) => {
                   <a className="dropdown-item">Desending</a>
                   <a className="dropdown-item">Random</a>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="d-flex">
@@ -211,94 +212,89 @@ const ListUser = (props) => {
                 Phone Number
               </div>
             </div>
-            {users.map((e) => {
-              return (
-                <div className="d-flex" key={e._id}>
-                  <div
-                    className="col-md-1 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.regno}
-                  </div>
-                  <div
-                    className="col-md-3 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.name}
-                  </div>
-                  <div
-                    className="col-md-3 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.email}
-                  </div>
-                  <div
-                    className="col-md-1 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.gender_id}
-                  </div>
-                  <div
-                    className="col-md-1 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.stream_id}
-                  </div>
-                  <div
-                    className="col-md-2 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.batch_id}
-                  </div>
-                  <div
-                    className="col-md-3 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.course_id}
-                  </div>
-                  <div
-                    className="col-md-3 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.college_id}
-                  </div>
-                  <div
-                    className="col-md-2 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.phone_no}
-                  </div>
+            {users?.map((e) => (
+              <div className="d-flex" key={e._id}>
+                <div
+                  className="col-md-1 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.regno}
                 </div>
-              );
-            })}
+                <div
+                  className="col-md-3 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.name}
+                </div>
+                <div
+                  className="col-md-3 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.email}
+                </div>
+                <div
+                  className="col-md-1 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.gender_id}
+                </div>
+                <div
+                  className="col-md-1 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.stream_id}
+                </div>
+                <div
+                  className="col-md-2 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.batch_id}
+                </div>
+                <div
+                  className="col-md-3 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.course_id}
+                </div>
+                <div
+                  className="col-md-3 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.college_id}
+                </div>
+                <div
+                  className="col-md-2 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.phone_no}
+                </div>
+              </div>
+            ))}
           </div>
           <div className="col-md-3 ">
             <div className="d-flex flex-column">
               <div className="col-md-12 list-table-header text-center">
                 EDIT / DELETE
               </div>
-              {users.map((e) => {
-                return (
-                  <>
-                    <div
-                      className="col-md-12 p-0 d-flex p-2 align-items-center justify-content-center"
-                      style={{ marginTop: "6px", height: "50px" }}
+              {users.map((e) =>(
+                  <div
+                    key={e._id}
+                    className="col-md-12 p-0 d-flex p-2 align-items-center justify-content-center"
+                    style={{ marginTop: "6px", height: "50px" }}
+                  >
+                    <button
+                      className="pr-4 pl-4 mr-2 edit-btn "
+                      onClick={() => editUserDetail(e)}
                     >
-                      <button
-                        className="pr-4 pl-4 mr-2 edit-btn "
-                        onClick={() => editUserDetail(e)}
-                      >
-                        <i className="fas fa-pencil-alt"></i>
-                        <span className="ml-2">Edit</span>
-                      </button>
-                      <button className="pr-4 pl-4 delete-btn" disabled>
-                        <i className="fas fa-trash"></i>
-                        <span className="ml-2">Delete</span>
-                      </button>
-                    </div>
-                  </>
-                );
-              })}
+                      <i className="fas fa-pencil-alt"></i>
+                      <span className="ml-2">Edit</span>
+                    </button>
+                    <button className="pr-4 pl-4 delete-btn" disabled>
+                      <i className="fas fa-trash"></i>
+                      <span className="ml-2">Delete</span>
+                    </button>
+                  </div>
+                ))}
             </div>
           </div>
           <div>
@@ -319,11 +315,12 @@ const ListUser = (props) => {
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <InputReducer
-                     className={classes.fieldColor}
+                      className={classes.fieldColor}
                       id="outlined-multiline-static"
                       label="Register Name"
                       variant="outlined"
                       value={user.regno}
+                      disabled={true}
                       // onClickHandler={(value) =>
                       //   setUser({ ...user, regno: value })
                       // }
@@ -331,7 +328,7 @@ const ListUser = (props) => {
                   </div>
                   <div className="col-md-6">
                     <InputReducer
-                     className={classes.fieldColor}
+                      className={classes.fieldColor}
                       id="outlined-multiline-static"
                       label="Name"
                       variant="outlined"
@@ -346,7 +343,7 @@ const ListUser = (props) => {
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <InputReducer
-                     className={classes.fieldColor}
+                      className={classes.fieldColor}
                       id="outlined-multiline-static"
                       label="Email"
                       variant="outlined"
@@ -359,11 +356,10 @@ const ListUser = (props) => {
                   </div>
                   <div className="col-md-6">
                     <SelectReducer
-                     className={classes.fieldColor}
+                      className={classes.fieldColor}
                       label="gender"
                       array={["male", "female"]}
                       name="Gender"
-                    
                       value={user.gender_id}
                       handleSelect={(e) => {
                         setUpdateDetails({
@@ -378,11 +374,10 @@ const ListUser = (props) => {
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <SelectReducer
-                     className={classes.fieldColor}
+                      className={classes.fieldColor}
                       array={["B.E", "B.Tech"]}
                       name="Stream"
                       label="Stream"
-                      
                       defaultValue={user.stream_id}
                       value={user.stream_id}
                       handleSelect={(e) => {
@@ -396,7 +391,7 @@ const ListUser = (props) => {
                   </div>
                   <div className="col-md-6">
                     <SelectReducer
-                     className={classes.fieldColor}
+                      className={classes.fieldColor}
                       array={[
                         "Computer Science & Engineering",
                         "Information Technology",
@@ -405,7 +400,6 @@ const ListUser = (props) => {
                       name="Course Name"
                       label="Course Name"
                       defaultValue={user.course_id}
-                      
                       value={user.course_id}
                       handleSelect={(e) => {
                         setUpdateDetails({
@@ -420,7 +414,7 @@ const ListUser = (props) => {
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <SelectReducer
-                     className={classes.fieldColor}
+                      className={classes.fieldColor}
                       array={[
                         "KSR College of Engineering",
                         "KSR College of Technology",
@@ -428,7 +422,6 @@ const ListUser = (props) => {
                       ]}
                       name="College Name"
                       label="college name"
-                      
                       defaultValue={user.college_id}
                       value={user.college_id}
                       handleSelect={(e) => {
@@ -442,12 +435,11 @@ const ListUser = (props) => {
                   </div>
                   <div className="col-md-6">
                     <InputReducer
-                     className={classes.fieldColor}
+                      className={classes.fieldColor}
                       placeholder="Phone number"
                       label="Phone number"
                       name="Phone number"
                       type="text"
-               
                       value={user.phone_no}
                       onClickHandler={(value) => {
                         setUpdateDetails({ ...updateDetails, phone_no: value });
@@ -459,7 +451,7 @@ const ListUser = (props) => {
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <SelectReducer
-                     className={classes.fieldColor}
+                      className={classes.fieldColor}
                       array={[
                         "2018-2022",
                         "2019-2023",
@@ -496,10 +488,7 @@ const ListUser = (props) => {
           </div>
         </div>
         <Pagination
-          count={
-            Math.floor(total / limit) +
-            (total % limit !== 0 ? 1 : 0)
-          }
+          count={Math.floor(total / limit) + (total % limit !== 0 ? 1 : 0)}
           color="primary"
           variant="text"
           className="mt-5 d-flex justify-content-center"

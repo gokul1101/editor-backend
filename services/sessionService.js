@@ -44,18 +44,18 @@ const getSessionService = async (sessionDetails) => {
     let session = await Session.findOne(sessionDetails);
     if (!session)
       return Promise.reject({
-        code: 404,
+        status: 404,
         message: "Session not found!",
       });
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: "Session found.",
       session,
     });
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: "Error in getting session.",
     });
   }
@@ -65,20 +65,20 @@ const updateSessionService = async (contest_id, user_id, ends_at) => {
     let session = await Session.findOne({contest_id, user_id});
     if (!session)
       return Promise.reject({
-        code: 404,
+        status: 404,
         message: "Session not found!",
       });
     session.ends_at = ends_at;
     await session.save();
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: "Session updated.",
       session,
     });
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: "Error in getting session.",
     });
   }
@@ -97,14 +97,14 @@ const getAllSessionsService = async (session, page, limit) => {
     response.total = sessions.length;
     response.sessions = sessions;
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: `sessions found!`,
       response,
     });
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: "Error in getting all sessions.",
     });
   }

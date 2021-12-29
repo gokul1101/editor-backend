@@ -57,7 +57,7 @@ const Contests = (props) => {
   };
   useEffect(() => {
     fetchContests();
-  }, []);
+  }, [fetchContests]);
   const setContest = (contest) => {
     authDispatch({ type: "SET_CONTEST", payload: { ...contest } });
   };

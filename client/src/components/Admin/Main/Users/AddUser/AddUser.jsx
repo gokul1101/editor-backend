@@ -131,7 +131,7 @@ const AddUser = (props) => {
       );
       if (status === 201) {
         hideLoader();
-        props.snackBar("Successfully user created", "success");
+        props.snackBar(data.message, "success");
       }
     } catch (err) {
       props.snackBar(err.data, "error");

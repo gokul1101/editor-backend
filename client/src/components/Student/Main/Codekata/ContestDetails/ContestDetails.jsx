@@ -12,12 +12,13 @@ import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 import DialogBox from "../../../../Reducer/DialogBox/DialogBox";
 import { parseCode } from "../../../../../services/utils";
 
-const ContestDetails = ({ setSideToggle }) => {
+const ContestDetails = ({ setSideToggle, snackBar }) => {
   const [loader, showLoader, hideLoader] = useLoader();
   const { id } = useParams();
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [flag, setFlag] = useState(false);
+  const [isTimeUp, setIsTimeUp] = useState(false);
   const handleOpen = () => setOpen(true);
   const backAlert = () => setFlag(true);
   const onBackAlert = () => {
@@ -33,6 +34,7 @@ const ContestDetails = ({ setSideToggle }) => {
         localStorage.getItem("challenges") || "[]"
       );
       if (completedChallenges.some(checkQuestion)) {
+        snackBar("Challenge already submitted.", "info");
         return;
       }
     } else {
@@ -40,10 +42,16 @@ const ContestDetails = ({ setSideToggle }) => {
         localStorage.getItem("quizzes") || "[]"
       );
       if (completedQuizzes.some(checkQuestion)) {
+        snackBar("Quiz already submitted.", "info");
         return;
       }
     }
     history.push(`/codekata/${id}/${type}/${_id}`);
+  };
+  const timeoutSubmit = () => {
+    setIsTimeUp(true);
+    history.push(`/codekata/${id}`);
+    sumbitContest()
   };
   const sumbitContest = async (e) => {
     setOpen(false);
@@ -78,16 +86,20 @@ const ContestDetails = ({ setSideToggle }) => {
         { ...payload },
         { headers: { Authorization: authState.user.token } }
       );
-      history.push("/codekata");
+      if (code === 201) {
+        snackBar(message, "success");
+        history.push("/codekata");
+      }
     } catch (err) {
+      console.log(err);
+      snackBar(err.message || "", "success");
     } finally {
       hideLoader();
     }
   };
   useEffect(() => {
     setSideToggle(true);
-  }, [setSideToggle]);
-
+  });
   return (
     <div className="container-fluid dashboard" style={{ overflow: "hidden" }}>
       {loader}
@@ -103,7 +115,11 @@ const ContestDetails = ({ setSideToggle }) => {
           handleOpen={onBackAlert}
         />
         <div className="timer mt-4">
-          <Timer />
+          {isTimeUp ? (
+            <p>Time's up</p>
+          ) : (
+            <Timer timeoutSubmit={timeoutSubmit} />
+          )}
         </div>
         <div className="user-info position-relative">
           <div className="d-flex mx-4 pt-3 user-det justify-content-end">
@@ -124,7 +140,9 @@ const ContestDetails = ({ setSideToggle }) => {
         <div className="mt-3 p-2">
           <h3 className="font-weight-bolder color-highlight">
             <i className="fas fa-star"></i>Max Score :{" "}
-            <span className="max-score p-2">{40}</span>
+            <span className="max-score p-2">
+              {authState?.contest?.contest?.max_score}
+            </span>
           </h3>
         </div>
       </div>

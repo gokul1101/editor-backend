@@ -3,12 +3,12 @@ const Question = require("../models/questions");
 const createMultipleTestCasesService = async ({ question_id, testcase }) => {
   const { sample, hidden } = testcase;
   if (!sample && !hidden)
-    return Promise.reject({ code: 406, message: "Invalid parameters" });
+    return Promise.reject({ status: 406, message: "Invalid parameters" });
   try {
     const question = await Question.findById(question_id);
     if (!question) {
       return Promise.reject({
-        code: 404,
+        status: 404,
         message: `Question not found`,
       });
     } else {
@@ -21,13 +21,13 @@ const createMultipleTestCasesService = async ({ question_id, testcase }) => {
       });
       await new_testcase.save();
       return Promise.resolve({
-        code: 201,
+        status: 201,
         message: "Testcase created successfully",
         testcase_id: new_testcase._id,
       });
     }
   } catch (err) {
-    return Promise.reject({ code: 500, message: "Unable to create testcase" });
+    return Promise.reject({ status: 500, message: "Unable to create testcase" });
   }
 };
 const createTestCaseService = async ({
@@ -61,7 +61,7 @@ const createTestCaseService = async ({
     // console.log(isTestcaseAlreadyExist);
     if (isTestcaseAlreadyExist) {
       return Promise.reject({
-        code: 403,
+        status: 403,
         message: `Testcase given already exist`,
       });
     }
@@ -82,12 +82,12 @@ const createTestCaseService = async ({
       );
     }
     return Promise.resolve({
-      code: 201,
+      status: 201,
       testscases: new_testcases,
       message: `Testcase added successfully`,
     });
   } catch (err) {
-    return Promise.reject({ code: 500, message: "Unable to create testcases" });
+    return Promise.reject({ status: 500, message: "Unable to create testcases" });
   }
 };
 const updateTestCaseService = async ({
@@ -99,7 +99,7 @@ const updateTestCaseService = async ({
   if (!oldTestcase && !sample && !hidden) {
     //Not sure about err code
     return Promise.reject({
-      code: 403,
+      status: 403,
       message: "Invalid parameters",
     });
   }
@@ -108,7 +108,7 @@ const updateTestCaseService = async ({
     const exist_testcases = await Answer.findById(testcase_id);
     if (!exist_testcases) {
       return Promise.reject({
-        code: 404,
+        status: 404,
         message: `Testcase with id ${testcase_id} not found`,
       });
     } else {
@@ -117,7 +117,7 @@ const updateTestCaseService = async ({
       );
       if (isUpdatePresent) {
         return Promise.reject({
-          code: 403,
+          status: 403,
           message: `Given testcase already present`,
         });
       }
@@ -136,18 +136,18 @@ const updateTestCaseService = async ({
       });
       if (!updated_result) {
         return Promise.reject({
-          code: 403,
+          status: 403,
           message: `Error in updating testcase`,
         });
       } else {
         return Promise.resolve({
-          code: 200,
+          status: 200,
           message: `Testcase update successfully`,
         });
       }
     }
   } catch (err) {
-    return Promise.reject({ code: 500, message: "Unable to update testcase" });
+    return Promise.reject({ status: 500, message: "Unable to update testcase" });
   }
 };
 const getTestCasesService = async (question_id, role) => {
@@ -157,7 +157,7 @@ const getTestCasesService = async (question_id, role) => {
       if (role === "student")
         testcases.testcases.hidden = testcases.testcases?.hidden?.length || 0;
       return Promise.resolve({
-        code: 200,
+        status: 200,
         message: `testcases found`,
         testcases: {
           id: testcases._id,
@@ -167,12 +167,12 @@ const getTestCasesService = async (question_id, role) => {
       });
     } else {
       return Promise.resolve({
-        code: 404,
+        status: 404,
         message: "No testcases found",
       });
     }
   } catch (err) {
-    return Promise.reject({ code: 500, message: "Unable to get testcases" });
+    return Promise.reject({ status: 500, message: "Unable to get testcases" });
   }
 };
 const deleteTestCaseService = async ({ type, testcase, testcase_id ,question_id}) => {
@@ -185,7 +185,7 @@ const deleteTestCaseService = async ({ type, testcase, testcase_id ,question_id}
 
      }
     if (!exist_testcases) {
-      return Promise.reject({ code: 404, message: "No testcases found" });
+      return Promise.reject({ status: 404, message: "No testcases found" });
     }
     exist_testcases["testcases"][type] = exist_testcases["testcases"][
       type
@@ -196,7 +196,7 @@ const deleteTestCaseService = async ({ type, testcase, testcase_id ,question_id}
       ) {
         await Answer.findOneAndDelete({question_id});
         return Promise.resolve({
-          code: 202,
+          status: 202,
           message: `Testcase deleted successfully`,
         });
       }
@@ -214,12 +214,12 @@ const deleteTestCaseService = async ({ type, testcase, testcase_id ,question_id}
         });
       }
     return Promise.resolve({
-      code: 202,
+      status: 202,
       message: `Testcase deleted successfully`,
     });
   } catch (err) {
     console.log(err)
-    return Promise.reject({ code: 500, message: "Unable to delete testcase" });
+    return Promise.reject({ status: 500, message: "Unable to delete testcase" });
   }
 };
 module.exports = {

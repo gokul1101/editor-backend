@@ -109,7 +109,7 @@ const CreateChallenge = (props) => {
         }
       );
       if (status === 200) {
-        props.snackBar("Challenge updated Sucessfully","success")
+        props.snackBar(data.message,"success")
         
       }
     } catch (err) {

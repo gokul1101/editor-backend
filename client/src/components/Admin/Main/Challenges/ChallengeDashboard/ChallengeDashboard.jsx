@@ -22,8 +22,8 @@ const ChallengeDashboard = (props) => {
     } catch (err) {
     }
   };
-  useEffect(async () => {
-    if (!authState?.challenge) await fetchChallenge();
+  useEffect( () => {
+    if (!authState?.challenge)  fetchChallenge();
   }, []);
 
   return (

@@ -1,4 +1,5 @@
 .dcard {
+  cursor : pointer;
   perspective: 500px;
 }
 .dcard .card {

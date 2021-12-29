@@ -10,7 +10,7 @@ import { Button, FormControlLabel } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
 import { useState } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import helperService from "../../../../../../services/helperService";
 import { useContext } from "react";
@@ -38,8 +38,8 @@ const testcasesDefaultValue = {
 };
 const TestCase = (props) => {
   const history = useHistory();
-  const {id} = useParams()
-  const [authState, authDispatch] = useContext(AuthContext);
+  const { id } = useParams();
+  const [authState] = useContext(AuthContext);
   const [update, setUpdate] = useState(false);
   const [testcases, setTestcases] = useState(testcasesDefaultValue);
   const [checked, setChecked] = React.useState(false);
@@ -49,15 +49,19 @@ const TestCase = (props) => {
     output: "",
   });
   const fetchTestcases = async () => {
-    try{
-      const {data,status} = await helperService.getTestCases({questionId:id},{headers:{Authorization:authState?.user?.token}})
-      if(status === 200){
-        setTestcases(data.testcases)
-      } 
-    }catch(err){
-    }
-  }
-  useEffect(() =>{fetchTestcases()},[])
+    try {
+      const { data, status } = await helperService.getTestCases(
+        { questionId: id },
+        { headers: { Authorization: authState?.user?.token } }
+      );
+      if (status === 200) {
+        setTestcases(data.testcases);
+      }
+    } catch (err) {}
+  };
+  useEffect(() => {
+    fetchTestcases();
+  }, []);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -66,8 +70,8 @@ const TestCase = (props) => {
   };
   const handleClose = () => {
     setOpen(false);
-    if(update) setUpdate(false)
-    setTestcase({input:"",output:""})
+    if (update) setUpdate(false);
+    setTestcase({ input: "", output: "" });
   };
   const addTestcase = () => {
     // props.snackBar("Sucessfully added","success")
@@ -81,14 +85,14 @@ const TestCase = (props) => {
         sample: { ...testcase, output: testcase.output.replace(/\n+$/, "") },
       };
     }
-    if(DBTestcase?.sample?.input?.length <= 0){
-      props.snackBar("Expected Input is empty","error")
+    if (DBTestcase?.sample?.input?.length <= 0) {
+      props.snackBar("Expected Input is empty", "error");
       return;
-    } 
-    if(DBTestcase?.sample?.output?.length <= 0){
-      props.snackBar("Expected Output is empty","error")
+    }
+    if (DBTestcase?.sample?.output?.length <= 0) {
+      props.snackBar("Expected Output is empty", "error");
       return;
-    } 
+    }
     createTestcase(DBTestcase);
     DBTestcase = {};
   };
@@ -99,7 +103,7 @@ const TestCase = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
-        props.snackBar(data.message,"success")
+        props.snackBar(data.message, "success");
         setTestcases({
           ...testcases,
           id: data.testcase_id,
@@ -112,7 +116,7 @@ const TestCase = (props) => {
         });
       }
     } catch (err) {
-      props.snackBar(err.data.message,"error");
+      props.snackBar(err.data.message, "error");
     } finally {
       setTestcase({ input: "", output: "" });
       setOpen(false);
@@ -130,7 +134,6 @@ const TestCase = (props) => {
   };
   const updateTestcase = async () => {
     try {
-     
       const { data, status } = await helperService.updateTestcase(
         {
           testcase_id: testcases.id || authState?.challenge?.testcases?.id,
@@ -141,7 +144,7 @@ const TestCase = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        props.snackBar(data.message,"success")
+        props.snackBar(data.message, "success");
         if (type === "sample")
           setTestcases({
             ...testcases,
@@ -164,14 +167,14 @@ const TestCase = (props) => {
           });
       }
     } catch (err) {
-      props.snackBar(err.data.message,"error")
+      props.snackBar(err.data.message, "error");
     } finally {
       setOpen(false);
       setUpdate(false);
       setTestcase({
         input: "",
         output: "",
-      })
+      });
     }
   };
 
@@ -205,13 +208,10 @@ const TestCase = (props) => {
               ),
             ],
           });
-        props.snackBar(
-         data.message,
-          "success"
-        );
+        props.snackBar(data.message, "success");
       }
     } catch (err) {
-      props.snackBar(err.data.message,"error")
+      props.snackBar(err.data.message, "error");
     }
   };
 

@@ -11,19 +11,19 @@ const createSubmissionService = async (submissionDetails) => {
     let user = await User.findById(user_id);
     if (!user)
       return Promise.reject({
-        code: 404,
+        status: 404,
         message: `User not found`,
       });
     let contest = await Contest.findById(contest_id);
     if (!contest)
       return Promise.reject({
-        code: 404,
+        status: 404,
         message: `Contest not found`,
       });
     let submission = await Submission.findOne({ user_id, contest_id });
     if (submission)
       return Promise.reject({
-        code: 403,
+        status: 403,
         message: `Contest already submitted.`,
       });
     const reducer = (previousValue, currentValue) =>
@@ -66,13 +66,13 @@ const createSubmissionService = async (submissionDetails) => {
     await newSubmission.save();
     await updateSessionService(contest_id, user_id, new Date());
     return Promise.resolve({
-      code: 201,
+      status: 201,
       message: `Submitted successfully!`,
     });
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `Error in submitting.`,
     });
   }
@@ -84,45 +84,50 @@ const getSubmissionsService = async (
 ) => {
   let { user_id, contest_id } = submissionDetails;
   try {
-    const submissions =  {
-    }
+    const submissions = {};
     submissions["leaderBoard"] = await Submission.find({ contest_id })
-                      .sort({ score: "desc" ,created_at:"asc" })
-                      .limit(limit * 1)
-                      .skip((page - 1) * limit);
-      if (page == 1) {
-      submissions["totalCount"] = 0;
-      user_id && contest_id
-        ? await Submission.countDocuments({ user_id, contest_id })
-        : user_id
-        ? await Submission.countDocuments({ user_id })
-        : contest_id
-        ? await Submission.countDocuments({ contest_id })
-        : 0;
+      .sort({ score: "desc", created_at: "asc" })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+    if (page == 1) {
+      submissions["totalCount"] =
+        user_id && contest_id
+          ? await Submission.countDocuments({ user_id, contest_id })
+          : user_id
+          ? await Submission.countDocuments({ user_id })
+          : contest_id
+          ? await Submission.countDocuments({ contest_id })
+          : 0;
     }
     submissions["submissions"] =
       user_id && contest_id
-        ? await Submission.find({ user_id, contest_id })
+        ? await Submission.find({ user_id, contest_id }).populate({
+            path: "user_id",
+            model: "users",
+            select: "name regno",
+          })
         : user_id
         ? await Submission.find({ user_id })
+            .populate({ path: "user_id", model: "users", select: "name regno" })
             .sort({ score: "desc" })
             .limit(limit * 1)
             .skip((page - 1) * limit)
         : contest_id
         ? await Submission.find({ contest_id })
+            .populate({ path: "user_id", model: "users", select: "name regno" })
             .sort({ score: "desc" })
             .limit(limit * 1)
             .skip((page - 1) * limit)
         : [];
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: `Submissions found!`,
-      submissions
+      submissions,
     });
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `Error in getting submissions.`,
     });
   }
@@ -137,14 +142,14 @@ const getAllSubmissionsService = async (page, limit) => {
     response.total = submissions.length;
     response.submissions = submissions;
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: `Submissions found!`,
       response,
     });
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `Error in getting submissions.`,
     });
   }
@@ -164,7 +169,7 @@ const quizSubmissionService = async (quizAnswers) => {
   );
   answers.forEach((ans) => (ans ? score++ : null));
   return Promise.resolve({
-    code: 200,
+    status: 200,
     score,
   });
 };
@@ -175,7 +180,7 @@ const challengeSubmissionService = async (
   submission = false
 ) => {
   if (submission && !question_id)
-    return Promise.resolve({ code: 200, score: 0 });
+    return Promise.resolve({ status: 200, score: 0 });
   let complilationError = false,
     isSampleFailed = false;
   score = 0;
@@ -209,7 +214,7 @@ const challengeSubmissionService = async (
         console.log(err);
         if (i == 0) {
           return Promise.resolve({
-            code: 200,
+            status: 200,
             errors: true,
             err: err.err,
           });
@@ -225,9 +230,10 @@ const challengeSubmissionService = async (
     }
     if (!submission && (complilationError || isSampleFailed))
       return Promise.resolve({
-        code: 200,
+        status: 200,
         isSampleFailed,
         sample: sampleTestCaseOutput,
+        message: "Sample testCases Failed.",
       });
     const hiddenTestCaseOutput = await Promise.all(
       testcases?.hidden?.map(async (testcase) => {
@@ -239,24 +245,24 @@ const challengeSubmissionService = async (
             return true;
           } else return false;
         } catch (err) {
-          console.log(err);
           return false;
         }
       })
     );
     if (submission) {
       let total_score = Math.round((score / totalTestCases) * max_score);
-      return Promise.resolve({ code: 200, score: total_score });
+      return Promise.resolve({ status: 200, score: total_score });
     }
     return Promise.resolve({
-      code: 200,
+      status: 200,
       sample: sampleTestCaseOutput,
       hidden: hiddenTestCaseOutput,
+      message: "Compiled Successfully",
     });
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: "Error in checking testcases.",
     });
   }
