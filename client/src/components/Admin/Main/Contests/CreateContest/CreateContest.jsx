@@ -24,43 +24,8 @@ const CreateContest = (props) => {
     start_time: authState?.contest?.start_time,
     end_time: authState?.contest?.end_time,
   });
-  //**state declartion end */
-  const fetchContest = async () => {
-    try {
-      showLoader();
-      const { data, status } = await helperService.getContest(
-        { id },
-        { headers: { Authorization: authState.user.token } }
-      );
-      if (status === 200) {
-        console.log(data);
-        setName(data?.contest?.name);
-        setDate({
-          start_date: convertDate(data?.contest?.start_date),
-          end_date: convertDate(data?.contest?.end_date),
-        });
-        setTime({
-          start_time: data?.contest?.start_time,
-          end_time: data?.contest?.end_time,
-        });
-        hideLoader();
-        // authDispatch({})
-      }
-    } catch (err) {
-      console.log(err);
-      hideLoader();
-    }
-  };
 
   const createContest = async () => {
-    // if(name.length === 0){
-    //   props.snackBar("Contest Name is Empty","error")
-    // }
-
-    //     if(new Date(`${date.start_date}`) >= new Date()){
-    //         console.log("already day Ends");
-    //     }
-
     try {
       showLoader();
       const { status } = await helperService.createContest(
@@ -109,14 +74,14 @@ const CreateContest = (props) => {
     }
   };
   useEffect(() => {
-    if (props?.title && !authState?.contest) fetchContest();
-    return () => {
-      authDispatch({ type: "REMOVE_CONTEST" });
-    };
+    // if (props?.title && !authState?.contest) {
+    //   fetchContest();
+    // }
+    // return () => {
+    //   authDispatch({ type: "REMOVE_CONTEST" });
+    // };
   }, []);
-  useEffect(() => {
-    console.log(date, time);
-  }, [date, time]);
+
   return (
     <div className="container mt-5">
       {loader}
@@ -206,9 +171,12 @@ const CreateContest = (props) => {
           </span>
         </div>
       </div>
-
       <CustomButton
         className="btn-hover color-11 mt-4 float-right"
+        disabled={
+          props?.title !== "Create Contest" &&
+          new Date(authState?.contest?.end_date) < new Date()
+        }
         onClickHandler={
           props?.title !== "Create Contest" ? updateContest : createContest
         }

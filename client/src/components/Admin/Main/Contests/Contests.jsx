@@ -5,7 +5,6 @@ import helperService from "../../../../services/helperService";
 import { AuthContext, useLoader } from "../../../../contexts/AuthContext";
 import Pagination from "@material-ui/lab/Pagination";
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
-
 const Contests = (props) => {
   const [loader, showLoader, hideLoader] = useLoader();
   const limit = 3;
@@ -25,7 +24,7 @@ const Contests = (props) => {
   };
   const fetchContests = async (page = 1, past = false) => {
     try {
-      if(!past)showLoader();
+      if (!past) showLoader();
       const { status, data } = await helperService.getAllContests(
         { page, past, limit },
         { headers: { Authorization: authState.user.token } }
@@ -50,7 +49,7 @@ const Contests = (props) => {
               ? [...contests.upcoming, ...upcomingContests]
               : contests.upcoming,
         });
-        if(!past) hideLoader();
+        if (!past) hideLoader();
       }
     } catch (err) {
       console.log(err);
@@ -192,7 +191,12 @@ const Contests = (props) => {
               <div className="d-flex mt-2 mb-2">
                 <i className="fas fa-link contest-link position-relative"></i>
                 <div className="col-md-3 text-center upcoming-task">
-                  <span>{event.name}</span>
+                  <Link
+                    to={`/contests/${event._id}/statistics`}
+                    onClick={() => setContest(event)}
+                  >
+                    <span>{event.name}</span>
+                  </Link>
                 </div>
                 <div className="col-md-3 text-center">{`${new Date(
                   event.start_date

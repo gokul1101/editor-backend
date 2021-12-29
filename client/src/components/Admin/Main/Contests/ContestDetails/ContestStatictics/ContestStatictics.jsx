@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import "./ContestStatictics.css";
 import SubmissionGif from "../../../../../Images/submission.gif";
 import Pagination from "@material-ui/lab/Pagination";
+import { AuthContext } from "../../../../../../contexts/AuthContext";
 const ContestStatictics = (props) => {
+  const [authState,authDispatch] = useContext(AuthContext);
+
   const stats = [
     {
       reg: 1813015,
@@ -65,6 +68,7 @@ const ContestStatictics = (props) => {
       points: 98,
     },
   ];
+
   return (
     <div className="container-fluid w-100 mt-5">
       <div className="d-flex stats-main">

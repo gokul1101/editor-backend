@@ -19,7 +19,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const ContestQuizzes = (props) => {
   console.log(props);
   const { id } = useParams();
-  const [authState] = useContext(AuthContext);
+  const [authState,authDispatch] = useContext(AuthContext);
   const [quizName, setQuizName] = useState("");
   const [open, setOpen] = React.useState(false);
   const [quizzArr, setQuizzArr] = useState([]);
@@ -27,7 +27,7 @@ const ContestQuizzes = (props) => {
     try {
       const {
         status,
-        data: { quiz,message },
+        data: { quiz, message },
       } = await helperService.createQuizz(
         { name: quizName, contest_id: id },
         { headers: { Authorization: authState.user.token } }
@@ -35,34 +35,35 @@ const ContestQuizzes = (props) => {
       if (status === 201) {
         // TODO:
         console.log(quiz);
-        props.snackBar(message,"success")
+        props.snackBar(message, "success");
         // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
         setQuizzArr((existing) => [...existing, quiz]);
-        
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
       props.snackBar(err?.data, "error");
-    }finally{
-      setQuizName("")
+    } finally {
+      setQuizName("");
       setOpen(false);
     }
   };
   const fetchQuizzes = async () => {
     try {
-      const { status,data : { message , quizzes}} = await helperService.getQuizzes(
+      const {
+        status,
+        data: { message, quizzes },
+      } = await helperService.getQuizzes(
         { id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-     
-        props.snackBar(message ,"success")
+        props.snackBar(message, "success");
         setQuizzArr(quizzes);
         setOpen(false);
       }
     } catch (err) {
-      props.snackBar(err,"error")
-      console.log(err); 
+      props.snackBar(err, "error");
+      console.log(err);
     }
   };
   const handleClickOpen = () => {

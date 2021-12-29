@@ -16,6 +16,7 @@ import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboa
 import Report from "./Report/Report";
 import ErrorLogs from "./ErrorLogs/ErrorLogs";
 import CreateChallenge from "./Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
+import ContestStatictics from "./Contests/ContestDetails/ContestStatictics/ContestStatictics";
 const Main = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle] = useState(false);
@@ -160,14 +161,14 @@ const Main = (props) => {
                 <Quizzes snackBar={props.snackBar} />
               </Route>
             </Route>
-              <Route path="/challenges">
-                <Route path="/challenges/:id">
-                  <ChallengeDashboard snackBar={props.snackBar} />
-                </Route>
-                <Route path="/challenges/:id/challenge/create">
-                  <CreateChallenge snackBar={props.snackBar} />
-                </Route>
+            <Route path="/challenges">
+              <Route path="/challenges/:id">
+                <ChallengeDashboard snackBar={props.snackBar} />
               </Route>
+              <Route path="/challenges/:id/challenge/create">
+                <CreateChallenge snackBar={props.snackBar} />
+              </Route>
+            </Route>
             <Route path="/report" exact>
               <Report snackBar={props.snackBar} />
             </Route>
