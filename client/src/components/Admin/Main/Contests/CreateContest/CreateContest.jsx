@@ -33,7 +33,6 @@ const CreateContest = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        console.log(data);
         setName(data?.contest?.name);
         setDate({
           start_date: convertDate(data?.contest?.start_date),
@@ -49,7 +48,6 @@ const CreateContest = (props) => {
         // authDispatch({})
       }
     } catch (err) {
-      console.log(err);
       hideLoader();
     }
   };
@@ -74,7 +72,6 @@ const CreateContest = (props) => {
         history.push(`/contests`);
       }
     } catch (error) {
-      console.log(error);
       hideLoader();
       // props.snackBar(error.error,"error")
     }
@@ -98,7 +95,6 @@ const CreateContest = (props) => {
         hideLoader();
       }
     } catch (error) {
-      console.log(error);
       hideLoader();
     }
   };
@@ -146,7 +142,6 @@ const CreateContest = (props) => {
             Date <span className="contest-star">*</span>
           </span>
           <div className="col-md-4">
-            {console.log("At line 79", date)}
             <InputReducer
               placeholder="Starts at"
               name="Starts at"

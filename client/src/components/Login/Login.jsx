@@ -33,7 +33,6 @@ const Login = (props) => {
         return;
       }
     } else if (change) {
-      console.log(register);
       if (!/^\w{6}/.test(register)) {
         props.snackBar(
           "Register number should contain only 6 characters.",
@@ -69,7 +68,6 @@ const Login = (props) => {
     }
   };
   React.useEffect(() => {
-    console.log(change);
   }, [change]);
   const handleKeypress = (e) => {
     if (e.keyCode === 13) {

@@ -41,11 +41,9 @@ const AddQuiz = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        console.log(mcqs);
         setQuestions(mcqs);
       }
     } catch (err) {
-      console.log(err);
     }
   };
   const createQuestion = async () => {
@@ -86,7 +84,6 @@ const AddQuiz = (props) => {
         setQuestions([...questions, mcq]);
       }
     } catch (err) {
-      console.log(err);
       props.snackBar(err.data, "error");
     }
   };
@@ -103,7 +100,6 @@ const AddQuiz = (props) => {
         );
       }
     } catch (err) {
-      console.log(err);
       props.snackBar(err.data, "error");
     }
   };
@@ -115,12 +111,7 @@ const AddQuiz = (props) => {
       );
       if (status === 200) {
         props.snackBar("Question updated successfully", "info");
-        console.log(
-          questions.map((ques) => {
-            if (ques.question_id === question.question_id) return question;
-            return ques;
-          })
-        );
+       
         setQuestions(
           questions.map((ques) => {
             if (ques.question_id === question.question_id) return question;
@@ -129,7 +120,6 @@ const AddQuiz = (props) => {
         );
       }
     } catch (err) {
-      console.log(err);
       props.snackBar(err.data, "error");
     } finally {
       setUpdateFlag(false);

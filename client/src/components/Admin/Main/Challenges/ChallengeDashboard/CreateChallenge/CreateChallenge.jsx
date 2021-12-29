@@ -60,12 +60,10 @@ const CreateChallenge = (props) => {
         history.push(`/contests/${id}/challenges`);
       }
     } catch (err) {
-      console.log(err)
       props.snackBar(err?.data?.message, "error");
     }
   };
   const updateChallenge = async () => {
-    console.log(challenge);
     if (challenge.name.length <=0) {
       props.snackBar("Challenge Name is Empty", "error")
       return
@@ -111,7 +109,6 @@ const CreateChallenge = (props) => {
         }
       );
       if (status === 200) {
-        console.log(data);
         props.snackBar("Challenge updated Sucessfully","success")
         
       }
@@ -120,7 +117,6 @@ const CreateChallenge = (props) => {
     }
   };
   useEffect(() => {
-    console.log(authState)
     setChallenge({
       name: authState?.challenge?.name ?? "",
       type_id: "problem",
@@ -281,7 +277,6 @@ const CreateChallenge = (props) => {
             Difficulty <span className="contest-star">*</span>
           </span>
           <div className="col-md-8">
-            {console.log(difficultyId)}
             <SelectReducer
               value={difficultyId}
               defaultValue={difficultyId}

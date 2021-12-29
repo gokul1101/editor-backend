@@ -24,7 +24,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err, err.response);
       let { status, data } = err.response;
       return Promise.reject({
         status,
@@ -54,7 +53,6 @@ const helperService = {
     }
   },
   createBulkUsers: async ({ file }, headers) => {
-    console.log(headers);
     try {
       const { data, status } = await axios({
         url: `${baseURL}/api/v1/users/createAll`,
@@ -82,7 +80,6 @@ const helperService = {
   },
   //** USERS */
   createUser: async (payload, config) => {
-    console.log(payload, config);
     try {
       const { data, status } = await axios.post(
         `${baseURL}/api/v1/user/create`,
@@ -155,7 +152,6 @@ const helperService = {
         data,
       });
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -213,7 +209,6 @@ const helperService = {
         data,
       });
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -233,7 +228,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -255,7 +249,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -275,7 +268,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -295,7 +287,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -316,7 +307,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -338,7 +328,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -358,7 +347,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -379,7 +367,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -441,7 +428,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -462,7 +448,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -484,7 +469,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -504,7 +488,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -525,7 +508,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -533,7 +515,6 @@ const helperService = {
     }
   },
   deleteTestcase: async (payload, config) => {
-    console.log(payload);
     try {
       const { data, status } = await axios.post(
         `${baseURL}/api/v1/testcase/delete`,
@@ -547,7 +528,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -571,7 +551,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,
@@ -617,7 +596,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       return Promise.reject({
         status: err.response.status,
         data: err.response.data,

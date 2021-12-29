@@ -21,7 +21,6 @@ const Main = (props) => {
   const [sideToggle] = useState(false);
   useEffect(() => {
     props.fetchUser();
-    console.log(props.snackBar);
   }, []);
   return (
     <div className="container-fluid p-0">

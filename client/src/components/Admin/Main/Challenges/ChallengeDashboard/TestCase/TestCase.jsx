@@ -52,11 +52,9 @@ const TestCase = (props) => {
     try{
       const {data,status} = await helperService.getTestCases({questionId:id},{headers:{Authorization:authState?.user?.token}})
       if(status === 200){
-        console.log(data)
         setTestcases(data.testcases)
       } 
     }catch(err){
-      console.log(err)
     }
   }
   useEffect(() =>{fetchTestcases()},[])
@@ -132,11 +130,7 @@ const TestCase = (props) => {
   };
   const updateTestcase = async () => {
     try {
-      console.log(
-        "at line 116",
-        authState?.challenge?.testcases?.id,
-        testcases
-      );
+     
       const { data, status } = await helperService.updateTestcase(
         {
           testcase_id: testcases.id || authState?.challenge?.testcases?.id,
@@ -171,7 +165,6 @@ const TestCase = (props) => {
       }
     } catch (err) {
       props.snackBar(err.data.message,"error")
-      console.log(err);
     } finally {
       setOpen(false);
       setUpdate(false);
@@ -219,7 +212,6 @@ const TestCase = (props) => {
       }
     } catch (err) {
       props.snackBar(err.data.message,"error")
-      console.log(err);
     }
   };
 

@@ -78,7 +78,6 @@ const ListUser = (props) => {
       const { status, data } = await helperService.getUsers({page,limit}, {
         headers: { Authorization: authState.user.token },
       });
-      console.log(data);
       if (status === 200) {
         //TODO : 
         props.snackBar("List of Users","success")
@@ -88,17 +87,14 @@ const ListUser = (props) => {
         hideLoader();
       }
     } catch (err) {
-      console.log(err);
       hideLoader();
     }
   };
   useEffect(() => {
-    console.log(user);
     fetchUsers();
   }, []);
 
   const editUserDetail = (data) => {
-    console.log("at line", data);
     setUser(data);
     setOpen(true);
   };
@@ -107,7 +103,6 @@ const ListUser = (props) => {
   };
 
   const updateUser = async () => {
-    console.log(updateDetails);
     try {
       const { status, data } = await helperService.updateUser(
         {
@@ -121,7 +116,6 @@ const ListUser = (props) => {
       if (status == 200) {
         props.snackBar("Updated Successfully", "success");
         handleClose();
-        console.log(users, user);
         setUsers(
           users.map((e) => {
             if (e.regno === user.regno) return user;
@@ -130,7 +124,6 @@ const ListUser = (props) => {
         );
       }
     } catch (err) {
-      console.log(err);
     }
   };
   return (

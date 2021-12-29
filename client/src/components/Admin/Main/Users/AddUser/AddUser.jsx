@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddUser = (props) => {
-  console.log(props);
   const [ loader,showLoader, hideLoader] = useLoader();
   const[reqflag,setReqflag] = useState(false)
   const [logs,setLogs] = useState({})
@@ -70,7 +69,6 @@ const AddUser = (props) => {
         setLogs(data.errorLogs)
       }
     } catch (err) {
-      console.log(err);
     }
     finally{
       // setReqflag(true)
@@ -105,7 +103,6 @@ const AddUser = (props) => {
       return;
     }
     if (user.phone_no.length !== 10) {
-      console.log(user.phone_no.length);
       props.snackBar("Phone Number is Incorrect", "error");
       return;
     }
@@ -119,7 +116,6 @@ const AddUser = (props) => {
     }
     
     try {
-      console.log(user)
       showLoader();
       
       const { status, data } = await helperService.createUser(
@@ -134,7 +130,6 @@ const AddUser = (props) => {
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 201) {
-        console.log(data, status);
         hideLoader();
         props.snackBar("Successfully user created", "success");
       }

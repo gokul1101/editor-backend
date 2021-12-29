@@ -77,7 +77,6 @@ const Programs = (props) => {
         { id: challenge?._id, code: parsedCode, lang: language },
         { headers: { Authorization: authState?.user?.token } }
       );
-      console.log(data);
       if (status === 200) {
         if (data?.errors) setIsError(true);
         else setIsError(false);
@@ -87,7 +86,6 @@ const Programs = (props) => {
         setOutput({ sample: data?.sample || [], hidden: data?.hidden || [] });
       }
     } catch (err) {
-      console.log(err);
     } finally {
       setIsLoading(false);
     }

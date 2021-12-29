@@ -25,7 +25,7 @@ const Contests = (props) => {
   };
   const fetchContests = async (page = 1, past = false) => {
     try {
-      if(!past)showLoader();
+      if (!past) showLoader();
       const { status, data } = await helperService.getAllContests(
         { page, past, limit },
         { headers: { Authorization: authState.user.token } }
@@ -37,7 +37,6 @@ const Contests = (props) => {
           upcomingContests,
           pastContestsCount,
         } = data.message;
-        // console.log(data);
         setContests({
           pastContestsCount,
           past: pastContests,
@@ -50,10 +49,9 @@ const Contests = (props) => {
               ? [...contests.upcoming, ...upcomingContests]
               : contests.upcoming,
         });
-        if(!past) hideLoader();
+        if (!past) hideLoader();
       }
     } catch (err) {
-      console.log(err);
       hideLoader();
     }
   };
@@ -140,7 +138,6 @@ const Contests = (props) => {
         </div>
         <div className="d-flex flex-column">
           {contests?.upcoming?.map((event) => {
-            console.log(event);
             return (
               <div className="d-flex mt-2 mb-2">
                 <i className="fas fa-link contest-link position-relative"></i>

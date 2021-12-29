@@ -12,7 +12,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 const DropFileInput = (props) => {
   useEffect(() => {
-    console.log(props);
   }, []);
  // const theme = useTheme();
   //const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -35,7 +34,6 @@ const DropFileInput = (props) => {
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
       // const updatedList = [newFile];
-      console.log([newFile]);
       setFileList([newFile]);
     } else {
       props.snackBar("Please select a valid  excel file", "error");
@@ -43,7 +41,6 @@ const DropFileInput = (props) => {
   };
 
   const bulkUser = () => {
-    console.log(fileList);
     props.onFileChange(fileList);
     setUpload(true);
   };
@@ -73,7 +70,6 @@ const DropFileInput = (props) => {
   },[props.reqflag])
   useEffect(() => {
     setLogs(props?.logs)
-    console.log(props)
   })
   return (
     <>
@@ -133,7 +129,6 @@ const DropFileInput = (props) => {
             </CustomButton>
           </div>
           <div className="d-flex align-items-end justify-content-end mt-3 p-2">
-            {console.log('at line 142',props?.logs?.totalLogs)}
             {props?.logs?.totalLogs >= 0 && (
               <div className="log-file">
                 <span

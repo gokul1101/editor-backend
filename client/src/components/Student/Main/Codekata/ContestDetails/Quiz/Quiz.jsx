@@ -56,7 +56,6 @@ const Quiz = ({ setSideToggle }) => {
       );
       if (status === 200) return mcqs;
     } catch (err) {
-      console.log(err);
     }
   };
   let answers = parseQuiz();

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Male from "../../../../Images/man.png";
 import { useParams, useHistory } from "react-router-dom";
 import "./ContestDetails.css";
@@ -25,7 +25,6 @@ const ContestDetails = ({ setSideToggle }) => {
   };
   const handleClose = () => setOpen(false);
   const backClose = () => setFlag(false);
-  const ref = useRef();
   const [authState] = useContext(AuthContext);
   const routeQuestion = (_id, name, type) => {
     const checkQuestion = (question) => question === name;
@@ -57,60 +56,40 @@ const ContestDetails = ({ setSideToggle }) => {
     let contestChallenges = authState?.contest?.challenges || [];
     payload.quizzes = contestQuizzes.map((quiz) => {
       let localQuizzes = JSON.parse(localStorage.getItem("quizzes") || "[]");
-      if(!localQuizzes.find(localQuiz => localQuiz === quiz.name)) return [];
+      if (!localQuizzes.find((localQuiz) => localQuiz === quiz.name)) return [];
       return JSON.parse(localStorage.getItem(quiz?.name) || "[]");
     });
     payload.challenges = contestChallenges.map((challenge) => {
-      let localChallenges = JSON.parse(localStorage.getItem("challenges") || "[]");
-      if(!localChallenges.find(localChallenge => localChallenge === challenge.name)) return [];
+      let localChallenges = JSON.parse(
+        localStorage.getItem("challenges") || "[]"
+      );
+      if (
+        !localChallenges.find(
+          (localChallenge) => localChallenge === challenge.name
+        )
+      )
+        return [];
       let localCode = JSON.parse(localStorage.getItem(challenge?.name) || "{}");
-      console.log(localCode);
       localCode.code = parseCode(localCode.code);
       return localCode;
     });
     try {
-      const {code, message} = await helperService.createSubmission(
+      const { code, message } = await helperService.createSubmission(
         { ...payload },
         { headers: { Authorization: authState.user.token } }
       );
-      if(code === 201)
-      console.log(message);
       history.push("/codekata");
     } catch (err) {
-      console.log(err);
     } finally {
       hideLoader();
     }
   };
   useEffect(() => {
     setSideToggle(true);
-    // console.log(ref.current);
-    // if (ref.current.focus) {
-    //   ref.current.dispatchEvent(
-    //     new KeyboardEvent("keypress", {
-    //       key: "F11",
-    //     })
-    //   );
-    // }
-    // console.log(full);
-
-    // return () => {};
-    // window.addEventListener("onload", () => {});
   }, [setSideToggle]);
 
-  const handleUserKeyPress = (event) => {
-    const { key, keyCode } = event;
-    console.log(key);
-    if (keyCode === 122) {
-      console.log("triggered");
-    }
-  };
   return (
-    <div
-      className="container-fluid dashboard"
-      ref={ref}
-      style={{ overflow: "hidden" }}
-    >
+    <div className="container-fluid dashboard" style={{ overflow: "hidden" }}>
       {loader}
       <div className="d-flex">
         <div className="back-btn mr-auto mt-3 ml-4" onClick={backAlert}>

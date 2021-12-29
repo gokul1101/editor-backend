@@ -17,7 +17,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const ContestQuizzes = (props) => {
-  console.log(props);
   const { id } = useParams();
   const [authState] = useContext(AuthContext);
   const [quizName, setQuizName] = useState("");
@@ -39,14 +38,12 @@ const ContestQuizzes = (props) => {
       );
       if (status === 201) {
         // TODO:
-        console.log(quiz);
         props.snackBar(message,"success")
         // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
         setQuizzArr((existing) => [...existing, quiz]);
         
       }
     } catch (err) {
-      console.log(err)
       props.snackBar(err?.data, "error");
     }finally{
       setQuizName("")
@@ -67,7 +64,6 @@ const ContestQuizzes = (props) => {
       }
     } catch (err) {
       props.snackBar(err,"error")
-      console.log(err); 
     }
   };
   const handleClickOpen = () => {

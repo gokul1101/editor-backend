@@ -20,11 +20,9 @@ const ChallengeDashboard = (props) => {
         authDispatch({ type: "SET_CHALLENGE", payload: { ...question } });
       }
     } catch (err) {
-      console.log(err);
     }
   };
   useEffect(async () => {
-    console.log("inside dashboard");
     if (!authState?.challenge) await fetchChallenge();
   }, []);
 

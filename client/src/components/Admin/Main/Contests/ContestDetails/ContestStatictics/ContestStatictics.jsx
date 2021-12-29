@@ -27,7 +27,6 @@ const ContestStatictics = (props) => {
         if (data?.leaderBoard) setLeaderBoard(data?.leaderBoard || []);
       }
     } catch (err) {
-      console.log(err);
     }
   };
   useEffect(() => {
