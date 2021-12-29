@@ -6,7 +6,8 @@ import CustomButton from "../Reducer/CustomButton/CustomButton";
 import { AuthContext } from "../../contexts/AuthContext";
 import helperService from "../../services/helperService";
 import { useHistory } from "react-router";
-
+  // import Visibility from '@mui/icons-material/Visibility';
+  // import VisibilityOff from '@mui/icons-material/VisibilityOff';
 const Login = (props) => {
   const history = useHistory();
   //** Context Consumer */
@@ -98,8 +99,8 @@ const Login = (props) => {
                 <input
                   type="password"
                   placeholder="Password"
-                  // onKeyPress={handleKeypress}
-                  onChange={(e) => setPassword(e.target.value)}
+                  // {...password ? <VisibilityOff /> : <Visibility />}
+                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <CustomButton

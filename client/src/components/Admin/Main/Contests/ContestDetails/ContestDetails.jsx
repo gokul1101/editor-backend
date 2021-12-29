@@ -10,6 +10,7 @@ import CreateChallenge from "../../Challenges/ChallengeDashboard/CreateChallenge
 import { useContext, useEffect } from "react";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import helperService from "../../../../../services/helperService";
+import PageNotFound from "../../../../Reducer/PageNotFound/404";
 const convertDate = (date) => {
   if (date) return date.split("T")[0];
   return "";
@@ -124,16 +125,22 @@ const ContestDetails = (props) => {
               <Route path={`/contests/:id/statistics`} exact>
                 <ContestStatictics snackBar={props.snackBar} />
               </Route>
+              <Route path="*">
+                <PageNotFound />
+              </Route>
             </>
           ) : null}
           <Route path={`/contests/:id/statistics`} exact>
             <ContestStatictics snackBar={props.snackBar} />
           </Route>
 
-          <Route
+          {/* <Route
             path={`/contests/:id`}
-            render={() => <Redirect to={`/contests/${id}/statistics`} />}
-          />
+            render={() => <Redirect to={`/contests/${id}/edit`} />}
+          /> */}
+          <Route path="*">
+            <PageNotFound />
+          </Route>
         </Switch>
       </div>
     </>

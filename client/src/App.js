@@ -14,6 +14,7 @@ import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { AuthContext } from "./contexts/AuthContext";
 import helperService from "./services/helperService";
+import PageNotFound from "./components/Reducer/PageNotFound/404";
 // import Loader from "./components/Reducer/Loader/Loader";
 
 const Alert = (props) => {
@@ -117,6 +118,9 @@ const App = () => {
             ) : (
               <Redirect exact to="/login" />
             )}
+          </Route>
+          <Route path="*">
+            <PageNotFound />
           </Route>
         </Switch>
       </div>

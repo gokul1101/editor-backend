@@ -116,10 +116,11 @@ const CreateChallenge = (props) => {
         
       }
     } catch (err) {
-      props.snackBar(err.response.message, "error");
+      props.snackBar(err.data, "error");
     }
   };
   useEffect(() => {
+    console.log(authState)
     setChallenge({
       name: authState?.challenge?.name ?? "",
       type_id: "problem",
@@ -133,9 +134,9 @@ const CreateChallenge = (props) => {
       max_score: authState?.challenge?.max_score,
     });
     setDifficultyId(authState?.challenge?.difficulty_id?.level);
-    return () => {
-      if (authState?.challenge) setChallenge({});
-    };
+    // return () => {
+    //   if (authState?.challenge) setChallenge({});
+    // };
   }, [authState]);
   return (
     <div className="container" style={{ height: "100vh", overflowY: "scroll" }}>

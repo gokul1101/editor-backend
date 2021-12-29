@@ -24,6 +24,11 @@ const ContestQuizzes = (props) => {
   const [open, setOpen] = React.useState(false);
   const [quizzArr, setQuizzArr] = useState([]);
   const createQuizz = async () => {
+    if(quizName?.length <= 0){
+      props.snackBar("Field is Empty","error")
+      return;
+    }
+
     try {
       const {
         status,

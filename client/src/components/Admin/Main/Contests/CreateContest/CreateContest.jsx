@@ -35,6 +35,7 @@ const CreateContest = (props) => {
           end_date: date.end_date,
           start_time: time.start_time,
           end_time: time.end_time,
+          created_by : authState?.user?._id
         },
         { headers: { Authorization: authState.user.token } }
       );
@@ -64,7 +65,6 @@ const CreateContest = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        console.log(data);
         props.snackBar("Contest updated successfully", "success");
         hideLoader();
       }

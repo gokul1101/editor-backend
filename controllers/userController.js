@@ -16,6 +16,7 @@ let {
   mapStreamId,
   UUID,
 } = require("../utils/helper");
+const Role = require("../models/roles");
 //? To register the User
 const createUser = async (req, res) => {
   let userDetails = req.body;
@@ -320,13 +321,15 @@ const createBulkUsers = async (req, res) => {
 };
 const getAllUsers = async (req, res) => {
   try {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit = 10, role = "student" } = req.query;
     let response = {};
+    const role_id = (await Role.findOne({ name: role }))._id;
     if (page == 1) {
-      const count = await User.countDocuments();
+      const count = await User.countDocuments({ role_id });
       response.modelCount = count;
     }
-    const users = await User.find({ deleted_at: null })
+    const users = await User.find({ role_id, deleted_at: null })
+      .sort({ regno: "asc" })
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .populate([

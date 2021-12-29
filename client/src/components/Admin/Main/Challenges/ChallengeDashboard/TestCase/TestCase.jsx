@@ -10,7 +10,7 @@ import { Button, FormControlLabel } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import helperService from "../../../../../../services/helperService";
 import { useContext } from "react";
@@ -38,27 +38,38 @@ const testcasesDefaultValue = {
 };
 const TestCase = (props) => {
   const history = useHistory();
+  const {id} = useParams()
   const [authState, authDispatch] = useContext(AuthContext);
   const [update, setUpdate] = useState(false);
   const [testcases, setTestcases] = useState(testcasesDefaultValue);
+  const [checked, setChecked] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
   const [testcase, setTestcase] = useState({
     input: "",
     output: "",
   });
-  const [open, setOpen] = React.useState(false);
-
+  const fetchTestcases = async () => {
+    try{
+      const {data,status} = await helperService.getTestCases({questionId:id},{headers:{Authorization:authState?.user?.token}})
+      if(status === 200){
+        console.log(data)
+        setTestcases(data.testcases)
+      } 
+    }catch(err){
+      console.log(err)
+    }
+  }
+  useEffect(() =>{fetchTestcases()},[])
   const handleClickOpen = () => {
     setOpen(true);
   };
-
-  const [checked, setChecked] = React.useState(false);
-
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
-
   const handleClose = () => {
     setOpen(false);
+    if(update) setUpdate(false)
+    setTestcase({input:"",output:""})
   };
   const addTestcase = () => {
     // props.snackBar("Sucessfully added","success")
@@ -72,6 +83,14 @@ const TestCase = (props) => {
         sample: { ...testcase, output: testcase.output.replace(/\n+$/, "") },
       };
     }
+    if(DBTestcase?.sample?.input?.length <= 0){
+      props.snackBar("Expected Input is empty","error")
+      return;
+    } 
+    if(DBTestcase?.sample?.output?.length <= 0){
+      props.snackBar("Expected Output is empty","error")
+      return;
+    } 
     createTestcase(DBTestcase);
     DBTestcase = {};
   };
@@ -82,7 +101,7 @@ const TestCase = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
-        console.log(testcases);
+        props.snackBar(data.message,"success")
         setTestcases({
           ...testcases,
           id: data.testcase_id,
@@ -95,15 +114,13 @@ const TestCase = (props) => {
         });
       }
     } catch (err) {
-      console.log(err);
+      props.snackBar(err.data.message,"error");
     } finally {
       setTestcase({ input: "", output: "" });
       setOpen(false);
     }
   };
-  useEffect(() => {
-    console.log(testcases);
-  }, [testcases]);
+
   //edit and delete the testcases
   const updateTestcaseHandler = (testcaseType, testcase) => {
     setOpen(true);
@@ -130,6 +147,7 @@ const TestCase = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
+        props.snackBar(data.message,"success")
         if (type === "sample")
           setTestcases({
             ...testcases,
@@ -152,10 +170,15 @@ const TestCase = (props) => {
           });
       }
     } catch (err) {
+      props.snackBar(err.data.message,"error")
       console.log(err);
     } finally {
       setOpen(false);
       setUpdate(false);
+      setTestcase({
+        input: "",
+        output: "",
+      })
     }
   };
 
@@ -190,17 +213,16 @@ const TestCase = (props) => {
             ],
           });
         props.snackBar(
-          "Selected Hidden Test case is deleted successfully",
+         data.message,
           "success"
         );
       }
     } catch (err) {
+      props.snackBar(err.data.message,"error")
       console.log(err);
     }
   };
-  useEffect(() => {
-    setTestcases(authState?.challenge?.testcases || testcasesDefaultValue);
-  }, [authState]);
+
   return (
     <div className="container">
       <div className="d-flex flex-column" style={{ marginTop: "40px" }}>

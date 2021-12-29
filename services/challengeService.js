@@ -103,10 +103,14 @@ const updateChallenge = async (question) => {
       if (question.difficulty_id)
         question.difficulty_id = await mapDifficultyId(question.difficulty_id);
       if (question.type_id) delete question["type_id"];
+
+
       if (max_score)
         await updateContestService({
           max_score: max_score - exist_question.max_score,
         });
+
+
       await Question.findByIdAndUpdate(id, {
         ...question,
         update_at: new Date(),

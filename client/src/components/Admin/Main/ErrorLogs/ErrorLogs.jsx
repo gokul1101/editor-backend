@@ -1,13 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
 import helperService from "../../../../services/helperService";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import { useParams } from "react-router-dom";
 import ErrorLogDialogBox from "../../../Reducer/ErrorLogDialogBox/ErrorLogDialogBox";
 
-const ErrorLogs = () => {
+const ErrorLogs = (props) => {
   const { id } = useParams();
   const [authState] = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
@@ -31,9 +28,11 @@ const ErrorLogs = () => {
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 200) {
+        props.snackBar(data.message,"success")
         setErrorLogs(data.errorLogs);
       }
     } catch (err) {
+      props.snackBar(err.data,"error")
       console.log(err, "at error logs");
     }
   };

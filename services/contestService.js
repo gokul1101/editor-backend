@@ -93,7 +93,7 @@ const updateContestService = async ({
   end_date,
   start_time,
   end_time,
-  max_score
+  max_score,
 }) => {
   try {
     let contest = await Contest.findById(id);
@@ -102,19 +102,22 @@ const updateContestService = async ({
         status: 404,
         message: "Contest not found",
       });
-    if(max_score) {
-      contest.max_score += max_score
+    if (max_score) {
+      contest.max_score += max_score;
     }
     if (name) {
       let contestNameExists = await Contest.findOne({ name });
-      if (contestNameExists)
+      if (
+        contestNameExists &&
+        JSON.stringify(contest._id) !== JSON.stringify(contestNameExists._id)
+      )
         return Promise.reject({
           status: 403,
           message: `Contest name ${name} already taken`,
         });
       contest.name = name;
     }
-    if(start_time || start_date || end_date || end_time) {
+    if (start_time || start_date || end_date || end_time) {
       if (start_time) contest.start_time = start_time;
       if (!start_date) {
         let date = contest.start_date;
@@ -123,7 +126,7 @@ const updateContestService = async ({
         }-${date.getDate()}-${date.getFullYear()}`;
       }
       contest.start_date = new Date(start_date + " " + contest.start_time);
-  
+
       if (end_time) contest.end_time = end_time;
       if (!end_date) {
         let date = contest.end_date;
@@ -132,7 +135,7 @@ const updateContestService = async ({
         }-${date.getDate()}-${date.getFullYear()}`;
       }
       contest.end_date = new Date(end_date + " " + contest.end_time);
-  
+
       //* Calculating duration
       contest.duration = getDuration(contest.start_date, contest.end_date);
     }
@@ -148,27 +151,33 @@ const updateContestService = async ({
     });
   }
 };
-const getAllContestWithFilter = async (page, limit, past) => {
+const getAllContestWithFilter = async (created_by, page, limit, past) => {
   try {
     let ongoingContests = [];
     let upcomingContests = [];
     //**past contests */
     const pastContestsCount = await Contest.find({
       end_date: { $lte: new Date() },
+      created_by,
     }).countDocuments();
-    const pastContests = await Contest.find({ end_date: { $lte: new Date() } })
+    const pastContests = await Contest.find({
+      end_date: { $lte: new Date() },
+      created_by,
+    })
       .sort({ start_date: "desc" })
       .limit(limit * 1)
       .skip((page - 1) * limit);
     //**ongoing contests */
-    if (past === 'false') {
+    if (past === "false") {
       ongoingContests = await Contest.find({
         start_date: { $lte: new Date() },
         end_date: { $gte: new Date() },
+        created_by,
       }).sort();
       //**upcoming contests */
       upcomingContests = await Contest.find({
         start_date: { $gte: new Date() },
+        created_by,
       }).sort({ start_date: "asc" });
     }
     //**promise result */
@@ -182,6 +191,7 @@ const getAllContestWithFilter = async (page, limit, past) => {
       },
     });
   } catch (err) {
+    console.log(err);
     return Promise.reject({
       code: 500,
       message: `Internal Server Error`,
