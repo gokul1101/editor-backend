@@ -16,17 +16,28 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
   const [loader, showLoader, hideLoader] = useLoader();
   const { id } = useParams();
   const history = useHistory();
+  const [authState] = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [flag, setFlag] = useState(false);
+  const [open1, setOpen1] = useState(false);
   const [isTimeUp, setIsTimeUp] = useState(false);
+  const onBackAlert = () => history.push("/codekata");
+
   const handleOpen = () => setOpen(true);
   const backAlert = () => setFlag(true);
-  const onBackAlert = () => {
-    history.push("/codekata");
+  const alertOpen = () => {
+    const data = dialogBoxMessage();
+    if (data.unSubmittedQuizzes.length || data.unSubmittedChallenges.length)
+      setOpen1(true);
+    else setOpen(true);
   };
+
   const handleClose = () => setOpen(false);
   const backClose = () => setFlag(false);
-  const [authState] = useContext(AuthContext);
+  const alertClose = () => {
+    setOpen1(false);
+    handleOpen();
+  };
   const routeQuestion = (_id, name, type) => {
     const checkQuestion = (question) => question === name;
     if (type === "problem") {
@@ -51,7 +62,7 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
   const timeoutSubmit = () => {
     setIsTimeUp(true);
     history.push(`/codekata/${id}`);
-    sumbitContest()
+    sumbitContest();
   };
   const sumbitContest = async (e) => {
     setOpen(false);
@@ -100,7 +111,27 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
   };
   useEffect(() => {
     setSideToggle(true);
-  });
+  }, []);
+  const dialogBoxMessage = () => {
+    let completedChallenges = JSON.parse(
+      localStorage.getItem("challenges") || "[]"
+    );
+    let completedQuizzes = JSON.parse(localStorage.getItem("quizzes") || "[]");
+    const unSubmittedChallenges = authState?.contest?.challenges
+      .map((challenge) =>
+        !completedChallenges.includes(challenge?.name) ? challenge?.name : null
+      )
+      .filter(Boolean);
+    const unSubmittedQuizzes = authState?.contest?.quizzes
+      .map((quiz) =>
+        !completedQuizzes.includes(quiz?.name) ? quiz?.name : null
+      )
+      .filter(Boolean);
+    return {
+      unSubmittedChallenges,
+      unSubmittedQuizzes,
+    };
+  };
   return (
     <div className="container-fluid dashboard" style={{ overflow: "hidden" }}>
       {loader}
@@ -156,9 +187,9 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
         </div>
         <CustomButton
           className="btn-hover color-11 mt-2"
-          onClickHandler={handleOpen}
+          onClickHandler={alertOpen}
         >
-          <i className="fas fa-rocket pr-2 pl-2"></i> SUBMIT CONTEST
+          <i className="fas fa-rocket px-2"></i> SUBMIT CONTEST
         </CustomButton>
         <DialogBox
           open={open}
@@ -166,6 +197,13 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
           bodyMsg={`Are you sure do you want to exit from the ${authState?.contest?.contest.name}`}
           handleClose={handleClose}
           handleOpen={sumbitContest}
+        />
+        <DialogBox
+          open={open1}
+          headerMsg={"This is a warning message !"}
+          localData={dialogBoxMessage}
+          warning={true}
+          handleClose={alertClose}
         />
       </div>
       <div className="d-flex">
