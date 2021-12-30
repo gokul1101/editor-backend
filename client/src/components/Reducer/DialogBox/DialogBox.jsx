@@ -5,7 +5,15 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import CustomButton from "../CustomButton/CustomButton";
 import WarningGif from "../../Images/dribbble_1.gif";
-const DialogBox = (props) => {
+const DialogBox = ({ localData, ...props }) => {
+  const unSubmittedQuestions = () => {
+    const data = localData();
+    const questions = [
+      ...data.unSubmittedChallenges,
+      ...data.unSubmittedQuizzes,
+    ].toString();
+    return questions;
+  };
   return (
     <div>
       <Dialog
@@ -25,22 +33,43 @@ const DialogBox = (props) => {
             id="alert-dialog-description"
             className="text-dark"
           >
-            <p>{props.bodyMsg}</p>
+            {localData ? (
+              <>
+                <p>
+                  Some sections are not sumbitted!!!.
+                </p>
+                <p>{unSubmittedQuestions()}</p>
+              </>
+            ) : (
+              <p>{props.bodyMsg}</p>
+            )}
           </DialogContentText>
         </DialogContent>
         <DialogActions className="mb-2">
-          <CustomButton
-            className="btn-hover color-11 mt-1"
-            onClickHandler={props.handleOpen}
-          >
-            <i className="fas fa-times pr-2 pl-2"></i> YES
-          </CustomButton>
-          <CustomButton
-            className="btn-grad mt-1 mx-2"
-            onClickHandler={props.handleClose}
-          >
-            <i className="fas fa-times pr-2 pl-2"></i> NO
-          </CustomButton>
+          {props.warning ? (
+            <CustomButton
+              className="btn-hover color-11 mt-1"
+              onClickHandler={props.handleClose}
+            >
+              OK
+            </CustomButton>
+          ) : (
+            <>
+              <CustomButton
+                className="btn-hover color-11 mt-1"
+                onClickHandler={props.handleOpen}
+              >
+                <i className="fas fa-times pr-2 pl-2"></i> YES
+              </CustomButton>
+
+              <CustomButton
+                className="btn-grad mt-1 mx-2"
+                onClickHandler={props.handleClose}
+              >
+                <i className="fas fa-times pr-2 pl-2"></i> NO
+              </CustomButton>
+            </>
+          )}
         </DialogActions>
       </Dialog>
     </div>

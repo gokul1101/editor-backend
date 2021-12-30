@@ -33,7 +33,7 @@ const createSubmissionService = async (submissionDetails) => {
       quizzes.map(async (quiz) => {
         try {
           const { score } = await quizSubmissionService(quiz);
-          return score;
+          return score || 0;
         } catch (err) {
           console.log(err);
         }
@@ -50,7 +50,7 @@ const createSubmissionService = async (submissionDetails) => {
             challenge.lang,
             true
           );
-          return score;
+          return score || 0;
         } catch (err) {
           console.log(err);
         }
