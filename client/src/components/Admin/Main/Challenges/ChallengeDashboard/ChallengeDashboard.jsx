@@ -19,18 +19,17 @@ const ChallengeDashboard = (props) => {
       if (status === 200) {
         authDispatch({ type: "SET_CHALLENGE", payload: { ...question } });
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   };
-  useEffect( () => {
-    if (!authState?.challenge)  fetchChallenge();
+  useEffect(() => {
+    if (!authState?.challenge) fetchChallenge();
   }, []);
 
   return (
     <>
       <div
-        className="challenge-container container"
-        style={{ height: "100vh", overflowY: "scroll" }}
+        className="challenge-container"
+        style={{ height: "100vh", overflowY: "auto" }}
       >
         <ul className="list-group d-flex align-items-center justify-content-center flex-row p-2 mt-3 mb-3">
           <li className="list-group-item user-group-pill">
@@ -39,7 +38,6 @@ const ChallengeDashboard = (props) => {
               className="user-navlink pr-3 pl-3 m-2 btn nav-button d-flex justify-content-center align-items-center"
               to={`/challenges/${id}/update`}
               activeClassName="active-user-pill"
-              
             >
               <i className="fas fa-plus pr-1 pl-1 "></i> Challenge
             </NavLink>

@@ -1,126 +1,126 @@
-import axios from 'axios'
-const baseURL = 'http://localhost:5000'
+import axios from "axios";
+const baseURL = "http://localhost:5000";
 // const baseURL = "https://03ba-103-70-191-34.ngrok.io";
 
 const helperService = {
-    rejectionHandler: ({ response }) => {
-        return Promise.reject({
-            status: response.status,
-            data: response.data,
-        })
-    },
-    //* =================== PUBLIC ROUTE ==================== *//
-    login: async (payload) => {
-        try {
-            const { status, data } = await axios.post(
-                `${baseURL}/api/v1/login`,
-                payload
-            )
-            if (status === 200) {
-                return Promise.resolve({
-                    status,
-                    data,
-                    message: data.message,
-                })
-            }
-        } catch (err) {
-            console.log(err, err.response)
-            let { status, data } = err.response
-            return Promise.reject({
-                status,
-                message: data.message,
-            })
-        }
-    },
-    //* ================= PRIVATE ROUTES ======================== *//
-    //** MULTIPLE USERS */
-    getUsers: async ({ page, limit }, config) => {
-        try {
-            const { status, data } = await axios.get(
-                `${baseURL}/api/v1/users/getAll?page=${page}&limit=${limit}`,
-                config
-            )
-            if (status === 200) {
-                return Promise.resolve({
-                    status,
-                    data,
-                })
-            }
-        } catch ({ response }) {
-            return Promise.reject({
-                status: response.status,
-                data: response.data,
-            })
-        }
-    },
-    createBulkUsers: async ({ file }, headers) => {
-        console.log(headers)
-        try {
-            const { data, status } = await axios({
-                url: `${baseURL}/api/v1/users/createAll`,
-                method: 'POST',
-                headers,
-                data: file,
-            })
-            // post(
-            //   `${baseURL}/api/v1/users/createAll`,
-            //   {file},
-            //   config
-            // );
-            if (status === 201) {
-                return Promise.resolve({
-                    status,
-                    data,
-                })
-            }
-        } catch (err) {
-            return Promise.reject({
-                status: err.response.status,
-                data: err.response.data,
-            })
-        }
-    },
-    //** USERS */
-    createUser: async (payload, config) => {
-        console.log(payload, config)
-        try {
-            const { data, status } = await axios.post(
-                `${baseURL}/api/v1/user/create`,
-                payload,
-                config
-            )
-            if (status === 201) {
-                return Promise.resolve({
-                    status,
-                    data,
-                })
-            }
-        } catch (err) {
-            return Promise.reject({
-                status: err.response.status,
-                data: err.response.data,
-            })
-        }
-    },
-    getUser: async (payload, config) => {
-        let url = `${baseURL}/api/v1/user/get`
-        if (payload.id) url += `?id=${payload.id}`
-        else if (payload.regno) url += `?regno=${payload.regno}`
-        try {
-            const { status, data } = await axios.get(url, config)
-            if (status === 200) {
-                return Promise.resolve({
-                    status,
-                    data,
-                })
-            }
-        } catch ({ response }) {
-            return Promise.reject({
-                status: response.status,
-                data: response.data,
-            })
-        }
-    },
+  rejectionHandler: ({ response }) => {
+    return Promise.reject({
+      status: response.status,
+      data: response.data,
+    });
+  },
+  //* =================== PUBLIC ROUTE ==================== *//
+  login: async (payload) => {
+    try {
+      const { status, data } = await axios.post(
+        `${baseURL}/api/v1/login`,
+        payload
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          data,
+          message: data.message,
+        });
+      }
+    } catch (err) {
+      console.log(err, err.response);
+      let { status, data } = err.response;
+      return Promise.reject({
+        status,
+        message: data.message,
+      });
+    }
+  },
+  //* ================= PRIVATE ROUTES ======================== *//
+  //** MULTIPLE USERS */
+  getUsers: async ({ page, limit }, config) => {
+    try {
+      const { status, data } = await axios.get(
+        `${baseURL}/api/v1/users/getAll?page=${page}&limit=${limit}`,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch ({ response }) {
+      return Promise.reject({
+        status: response.status,
+        data: response.data,
+      });
+    }
+  },
+  createBulkUsers: async ({ file }, headers) => {
+    console.log(headers);
+    try {
+      const { data, status } = await axios({
+        url: `${baseURL}/api/v1/users/createAll`,
+        method: "POST",
+        headers,
+        data: file,
+      });
+      // post(
+      //   `${baseURL}/api/v1/users/createAll`,
+      //   {file},
+      //   config
+      // );
+      if (status === 201) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  //** USERS */
+  createUser: async (payload, config) => {
+    console.log(payload, config);
+    try {
+      const { data, status } = await axios.post(
+        `${baseURL}/api/v1/user/create`,
+        payload,
+        config
+      );
+      if (status === 201) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  getUser: async (payload, config) => {
+    let url = `${baseURL}/api/v1/user/get`;
+    if (payload.id) url += `?id=${payload.id}`;
+    else if (payload.regno) url += `?regno=${payload.regno}`;
+    try {
+      const { status, data } = await axios.get(url, config);
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch ({ response }) {
+      return Promise.reject({
+        status: response.status,
+        data: response.data,
+      });
+    }
+  },
 
   updateUser: async (payload, config) => {
     try {
@@ -260,11 +260,31 @@ const helperService = {
   },
   getQuizzes: async ({ id }, config) => {
     try {
-      const {status, data} = await axios.get(
+      const { status, data } = await axios.get(
         `${baseURL}/api/v1/quiz/all?id=${id}`,
         config
       );
       if (status === 200) {
+        return Promise.resolve({
+          data,
+          status,
+        });
+      }
+    } catch (err) {
+      return Promise.reject({
+        status: err.response.status,
+        data: err.response.data,
+      });
+    }
+  },
+  deleteQuiz : async (payload,config) => {
+    try {
+      const { status, data } = await axios.post(
+        `${baseURL}/api/v1/quiz/delete`,
+        payload,
+        config
+      );
+      if (status === 202) {
         return Promise.resolve({
           data,
           status,
@@ -487,7 +507,7 @@ const helperService = {
       if (status === 200) {
         return Promise.resolve({
           data,
-          status
+          status,
         });
       }
     } catch (err) {
@@ -560,14 +580,11 @@ const helperService = {
       });
     }
   },
-  getContestSubmissions: async ({page,limit,contest_id}, config) => {
+  getContestSubmissions: async ({ page, limit, contest_id }, config) => {
     try {
-      const {
-        data,
-        status,
-      } = await axios.post(
+      const { data, status } = await axios.post(
         `${baseURL}/api/v1/submission/get?page=${page}&limit=${limit}`,
-        {contest_id},
+        { contest_id },
         config
       );
       if (status === 200) {
@@ -585,10 +602,7 @@ const helperService = {
   },
   getErrorLogs: async (payload, config) => {
     try {
-      const {
-        data,
-        status,
-      } = await axios.get(
+      const { data, status } = await axios.get(
         `${baseURL}/api/v1/errorLogs?created_by=${payload.created_by}`,
         config
       );

@@ -5,7 +5,6 @@ import helperService from "../../../../services/helperService";
 import { AuthContext, useLoader } from "../../../../contexts/AuthContext";
 import Pagination from "@material-ui/lab/Pagination";
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
-
 const Contests = (props) => {
   const [loader, showLoader, hideLoader] = useLoader();
   const limit = 3;
@@ -42,11 +41,11 @@ const Contests = (props) => {
           past: pastContests,
           ongoing:
             ongoingContests.length > 0
-              ? [...contests.ongoing, ...ongoingContests]
+              ? [...ongoingContests]
               : contests.ongoing,
           upcoming:
             upcomingContests.length > 0
-              ? [...contests.upcoming, ...upcomingContests]
+              ? [...upcomingContests]
               : contests.upcoming,
         });
         if (!past) hideLoader();
@@ -57,7 +56,7 @@ const Contests = (props) => {
   };
   useEffect(() => {
     fetchContests();
-  }, [fetchContests]);
+  }, []);
   const setContest = (contest) => {
     authDispatch({ type: "SET_CONTEST", payload: { ...contest } });
   };
@@ -189,7 +188,12 @@ const Contests = (props) => {
               <div className="d-flex mt-2 mb-2">
                 <i className="fas fa-link contest-link position-relative"></i>
                 <div className="col-md-3 text-center upcoming-task">
-                  <span>{event.name}</span>
+                  <Link
+                    to={`/contests/${event._id}/statistics`}
+                    onClick={() => setContest(event)}
+                  >
+                    <span>{event.name}</span>
+                  </Link>
                 </div>
                 <div className="col-md-3 text-center">{`${new Date(
                   event.start_date
@@ -207,16 +211,19 @@ const Contests = (props) => {
         </div>
       </div>
       <div>
+        {
+          contests?.pastContestsCount > limit && 
         <Pagination
-          count={
-            Math.floor(contests?.pastContestsCount / limit) +
-            (contests?.pastContestsCount % limit !== 0 ? 1 : 0)
-          }
-          color="primary"
-          variant="text"
-          className="mt-5 d-flex justify-content-center"
-          onChange={(e, value) => handlePagination(e, value)}
+        count={
+          Math.floor(contests?.pastContestsCount / limit) +
+          (contests?.pastContestsCount % limit !== 0 ? 1 : 0)
+        }
+        color="primary"
+        variant="text"
+        className="mt-5 d-flex justify-content-center"
+        onChange={(e, value) => handlePagination(e, value)}
         />
+      }
       </div>
     </div>
   );

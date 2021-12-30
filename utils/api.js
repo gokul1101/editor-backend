@@ -34,7 +34,8 @@ const admin = [
   "createMultipleTestCases",
   "deleteQuestion",
   "errorLogs",
-  "deleteTestCase"
+  "deleteTestCase",
+  "deleteQuiz"
 ];
 
 module.exports = {

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import CreateIcon from "@material-ui/icons/Create";
 import "./ContestQuizzes.css";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -18,52 +19,69 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 const ContestQuizzes = (props) => {
   const { id } = useParams();
-  const [authState] = useContext(AuthContext);
+  const [authState, authDispatch] = useContext(AuthContext);
   const [quizName, setQuizName] = useState("");
   const [open, setOpen] = React.useState(false);
   const [quizzArr, setQuizzArr] = useState([]);
   const createQuizz = async () => {
-    if(quizName?.length <= 0){
-      props.snackBar("Field is Empty","error")
+    if (quizName?.length <= 0) {
+      props.snackBar("Field is Empty", "error");
       return;
     }
 
     try {
       const {
         status,
-        data: { quiz,message },
+        data: { quiz, message },
       } = await helperService.createQuizz(
         { name: quizName, contest_id: id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
         // TODO:
-        props.snackBar(message,"success")
+        console.log(quiz);
+        props.snackBar(message, "success");
         // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
         setQuizzArr((existing) => [...existing, quiz]);
-        
       }
     } catch (err) {
+      console.log(err);
       props.snackBar(err?.data, "error");
-    }finally{
-      setQuizName("")
+    } finally {
+      setQuizName("");
       setOpen(false);
     }
   };
   const fetchQuizzes = async () => {
     try {
-      const { status,data : { message , quizzes}} = await helperService.getQuizzes(
+      const {
+        status,
+        data: { message, quizzes },
+      } = await helperService.getQuizzes(
         { id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-     
-        props.snackBar(message ,"success")
+        props.snackBar(message, "success");
         setQuizzArr(quizzes);
         setOpen(false);
       }
     } catch (err) {
-      props.snackBar(err,"error")
+      props.snackBar(err, "error");
+      console.log(err);
+    }
+  };
+  const deleteQuiz = async (quiz) => {
+    try {
+      console.log(quiz._id)
+      const payload = {};
+      if (quiz._id) payload.id = quiz._id;
+      else if (quiz.name) payload.name = quiz.name;
+      const { data, status } = await helperService.deleteQuiz(payload, {
+        headers: { Authorization: authState?.user?.token },
+      });
+    } catch (err) {
+      console.log(err);
     }
   };
   const handleClickOpen = () => {
@@ -134,16 +152,21 @@ const ContestQuizzes = (props) => {
       </Dialog>
       <div className="challenge-chips d-flex flex-wrap border p-2 mt-4">
         {quizzArr?.length > 0 ? (
-          quizzArr?.map((e) => {
+          quizzArr?.map((quiz) => {
             return (
-              <div className="create-con" key={e._id}>
-                <div className="p-2 mr-2 ml-2 quizzes-chip">
-                  <DeleteOutlineIcon />
+              <div className="create-con" key={quiz._id}>
+                <div className="p-2 mr-2 ml-2 quizzes-chip d-flex">
+                  <div className="px-2">
+                    <DeleteOutlineIcon onClick = {() => deleteQuiz(quiz)}/>
+                  </div>
+                  <div className="px-2" onClick={handleClickOpen}>
+                    <CreateIcon />
+                  </div>
                   <Link
                     style={{ color: "white" }}
-                    to={`/quizzes/${e._id}/add-question`}
+                    to={`/quizzes/${quiz._id}/add-question`}
                   >
-                    <span className="pl-2">{e.name}</span>
+                    <span className="pl-2">{quiz.name}</span>
                   </Link>
                 </div>
               </div>

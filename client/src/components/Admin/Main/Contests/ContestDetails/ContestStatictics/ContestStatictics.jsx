@@ -62,13 +62,16 @@ const ContestStatictics = (props) => {
             );
           })}
           <div>
+            {
+              total > limit && 
             <Pagination
-              count={Math.floor(total / limit) + (total % limit !== 0 ? 1 : 0)}
-              color="primary"
-              variant="text"
-              className="mt-5 d-flex justify-content-center"
-              onChange={(e, value) => handlePagination(e, value)}
+            count={Math.floor(total / limit) + (total % limit !== 0 ? 1 : 0)}
+            color="primary"
+            variant="text"
+            className="mt-5 d-flex justify-content-center"
+            onChange={(e, value) => handlePagination(e, value)}
             />
+          }
           </div>
         </div>
 

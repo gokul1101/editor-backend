@@ -150,7 +150,12 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
     });
   }
 };
-const deleteMCQ = async ({ question_id, answer_id, quiz_id }) => {
+const deleteMCQ = async ({
+  question_id,
+  answer_id,
+  quiz_id,
+  need_update = true,
+}) => {
   try {
     if (!question_id || !answer_id) {
       return Promise.reject({
@@ -159,9 +164,12 @@ const deleteMCQ = async ({ question_id, answer_id, quiz_id }) => {
       });
     }
     const question_result = await Question.findByIdAndDelete(question_id);
-    await updateQuizService({ id: quiz_id, total_mcqs: -1 });
+    if (need_update) await updateQuizService({ id: quiz_id, total_mcqs: -1 });
     if (question_result) {
-      const answer_result = await Answer.findByIdAndDelete(answer_id);
+      let answer_result = null;
+      if (answer_id) answer_result = await Answer.findByIdAndDelete(answer_id);
+      else if (question_id && answer_result)
+        answer_result = await Answer.findOneAndDelete({ question_id });
       if (answer_result) {
         return Promise.resolve({
           status: 202,

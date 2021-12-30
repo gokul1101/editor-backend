@@ -29,6 +29,7 @@ const {
   getQuiz,
   updateQuiz,
   getAllQuizzes,
+  deleteQuiz,
 } = require("../controllers/quizController");
 const {
   createMultipleTestCases,
@@ -146,6 +147,12 @@ router.get(
   routeAuth("getAllQuizzes"),
   getAllQuizzes
 );
+router.post(
+  "/api/v1/quiz/delete",
+  userAuth,
+  routeAuth("deleteQuiz"),
+  deleteQuiz
+)
 //* ==============Question===============
 router.post(
   "/api/v1/question/create",
