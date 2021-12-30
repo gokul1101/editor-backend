@@ -1,6 +1,5 @@
 const Quiz = require("../models/quizzes");
-const Question = require("../models/questions") 
-const Answer = require("../models/answers") 
+const Question = require("../models/questions");
 const { updateContestService } = require("./contestService");
 const { deleteMCQ } = require("./mcqService");
 const createQuizService = async (name, contest_id) => {
@@ -112,24 +111,38 @@ const getAllQuizzesWithContestId = async (id) => {
 };
 const deleteQuizService = async ({ id, name }) => {
   try {
-    const quiz = {max_score:0,contest_id:null,_id:null}
+    let quiz = { max_score: 0, contest_id: null, _id: null };
     if (id) {
-      const { total_mcqs, contest_id ,_id} = (await Quiz.findByIdAndDelete(id));
-      quiz = {max_score:total_mcqs,contest_id,_id}
+      const { total_mcqs, contest_id, _id } = await Quiz.findByIdAndDelete(id);
+      quiz = { max_score: total_mcqs, contest_id, _id };
     } else if (name) {
-      const { total_mcqs, contest_id ,_id} = (await Quiz.findOneAndDelete({
+      const { total_mcqs, contest_id, _id } = await Quiz.findOneAndDelete({
         name,
-      }));
-      quiz = {max_score:total_mcqs,contest_id,_id}
+      });
+      quiz = { max_score: total_mcqs, contest_id, _id };
     }
     if (!quiz.contest_id)
       return Promise.reject({ status: 404, message: `Quizz not found` });
 
-    const {_id} = (await Question.find({quiz_id:quiz._id}))
-    Promise.all(_id.map(async id => await deleteMCQ(id,null,quiz._id,false)))
-      if (quiz.max_score)
-      await updateContestService({ max_score: -(quiz.max_score), id: quiz.contest_id });
-    
+    const questions = await Question.find({ quiz_id: quiz._id });
+    console.log(questions[0]._id);
+    await Promise.all(
+      questions.map(
+        async (question) =>
+          await deleteMCQ({
+            question_id: question._id,
+            answer_id: null,
+            quiz_id: quiz._id,
+            need_update: false,
+          })
+      )
+    );
+    if (quiz.max_score)
+      await updateContestService({
+        max_score: -quiz.max_score,
+        id: quiz.contest_id,
+      });
+
     return Promise.resolve({
       status: 202,
       message: `Quiz deleted successfully`,

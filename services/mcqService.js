@@ -14,9 +14,9 @@ const createMCQ = async ({ type_id, quiz_id, statement, options }) => {
   };
   let newAnswer = new Answer(answer);
   try {
+    await updateQuizService({ id: quiz_id, total_mcqs: 1 });
     await newQuestion.save();
     await newAnswer.save();
-    await updateQuizService({ id: quiz_id, total_mcqs: 1 });
     return Promise.resolve({
       status: 201,
       message: "MCQ created successfully.",
@@ -157,7 +157,8 @@ const deleteMCQ = async ({
   need_update = true,
 }) => {
   try {
-    if (!question_id || !answer_id) {
+    console.log(question_id,answer_id,quiz_id,need_update)
+    if (!question_id && !answer_id) {
       return Promise.reject({
         status: 406,
         message: `Invalid parameters found`,

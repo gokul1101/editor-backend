@@ -84,7 +84,7 @@ const AddQuiz = (props) => {
         setQuestions([...questions, mcq]);
       }
     } catch (err) {
-      props.snackBar(err.data, "error");
+      // props.snackBar(err.data, "error");
     }
   };
   const deleteQuestion = async (question) => {
