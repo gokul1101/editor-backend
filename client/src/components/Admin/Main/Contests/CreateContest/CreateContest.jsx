@@ -149,8 +149,8 @@ const CreateContest = (props) => {
           </span>
           <div className="col-md-4">
             <InputReducer
-              placeholder="Ends at"
-              name="Ends at"
+              placeholder="Starts at"
+              name="Starts at"
               type="time"
               value={time.start_time}
               onClickHandler={(e) => setTime({ ...time, start_time: e })}

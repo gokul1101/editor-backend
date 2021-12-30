@@ -22,6 +22,7 @@ const ContestStatictics = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
+        console.log(data.submissions)
         setSubmissions(data?.submissions?.submissions || []);
         if (!total) setTotal(data?.submissions?.totalCount || 0);
         if (data?.leaderBoard) setLeaderBoard(data?.leaderBoard || []);
@@ -55,10 +56,10 @@ const ContestStatictics = (props) => {
             return (
               <div className="stats d-flex w-100">
                 <div className="col-md-2 stats-detail">{id + 1}</div>
-                <div className="col-md-2 stats-detail">{e.reg}</div>
-                <div className="col-md-3 stats-detail">{e.name}</div>
-                <div className="col-md-2 stats-detail">{e.time}</div>
-                <div className="col-md-3 stats-detail">{e.points}</div>
+                <div className="col-md-2 stats-detail">{e.user_id.regno}</div>
+                <div className="col-md-3 stats-detail">{e.user_id.name}</div>
+                <div className="col-md-2 stats-detail">{new Date(e.created_at).toLocaleString()}</div>
+                <div className="col-md-3 stats-detail">{e.score}</div>
               </div>
             );
           })}

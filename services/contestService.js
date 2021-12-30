@@ -18,7 +18,7 @@ const createContestService = async (contest) => {
     //* Creating new contest with given details
     else {
       const uuid = UUID().split("-").pop();
-      contest.code = uuid.substr(uuid.length - 6, 6).toUpperCase();
+      contest.code = uuid.substring(uuid.length - 6, uuid.length).toUpperCase();
       //* Start datetime & End datetime of the contest
       let start = new Date(contest.start_date + " " + contest.start_time);
       let end = new Date(contest.end_date + " " + contest.end_time);
@@ -30,7 +30,7 @@ const createContestService = async (contest) => {
       const newContest = new Contest(contest);
       await newContest.save();
       return Promise.resolve({
-        code: 201,
+        status: 201,
         message: "Contest created successfully",
         contestCode: contest.code,
       });
@@ -38,7 +38,7 @@ const createContestService = async (contest) => {
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: "Can't create contest",
     });
   }
@@ -141,10 +141,11 @@ const updateContestService = async ({
     }
     await contest.save();
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: "Contest updated.",
     });
   } catch (err) {
+    console.log(err)
     return Promise.reject({
       status: 500,
       message: "Unable to find contest.",
@@ -182,7 +183,7 @@ const getAllContestWithFilter = async (created_by, page, limit, past) => {
     }
     //**promise result */
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: {
         pastContestsCount,
         pastContests,
@@ -193,7 +194,7 @@ const getAllContestWithFilter = async (created_by, page, limit, past) => {
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `Internal Server Error`,
     });
   }
@@ -210,7 +211,7 @@ const getAllContestService = async (page, limit) => {
     response.total = contests.length;
     response.contests = contests;
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: response,
     });
   } catch (err) {

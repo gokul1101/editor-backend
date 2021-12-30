@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Male from "../../../../Images/man.png";
 import { useParams, useHistory } from "react-router-dom";
 import "./ContestDetails.css";
@@ -12,21 +12,32 @@ import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 import DialogBox from "../../../../Reducer/DialogBox/DialogBox";
 import { parseCode } from "../../../../../services/utils";
 
-const ContestDetails = ({ setSideToggle }) => {
+const ContestDetails = ({ setSideToggle, snackBar }) => {
   const [loader, showLoader, hideLoader] = useLoader();
   const { id } = useParams();
   const history = useHistory();
+  const [authState] = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [flag, setFlag] = useState(false);
+  const [open1, setOpen1] = useState(false);
+  const [isTimeUp, setIsTimeUp] = useState(false);
+  const onBackAlert = () => history.push("/codekata");
+
   const handleOpen = () => setOpen(true);
   const backAlert = () => setFlag(true);
-  const onBackAlert = () => {
-    history.push("/codekata");
+  const alertOpen = () => {
+    const data = dialogBoxMessage();
+    if (data.unSubmittedQuizzes.length || data.unSubmittedChallenges.length)
+      setOpen1(true);
+    else setOpen(true);
   };
+
   const handleClose = () => setOpen(false);
   const backClose = () => setFlag(false);
-  const ref = useRef();
-  const [authState] = useContext(AuthContext);
+  const alertClose = () => {
+    setOpen1(false);
+    handleOpen();
+  };
   const routeQuestion = (_id, name, type) => {
     const checkQuestion = (question) => question === name;
     if (type === "problem") {
@@ -34,6 +45,7 @@ const ContestDetails = ({ setSideToggle }) => {
         localStorage.getItem("challenges") || "[]"
       );
       if (completedChallenges.some(checkQuestion)) {
+        snackBar("Challenge already submitted.", "info");
         return;
       }
     } else {
@@ -41,10 +53,16 @@ const ContestDetails = ({ setSideToggle }) => {
         localStorage.getItem("quizzes") || "[]"
       );
       if (completedQuizzes.some(checkQuestion)) {
+        snackBar("Quiz already submitted.", "info");
         return;
       }
     }
     history.push(`/codekata/${id}/${type}/${_id}`);
+  };
+  const timeoutSubmit = () => {
+    setIsTimeUp(true);
+    history.push(`/codekata/${id}`);
+    sumbitContest();
   };
   const sumbitContest = async (e) => {
     setOpen(false);
@@ -57,60 +75,65 @@ const ContestDetails = ({ setSideToggle }) => {
     let contestChallenges = authState?.contest?.challenges || [];
     payload.quizzes = contestQuizzes.map((quiz) => {
       let localQuizzes = JSON.parse(localStorage.getItem("quizzes") || "[]");
-      if(!localQuizzes.find(localQuiz => localQuiz === quiz.name)) return [];
+      if (!localQuizzes.find((localQuiz) => localQuiz === quiz.name)) return [];
       return JSON.parse(localStorage.getItem(quiz?.name) || "[]");
     });
     payload.challenges = contestChallenges.map((challenge) => {
-      let localChallenges = JSON.parse(localStorage.getItem("challenges") || "[]");
-      if(!localChallenges.find(localChallenge => localChallenge === challenge.name)) return [];
+      let localChallenges = JSON.parse(
+        localStorage.getItem("challenges") || "[]"
+      );
+      if (
+        !localChallenges.find(
+          (localChallenge) => localChallenge === challenge.name
+        )
+      )
+        return [];
       let localCode = JSON.parse(localStorage.getItem(challenge?.name) || "{}");
       console.log(localCode);
       localCode.code = parseCode(localCode.code);
       return localCode;
     });
     try {
-      const {code, message} = await helperService.createSubmission(
+      const { code, message } = await helperService.createSubmission(
         { ...payload },
         { headers: { Authorization: authState.user.token } }
       );
-      if(code === 201)
-      console.log(message);
-      history.push("/codekata");
+      if (code === 201) {
+        snackBar(message, "success");
+        history.push("/codekata");
+      }
     } catch (err) {
       console.log(err);
+      snackBar(err.message || "", "success");
     } finally {
       hideLoader();
     }
   };
   useEffect(() => {
     setSideToggle(true);
-    // console.log(ref.current);
-    // if (ref.current.focus) {
-    //   ref.current.dispatchEvent(
-    //     new KeyboardEvent("keypress", {
-    //       key: "F11",
-    //     })
-    //   );
-    // }
-    // console.log(full);
-
-    // return () => {};
-    // window.addEventListener("onload", () => {});
-  }, [setSideToggle]);
-
-  const handleUserKeyPress = (event) => {
-    const { key, keyCode } = event;
-    console.log(key);
-    if (keyCode === 122) {
-      console.log("triggered");
-    }
+  }, []);
+  const dialogBoxMessage = () => {
+    let completedChallenges = JSON.parse(
+      localStorage.getItem("challenges") || "[]"
+    );
+    let completedQuizzes = JSON.parse(localStorage.getItem("quizzes") || "[]");
+    const unSubmittedChallenges = authState?.contest?.challenges
+      .map((challenge) =>
+        !completedChallenges.includes(challenge?.name) ? challenge?.name : null
+      )
+      .filter(Boolean);
+    const unSubmittedQuizzes = authState?.contest?.quizzes
+      .map((quiz) =>
+        !completedQuizzes.includes(quiz?.name) ? quiz?.name : null
+      )
+      .filter(Boolean);
+    return {
+      unSubmittedChallenges,
+      unSubmittedQuizzes,
+    };
   };
   return (
-    <div
-      className="container-fluid dashboard"
-      ref={ref}
-      style={{ overflow: "hidden" }}
-    >
+    <div className="container-fluid dashboard" style={{ overflow: "hidden" }}>
       {loader}
       <div className="d-flex">
         <div className="back-btn mr-auto mt-3 ml-4" onClick={backAlert}>
@@ -124,7 +147,11 @@ const ContestDetails = ({ setSideToggle }) => {
           handleOpen={onBackAlert}
         />
         <div className="timer mt-4">
-          <Timer />
+          {isTimeUp ? (
+            <p>Time's up</p>
+          ) : (
+            <Timer timeoutSubmit={timeoutSubmit} />
+          )}
         </div>
         <div className="user-info position-relative">
           <div className="d-flex mx-4 pt-3 user-det justify-content-end">
@@ -145,7 +172,9 @@ const ContestDetails = ({ setSideToggle }) => {
         <div className="mt-3 p-2">
           <h3 className="font-weight-bolder color-highlight">
             <i className="fas fa-star"></i>Max Score :{" "}
-            <span className="max-score p-2">{40}</span>
+            <span className="max-score p-2">
+              {authState?.contest?.contest?.max_score}
+            </span>
           </h3>
         </div>
       </div>
@@ -158,9 +187,9 @@ const ContestDetails = ({ setSideToggle }) => {
         </div>
         <CustomButton
           className="btn-hover color-11 mt-2"
-          onClickHandler={handleOpen}
+          onClickHandler={alertOpen}
         >
-          <i className="fas fa-rocket pr-2 pl-2"></i> SUBMIT CONTEST
+          <i className="fas fa-rocket px-2"></i> SUBMIT CONTEST
         </CustomButton>
         <DialogBox
           open={open}
@@ -168,6 +197,13 @@ const ContestDetails = ({ setSideToggle }) => {
           bodyMsg={`Are you sure do you want to exit from the ${authState?.contest?.contest.name}`}
           handleClose={handleClose}
           handleOpen={sumbitContest}
+        />
+        <DialogBox
+          open={open1}
+          headerMsg={"This is a warning message !"}
+          localData={dialogBoxMessage}
+          warning={true}
+          handleClose={alertClose}
         />
       </div>
       <div className="d-flex">

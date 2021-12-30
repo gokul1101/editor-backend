@@ -15,7 +15,7 @@ const Codekata = ({ setSideToggle, ...props }) => {
     setSideToggle(false);
     authDispatch({ type: "REMOVE_CONTEST" });
     authDispatch({ type: "REMOVE_DURATION" });
-  }, [setSideToggle, authDispatch]);
+  }, []);
   const submitCode = async (e) => {
     e.preventDefault();
     if (code.length !== 6) {
@@ -43,8 +43,9 @@ const Codekata = ({ setSideToggle, ...props }) => {
         history.push(`/codekata/${code}`);
       }
       props.snackBar(message || "", "success");
-    } catch ({message}) {
-      props.snackBar(message || "Internal Error", "error");
+    } catch (message) {
+      console.log(message)
+      // props.snackBar(message || "Internal Error", "error");
     } finally {
       hideLoader();
     }

@@ -331,6 +331,7 @@ const ListUser = (props) => {
                       label="Register Name"
                       variant="outlined"
                       value={user.regno}
+                      disabled={true}
                       // onClickHandler={(value) =>
                       //   setUser({ ...user, regno: value })
                       // }

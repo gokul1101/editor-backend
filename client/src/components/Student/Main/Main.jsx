@@ -178,7 +178,7 @@ const Main = (props) => {
                     <Programs setSideToggle={setSideToggle} />
                   </Route>
                   <Route path="/codekata/:id" exact>
-                    <ContestDetails setSideToggle={setSideToggle} />
+                    <ContestDetails setSideToggle={setSideToggle} snackBar={props.snackBar}/>
                   </Route>
                 </>,
               ]
