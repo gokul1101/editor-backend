@@ -125,13 +125,10 @@ const CreateChallenge = (props) => {
       input_format: authState?.challenge?.input_format ?? "",
       output_format: authState?.challenge?.output_format ?? "",
       constraints: authState?.challenge?.constraints ?? "",
-      difficulty_id: authState?.challenge?.difficulty_id?.level,
+      difficulty_id: authState?.challenge?.difficulty_id?.level ?? "easy",
       max_score: authState?.challenge?.max_score,
     });
-    setDifficultyId(authState?.challenge?.difficulty_id?.level);
-    // return () => {
-    //   if (authState?.challenge) setChallenge({});
-    // };
+    setDifficultyId(authState?.challenge?.difficulty_id?.level ?? "easy") ;
   }, [authState]);
   return (
     <div className="container">

@@ -270,7 +270,9 @@ const TestCase = (props) => {
                 </div>
                 <div className="input">
                   <h4 className="font-weight-bolder text-highlight">Input</h4>
-                  <h6>{testcase.input}</h6>
+                  <h6>
+                    <pre>{testcase?.input && JSON.parse(testcase?.input)}</pre>
+                  </h6>
                 </div>
                 <div className="output">
                   <h4 className="font-weight-bolder text-highlight">Output</h4>
@@ -317,7 +319,9 @@ const TestCase = (props) => {
                 </div>
                 <div className="input">
                   <h4 className="font-weight-bolder text-highlight">Input</h4>
-                  <h6>{testcase.input}</h6>
+                  <h6>
+                    <pre>{testcase?.input && JSON.parse(testcase?.input)}</pre>
+                  </h6>
                 </div>
                 <div className="output">
                   <h4 className="font-weight-bolder text-highlight">Output</h4>
@@ -353,9 +357,9 @@ const TestCase = (props) => {
               multiline
               rows={4}
               variant="outlined"
-              value={testcase.input}
+              value={testcase?.input && JSON.parse(testcase?.input)}
               onClickHandler={(value) =>
-                setTestcase({ ...testcase, input: value })
+                setTestcase({ ...testcase, input: JSON.stringify(value) })
               }
             />
           </DialogContentText>

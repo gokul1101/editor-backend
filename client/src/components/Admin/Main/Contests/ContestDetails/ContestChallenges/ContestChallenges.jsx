@@ -41,8 +41,9 @@ const ContestChallenges = (props) => {
       );
       if (status === 202) {
         props.snackBar("Question deleted successfully", "success");
+        console.log(challenge,challenges)
         setChallenges(
-          challenges.filter((ques) => ques.question_id !== challenge.question_id)
+          challenges.filter((ques) => ques._id !== challenge._id)
         );
       }
     } catch (err) {
