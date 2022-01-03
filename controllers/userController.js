@@ -317,16 +317,15 @@ const createBulkUsers = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const { page = 1, limit = 10, role = "student" } = req.query;
-    let response = {};
     const role_id = (await Role.findOne({ name: role }))._id;
-    if (page == 1) {
-      const count = await User.countDocuments({ role_id });
-      response.modelCount = count;
-    }
-    const users = await User.find({ role_id, deleted_at: null })
+    let response = {},
+      query = { role_id, deleted_at: null };
+    const count = await User.countDocuments(query);
+    response.modelCount = count;
+    const users = await User.find(query)
       .sort({ regno: "asc" })
       .limit(limit * 1)
-      .skip((page - 1) * limit)
+      .skip((page > 0 ? page - 1 : 1) * limit)
       .populate([
         {
           path: "role_id",

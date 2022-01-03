@@ -25,7 +25,7 @@ app.use(require("./router/route"));
 const startApp = async () => {
   try {
     //* DB CONNECTION
-    await connect(DB, {
+    connect(DB, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
     });

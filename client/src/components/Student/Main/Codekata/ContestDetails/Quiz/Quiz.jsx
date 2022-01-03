@@ -39,11 +39,14 @@ const Quiz = ({ setSideToggle }) => {
     await initComponent();
   }, []);
 
+  let isLast = currentQuestionNumber === quiz?.total_mcqs;
   const initComponent = async () => {
     setSideToggle(true);
     let [mcqs] = await getQuestions();
     setCurrentQuestion(mcqs);
-    setCurrentQuestionNumber(currentQuestionNumber + 1);
+    setCurrentQuestionNumber(
+      isLast ? currentQuestionNumber : currentQuestionNumber + 1
+    );
   };
   const getQuestions = async () => {
     try {
@@ -51,15 +54,14 @@ const Quiz = ({ setSideToggle }) => {
         status,
         data: { mcqs },
       } = await helperService.getQuizQuestions(
-        { id: location.questionId, page: currentQuestionNumber + 1 },
+        { id: location.questionId, page: isLast ? currentQuestionNumber : currentQuestionNumber + 1 },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) return mcqs;
-    } catch (err) {
-    }
+    } catch (err) {}
+    return [];
   };
   let answers = parseQuiz();
-  let isLast = currentQuestionNumber === quiz?.total_mcqs;
   const handleNext = async () => {
     if (!status) return;
     let obj = {
@@ -97,7 +99,10 @@ const Quiz = ({ setSideToggle }) => {
     history.push(`/codekata/${location.id}`);
   };
   return (
-    <div className="container-fluid p-0 Quiz-question-container" style={{height:'100vh',overflowY:'scroll'}}>
+    <div
+      className="container-fluid p-0 Quiz-question-container"
+      style={{ height: "100vh", overflowY: "scroll" }}
+    >
       <div className="d-flex">
         <div className="mr-auto mt-3 ml-4">
           <GoBack onClickHandler={handleOpenQuiz} />

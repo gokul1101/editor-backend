@@ -88,7 +88,7 @@ const getSubmissionsService = async (
     submissions["leaderBoard"] = await Submission.find({ contest_id })
       .sort({ score: "desc", created_at: "asc" })
       .limit(limit * 1)
-      .skip((page - 1) * limit);
+      .skip((page > 0 ? page - 1 : 1) * limit);
     if (page == 1) {
       submissions["totalCount"] =
         user_id && contest_id
@@ -111,13 +111,13 @@ const getSubmissionsService = async (
             .populate({ path: "user_id", model: "users", select: "name regno" })
             .sort({ score: "desc" })
             .limit(limit * 1)
-            .skip((page - 1) * limit)
+            .skip((page > 0 ? page - 1 : 1) * limit)
         : contest_id
         ? await Submission.find({ contest_id })
             .populate({ path: "user_id", model: "users", select: "name regno" })
             .sort({ score: "desc" })
             .limit(limit * 1)
-            .skip((page - 1) * limit)
+            .skip((page > 0 ? page - 1 : 1) * limit)
         : [];
     return Promise.resolve({
       status: 200,
@@ -138,7 +138,7 @@ const getAllSubmissionsService = async (page, limit) => {
     response.modelCount = await Submission.countDocuments();
     const submissions = await Submission.find({})
       .limit(limit * 1)
-      .skip((page - 1) * limit);
+      .skip((page > 0 ? page - 1 : 1) * limit);
     response.total = submissions.length;
     response.submissions = submissions;
     return Promise.resolve({

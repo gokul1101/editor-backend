@@ -569,14 +569,15 @@ const helperService = {
       );
       if (status === 201) {
         return Promise.resolve({
-          code,
+          status,
           message,
         });
       }
     } catch (err) {
+      console.log(err.response)
       return Promise.reject({
         status: err.response.status,
-        data: err.response.data,
+        message: err.response.data,
       });
     }
   },

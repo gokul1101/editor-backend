@@ -167,7 +167,7 @@ const getAllContestWithFilter = async (created_by, page, limit, past) => {
     })
       .sort({ start_date: "desc" })
       .limit(limit * 1)
-      .skip((page - 1) * limit);
+      .skip((page > 0 ? page - 1 : 1) * limit);
     //**ongoing contests */
     if (past === "false") {
       ongoingContests = await Contest.find({
@@ -207,7 +207,7 @@ const getAllContestService = async (page, limit) => {
     //get all contest and return , return nothing if nothing
     const contests = await Contest.find({ deleted_at: null })
       .limit(limit * 1)
-      .skip((page - 1) * limit);
+      .skip((page > 0 ? page - 1 : 1) * limit);
     response.total = contests.length;
     response.contests = contests;
     return Promise.resolve({

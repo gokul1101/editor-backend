@@ -93,17 +93,16 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
       return localCode;
     });
     try {
-      const { code, message } = await helperService.createSubmission(
+      const { status, message } = await helperService.createSubmission(
         { ...payload },
         { headers: { Authorization: authState.user.token } }
       );
-      if (code === 201) {
+      if (status === 201) {
         snackBar(message, "success");
         history.push("/codekata");
       }
     } catch (err) {
-      console.log(err);
-      snackBar(err.message || "", "success");
+      snackBar(err.message, "error");
     } finally {
       hideLoader();
     }

@@ -120,7 +120,7 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
     response.modelCount = count;
     const questions = await Question.find({ quiz_id: id })
       .limit(limit * 1)
-      .skip((page - 1) * limit);
+      .skip((page > 0 ? page - 1 : 1) * limit);
     let mcqs = [];
     for (let i = 0; i < questions.length; i++) {
       let mcq = {
