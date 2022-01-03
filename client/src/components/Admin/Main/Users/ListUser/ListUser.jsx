@@ -105,6 +105,21 @@ const ListUser = (props) => {
   };
 
   const updateUser = async () => {
+    let checkStatus = false;
+    for(let i in user){
+      if(Object.keys(updateDetails).length !== 0 ){
+        for(let j in updateDetails){
+          if(user[i] === updateDetails[j]){
+            checkStatus = true
+            return       
+          }
+        }
+      }
+    } 
+    if(checkStatus === true || Object.keys(updateDetails).length === 0 ){
+      props.snackBar("Already Up-to-Date","info")
+      return
+    }
     try {
       const { status, data } = await helperService.updateUser(
         {

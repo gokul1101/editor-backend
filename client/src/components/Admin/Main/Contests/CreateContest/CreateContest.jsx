@@ -15,7 +15,7 @@ const CreateContest = (props) => {
   };
   //**state declartion start */
   const [authState, authDispatch] = useContext(AuthContext);
-  const [name, setName] = useState(authState?.contest?.name);
+  const [name, setName] = useState(authState?.contest?.name || "");
   const [date, setDate] = useState({
     start_date: convertDate(authState?.contest?.start_date),
     end_date: convertDate(authState?.contest?.end_date),
@@ -24,8 +24,40 @@ const CreateContest = (props) => {
     start_time: authState?.contest?.start_time,
     end_time: authState?.contest?.end_time,
   });
-
+  const validateContestDetails = () => {
+    if (name?.length < 4) {
+      props.snackBar("Contest Name should ", "error");
+      return false;
+    }
+    if (!date.start_date) {
+      props.snackBar("Contest start date in empty", "error");
+      return false;
+    }
+    if (!time.start_time) {
+      props.snackBar("Contest start time in empty", "error");
+      return false;
+    }
+    if (!date.end_date) {
+      props.snackBar("Contest end date in empty", "error");
+      return false;
+    }
+    if (!time.end_time) {
+      props.snackBar("Contest end time in empty", "error");
+      return false;
+    }
+    if (+new Date() > +new Date(`${date.start_date} ${time.start_time}`)) {
+      props.snackBar("Check contest start date or start time", "error");
+      return false;
+    }
+    if (+new Date() > +new Date(`${date.end_date} ${time.end_time}`)) {
+      props.snackBar("Check contest end date or end time", "error");
+      return false;
+    }
+    return true;
+  };
   const createContest = async () => {
+    const flag = validateContestDetails();
+    if (!flag) return;
     try {
       showLoader();
       const { status } = await helperService.createContest(
@@ -35,7 +67,7 @@ const CreateContest = (props) => {
           end_date: date.end_date,
           start_time: time.start_time,
           end_time: time.end_time,
-          created_by : authState?.user?._id
+          created_by: authState?.user?._id,
         },
         { headers: { Authorization: authState.user.token } }
       );
@@ -46,10 +78,12 @@ const CreateContest = (props) => {
       }
     } catch (error) {
       hideLoader();
-      // props.snackBar(error.error,"error")
+      props.snackBar(error.data, "error");
     }
   };
   const updateContest = async () => {
+    const flag = validateContestDetails();
+    if (!flag) return;
     try {
       showLoader();
       const { data, status } = await helperService.updateContest(
@@ -72,6 +106,7 @@ const CreateContest = (props) => {
     }
   };
   useEffect(() => {
+    console.log(props.snackBar);
     // if (props?.title && !authState?.contest) {
     //   fetchContest();
     // }
@@ -128,14 +163,13 @@ const CreateContest = (props) => {
 
           <span className="contest-line-height mr-2">at</span>
           <div className="col-md-4">
-          <InputReducer
+            <InputReducer
               placeholder="Starts at"
               name="Starts at"
               type="time"
               value={time.start_time}
               onClickHandler={(e) => setTime({ ...time, start_time: e })}
             />
-           
           </div>
           <span className="info-circle mr-2 mt-3">
             <i className="fas fa-info-circle"></i>
@@ -143,10 +177,10 @@ const CreateContest = (props) => {
         </div>
         <div className="d-flex">
           <span className="contest-line-height col-md-2">
-            End Time  <span className="contest-star">*</span>
+            End Time <span className="contest-star">*</span>
           </span>
           <div className="col-md-4">
-          <InputReducer
+            <InputReducer
               placeholder="Ends at"
               name="Ends at"
               type="date"

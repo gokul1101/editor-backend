@@ -283,7 +283,7 @@ const AddUser = (props) => {
                   "2021-2025",
                   "2022-2026",
                 ]}
-                name="batch year"
+                name="Batch year"
                 label="Batch year"
                 handleSelect={(e) =>
                   setUser({ ...user, batch_id: e.target.value })
