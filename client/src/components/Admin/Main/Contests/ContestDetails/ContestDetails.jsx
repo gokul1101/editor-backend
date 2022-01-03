@@ -50,55 +50,55 @@ const ContestDetails = (props) => {
     };
   }, []);
   return (
-    <div style={{height:'100vh',overflowY:'scroll'}}>
-      <ul className="container-fluid list-group d-flex flex-row py-2 my-3">
+    <div style={{ height: "100vh", overflowY: "scroll" }}>
+      <ul className="container-fluid list-group d-flex flex-row py-2 px-3 my-3">
         {authState?.contest &&
         !(new Date(authState?.contest?.end_date) < new Date()) ? (
           <>
-            <li className="list-group-item user-group-pill">
-              <NavLink
-                exact
-                className="edit-contest-li px-3 mt-2 mb-2"
-                to={`/contests/${id}/edit`}
-                activeClassName="box arrow-bottom"
-              >
+            <NavLink
+              exact
+              className="edit-contest-li px-3 mt-2 mb-2"
+              to={`/contests/${id}/edit`}
+              activeClassName="box arrow-bottom"
+            >
+              <li className="list-group-item user-group-pill position-relative">
                 <i className="fas fa-plus pr-1 pl-1"></i> Details
-              </NavLink>
-            </li>
-            <li className="list-group-item user-group-pill">
-              <NavLink
-                exact
-                className="edit-contest-li px-3 m-2"
-                to={`/contests/${id}/quizzes`}
-                activeClassName="box arrow-bottom"
-              >
+              </li>
+            </NavLink>
+            <NavLink
+              exact
+              className="edit-contest-li px-3 mt-2 mb-2"
+              to={`/contests/${id}/quizzes`}
+              activeClassName="box arrow-bottom"
+            >
+              <li className="list-group-item user-group-pill position-relative">
                 <i className="fas fa-clipboard-list pr-2 pl-1"></i> Quizzes List
-              </NavLink>
-            </li>
-            <li className="list-group-item user-group-pill">
-              <NavLink
-                exact
-                className="edit-contest-li px-3 m-2"
-                to={`/contests/${id}/challenges`}
-                activeClassName="box arrow-bottom"
-              >
+              </li>
+            </NavLink>
+            <NavLink
+              exact
+              className="edit-contest-li px-3 mt-2 mb-2"
+              to={`/contests/${id}/challenges`}
+              activeClassName="box arrow-bottom"
+            >
+              <li className="list-group-item user-group-pill position-relative">
                 <i className="fas fa-clipboard-list pr-2 pl-1"></i>Challenges
                 List
-              </NavLink>
-            </li>
+              </li>
+            </NavLink>
           </>
         ) : null}
 
-        <li className="list-group-item user-group-pill">
-          <NavLink
-            exact
-            className="edit-contest-li px-3 m-2"
-            to={`/contests/${id}/statistics`}
-            activeClassName="box arrow-bottom"
-          >
+        <NavLink
+          exact
+          className="edit-contest-li px-3 mt-2 mb-2"
+          to={`/contests/${id}/statistics`}
+          activeClassName="box arrow-bottom"
+        >
+          <li className="list-group-item user-group-pill position-relative">
             <i className="fas fa-clipboard-list pr-2 pl-1"></i>Statictics
-          </NavLink>
-        </li>
+          </li>
+        </NavLink>
       </ul>
       <div>
         <Switch>
@@ -122,11 +122,10 @@ const ContestDetails = (props) => {
               <Route path={`/contests/:id/statistics`} exact>
                 <ContestStatictics snackBar={props.snackBar} />
               </Route>
-              <Route path="*">
-                <PageNotFound />
-              </Route>
             </>
-          ) : null}
+          ) : (
+            <></>
+          )}
           <Route path={`/contests/:id/statistics`} exact>
             <ContestStatictics snackBar={props.snackBar} />
           </Route>

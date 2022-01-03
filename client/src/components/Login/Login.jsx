@@ -6,8 +6,8 @@ import CustomButton from "../Reducer/CustomButton/CustomButton";
 import { AuthContext } from "../../contexts/AuthContext";
 import helperService from "../../services/helperService";
 import { useHistory } from "react-router";
-  // import Visibility from '@mui/icons-material/Visibility';
-  // import VisibilityOff from '@mui/icons-material/VisibilityOff';
+// import Visibility from '@mui/icons-material/Visibility';
+// import VisibilityOff from '@mui/icons-material/VisibilityOff';
 const Login = (props) => {
   const history = useHistory();
   //** Context Consumer */
@@ -67,8 +67,7 @@ const Login = (props) => {
       props.snackBar(err.message, "error");
     }
   };
-  React.useEffect(() => {
-  }, [change]);
+  React.useEffect(() => {}, [change]);
   const handleKeypress = (e) => {
     if (e.keyCode === 13) {
       handleSubmit();
@@ -85,7 +84,7 @@ const Login = (props) => {
               <p className="text-muted">Learn , code , repeat</p>
 
               <div className="input-field mb-2">
-              <i className="fas fa-id-card-alt"></i>  
+                <i className="fas fa-id-card-alt"></i>
                 <input
                   type="text"
                   placeholder="Register number"
@@ -98,7 +97,7 @@ const Login = (props) => {
                   type="password"
                   placeholder="Password"
                   // {...password ? <VisibilityOff /> : <Visibility />}
-                   onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <CustomButton
@@ -113,7 +112,7 @@ const Login = (props) => {
               <h2 className="title">Admin Sign in</h2>
               <p className="highlight">Learn , Code , Repeat</p>
               <div className="input-field">
-              <i className="fas fa-id-card-alt"></i>
+                <i className="fas fa-id-card-alt"></i>
                 <input
                   type="text"
                   placeholder="Register no"
