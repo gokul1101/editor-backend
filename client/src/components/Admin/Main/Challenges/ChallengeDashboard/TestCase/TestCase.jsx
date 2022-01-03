@@ -56,8 +56,12 @@ const TestCase = (props) => {
       );
       if (status === 200) {
         setTestcases(data.testcases);
+        props.snackBar(data.message,"success")
+
       }
-    } catch (err) {}
+    } catch (err) {
+       props.snackBar(err.data.message,"error")
+    }
   };
   useEffect(() => {
     fetchTestcases();

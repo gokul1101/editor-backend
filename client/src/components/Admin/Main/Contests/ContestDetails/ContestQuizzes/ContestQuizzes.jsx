@@ -67,7 +67,7 @@ const ContestQuizzes = (props) => {
         setOpen(false);
       }
     } catch (err) {
-      props.snackBar(err, "error");
+      props.snackBar(err?.data, "error");
       console.log(err);
     }
   };
