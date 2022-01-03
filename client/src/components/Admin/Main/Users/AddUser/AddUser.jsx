@@ -8,7 +8,7 @@ import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
-
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 const useStyles = makeStyles((theme) => ({
   root: {
     border: "1px solid #1E2D64",
@@ -283,7 +283,7 @@ const AddUser = (props) => {
                   "2021-2025",
                   "2022-2026",
                 ]}
-                name="batch year"
+                name="Batch year"
                 label="Batch year"
                 handleSelect={(e) =>
                   setUser({ ...user, batch_id: e.target.value })
@@ -296,7 +296,7 @@ const AddUser = (props) => {
             className="btn-hover color-11 mt-4"
             onClickHandler={createUser}
           >
-            <i className="fas fa-plus pr-2 pl-2"></i>CREATE USER
+            <AddCircleIcon/><span className="ml-2">CREATE USER</span>
           </CustomButton>
         </div>
         <div className="col-md-4 p-2 border m-1">

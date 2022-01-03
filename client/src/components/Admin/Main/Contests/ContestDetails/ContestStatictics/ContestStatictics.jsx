@@ -23,6 +23,7 @@ const ContestStatictics = (props) => {
       );
       if (status === 200) {
         setSubmissions(data?.submissions?.submissions || []);
+
         if (!total) setTotal(data?.submissions?.totalCount || 0);
         setLeaderBoard(data?.submissions?.submissions?.slice(0, 5) || []);
       }

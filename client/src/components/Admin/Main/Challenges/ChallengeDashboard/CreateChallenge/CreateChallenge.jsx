@@ -14,6 +14,7 @@ const CreateChallenge = (props) => {
   const [authState] = useContext(AuthContext);
   const history = useHistory();
   const { id } = useParams();
+  const [updateDetails, setUpdateDetails] = useState({});
   const [challenge, setChallenge] = useState({});
   const [difficultyId, setDifficultyId] = useState("");
   const createChallenge = async () => {
@@ -29,7 +30,6 @@ const CreateChallenge = (props) => {
       props.snackBar("Challenge Statement is Empty", "error");
       return;
     }
-
     if (challenge?.input_format?.length === 0) {
       props.snackBar("Input is Empty", "error");
       return;
@@ -42,7 +42,7 @@ const CreateChallenge = (props) => {
       props.snackBar("contraints is Empty", "error");
       return;
     }
-    if (!challenge?.difficulty_id) {
+    if (!challenge?.difficulty_id?.length === 0) {
       props.snackBar("Difficulty is not Selected", "error");
       return;
     }
@@ -64,6 +64,26 @@ const CreateChallenge = (props) => {
     }
   };
   const updateChallenge = async () => {
+    let checkStatus = false;
+    for(let i in challenge){
+      if(Object.keys(updateDetails).length !== 0 ){
+        for(let j in updateDetails){
+          if(challenge[i] === updateDetails[j]){
+            checkStatus = true
+                   
+          }
+        }
+      }
+    } 
+    if(checkStatus === true || Object.keys(updateDetails).length === 0 ){
+      props.snackBar("Already Up-to-Date","info")
+      return
+    }
+    if(Object.keys(updateDetails).length === 0 ){
+      props.snackBar("Already Up-to-Date","info")
+      return
+    }
+   
     if (challenge.name.length <= 0) {
       props.snackBar("Challenge Name is Empty", "error");
       return;
@@ -76,7 +96,6 @@ const CreateChallenge = (props) => {
       props.snackBar("Challenge Statement is Empty", "error");
       return;
     }
-
     if (challenge.input_format.length <= 0) {
       props.snackBar("Input is Empty", "error");
       return;
@@ -89,11 +108,11 @@ const CreateChallenge = (props) => {
       props.snackBar("contraints is Empty", "error");
       return;
     }
-    if (challenge.difficulty_id === undefined) {
+    if (challenge.difficulty_id.length <= 0) {
       props.snackBar("Difficulty is not Selected", "error");
       return;
     }
-    if (challenge.max_score === undefined) {
+    if (challenge.max_score.length <= 0) {
       props.snackBar("Maximum Score is Empty", "error");
       return;
     }
@@ -159,8 +178,11 @@ const CreateChallenge = (props) => {
               InputLabelProps={{
                 shrink: true,
               }}
-              onClickHandler={(value) =>
-                setChallenge({ ...challenge, name: value })
+              onClickHandler={(value) =>{
+
+                setUpdateDetails({...updateDetails,name:value});
+                setChallenge({ ...challenge, name: value });
+              }
               }
             />
           </div>
@@ -182,8 +204,10 @@ const CreateChallenge = (props) => {
                 shrink: true,
               }}
               value={challenge.statement}
-              onClickHandler={(value) =>
-                setChallenge({ ...challenge, statement: value })
+              onClickHandler={(value) =>{
+                setUpdateDetails({...updateDetails,statement:value});
+                setChallenge({ ...challenge, statement: value });
+              }
               }
             />
           </div>
@@ -204,8 +228,10 @@ const CreateChallenge = (props) => {
               }}
               variant="outlined"
               value={challenge.input_format}
-              onClickHandler={(value) =>
-                setChallenge({ ...challenge, input_format: value })
+              onClickHandler={(value) =>{
+                setUpdateDetails({...updateDetails,input_format:value});
+                setChallenge({ ...challenge, input_format: value });
+              }
               }
             />
           </div>
@@ -226,8 +252,10 @@ const CreateChallenge = (props) => {
               }}
               variant="outlined"
               value={challenge.output_format}
-              onClickHandler={(value) =>
-                setChallenge({ ...challenge, output_format: value })
+              onClickHandler={(value) =>{
+                setUpdateDetails({...updateDetails,output_format:value});
+                setChallenge({ ...challenge, output_format: value });
+              }
               }
             />
           </div>
@@ -248,8 +276,10 @@ const CreateChallenge = (props) => {
                 shrink: true,
               }}
               value={challenge.description}
-              onClickHandler={(value) =>
-                setChallenge({ ...challenge, description: value })
+              onClickHandler={(value) =>{
+                setUpdateDetails({...updateDetails,description:value});
+                setChallenge({ ...challenge, description: value });
+              }
               }
             />
           </div>
@@ -268,8 +298,10 @@ const CreateChallenge = (props) => {
                 shrink: true,
               }}
               value={challenge.constraints}
-              onClickHandler={(value) =>
-                setChallenge({ ...challenge, constraints: value })
+              onClickHandler={(value) =>{
+                setUpdateDetails({...updateDetails,constraints:value});
+                setChallenge({ ...challenge, constraints: value });
+              }
               }
             />
           </div>
@@ -305,8 +337,11 @@ const CreateChallenge = (props) => {
                 shrink: true,
               }}
               value={challenge.max_score}
-              onClickHandler={(value) =>
-                setChallenge({ ...challenge, max_score: value })
+              onClickHandler={(value) =>{
+
+                setUpdateDetails({...updateDetails,max_score:value});
+                setChallenge({ ...challenge, max_score: value });
+              }
               }
             />
           </div>

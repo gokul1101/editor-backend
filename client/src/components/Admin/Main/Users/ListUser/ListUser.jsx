@@ -15,6 +15,10 @@ import "./ListUser.css";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
+import FilterListIcon from '@material-ui/icons/FilterList';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import EditIcon from '@material-ui/icons/Edit';
+import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -105,6 +109,21 @@ const ListUser = (props) => {
   };
 
   const updateUser = async () => {
+    // console.log(user,updateDetails);
+    // let checkStatus = false;
+    // for(let i in user){
+    //   if(Object.keys(updateDetails).length !== 0 ){
+    //     for(let j in updateDetails){
+    //       if(user[i] === updateDetails[j]){
+    //         checkStatus = true
+    //       }
+    //     }
+    //   }
+    // } 
+    // if(checkStatus === true || Object.keys(updateDetails).length === 0 ){      
+    //   props.snackBar("Already Up-to-Date","info")  
+    //   return
+    // }
     try {
       const { status, data } = await helperService.updateUser(
         {
@@ -134,7 +153,7 @@ const ListUser = (props) => {
         <div className="d-flex justify-content-between p-3 m-3">
           <div>
             <div className="filter d-flex">
-              <i className="fas fa-filter mt-3"></i>
+              <FilterListIcon className="m-2"/>
               <h6 className="ml-4 font-weight-bolder mt-3 highlight-text ">
                 Filter By :{" "}
               </h6>
@@ -171,7 +190,7 @@ const ListUser = (props) => {
 
             <div>
               <button className="pr-4 pl-4 mr-2 d-load-btn ml-3">
-                <i className="fas fa-download"></i>
+                <GetAppIcon/>
                 <span className="ml-2 font-weight-bolder">
                   Download Details
                 </span>
@@ -286,11 +305,11 @@ const ListUser = (props) => {
                       className="pr-4 pl-4 mr-2 edit-btn "
                       onClick={() => editUserDetail(e)}
                     >
-                      <i className="fas fa-pencil-alt"></i>
+                      <EditIcon/>
                       <span className="ml-2">Edit</span>
                     </button>
                     <button className="pr-4 pl-4 delete-btn" disabled>
-                      <i className="fas fa-trash"></i>
+                      <RestoreFromTrashIcon/>
                       <span className="ml-2">Delete</span>
                     </button>
                   </div>

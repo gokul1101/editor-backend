@@ -15,7 +15,6 @@ const CustomButton = ({
       id={id}
       onClick={onClickHandler}
       onKeyPress={onKeyPressHandler}
-      disabled = {disabled}
     >
       {children}
     </button>

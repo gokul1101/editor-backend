@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import CreateIcon from "@material-ui/icons/Create";
+
 import "./ContestQuizzes.css";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -14,6 +13,7 @@ import helperService from "../../../../../../services/helperService";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import { Link, useParams } from "react-router-dom";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
+import ContestTable from "../ContestTable/ContestTable";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -66,7 +66,7 @@ const ContestQuizzes = (props) => {
         setOpen(false);
       }
     } catch (err) {
-      props.snackBar(err, "error");
+      props.snackBar(err?.data, "error");
       console.log(err);
     }
   };
@@ -185,42 +185,13 @@ const ContestQuizzes = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <div className="challenge-chips d-flex flex-wrap border p-2 mt-4">
-        {quizzArr?.length > 0 ? (
-          quizzArr?.map((quiz) => {
-            return (
-              <div className="create-con" key={quiz._id}>
-                <div className="p-2 mr-2 ml-2 quizzes-chip d-flex">
-                  <div className="px-2">
-                    <DeleteOutlineIcon
-                      onClick={() => deleteQuiz(quiz)}
-                      style={{ cursor: "pointer" }}
-                    />
-                  </div>
-                  <div
-                    className="px-2"
-                    onClick={() => {
-                      setUpdateQuiz(true);
-                      handleClickOpen();
-                      setQuizName({ id: quiz._id, name: quiz.name });
-                    }}
-                  >
-                    <CreateIcon style={{ cursor: "pointer" }} />
-                  </div>
-                  <Link
-                    style={{ color: "white" }}
-                    to={`/quizzes/${quiz._id}/add-question`}
-                  >
-                    <span className="pl-2">{quiz.name}</span>
-                  </Link>
-                </div>
-              </div>
-            );
-          })
-        ) : (
-          <span>No changes have been made yet</span>
-        )}
-      </div>
+      <ContestTable
+        data={quizzArr}
+        deleteQuestion={deleteQuiz}
+        setUpdateQuestion={setUpdateQuiz}
+        setQuestionName={setQuizName}
+        handleClickOpen={handleClickOpen}
+      />
     </div>
   );
 };
