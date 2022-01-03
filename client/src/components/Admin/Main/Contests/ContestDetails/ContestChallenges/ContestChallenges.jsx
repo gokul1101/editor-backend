@@ -13,6 +13,7 @@ import { useState } from "react";
 import helperService from "../../../../../../services/helperService";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
+import ContestTable from "../ContestTable/ContestTable";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -42,7 +43,7 @@ const ContestChallenges = (props) => {
       if (status === 202) {
         props.snackBar("Question deleted successfully", "success");
         setChallenges(
-          challenges.filter((ques) => ques.question_id !== challenge.question_id)
+          challenges.filter((ques) => ques._id !== challenge._id)
         );
       }
     } catch (err) {
@@ -109,34 +110,10 @@ const ContestChallenges = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <div className="challenge-chips d-flex flex-wrap border p-2 mt-4">
-        {challenges?.length > 0 ? (
-          challenges.map((challenge) => {
-            return (
-              <div className="create-con" key={challenge._id}>
-                <div
-                  className="p-2 mr-2 ml-2 quizzes-chip"
-                  style={{
-                    background: "#21A366",
-                    color: "#fff",
-                    borderRadius: "10px",
-                  }}
-                >
-                  <DeleteOutlineIcon onClick = {() => deleteQuestion(challenge)}/>
-                  <Link
-                    to={`/challenges/${challenge._id}`}
-                    style={{ color: "white" }}
-                  >
-                    <span className="pl-2">{challenge.name}</span>
-                  </Link>
-                </div>
-              </div>
-            );
-          })
-        ) : (
-          <span>No changes have been made yet</span>
-        )}
-      </div>
+      <ContestTable
+        data={challenges}
+        deleteQuestion={deleteQuestion}
+      />
     </div>
   );
 };

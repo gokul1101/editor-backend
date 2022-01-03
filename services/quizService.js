@@ -125,7 +125,6 @@ const deleteQuizService = async ({ id, name }) => {
       return Promise.reject({ status: 404, message: `Quizz not found` });
 
     const questions = await Question.find({ quiz_id: quiz._id });
-    console.log(questions[0]._id);
     await Promise.all(
       questions.map(
         async (question) =>

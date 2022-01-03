@@ -4,7 +4,9 @@ import PropTypes from "prop-types";
 import "./DropFileInput.css";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import ErrorLogDialogBox from "../../../../../Reducer/ErrorLogDialogBox/ErrorLogDialogBox";
-
+import GetAppIcon from '@material-ui/icons/GetApp';
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
+import DeleteIcon from '@material-ui/icons/Delete';
 const DropFileInput = (props) => {
   useEffect(() => {
   }, []);
@@ -105,10 +107,10 @@ const DropFileInput = (props) => {
                 <span>{item.name}</span>
                 <div className="d-flex justify-content-between">
                   <span>{item.size}B</span>
-                  <i
-                    className="far fa-trash-alt del-item m-1"
-                    onClick={() => fileRemove(item)}
-                  ></i>
+                  
+                  <CustomButton onClick={() => fileRemove(item)}>
+                    <DeleteIcon/>
+                  </CustomButton>
                 </div>
               </div>
             </div>
@@ -119,7 +121,7 @@ const DropFileInput = (props) => {
               className="btn-hover color-11 mt-2"
               onClickHandler={bulkUser}
             >
-              <i className="fas fa-upload pr-2 pl-2"></i>
+              <CreateNewFolderIcon/>
               {"create Users"}
             </CustomButton>
           </div>
@@ -150,7 +152,7 @@ const DropFileInput = (props) => {
               <i className="fas fa-download pr-2 pl-2"></i>Download Sample file
             </button> */}
             <CustomButton className="btn-hover color-11 mt-4">
-              <i className="fas fa-download pr-2 pl-2"></i>Download Sample file
+              <GetAppIcon/>Download Sample file
             </CustomButton>
           </div>
         </div>

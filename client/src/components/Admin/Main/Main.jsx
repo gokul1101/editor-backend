@@ -15,7 +15,10 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
 import ErrorLogs from "./ErrorLogs/ErrorLogs";
 import CreateChallenge from "./Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
-import ContestStatictics from "./Contests/ContestDetails/ContestStatictics/ContestStatictics";
+import HomeIcon from "@material-ui/icons/Home";
+import GroupIcon from "@material-ui/icons/Group";
+import AssignmentIcon from "@material-ui/icons/Assignment";
+import WarningIcon from "@material-ui/icons/Warning";
 const Main = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle] = useState(false);
@@ -45,11 +48,13 @@ const Main = (props) => {
             <li className="nav-item dash-item mb-2 color-11">
               <NavLink
                 exact
-                className="nav-link dash-li"
+                className="d-flex nav-link dash-li"
                 to="/admin-dashboard"
                 activeClassName="home-active color-11"
               >
-                <i className="fas fa-home pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <HomeIcon />
+                </div>
                 <span className="hide-span">Dashboard</span>
                 <span className="tooltip">Dashboard</span>
               </NavLink>
@@ -58,9 +63,11 @@ const Main = (props) => {
               <NavLink
                 activeClassName="active-class"
                 to="/users"
-                className="nav-link dash-li color-11"
+                className="d-flex nav-link dash-li color-11"
               >
-                <i className="fas fa-tasks pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <GroupIcon />
+                </div>
                 <span className="hide-span">Users</span>
                 <span className="tooltip">Users</span>
               </NavLink>
@@ -69,9 +76,11 @@ const Main = (props) => {
               <NavLink
                 activeClassName="active-class color-11"
                 to="/contests"
-                className="nav-link dash-li"
+                className="d-flex nav-link dash-li"
               >
-                <i className="fas fa-trophy pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <AssignmentIcon />
+                </div>
                 <span className="hide-span">Contests</span>
                 <span className="tooltip">Contests</span>
               </NavLink>
@@ -80,9 +89,11 @@ const Main = (props) => {
               <NavLink
                 activeClassName="active-class color-11"
                 to={`/error-logs/${authState?.user?._id}`}
-                className="nav-link dash-li"
+                className="d-flex nav-link dash-li"
               >
-                <i className="fas fa-road pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <WarningIcon/>
+                </div>
                 <span className="hide-span">Error Logs</span>
                 <span className="tooltip">Error Logs</span>
               </NavLink>
