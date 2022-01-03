@@ -83,11 +83,9 @@ const Compiler = (props) => {
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 200) {
-        console.log(data);
         setOutput(data);
       }
     } catch (err) {
-      console.log(err);
       setOutput(err.data);
     }
   };

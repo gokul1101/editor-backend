@@ -36,8 +36,6 @@ const Articles = (props) => {
       }
     );
     const data = await res.json();
-    console.log(data);
-    // setPosts(data);
   };
   useEffect(() => {
     props.setSideToggle(false);

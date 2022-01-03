@@ -7,7 +7,6 @@ import GoBack from "../../../Reducer/GoBack/GoBack";
 import PageNotFound from "../../../Reducer/PageNotFound/404";
 const Users = (props) => {
   const history = useHistory();
-  console.log(props);
   return (
     <div className="container-fluid add-user-container mt-4">
       <ul className="list-group d-flex  p-2 mt-3 mb-3">

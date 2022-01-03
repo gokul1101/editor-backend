@@ -1,18 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 
-import Slide from "@material-ui/core/Slide";
 import "./DropFileInput.css";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import ErrorLogDialogBox from "../../../../../Reducer/ErrorLogDialogBox/ErrorLogDialogBox";
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+
 const DropFileInput = (props) => {
   useEffect(() => {
-    console.log(props);
   }, []);
  // const theme = useTheme();
   //const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -35,7 +29,6 @@ const DropFileInput = (props) => {
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
       // const updatedList = [newFile];
-      console.log([newFile]);
       setFileList([newFile]);
     } else {
       props.snackBar("Please select a valid  excel file", "error");
@@ -43,14 +36,13 @@ const DropFileInput = (props) => {
   };
 
   const bulkUser = () => {
-    console.log(fileList);
     props.onFileChange(fileList);
     setUpload(true);
   };
 
   const [open, setOpen] = React.useState(false);
-  const [upload, setUpload] = useState(false);
-  const [logs,setLogs] = useState({})
+  const [, setUpload] = useState(false);
+  const [,setLogs] = useState({})
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -73,7 +65,6 @@ const DropFileInput = (props) => {
   },[props.reqflag])
   useEffect(() => {
     setLogs(props?.logs)
-    console.log(props)
   })
   return (
     <>
@@ -133,7 +124,6 @@ const DropFileInput = (props) => {
             </CustomButton>
           </div>
           <div className="d-flex align-items-end justify-content-end mt-3 p-2">
-            {console.log('at line 142',props?.logs?.totalLogs)}
             {props?.logs?.totalLogs >= 0 && (
               <div className="log-file">
                 <span

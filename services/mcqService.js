@@ -14,9 +14,9 @@ const createMCQ = async ({ type_id, quiz_id, statement, options }) => {
   };
   let newAnswer = new Answer(answer);
   try {
+    await updateQuizService({ id: quiz_id, total_mcqs: 1 });
     await newQuestion.save();
     await newAnswer.save();
-    await updateQuizService({ id: quiz_id, total_mcqs: 1 });
     return Promise.resolve({
       status: 201,
       message: "MCQ created successfully.",
@@ -150,18 +150,27 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
     });
   }
 };
-const deleteMCQ = async ({ question_id, answer_id, quiz_id }) => {
+const deleteMCQ = async ({
+  question_id,
+  answer_id,
+  quiz_id,
+  need_update = true,
+}) => {
   try {
-    if (!question_id || !answer_id) {
+    console.log(question_id,answer_id,quiz_id,need_update)
+    if (!question_id && !answer_id) {
       return Promise.reject({
         status: 406,
         message: `Invalid parameters found`,
       });
     }
     const question_result = await Question.findByIdAndDelete(question_id);
-    await updateQuizService({ id: quiz_id, total_mcqs: -1 });
+    if (need_update) await updateQuizService({ id: quiz_id, total_mcqs: -1 });
     if (question_result) {
-      const answer_result = await Answer.findByIdAndDelete(answer_id);
+      let answer_result = null;
+      if (answer_id) answer_result = await Answer.findByIdAndDelete(answer_id);
+      else if (question_id && answer_result)
+        answer_result = await Answer.findOneAndDelete({ question_id });
       if (answer_result) {
         return Promise.resolve({
           status: 202,

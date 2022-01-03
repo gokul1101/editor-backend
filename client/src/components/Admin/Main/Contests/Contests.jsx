@@ -36,23 +36,21 @@ const Contests = (props) => {
           upcomingContests,
           pastContestsCount,
         } = data.message;
-        // console.log(data);
         setContests({
           pastContestsCount,
           past: pastContests,
           ongoing:
             ongoingContests.length > 0
-              ? [...contests.ongoing, ...ongoingContests]
+              ? [...ongoingContests]
               : contests.ongoing,
           upcoming:
             upcomingContests.length > 0
-              ? [...contests.upcoming, ...upcomingContests]
+              ? [...upcomingContests]
               : contests.upcoming,
         });
         if (!past) hideLoader();
       }
     } catch (err) {
-      console.log(err);
       hideLoader();
     }
   };
@@ -139,7 +137,6 @@ const Contests = (props) => {
         </div>
         <div className="d-flex flex-column">
           {contests?.upcoming?.map((event) => {
-            console.log(event);
             return (
               <div className="d-flex mt-2 mb-2">
                 <i className="fas fa-link contest-link position-relative"></i>
@@ -214,16 +211,19 @@ const Contests = (props) => {
         </div>
       </div>
       <div>
+        {
+          contests?.pastContestsCount > limit && 
         <Pagination
-          count={
-            Math.floor(contests?.pastContestsCount / limit) +
-            (contests?.pastContestsCount % limit !== 0 ? 1 : 0)
-          }
-          color="primary"
-          variant="text"
-          className="mt-5 d-flex justify-content-center"
-          onChange={(e, value) => handlePagination(e, value)}
+        count={
+          Math.floor(contests?.pastContestsCount / limit) +
+          (contests?.pastContestsCount % limit !== 0 ? 1 : 0)
+        }
+        color="primary"
+        variant="text"
+        className="mt-5 d-flex justify-content-center"
+        onChange={(e, value) => handlePagination(e, value)}
         />
+      }
       </div>
     </div>
   );

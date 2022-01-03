@@ -21,7 +21,6 @@ const ErrorLogs = (props) => {
   };
 
   const fetchErrorLogs = async () => {
-    // console.log(authState?.user);
     try {
       const { data, status } = await helperService.getErrorLogs(
         { created_by: id },
@@ -33,7 +32,6 @@ const ErrorLogs = (props) => {
       }
     } catch (err) {
       props.snackBar(err.data,"error")
-      console.log(err, "at error logs");
     }
   };
   useEffect(() => {

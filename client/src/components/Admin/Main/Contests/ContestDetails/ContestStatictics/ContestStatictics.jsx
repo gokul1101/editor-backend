@@ -22,13 +22,11 @@ const ContestStatictics = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        console.log(data.submissions)
         setSubmissions(data?.submissions?.submissions || []);
         if (!total) setTotal(data?.submissions?.totalCount || 0);
-        if (data?.leaderBoard) setLeaderBoard(data?.leaderBoard || []);
+        if (+page === 1) setLeaderBoard(data?.submissions.slice(0,5) || []);
       }
     } catch (err) {
-      console.log(err);
     }
   };
   useEffect(() => {
@@ -54,7 +52,7 @@ const ContestStatictics = (props) => {
 
           {submissions.map((e, id) => {
             return (
-              <div className="stats d-flex w-100">
+              <div className="stats d-flex w-100" key={id}>
                 <div className="col-md-2 stats-detail">{id + 1}</div>
                 <div className="col-md-2 stats-detail">{e.user_id.regno}</div>
                 <div className="col-md-3 stats-detail">{e.user_id.name}</div>
@@ -64,13 +62,16 @@ const ContestStatictics = (props) => {
             );
           })}
           <div>
+            {
+              total > limit && 
             <Pagination
-              count={Math.floor(total / limit) + (total % limit !== 0 ? 1 : 0)}
-              color="primary"
-              variant="text"
-              className="mt-5 d-flex justify-content-center"
-              onChange={(e, value) => handlePagination(e, value)}
+            count={Math.floor(total / limit) + (total % limit !== 0 ? 1 : 0)}
+            color="primary"
+            variant="text"
+            className="mt-5 d-flex justify-content-center"
+            onChange={(e, value) => handlePagination(e, value)}
             />
+          }
           </div>
         </div>
 

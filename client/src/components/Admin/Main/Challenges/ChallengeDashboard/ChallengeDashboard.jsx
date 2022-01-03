@@ -20,20 +20,17 @@ const ChallengeDashboard = (props) => {
       if (status === 200) {
         authDispatch({ type: "SET_CHALLENGE", payload: { ...question } });
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
-  useEffect(async () => {
-    console.log("inside dashboard");
-    if (!authState?.challenge) await fetchChallenge();
+  useEffect(() => {
+    if (!authState?.challenge) fetchChallenge();
   }, []);
 
   return (
     <>
       <div
-        className="challenge-container container"
-        style={{ height: "100vh", overflowY: "scroll" }}
+        className="challenge-container"
+        style={{ height: "100vh", overflowY: "auto" }}
       >
         <ul className="list-group d-flex align-items-center justify-content-center flex-row p-2 mt-3 mb-3">
           <li className="list-group-item user-group-pill">

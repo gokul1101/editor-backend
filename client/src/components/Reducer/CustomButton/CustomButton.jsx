@@ -8,7 +8,6 @@ const CustomButton = ({
   onKeyPressHandler,
   disabled
 }) => {
-  console.log(disabled)
   return (
     <button
       disabled = {disabled}

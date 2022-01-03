@@ -13,7 +13,6 @@ import CreateQuiz from "./Quizzes/CreateQuiz/CreateQuiz";
 import AddQuiz from "./Quizzes/CreateQuiz/AddQuiz/AddQuiz";
 import { AuthContext } from "../../../contexts/AuthContext";
 import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
-import Report from "./Report/Report";
 import ErrorLogs from "./ErrorLogs/ErrorLogs";
 import CreateChallenge from "./Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
 import ContestStatictics from "./Contests/ContestDetails/ContestStatictics/ContestStatictics";
@@ -23,7 +22,6 @@ const Main = (props) => {
   const [sideToggle] = useState(false);
   useEffect(() => {
     props.fetchUser();
-    console.log(props.snackBar);
   }, []);
   return (
     <div className="container-fluid p-0">
@@ -77,17 +75,6 @@ const Main = (props) => {
                 <i className="fas fa-trophy pr-4 pl-4 dash-icon shake"></i>
                 <span className="hide-span">Contests</span>
                 <span className="tooltip">Contests</span>
-              </NavLink>
-            </li>
-            <li className="nav-item dash-item mb-2 color-11">
-              <NavLink
-                activeClassName="active-class color-11"
-                to={`/report`}
-                className="nav-link dash-li"
-              >
-                <i className="fas fa-road pr-4 pl-4 dash-icon shake"></i>
-                <span className="hide-span">Report</span>
-                <span className="tooltip">Report</span>
               </NavLink>
             </li>
             <li className="nav-item dash-item mb-2 color-11">
@@ -172,9 +159,6 @@ const Main = (props) => {
               <Route path="/challenges/:id/challenge/create">
                 <CreateChallenge snackBar={props.snackBar} />
               </Route>
-            </Route>
-            <Route path="/report" exact>
-              <Report snackBar={props.snackBar} />
             </Route>
             <Route path="/error-logs/:id" exact>
               <ErrorLogs snackBar={props.snackBar} />

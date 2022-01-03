@@ -45,7 +45,6 @@ const CreateContest = (props) => {
         history.push(`/contests`);
       }
     } catch (error) {
-      console.log(error);
       hideLoader();
       // props.snackBar(error.error,"error")
     }
@@ -65,11 +64,10 @@ const CreateContest = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        props.snackBar("Contest updated successfully", "success");
+        props.snackBar(data.message, "success");
         hideLoader();
       }
     } catch (error) {
-      console.log(error);
       hideLoader();
     }
   };
@@ -116,10 +114,9 @@ const CreateContest = (props) => {
         </div>
         <div className="d-flex mt-2 mb-3">
           <span className="contest-line-height col-md-2">
-            Date <span className="contest-star">*</span>
+            Start Time <span className="contest-star">*</span>
           </span>
           <div className="col-md-4">
-            {console.log("At line 79", date)}
             <InputReducer
               placeholder="Starts at"
               name="Starts at"
@@ -131,13 +128,14 @@ const CreateContest = (props) => {
 
           <span className="contest-line-height mr-2">at</span>
           <div className="col-md-4">
-            <InputReducer
-              placeholder="Ends at"
-              name="Ends at"
-              type="date"
-              value={date.end_date}
-              onClickHandler={(e) => setDate({ ...date, end_date: e })}
+          <InputReducer
+              placeholder="Starts at"
+              name="Starts at"
+              type="time"
+              value={time.start_time}
+              onClickHandler={(e) => setTime({ ...time, start_time: e })}
             />
+           
           </div>
           <span className="info-circle mr-2 mt-3">
             <i className="fas fa-info-circle"></i>
@@ -145,15 +143,15 @@ const CreateContest = (props) => {
         </div>
         <div className="d-flex">
           <span className="contest-line-height col-md-2">
-            Time <span className="contest-star">*</span>
+            End Time  <span className="contest-star">*</span>
           </span>
           <div className="col-md-4">
-            <InputReducer
-              placeholder="Starts at"
-              name="Starts at"
-              type="time"
-              value={time.start_time}
-              onClickHandler={(e) => setTime({ ...time, start_time: e })}
+          <InputReducer
+              placeholder="Ends at"
+              name="Ends at"
+              type="date"
+              value={date.end_date}
+              onClickHandler={(e) => setDate({ ...date, end_date: e })}
             />
           </div>
           <span className="contest-line-height mr-2">at</span>

@@ -33,7 +33,6 @@ const Login = (props) => {
         return;
       }
     } else if (change) {
-      console.log(register);
       if (!/^\w{6}/.test(register)) {
         props.snackBar(
           "Register number should contain only 6 characters.",
@@ -69,7 +68,6 @@ const Login = (props) => {
     }
   };
   React.useEffect(() => {
-    console.log(change);
   }, [change]);
   const handleKeypress = (e) => {
     if (e.keyCode === 13) {
@@ -143,7 +141,7 @@ const Login = (props) => {
 
         <div className="panels-cont">
           <div className="panel left-panel">
-            <div className="content">
+            <div className="content d-flex align-items-center justify-content-center flex-column">
               <h3>Are you admin ?</h3>
               <p>
                 Click here to login with you adminstration ID to create contest
@@ -160,7 +158,7 @@ const Login = (props) => {
             <img src={Hello} className="image img-fluid" alt="admin-signin" />
           </div>
           <div className="panel right-panel">
-            <div className="content">
+            <div className="content d-flex align-items-center justify-content-center flex-column">
               <h3>Are you Student ?</h3>
               <p>
                 Click here to login as a student with the help of register

@@ -4,8 +4,7 @@ import ContestChallenges from "./ContestChallenges/ContestChallenges";
 import ContestQuizzes from "./ContestQuizzes/ContestQuizzes";
 import ContestStatictics from "./ContestStatictics/ContestStatictics";
 import CreateContest from "../CreateContest/CreateContest";
-// import ChallengeDashboard from "../../Challenges/ChallengeDashboard/ChallengeDashboard";
-// import Challenges from "../../Challenges/Challenges";
+
 import CreateChallenge from "../../Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
 import { useContext, useEffect } from "react";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
@@ -27,7 +26,6 @@ const ContestDetails = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        console.log(data);
         // setName(data?.contest?.name);
         // setDate({
         //   start_date: convertDate(data?.contest?.start_date),
@@ -42,7 +40,6 @@ const ContestDetails = (props) => {
         // authDispatch({})
       }
     } catch (err) {
-      console.log(err);
       hideLoader();
     }
   };
@@ -53,15 +50,15 @@ const ContestDetails = (props) => {
     };
   }, []);
   return (
-    <>
-      <ul className="container-fluid list-group d-flex flex-row py-2 my-3 border">
+    <div style={{height:'100vh',overflowY:'scroll'}}>
+      <ul className="container-fluid list-group d-flex flex-row py-2 my-3">
         {authState?.contest &&
         !(new Date(authState?.contest?.end_date) < new Date()) ? (
           <>
             <li className="list-group-item user-group-pill">
               <NavLink
                 exact
-                className="edit-contest-li pr-3 pl-3 mt-2 mb-2"
+                className="edit-contest-li px-3 mt-2 mb-2"
                 to={`/contests/${id}/edit`}
                 activeClassName="box arrow-bottom"
               >
@@ -71,7 +68,7 @@ const ContestDetails = (props) => {
             <li className="list-group-item user-group-pill">
               <NavLink
                 exact
-                className="edit-contest-li pr-3 pl-3 m-2"
+                className="edit-contest-li px-3 m-2"
                 to={`/contests/${id}/quizzes`}
                 activeClassName="box arrow-bottom"
               >
@@ -81,7 +78,7 @@ const ContestDetails = (props) => {
             <li className="list-group-item user-group-pill">
               <NavLink
                 exact
-                className="edit-contest-li pr-3 pl-3 m-2"
+                className="edit-contest-li px-3 m-2"
                 to={`/contests/${id}/challenges`}
                 activeClassName="box arrow-bottom"
               >
@@ -95,7 +92,7 @@ const ContestDetails = (props) => {
         <li className="list-group-item user-group-pill">
           <NavLink
             exact
-            className="edit-contest-li pr-3 pl-3 m-2"
+            className="edit-contest-li px-3 m-2"
             to={`/contests/${id}/statistics`}
             activeClassName="box arrow-bottom"
           >
@@ -143,7 +140,7 @@ const ContestDetails = (props) => {
           </Route>
         </Switch>
       </div>
-    </>
+    </div>
   );
 };
 

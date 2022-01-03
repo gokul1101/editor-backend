@@ -89,7 +89,6 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
       )
         return [];
       let localCode = JSON.parse(localStorage.getItem(challenge?.name) || "{}");
-      console.log(localCode);
       localCode.code = parseCode(localCode.code);
       return localCode;
     });
