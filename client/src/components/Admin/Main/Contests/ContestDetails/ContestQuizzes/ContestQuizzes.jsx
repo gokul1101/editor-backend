@@ -19,12 +19,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 const ContestQuizzes = (props) => {
   const { id } = useParams();
-  const [authState, authDispatch] = useContext(AuthContext);
-  const [quizName, setQuizName] = useState("");
+  const [authState] = useContext(AuthContext);
+  const [quizName, setQuizName] = useState({});
   const [open, setOpen] = React.useState(false);
   const [quizzArr, setQuizzArr] = useState([]);
+  const [updateQuiz, setUpdateQuiz] = useState(false);
   const createQuizz = async () => {
-    if (quizName?.length <= 0) {
+    if (quizName?.name?.length <= 0) {
       props.snackBar("Field is Empty", "error");
       return;
     }
@@ -34,21 +35,19 @@ const ContestQuizzes = (props) => {
         status,
         data: { quiz, message },
       } = await helperService.createQuizz(
-        { name: quizName, contest_id: id },
+        { name: quizName.name, contest_id: id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
         // TODO:
-        console.log(quiz);
         props.snackBar(message, "success");
         // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
         setQuizzArr((existing) => [...existing, quiz]);
       }
     } catch (err) {
-      console.log(err);
       props.snackBar(err?.data, "error");
     } finally {
-      setQuizName("");
+      setQuizName({});
       setOpen(false);
     }
   };
@@ -73,22 +72,53 @@ const ContestQuizzes = (props) => {
   };
   const deleteQuiz = async (quiz) => {
     try {
-      console.log(quiz._id)
       const payload = {};
       if (quiz._id) payload.id = quiz._id;
       else if (quiz.name) payload.name = quiz.name;
       const { data, status } = await helperService.deleteQuiz(payload, {
         headers: { Authorization: authState?.user?.token },
       });
+      if (status === 202) {
+        if (payload.id)
+          setQuizzArr(quizzArr.filter((quiz) => quiz._id !== payload.id));
+        else if (payload.name)
+          setQuizzArr(quizzArr.filter((quiz) => quiz.name !== payload.name));
+        props.snackBar(data.message, "success");
+      }
     } catch (err) {
-      console.log(err);
+      props.snackBar(err.data, "error");
     }
+  };
+  const updateQuizName = async () => {
+    try {
+      const { data, status } = await helperService.updateQuiz(
+        { name: quizName.name, id: quizName.id },
+        { headers: { Authorization: authState?.user?.token } }
+      );
+      if (status === 200) {
+        setQuizzArr(
+          quizzArr.map((quiz) => {
+            if (quiz.name !== quizName.name) return quizName;
+            return quiz;
+          })
+        );
+        props.snackBar(data.message, "success");
+      }
+    } catch (err) {
+      props.snackBar(err.data, "error");
+    }
+    setQuizName({ name: "" });
+    handleClose();
   };
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    if (updateQuiz) {
+      setUpdateQuiz(false);
+      setQuizName({ name: "" });
+    }
     setOpen(false);
   };
   useEffect(() => {
@@ -123,13 +153,18 @@ const ContestQuizzes = (props) => {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title" className="text-highlight">
-          {"Create contest quiz"}
+          {updateQuiz ? "Update contest quiz" : "Create contest quiz"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             <div className="d-flex flex-column">
-              <label>Create Quiz :</label>
-              <InputReducer value={quizName} onClickHandler={setQuizName} />
+              <label>{updateQuiz ? "Update Quiz :" : "Create Quiz :"}</label>
+              <InputReducer
+                value={quizName?.name}
+                onClickHandler={(value) =>
+                  setQuizName({ ...quizName, name: value })
+                }
+              />
             </div>
             <p className="text-muted mt-3">
               Note : Should contain a valid quiz name , Please don't use
@@ -139,11 +174,11 @@ const ContestQuizzes = (props) => {
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={createQuizz}
+            onClick={updateQuiz ? updateQuizName : createQuizz}
             className="btn btn-sucess bb-2"
             variant="contained"
           >
-            ADD
+            {updateQuiz ? "UPDATE" : "ADD"}
           </Button>
           <Button onClick={handleClose} color="primary">
             CLOSE
@@ -157,10 +192,20 @@ const ContestQuizzes = (props) => {
               <div className="create-con" key={quiz._id}>
                 <div className="p-2 mr-2 ml-2 quizzes-chip d-flex">
                   <div className="px-2">
-                    <DeleteOutlineIcon onClick = {() => deleteQuiz(quiz)}/>
+                    <DeleteOutlineIcon
+                      onClick={() => deleteQuiz(quiz)}
+                      style={{ cursor: "pointer" }}
+                    />
                   </div>
-                  <div className="px-2" onClick={handleClickOpen}>
-                    <CreateIcon />
+                  <div
+                    className="px-2"
+                    onClick={() => {
+                      setUpdateQuiz(true);
+                      handleClickOpen();
+                      setQuizName({ id: quiz._id, name: quiz.name });
+                    }}
+                  >
+                    <CreateIcon style={{ cursor: "pointer" }} />
                   </div>
                   <Link
                     style={{ color: "white" }}

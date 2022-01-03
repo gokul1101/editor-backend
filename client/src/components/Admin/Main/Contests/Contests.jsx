@@ -95,7 +95,7 @@ const Contests = (props) => {
         <div className="d-flex flex-column">
           {contests?.ongoing?.map((event) => {
             return (
-              <div className="d-flex mt-2 mb-2">
+              <div className="d-flex mt-2 mb-2" key={event._id}>
                 <i className="fas fa-link contest-link position-relative"></i>
                 <div className="col-md-3 text-center upcoming-task">
                   <Link
@@ -138,7 +138,7 @@ const Contests = (props) => {
         <div className="d-flex flex-column">
           {contests?.upcoming?.map((event) => {
             return (
-              <div className="d-flex mt-2 mb-2">
+              <div className="d-flex mt-2 mb-2" key={event._id}>
                 <i className="fas fa-link contest-link position-relative"></i>
                 <div className="col-md-3 text-center upcoming-task">
                   <Link
@@ -185,7 +185,7 @@ const Contests = (props) => {
         <div className="d-flex flex-column">
           {contests?.past?.map((event) => {
             return (
-              <div className="d-flex mt-2 mb-2">
+              <div className="d-flex mt-2 mb-2" key={event._id}>
                 <i className="fas fa-link contest-link position-relative"></i>
                 <div className="col-md-3 text-center upcoming-task">
                   <Link
