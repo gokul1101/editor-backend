@@ -31,9 +31,9 @@ const ErrorLogDialogBox = ({ open, handleClose, log }) => {
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
           <span className="model-correct p-2">
-          <i className="fas fa-check-circle pr-3 pl-3"></i>
-            {+log?.totalLogs - +log?.errorLogs?.length} students data
-            created successfully
+            <i className="fas fa-check-circle pr-3 pl-3"></i>
+            {+log?.totalLogs - +log?.errorLogs?.length} students data created
+            successfully
           </span>
         </DialogContentText>
         <DialogContentText id="alert-dialog-slide-description">

@@ -1,5 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
-import { NavLink, Route, Redirect, Switch } from "react-router-dom";
+import {
+  NavLink,
+  Route,
+  Redirect,
+  Switch,
+  useLocation,
+} from "react-router-dom";
 import "./Main.css";
 import LoopLogo from "../../Images/Loop1.jpg";
 import { Avatar } from "@material-ui/core";
@@ -13,9 +19,11 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import Programs from "./Codekata/ContestDetails/Programs/Programs";
 import Quiz from "./Codekata/ContestDetails/Quiz/Quiz";
 import ContestDetails from "./Codekata/ContestDetails/ContestDetails";
+import PageNotFound from "../../Reducer/PageNotFound/404";
 const Main = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle, setSideToggle] = useState(false);
+  const location = useLocation();
   useEffect(() => {
     if (localStorage.getItem("user") && !authState.user.regno)
       props.fetchUser();
@@ -128,7 +136,10 @@ const Main = (props) => {
         <div className="main-div w-100">
           <Switch>
             <Route path="/dashboard" exact>
-              <Dashboard setSideToggle={setSideToggle} snackBar={props.snackBar} />
+              <Dashboard
+                setSideToggle={setSideToggle}
+                snackBar={props.snackBar}
+              />
             </Route>
             <Route path="/articles" exact>
               <Articles setSideToggle={setSideToggle} />
@@ -137,18 +148,26 @@ const Main = (props) => {
               <Roadmap setSideToggle={setSideToggle} />
             </Route>
             <Route path="/compiler" exact>
-              <Compiler setSideToggle={setSideToggle} snackBar={props.snackBar}  />
+              <Compiler
+                setSideToggle={setSideToggle}
+                snackBar={props.snackBar}
+              />
             </Route>
             <Route path="/profile" exact>
-              <Profile setSideToggle={setSideToggle} snackBar={props.snackBar}  />
+              <Profile
+                setSideToggle={setSideToggle}
+                snackBar={props.snackBar}
+              />
             </Route>
-            <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+
             <Route path="/codekata" exact>
               <Codekata
-                snackBar={props.snackBar} 
+                snackBar={props.snackBar}
                 setSideToggle={setSideToggle}
               />
             </Route>
+            <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+
             {authState?.contest ? (
               [
                 <>
@@ -164,7 +183,15 @@ const Main = (props) => {
                 </>,
               ]
             ) : (
-              <Redirect to="/codekata" />
+              <>
+                {location.pathname.includes("/codekata") ? (
+                  <Redirect to="/codekata" />
+                ) : (
+                  <Route path="*">
+                    <PageNotFound />
+                  </Route>
+                )}
+              </>
             )}
           </Switch>
         </div>

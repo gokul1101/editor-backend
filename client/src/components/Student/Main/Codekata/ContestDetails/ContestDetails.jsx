@@ -167,13 +167,13 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
         <div className="challenge-name ml-4 font-weight-bolder">
           <h1>{authState?.contest?.contest.name}</h1>
         </div>
-        <div className="mt-3 p-2">
-          <h3 className="font-weight-bolder color-highlight">
+        <div className="mt-3 p-2 d-flex">
+          <h3 className="font-weight-bolder mx-2 my-2 color-highlight">
             <i className="fas fa-star"></i>Max Score :{" "}
-            <span className="max-score p-2">
-              {authState?.contest?.contest?.max_score}
-            </span>
           </h3>
+          <div className="max-score d-flex align-items-center justify-content-center text-center">
+            {authState?.contest?.contest?.max_score}
+          </div>
         </div>
       </div>
       <div className="d-flex mt-1 mb-1">

@@ -16,6 +16,7 @@ import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboa
 import ErrorLogs from "./ErrorLogs/ErrorLogs";
 import CreateChallenge from "./Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
 import ContestStatictics from "./Contests/ContestDetails/ContestStatictics/ContestStatictics";
+import PageNotFound from "../../Reducer/PageNotFound/404";
 const Main = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle] = useState(false);
@@ -135,6 +136,9 @@ const Main = (props) => {
                 <Route path="/contests" exact>
                   <Contests snackBar={props.snackBar} />
                 </Route>
+                <Route path="*">
+                  <PageNotFound />
+                </Route>
               </Switch>
             </Route>
             <Route path="/quizzes">
@@ -164,6 +168,9 @@ const Main = (props) => {
               path="/"
               render={() => <Redirect to="/admin-dashboard" />}
             />
+            <Route path="*">
+              <PageNotFound />
+            </Route>
           </Switch>
         </div>
       </div>

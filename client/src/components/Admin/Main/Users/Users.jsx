@@ -4,6 +4,7 @@ import { NavLink, Switch, Route, Redirect, useHistory } from "react-router-dom";
 import AddUser from "./AddUser/AddUser";
 import ListUser from "./ListUser/ListUser";
 import GoBack from "../../../Reducer/GoBack/GoBack";
+import PageNotFound from "../../../Reducer/PageNotFound/404";
 const Users = (props) => {
   const history = useHistory();
   return (
@@ -50,6 +51,9 @@ const Users = (props) => {
             path="/users"
             render={() => <Redirect to="/users/add-user" />}
           />
+          <Route path="*">
+            <PageNotFound />
+          </Route>
         </Switch>
       </div>
     </div>
