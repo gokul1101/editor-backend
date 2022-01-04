@@ -1,46 +1,4 @@
 .box {
-<<<<<<< HEAD
-    width: fit-content;
-    height: 35px;
-    background-color: #21A366;
-    color: #fff !important;
-    padding: 10px;
-    position: relative;
-    line-height: 1px;
-    font-size: 18px;
-  }
-  .box.arrow-bottom:after {
-    content: " ";
-    position: absolute;
-    left:45%;
-    color: #fff !important;
-    bottom: -12px;
-    border-top: 12px solid #21A366;
-    border-right: 12px solid transparent;
-    border-left: 12px solid transparent;
-    border-bottom: none;
-  }
-  .edit-contest-li,.edit-contest-li:hover{
-      color: #000;
-      text-decoration: none;
-  }
-  .challenge-name{
-    color: #21A366;
-    font-weight: 900 !important;
-  }
-
- 
-
-  .max-score{
-    background-color: #21A366;
-    color: white;
-    border-radius: 50%;
-  }
-
-  .fa-star{
-    color: rgb(173, 173, 15) !important;
-  }
-=======
   width: fit-content;
   height: 40px;
   background-color: #21a366 !important;
@@ -84,4 +42,3 @@
 .fa-star {
   color: rgb(173, 173, 15) !important;
 }
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c

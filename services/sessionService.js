@@ -93,11 +93,7 @@ const getAllSessionsService = async (session, page, limit) => {
         model: "contest",
       })
       .limit(limit * 1)
-<<<<<<< HEAD
-      .skip((page - 1) * limit);
-=======
       .skip((page > 0 ? page - 1 : 1) * limit);
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
     response.total = sessions.length;
     response.sessions = sessions;
     return Promise.resolve({

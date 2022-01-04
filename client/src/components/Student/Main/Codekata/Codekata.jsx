@@ -42,16 +42,9 @@ const Codekata = ({ setSideToggle, ...props }) => {
         });
         history.push(`/codekata/${code}`);
       }
-<<<<<<< HEAD
-      props.snackBar(message || "", "success");
-    } catch (message) {
-      console.log(message)
-      // props.snackBar(message || "Internal Error", "error");
-=======
       props.snackBar(message, "success");
     } catch ({message}) {
       props.snackBar(message, "error");
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
     } finally {
       hideLoader();
     }

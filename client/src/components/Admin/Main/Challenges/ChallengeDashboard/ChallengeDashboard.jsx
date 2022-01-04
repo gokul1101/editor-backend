@@ -2,10 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { NavLink, Route, Switch, Redirect, useParams } from "react-router-dom";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import helperService from "../../../../../services/helperService";
-<<<<<<< HEAD
-=======
 import PageNotFound from "../../../../Reducer/PageNotFound/404";
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
 import CreateChallenge from "./CreateChallenge/CreateChallenge";
 import TestCase from "./TestCase/TestCase";
 const ChallengeDashboard = (props) => {
@@ -70,12 +67,9 @@ const ChallengeDashboard = (props) => {
             <Route path={`/challenges/:id/create-testcase`} exact>
               <TestCase snackBar={props.snackBar} />
             </Route>
-<<<<<<< HEAD
-=======
             <Route path="*">
               <PageNotFound />
             </Route>
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
             <Route
               exact
               path="/challenges/:id"

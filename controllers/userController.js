@@ -317,18 +317,6 @@ const createBulkUsers = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const { page = 1, limit = 10, role = "student" } = req.query;
-<<<<<<< HEAD
-    let response = {};
-    const role_id = (await Role.findOne({ name: role }))._id;
-    if (page == 1) {
-      const count = await User.countDocuments({ role_id });
-      response.modelCount = count;
-    }
-    const users = await User.find({ role_id, deleted_at: null })
-      .sort({ regno: "asc" })
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
-=======
     const role_id = (await Role.findOne({ name: role }))._id;
     let response = {},
       query = { role_id, deleted_at: null };
@@ -338,7 +326,6 @@ const getAllUsers = async (req, res) => {
       .sort({ regno: "asc" })
       .limit(limit * 1)
       .skip((page > 0 ? page - 1 : 1) * limit)
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
       .populate([
         {
           path: "role_id",

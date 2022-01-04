@@ -1,9 +1,5 @@
 .dcard {
-<<<<<<< HEAD
-  cursor : pointer;
-=======
   cursor: pointer;
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
   perspective: 500px;
 }
 .dcard .card {
@@ -113,9 +109,6 @@
 .dcard .trigger:nth-child(9):hover ~ .card-code {
   transform: rotateY(-8deg) rotateX(5deg);
 }
-<<<<<<< HEAD
-
-=======
 .max-score {
   background-color: #21a366;
   color: white;
@@ -123,7 +116,6 @@
   height: 38px;
   width: 38px;
 }
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
 .question-name-span {
   font-size: 17px;
   font-weight: 400;

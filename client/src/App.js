@@ -14,10 +14,7 @@ import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { AuthContext } from "./contexts/AuthContext";
 import helperService from "./services/helperService";
-<<<<<<< HEAD
-=======
 import PageNotFound from "./components/Reducer/PageNotFound/404";
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
 // import Loader from "./components/Reducer/Loader/Loader";
 
 const Alert = (props) => {
@@ -122,12 +119,9 @@ const App = () => {
               <Redirect exact to="/login" />
             )}
           </Route>
-<<<<<<< HEAD
-=======
           <Route path="*">
             <PageNotFound />
           </Route>
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
         </Switch>
       </div>
       <div className="breakpoint d-flex" style={{ height: "100vh" }}>

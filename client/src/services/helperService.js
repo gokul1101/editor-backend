@@ -589,25 +589,15 @@ const helperService = {
       );
       if (status === 201) {
         return Promise.resolve({
-<<<<<<< HEAD
-          code,
-=======
           status,
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
           message,
         });
       }
     } catch (err) {
-<<<<<<< HEAD
-      return Promise.reject({
-        status: err.response.status,
-        data: err.response.data,
-=======
       console.log(err.response)
       return Promise.reject({
         status: err.response.status,
         message: err.response.data,
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
       });
     }
   },

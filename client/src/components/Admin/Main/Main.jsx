@@ -15,11 +15,8 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
 import ErrorLogs from "./ErrorLogs/ErrorLogs";
 import CreateChallenge from "./Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
-<<<<<<< HEAD
-=======
 import ContestStatictics from "./Contests/ContestDetails/ContestStatictics/ContestStatictics";
 import PageNotFound from "../../Reducer/PageNotFound/404";
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
 import HomeIcon from "@material-ui/icons/Home";
 import GroupIcon from "@material-ui/icons/Group";
 import AssignmentIcon from "@material-ui/icons/Assignment";
@@ -151,12 +148,9 @@ const Main = (props) => {
                 <Route path="/contests" exact>
                   <Contests snackBar={props.snackBar} />
                 </Route>
-<<<<<<< HEAD
-=======
                 <Route path="*">
                   <PageNotFound />
                 </Route>
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
               </Switch>
             </Route>
             <Route path="/quizzes">
@@ -186,12 +180,9 @@ const Main = (props) => {
               path="/"
               render={() => <Redirect to="/admin-dashboard" />}
             />
-<<<<<<< HEAD
-=======
             <Route path="*">
               <PageNotFound />
             </Route>
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
           </Switch>
         </div>
       </div>

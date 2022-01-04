@@ -5,6 +5,7 @@ import helperService from "../../../../services/helperService";
 import { AuthContext, useLoader } from "../../../../contexts/AuthContext";
 import Pagination from "@material-ui/lab/Pagination";
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
+import LinkIcon from '@material-ui/icons/Link';
 const Contests = (props) => {
   const [loader, showLoader, hideLoader] = useLoader();
   const limit = 3;
@@ -96,7 +97,8 @@ const Contests = (props) => {
           {contests?.ongoing?.map((event) => {
             return (
               <div className="d-flex mt-2 mb-2" key={event._id}>
-                <i className="fas fa-link contest-link position-relative"></i>
+                <LinkIcon className="contest-link position-relative"/>
+                
                 <div className="col-md-3 text-center upcoming-task">
                   <Link
                     to={`/contests/${event._id}/edit`}

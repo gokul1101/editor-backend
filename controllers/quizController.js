@@ -1,14 +1,7 @@
-<<<<<<< HEAD
-const {
-  createQuizService,
-  getQuizService,
-  updateQuizService,
-=======
 const { updateQuizService } = require("../services");
 const {
   createQuizService,
   getQuizService,
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
   getAllQuizzesWithContestId,
   deleteQuizService,
 } = require("../services/quizService");

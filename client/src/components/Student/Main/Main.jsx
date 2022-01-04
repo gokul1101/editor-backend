@@ -1,7 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-<<<<<<< HEAD
-import { NavLink, Route, Redirect, Switch } from "react-router-dom";
-=======
 import {
   NavLink,
   Route,
@@ -9,7 +6,6 @@ import {
   Switch,
   useLocation,
 } from "react-router-dom";
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
 import "./Main.css";
 import LoopLogo from "../../Images/Loop1.jpg";
 import { Avatar } from "@material-ui/core";
@@ -23,17 +19,11 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import Programs from "./Codekata/ContestDetails/Programs/Programs";
 import Quiz from "./Codekata/ContestDetails/Quiz/Quiz";
 import ContestDetails from "./Codekata/ContestDetails/ContestDetails";
-<<<<<<< HEAD
-const Main = (props) => {
-  const [authState, authDispatch] = useContext(AuthContext);
-  const [sideToggle, setSideToggle] = useState(false);
-=======
 import PageNotFound from "../../Reducer/PageNotFound/404";
 const Main = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle, setSideToggle] = useState(false);
   const location = useLocation();
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
   useEffect(() => {
     if (localStorage.getItem("user") && !authState.user.regno)
       props.fetchUser();
@@ -146,14 +136,10 @@ const Main = (props) => {
         <div className="main-div w-100">
           <Switch>
             <Route path="/dashboard" exact>
-<<<<<<< HEAD
-              <Dashboard setSideToggle={setSideToggle} snackBar={props.snackBar} />
-=======
               <Dashboard
                 setSideToggle={setSideToggle}
                 snackBar={props.snackBar}
               />
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
             </Route>
             <Route path="/articles" exact>
               <Articles setSideToggle={setSideToggle} />
@@ -162,20 +148,6 @@ const Main = (props) => {
               <Roadmap setSideToggle={setSideToggle} />
             </Route>
             <Route path="/compiler" exact>
-<<<<<<< HEAD
-              <Compiler setSideToggle={setSideToggle} snackBar={props.snackBar}  />
-            </Route>
-            <Route path="/profile" exact>
-              <Profile setSideToggle={setSideToggle} snackBar={props.snackBar}  />
-            </Route>
-            <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
-            <Route path="/codekata" exact>
-              <Codekata
-                snackBar={props.snackBar} 
-                setSideToggle={setSideToggle}
-              />
-            </Route>
-=======
               <Compiler
                 setSideToggle={setSideToggle}
                 snackBar={props.snackBar}
@@ -196,7 +168,6 @@ const Main = (props) => {
             </Route>
             <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
 
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
             {authState?.contest ? (
               [
                 <>
@@ -212,9 +183,6 @@ const Main = (props) => {
                 </>,
               ]
             ) : (
-<<<<<<< HEAD
-              <Redirect to="/codekata" />
-=======
               <>
                 {location.pathname.includes("/codekata") ? (
                   <Redirect to="/codekata" />
@@ -224,7 +192,6 @@ const Main = (props) => {
                   </Route>
                 )}
               </>
->>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
             )}
           </Switch>
         </div>
