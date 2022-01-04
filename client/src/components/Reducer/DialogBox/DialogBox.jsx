@@ -5,6 +5,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import CustomButton from "../CustomButton/CustomButton";
 import WarningGif from "../../Images/dribbble_1.gif";
+import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
+import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded';
+import NotificationsActiveRoundedIcon from '@material-ui/icons/NotificationsActiveRounded';
 const DialogBox = ({ localData, ...props }) => {
   const unSubmittedQuestions = () => {
     const data = localData();
@@ -57,7 +60,7 @@ const DialogBox = ({ localData, ...props }) => {
               className="btn-hover color-11 mt-1"
               onClickHandler={props.handleClose}
             >
-              <i className="fas fa-bell pr-2 pl-2"></i> Ok
+              <NotificationsActiveRoundedIcon/>Ok
             </CustomButton>
           ) : (
             <>
@@ -65,14 +68,14 @@ const DialogBox = ({ localData, ...props }) => {
                 className="btn-hover color-11 mt-1"
                 onClickHandler={props.handleOpen}
               >
-                <i className="fas fa-check pr-2 pl-2"></i> YES
+               <CheckCircleRoundedIcon/> YES
               </CustomButton>
 
               <CustomButton
                 className="btn-grad mt-1 mx-2"
                 onClickHandler={props.handleClose}
               >
-                <i className="fas fa-times pr-2 pl-2"></i> NO
+                <HighlightOffRoundedIcon/> NO
               </CustomButton>
             </>
           )}

@@ -15,10 +15,10 @@ const ContestTable = ({
         <table className="table">
           <thead className="thead-dark">
             <tr>
-              <th>{`${setUpdateQuestion ? "Quiz" : "Challenge"} Name`}</th>
+              <th>{setUpdateQuestion? "Quiz" : "Challenge"} Name</th>
               <th>Created At</th>
               <th>Max Score</th>
-              <th>delete</th>
+              <th>Delete</th>
               {setUpdateQuestion ? <th>edit</th> : null}
             </tr>
           </thead>

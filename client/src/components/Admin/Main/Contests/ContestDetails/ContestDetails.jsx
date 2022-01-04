@@ -10,6 +10,10 @@ import { useContext, useEffect } from "react";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import helperService from "../../../../../services/helperService";
 import PageNotFound from "../../../../Reducer/PageNotFound/404";
+import DetailsIcon from '@material-ui/icons/Details';
+import SubtitlesIcon from '@material-ui/icons/Subtitles';
+import PostAddIcon from '@material-ui/icons/PostAdd';
+import AssessmentIcon from '@material-ui/icons/Assessment';
 const convertDate = (date) => {
   if (date) return date.split("T")[0];
   return "";
@@ -62,7 +66,7 @@ const ContestDetails = (props) => {
               activeClassName="box arrow-bottom"
             >
               <li className="list-group-item user-group-pill position-relative">
-                <i className="fas fa-plus pr-1 pl-1"></i> Details
+                <DetailsIcon/> <span>Details</span>
               </li>
             </NavLink>
             <NavLink
@@ -72,7 +76,7 @@ const ContestDetails = (props) => {
               activeClassName="box arrow-bottom"
             >
               <li className="list-group-item user-group-pill position-relative">
-                <i className="fas fa-clipboard-list pr-2 pl-1"></i> Quizzes List
+                <SubtitlesIcon/> <span>Quizzes List</span>
               </li>
             </NavLink>
             <NavLink
@@ -82,7 +86,7 @@ const ContestDetails = (props) => {
               activeClassName="box arrow-bottom"
             >
               <li className="list-group-item user-group-pill position-relative">
-                <i className="fas fa-clipboard-list pr-2 pl-1"></i>Challenges
+                <PostAddIcon/><span className="ml-2">Challenges</span>
                 List
               </li>
             </NavLink>
@@ -96,7 +100,7 @@ const ContestDetails = (props) => {
           activeClassName="box arrow-bottom"
         >
           <li className="list-group-item user-group-pill position-relative">
-            <i className="fas fa-clipboard-list pr-2 pl-1"></i>Statictics
+            <AssessmentIcon/><span className="ml-2">Statictics</span>
           </li>
         </NavLink>
       </ul>

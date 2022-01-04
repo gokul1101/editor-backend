@@ -8,7 +8,7 @@ const InputReducer = (props) => {
     <TextField
       rows={props.rows}
       label={props.label}
-      id={props.id ? props.id : "outlined-basic"}
+      id={props.id ?? "outlined-basic"}
       fullWidth={props.fullWidth}
       multiline={props.multiline ? true : false}
       variant="outlined"

@@ -14,6 +14,7 @@ import helperService from "../../../../../../services/helperService";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import ContestTable from "../ContestTable/ContestTable";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -80,7 +81,7 @@ const ContestChallenges = (props) => {
       </div>
       <NavLink to={`/contests/${id}/challenges/create`}>
         <CustomButton className="btn-hover color-11 mt-4">
-          <i className="fas fa-plus pr-2 pl-2"></i>ADD CHALLENGES
+          <AddCircleIcon/><span className="ml-2">ADD CHALLENGES</span>
         </CustomButton>
       </NavLink>
       <Dialog

@@ -241,14 +241,14 @@ const ListUser = (props) => {
               <div className="col-md-1 list-table-header text-center">
                 Stream
               </div>
-              <div className="col-md-2 list-table-header text-center">
-                Batch
-              </div>
               <div className="col-md-3 list-table-header text-center">
                 Course
               </div>
               <div className="col-md-3 list-table-header text-center">
                 College
+              </div>
+              <div className="col-md-2 list-table-header text-center">
+                Batch
               </div>
               <div className="col-md-2 list-table-header text-center">
                 Phone Number
@@ -287,12 +287,6 @@ const ListUser = (props) => {
                   {e.stream_id}
                 </div>
                 <div
-                  className="col-md-2 list-table-data p-2 text-center data"
-                  style={{ height: "50px" }}
-                >
-                  {e.batch_id}
-                </div>
-                <div
                   className="col-md-3 list-table-data p-2 text-center data"
                   style={{ height: "50px" }}
                 >
@@ -303,6 +297,12 @@ const ListUser = (props) => {
                   style={{ height: "50px" }}
                 >
                   {e.college_id}
+                </div>
+                <div
+                  className="col-md-2 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.batch_id}
                 </div>
                 <div
                   className="col-md-2 list-table-data p-2 text-center data"
@@ -544,75 +544,3 @@ const ListUser = (props) => {
 };
 
 export default ListUser;
-
-/*  
-<div className="container-fluid mt-5">
-        <div className="d-flex flex-column" id="style-default">
-          
-          <div
-            className="d-flex col-md-8 p-0"
-            style={{ overflowX: "scroll", overflowY: "hidden" }}
-          >
-            <div className="col-md-3 list-table-header">
-              Register number
-              <button onClick={onSortChange} className="sort-btn pl-3">
-                <i className={`fas fa-${sortTypes[currentSort].class}`} />
-              </button>
-            </div>
-            <div className="col-md-3 list-table-header">Stream</div>
-            <div className="col-md-3 list-table-header">Course</div>
-            <div className="col-md-3 list-table-header">College</div>
-            <div className="col-md-3 list-table-header">Phone Number</div>
-            <div className="col-md-3 list-table-header">Name</div>
-          </div>
-          <div
-            className="d-flex"
-            style={{ overflowX: "scroll" }}
-          >
-            {[...tableData].sort(sortTypes[currentSort].fn).map((p) => {
-              return (
-                <>
-                  <div className="d-flex col-md-8 p-0">
-                    <div className="col-md-3 list-table-data p-2">
-                      {p.register_number}
-                    </div>
-                    <div className="col-md-3 list-table-data p-2">
-                      {p.stream}
-                    </div>
-                    <div className="col-md-3 list-table-data p-2">
-                      {p.course}
-                    </div>
-                    <div className="col-md-3 list-table-data p-2">
-                      {p.college}
-                    </div>
-                    <div className="col-md-3 list-table-data p-2">
-                      {p.batch}
-                    </div>
-                    <div className="col-md-3 list-table-data p-2">
-                      {p.batch}
-                    </div>
-                  </div>
-                  <div className="d-flex pr-3 col-md-4">
-                    <button className="pr-4 pl-4 mr-2 edit-btn">Edit</button>
-                    <button className="pr-4 pl-4 delete-btn" disabled>
-                      Delete
-                    </button>
-                  </div>
-                </>
-              );
-            })}
-          </div>
-        </div>
-        
-        <div className="mt-3 mb-5">
-          <P agination
-            className="float-right"
-            count={13}
-            variant="text"
-            color="primary"
-            //   onChange={(e, value) => setPage(value)}
-          />
-        </div>
-      </div>
-
-*/

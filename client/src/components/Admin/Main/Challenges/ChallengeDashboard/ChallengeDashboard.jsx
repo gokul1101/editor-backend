@@ -4,7 +4,9 @@ import { AuthContext } from "../../../../../contexts/AuthContext";
 import helperService from "../../../../../services/helperService";
 import PageNotFound from "../../../../Reducer/PageNotFound/404";
 import CreateChallenge from "./CreateChallenge/CreateChallenge";
+import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import TestCase from "./TestCase/TestCase";
+import LibraryAddCheckRoundedIcon from '@material-ui/icons/LibraryAddCheckRounded';
 const ChallengeDashboard = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const { id } = useParams();
@@ -40,7 +42,7 @@ const ChallengeDashboard = (props) => {
               to={`/challenges/${id}/update`}
               activeClassName="active-user-pill"
             >
-              <i className="fas fa-plus pr-1 pl-1 "></i> Challenge
+              <AddCircleRoundedIcon/><span >Challenge</span>
             </NavLink>
           </li>
           <li className="list-group-item user-group-pill">
@@ -50,8 +52,11 @@ const ChallengeDashboard = (props) => {
               to={`/challenges/${id}/create-testcase`}
               activeClassName="active-user-pill"
             >
-              <i className="fas fa-clipboard-list pr-2 pl-1"></i>
+              <LibraryAddCheckRoundedIcon/>
+              <span >
+
               TestCase
+              </span>
             </NavLink>
           </li>
         </ul>

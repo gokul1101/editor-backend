@@ -15,6 +15,7 @@ import Editor from "../../../Reducer/Editor/Editor";
 import GoBack from "../../../Reducer/GoBack/GoBack";
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
 import { useHistory } from "react-router-dom";
+import CodeRoundedIcon from "@material-ui/icons/CodeRounded";
 const Compiler = (props) => {
   const history = useHistory();
   const [authState] = useContext(AuthContext);
@@ -188,7 +189,8 @@ const Compiler = (props) => {
                 className="btn-hover color-11 mt-3 mb-3"
                 onClickHandler={compile}
               >
-                <i className="fas fa-code pr-2 pl-2"></i> COMPILE
+                <CodeRoundedIcon />
+                <span className="ml-2"> COMPILE</span>
               </CustomButton>
             </div>
             <div className="d-flex flex-column">
@@ -216,13 +218,4 @@ const Compiler = (props) => {
 
 export default Compiler;
 
-/* 
-  <div className="d-flex">
-        
-       
-      </div>
-      
-      <button className="btn-hover color-11 mt-2 float-right">
-        COMPILE <i className="fas fa-code  mr-2 ml-2"></i>
-      </button>
-*/
+

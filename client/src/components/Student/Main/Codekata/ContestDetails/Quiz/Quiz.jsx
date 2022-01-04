@@ -10,6 +10,8 @@ import helperService from "../../../../../../services/helperService";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import GoBack from "../../../../../Reducer/GoBack/GoBack";
 import DialogBox from "../../../../../Reducer/DialogBox/DialogBox";
+import AllInclusiveRoundedIcon from '@material-ui/icons/AllInclusiveRounded';
+import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
 const Quiz = ({ setSideToggle }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -183,7 +185,7 @@ const Quiz = ({ setSideToggle }) => {
                   onClickHandler={handleNext}
                   disabled={isLast}
                 >
-                  <i className="fas fa-forward px-2"></i> NEXT
+                <SkipNextRoundedIcon/> NEXT
                 </CustomButton>
               </div>
             ) : null}
@@ -246,7 +248,8 @@ const Quiz = ({ setSideToggle }) => {
                 className="btn-hover color-11 mt-3"
                 onClickHandler={handleOpen}
               >
-                <i className="fas fa-rocket pr-2 pl-2"></i> SUBMIT QUIZ
+                <AllInclusiveRoundedIcon/> 
+                <span className="ml-2">SUBMIT QUIZ</span>
               </CustomButton>
               <DialogBox
                 headerMsg={"This is a warning message !"}

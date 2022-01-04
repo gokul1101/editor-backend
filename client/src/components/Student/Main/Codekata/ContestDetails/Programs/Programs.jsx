@@ -11,6 +11,9 @@ import { parseCode, template } from "../../../../../../services/utils";
 import GoBack from "../../../../../Reducer/GoBack/GoBack";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import DialogBox from "../../../../../Reducer/DialogBox/DialogBox";
+import CodeRoundedIcon from '@material-ui/icons/CodeRounded';
+import DoneAllRoundedIcon from '@material-ui/icons/DoneAllRounded';
+import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
 const Programs = (props) => {
   let history = useHistory();
   const { id, questionId } = useParams();
@@ -237,21 +240,12 @@ const Programs = (props) => {
                     </span>
                     <div className="constraints-content d-flex flex-column mt-2">
                       <span className="mt-2">
-                        <i className="fas fa-circle constraints-dot mr-2"></i>
+                        <FiberManualRecordRoundedIcon/>
                         <span className="constraints-highlight pr-2 pl-2 mr-1 ">
                           {challenge?.constraints}
                         </span>
                       </span>
-                      {/* <span className="mt-2">
-                        <i className="fas fa-circle constraints-dot mr-2"></i>
-                        <span className="constraints-highlight pr-2 pl-2 mr-1">
-                          0 &lt; m &lt; 200,000
-                        </span>{" "}
-                        where m is the length of{" "}
-                        <span className="constraints-highlight pr-2 pl-2 ml-1">
-                          b
-                        </span>
-                      </span> */}
+                     
                     </div>
                   </div>
                   <div className="problem-input d-flex flex-column mt-4 mb-2">
@@ -319,13 +313,13 @@ const Programs = (props) => {
                   className="btn-hover color-11 mt-2 mr-2"
                   onClickHandler={compile}
                 >
-                  <i className="fas fa-code px-2"></i>RUN CODE
+                 <CodeRoundedIcon/><span className="ml-2">RUN CODE</span>
                 </CustomButton>
                 <CustomButton
                   className="btn-hover color-11 mt-2"
                   onClickHandler={submitChallenge}
                 >
-                  <i className="fas fa-code px-2"></i>SUBMIT
+                 <DoneAllRoundedIcon/><span className="ml-2">SUBMIT</span>
                 </CustomButton>
               </div>
             </div>
