@@ -8,7 +8,7 @@ import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 const useStyles = makeStyles((theme) => ({
   root: {
     border: "1px solid #1E2D64",
@@ -33,9 +33,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddUser = (props) => {
-  const [ loader,showLoader, hideLoader] = useLoader();
-  const[reqflag,setReqflag] = useState(false)
-  const [logs,setLogs] = useState({})
+  const [loader, showLoader, hideLoader] = useLoader();
+  const [reqflag, setReqflag] = useState(false);
+  const [logs, setLogs] = useState({});
   const [authState] = useContext(AuthContext);
   const [user, setUser] = useState({
     regno: "",
@@ -50,8 +50,8 @@ const AddUser = (props) => {
   });
   const classes = useStyles();
   const removeFileHandler = (setFileList) => {
-    setFileList([])
-  }
+    setFileList([]);
+  };
   const onFileChange = async (files) => {
     const formData = new FormData();
     formData.append("file", files[0]);
@@ -66,20 +66,22 @@ const AddUser = (props) => {
         }
       );
       if (status === 201) {
-        setLogs(data.errorLogs)
+        if(data?.errorLogs?.errorLogs.length >= 0)
+          setLogs(data.errorLogs);
+          return true;
       }
-    } catch (err) {
+    } catch ({message}) {
+      props.snackBar(message, "error");
     }
-    finally{
-      // setReqflag(true)
-    }
+    return false;
   };
   const createUser = async () => {
     //Regex
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let username = /^[a-zA-Z\_]{3,25}$/;
 
-    if ((!user.name.length >= 3 && !user.name.length <= 25) || (user.name.length <= 0)) {
-      props.snackBar("Username is Incorrect", "error");
+    if (!username.test(user.name)) {
+      props.snackBar("Username is Invalid", "error");
       return;
     }
     if (user.regno.length !== 7) {
@@ -110,14 +112,14 @@ const AddUser = (props) => {
       props.snackBar("Gender is not Selected", "error");
       return;
     }
-    if (!user.batch_id ) {
+    if (!user.batch_id) {
       props.snackBar("Batch is not Selected", "error");
       return;
     }
-    
+
     try {
       showLoader();
-      
+
       const { status, data } = await helperService.createUser(
         {
           ...user,
@@ -193,20 +195,26 @@ const AddUser = (props) => {
                 name="Stream"
                 value={user.stream_id}
                 handleSelect={(e) =>
-                  setUser({ ...user, stream_id: e.target.value })
+                  setUser({ ...user, stream_id: e.target.value, course_id : "" })
                 }
-                // value = {user.regno}
-                // onClickHandler = {(value) => setUser({...user,regno:value})}
               />
             </div>
             <div className="col-md-6 p-1">
               <SelectReducer
                 className={classes.fieldColor}
-                array={[
-                  "Computer Science & Engineering",
-                  "Information Technology",
-                  "Civil Engineering",
-                ]}
+                array={
+                  user.stream_id === "B.Tech"
+                    ? ["Information Technology"]
+                    : [
+                        "Computer Science & Engineering",
+                        "Electrical & Electronics Engineering",
+                        "Electronics and Communication Engineering",
+                        "Mechanical Engineering",
+                        "Automobile Engineering",
+                        "Civil Engineering",
+                        "Safety & Fire Engineering",
+                      ]
+                }
                 name="Course Name"
                 handleSelect={(e) =>
                   setUser({ ...user, course_id: e.target.value })
@@ -263,7 +271,7 @@ const AddUser = (props) => {
             <div className="col-md-6 p-1">
               <SelectReducer
                 className={classes.fieldColor}
-                array={["male", "female"]}
+                array={["male", "female", "other"]}
                 name="Gender"
                 handleSelect={(e) =>
                   setUser({ ...user, gender_id: e.target.value })
@@ -282,6 +290,10 @@ const AddUser = (props) => {
                   "2020-2024",
                   "2021-2025",
                   "2022-2026",
+                  "2023-2027",
+                  "2024-2028",
+                  "2025-2029",
+                  "2026-2030",
                 ]}
                 name="Batch year"
                 label="Batch year"
@@ -296,17 +308,19 @@ const AddUser = (props) => {
             className="btn-hover color-11 mt-4"
             onClickHandler={createUser}
           >
-            <AddCircleIcon/><span className="ml-2">CREATE USER</span>
+            <AddCircleIcon />
+            <span className="ml-2">CREATE USER</span>
           </CustomButton>
         </div>
         <div className="col-md-4 p-2 border m-1">
           <DropFileInput
-            logs = {logs}
+            logs={logs}
+            setLogs={setLogs}
             onFileChange={onFileChange}
             snackBar={props.snackBar}
-            removeFileHandler = {removeFileHandler}
-            reqflag = {reqflag}
-            setReqflag ={setReqflag}
+            removeFileHandler={removeFileHandler}
+            reqflag={reqflag}
+            setReqflag={setReqflag}
           />
         </div>
       </div>

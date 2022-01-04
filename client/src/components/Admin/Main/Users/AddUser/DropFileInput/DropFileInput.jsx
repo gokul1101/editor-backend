@@ -4,18 +4,16 @@ import PropTypes from "prop-types";
 import "./DropFileInput.css";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import ErrorLogDialogBox from "../../../../../Reducer/ErrorLogDialogBox/ErrorLogDialogBox";
-import GetAppIcon from '@material-ui/icons/GetApp';
-import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
-import DeleteIcon from '@material-ui/icons/Delete';
+import GetAppIcon from "@material-ui/icons/GetApp";
+import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
+import DeleteIcon from "@material-ui/icons/Delete";
 const DropFileInput = (props) => {
-  useEffect(() => {
-  }, []);
- // const theme = useTheme();
-  //const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const wrapperRef = useRef(null);
-
+  
   const [fileList, setFileList] = useState([]);
-
+  const [open, setOpen] = React.useState(false);
+  const [, setLogs] = useState({});
+  
   const onDragEnter = () => wrapperRef.current.classList.add("dragover");
 
   const onDragLeave = () => wrapperRef.current.classList.remove("dragover");
@@ -30,44 +28,36 @@ const DropFileInput = (props) => {
       newFile.type ===
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
-      // const updatedList = [newFile];
       setFileList([newFile]);
     } else {
       props.snackBar("Please select a valid  excel file", "error");
     }
   };
 
-  const bulkUser = () => {
-    props.onFileChange(fileList);
-    setUpload(true);
+  const bulkUserUpload = async () => {
+    const flag = await props.onFileChange(fileList);
+    if(flag) setOpen(true);
   };
 
-  const [open, setOpen] = React.useState(false);
-  const [, setUpload] = useState(false);
-  const [,setLogs] = useState({})
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const handleClickOpen = () => setOpen(true);
 
-  const handleClose = () => {
-    setOpen(false);
-    };
+  const handleClose = () => setOpen(false);
 
   const fileRemove = (file) => {
     const updatedList = [fileList];
     updatedList.splice(fileList.indexOf(file), 1);
     setFileList(updatedList);
-    // props.onFileChange(updatedList);
+    props.setLogs({});
   };
-  useEffect(()=>{
-    if(props.reqflag) {
-      props.removeFileHandler(setFileList)
-      props.setReqflag(false)
-    } 
-  },[props.reqflag])
   useEffect(() => {
-    setLogs(props?.logs)
-  })
+    if (props.reqflag) {
+      props.removeFileHandler(setFileList);
+      props.setReqflag(false);
+    }
+  }, [props.reqflag]);
+  useEffect(() => {
+    setLogs(props?.logs);
+  });
   return (
     <>
       <div
@@ -91,7 +81,7 @@ const DropFileInput = (props) => {
           accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
         />
       </div>
-      {fileList.length > 0  ? (
+      {fileList.length > 0 ? (
         <div className="drop-file-preview">
           <p className="drop-file-preview__title">Ready to upload</p>
           {fileList.map((item, index) => (
@@ -107,9 +97,9 @@ const DropFileInput = (props) => {
                 <span>{item.name}</span>
                 <div className="d-flex justify-content-between">
                   <span>{item.size}B</span>
-                  
-                  <CustomButton onClick={() => fileRemove(item)}>
-                    <DeleteIcon/>
+
+                  <CustomButton onClickHandler={() => fileRemove(item)}>
+                    <DeleteIcon />
                   </CustomButton>
                 </div>
               </div>
@@ -119,9 +109,9 @@ const DropFileInput = (props) => {
           <div className="d-flex align-items-center justify-content-center mt-3">
             <CustomButton
               className="btn-hover color-11 mt-2"
-              onClickHandler={bulkUser}
+              onClickHandler={bulkUserUpload}
             >
-              <CreateNewFolderIcon/>
+              <CreateNewFolderIcon />
               {"create Users"}
             </CustomButton>
           </div>
@@ -152,7 +142,8 @@ const DropFileInput = (props) => {
               <i className="fas fa-download pr-2 pl-2"></i>Download Sample file
             </button> */}
             <CustomButton className="btn-hover color-11 mt-4">
-              <GetAppIcon/>Download Sample file
+              <GetAppIcon />
+              Download Sample file
             </CustomButton>
           </div>
         </div>

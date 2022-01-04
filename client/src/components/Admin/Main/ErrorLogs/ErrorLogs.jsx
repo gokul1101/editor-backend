@@ -45,33 +45,34 @@ const ErrorLogs = (props) => {
       </span>
       <div className="mt-4 d-flex flex-column">
         <div className="d-flex upcoming-header border-top border-bottom mt-2 p-2 mb-1">
-          <div className="col-md-3 text-center content-nav-title">
-            ADMIN NAME
+          <div className="col-md-2 text-center content-nav-title">
+            S.NO
           </div>
-          <div className="col-md-3 text-center content-nav-title">
+          <div className="col-md-2 text-center content-nav-title">
             NO. OF LOGS
           </div>
           <div className="col-md-2 text-center content-nav-title">
-            <i className="fas fa-check-circle"></i>
+            <i className="fas fa-check-circle"></i> SUCCESS
           </div>
           <div className="col-md-2 text-center content-nav-title">
-            <i className="fas fa-times-circle"></i>
+            <i className="fas fa-times-circle"></i> ERRORS
+          </div>
+          <div className="col-md-2 text-center content-nav-title">
+            CREATED_AT
           </div>
           <div className="col-md-2 text-center content-nav-title">
             SHOW
-            {/* <i className="fas fa-external-link-alt"></i> */}
           </div>
         </div>
         <div className="d-flex flex-column border-top border-bottom mt-1 p-2 mb-1">
-          {errorLogs.map((log) => (
-            <div className="d-flex">
+          {errorLogs.map((log, index) => (
+            <div className="d-flex" key={log._id}>
               <div
-                className="col-md-3 text-center content-nav-title"
-                key={log._id}
+                className="col-md-2 text-center content-nav-title"                
               >
-                {authState?.user?.name}
+                {index+1}) 
               </div>
-              <div className="col-md-3 text-center content-nav-title">
+              <div className="col-md-2 text-center content-nav-title">
                 {log.totalLogs}
               </div>
               <div className="col-md-2 text-center content-nav-title">
@@ -79,6 +80,9 @@ const ErrorLogs = (props) => {
               </div>
               <div className="col-md-2 text-center content-nav-title">
                 {log.errorLogs.length}
+              </div>
+              <div className="col-md-2 text-center content-nav-title">
+                {new Date(log.created_at).toLocaleString()}
               </div>
               <div className="col-md-2 text-center content-nav-title">
                 <i

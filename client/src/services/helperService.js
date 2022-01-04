@@ -54,7 +54,6 @@ const helperService = {
     }
   },
   createBulkUsers: async ({ file }, headers) => {
-    console.log(headers);
     try {
       const { data, status } = await axios({
         url: `${baseURL}/api/v1/users/createAll`,
@@ -62,11 +61,6 @@ const helperService = {
         headers,
         data: file,
       });
-      // post(
-      //   `${baseURL}/api/v1/users/createAll`,
-      //   {file},
-      //   config
-      // );
       if (status === 201) {
         return Promise.resolve({
           status,
@@ -76,7 +70,7 @@ const helperService = {
     } catch (err) {
       return Promise.reject({
         status: err.response.status,
-        data: err.response.data,
+        message: err.response.data.message || "Error in creating users.",
       });
     }
   },

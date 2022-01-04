@@ -218,14 +218,14 @@ const ListUser = (props) => {
               <div className="col-md-1 list-table-header text-center">
                 Stream
               </div>
-              <div className="col-md-2 list-table-header text-center">
-                Batch
-              </div>
               <div className="col-md-3 list-table-header text-center">
                 Course
               </div>
               <div className="col-md-3 list-table-header text-center">
                 College
+              </div>
+              <div className="col-md-2 list-table-header text-center">
+                Batch
               </div>
               <div className="col-md-2 list-table-header text-center">
                 Phone Number
@@ -264,12 +264,6 @@ const ListUser = (props) => {
                   {e.stream_id}
                 </div>
                 <div
-                  className="col-md-2 list-table-data p-2 text-center data"
-                  style={{ height: "50px" }}
-                >
-                  {e.batch_id}
-                </div>
-                <div
                   className="col-md-3 list-table-data p-2 text-center data"
                   style={{ height: "50px" }}
                 >
@@ -280,6 +274,12 @@ const ListUser = (props) => {
                   style={{ height: "50px" }}
                 >
                   {e.college_id}
+                </div>
+                <div
+                  className="col-md-2 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.batch_id}
                 </div>
                 <div
                   className="col-md-2 list-table-data p-2 text-center data"
