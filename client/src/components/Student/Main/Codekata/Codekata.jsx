@@ -6,6 +6,7 @@ import codekata from "../../../Images/codekata.svg";
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
 import "./Codekata.css";
 import { useLoader } from "../../../../contexts/AuthContext";
+import CodeIcon from '@material-ui/icons/Code';
 const Codekata = ({ setSideToggle, ...props }) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const history = useHistory();
@@ -78,7 +79,7 @@ const Codekata = ({ setSideToggle, ...props }) => {
               className="btn-hover color-11 mt-3"
               onClickHandler={submitCode}
             >
-              <i className="fas fa-code pr-2 pl-2"></i>ENTER CODE
+              <CodeIcon/><span className="ml-2">ENTER CODE</span>
             </CustomButton>
           </div>
         </div>

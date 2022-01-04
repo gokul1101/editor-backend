@@ -15,12 +15,12 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
 import ErrorLogs from "./ErrorLogs/ErrorLogs";
 import CreateChallenge from "./Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
-import ContestStatictics from "./Contests/ContestDetails/ContestStatictics/ContestStatictics";
 import PageNotFound from "../../Reducer/PageNotFound/404";
 import HomeIcon from "@material-ui/icons/Home";
 import GroupIcon from "@material-ui/icons/Group";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import WarningIcon from "@material-ui/icons/Warning";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 const Main = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle] = useState(false);
@@ -113,7 +113,7 @@ const Main = (props) => {
                   }}
                   className="nav-link dash-li"
                 >
-                  <i className="fas fa-sign-out-alt pr-5  dash-icon shake"></i>
+                  <ExitToAppIcon className=" dash-icon shake"  style={{ position: "relative", left: "-40px" }}/>
                   <span
                     className="hide-span"
                     style={{ position: "relative", left: "-20px" }}

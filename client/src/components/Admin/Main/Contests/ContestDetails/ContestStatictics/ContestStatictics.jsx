@@ -7,7 +7,7 @@ import { AuthContext } from "../../../../../../contexts/AuthContext";
 import { useParams } from "react-router-dom";
 import helperService from "../../../../../../services/helperService";
 import { useState } from "react";
-const limit = 10;
+const limit = 10,leaderBoardCount = 5;
 const ContestStatictics = (props) => {
   const { id } = useParams();
   const [authState] = useContext(AuthContext);
@@ -25,7 +25,7 @@ const ContestStatictics = (props) => {
         setSubmissions(data?.submissions?.submissions || []);
 
         if (!total) setTotal(data?.submissions?.totalCount || 0);
-        setLeaderBoard(data?.submissions?.submissions?.slice(0, 5) || []);
+        setLeaderBoard(data?.submissions?.submissions?.slice(0, leaderBoardCount) || []);
       }
     } catch (err) {}
   };
@@ -86,7 +86,7 @@ const ContestStatictics = (props) => {
                 src="https://img.icons8.com/emoji/30/000000/trophy-emoji.png"
                 className="pr-3 img-fluid"
               />
-              <span className="top-participants">Top 3 Participants</span>
+              <span className="top-participants">Top {leaderBoardCount} Participants</span>
             </div>
             <div className="d-flex flex-column mt-4">
               {leaderBoard.map((submission, idx) => (

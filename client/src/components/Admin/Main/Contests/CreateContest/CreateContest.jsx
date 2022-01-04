@@ -5,6 +5,8 @@ import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import "./CreateContest.css";
 import { useHistory, useParams } from "react-router-dom";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import InfoIcon from '@material-ui/icons/Info';
 const CreateContest = (props) => {
   const [loader, showLoader, hideLoader] = useLoader();
   const history = useHistory();
@@ -172,7 +174,7 @@ const CreateContest = (props) => {
             />
           </div>
           <span className="info-circle mr-2 mt-3">
-            <i className="fas fa-info-circle"></i>
+          <InfoIcon/>
           </span>
         </div>
         <div className="d-flex">
@@ -199,7 +201,7 @@ const CreateContest = (props) => {
             />
           </div>
           <span className="info-circle mr-2 mt-3">
-            <i className="fas fa-info-circle"></i>
+            <InfoIcon/>
           </span>
         </div>
       </div>
@@ -213,7 +215,7 @@ const CreateContest = (props) => {
           props?.title !== "Create Contest" ? updateContest : createContest
         }
       >
-        <i className="fas fa-plus pr-2 pl-2"></i> {props?.title?.toUpperCase()}
+        <AddCircleIcon/> {props?.title?.toUpperCase()}
       </CustomButton>
     </div>
   );

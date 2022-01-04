@@ -6,7 +6,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { green } from "@material-ui/core/colors";
-import { Button, FormControlLabel } from "@material-ui/core";
+import { Button, FormControlLabel, IconButton } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
 import { useState } from "react";
@@ -17,6 +17,9 @@ import { useContext } from "react";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import "./TestCase.css";
 import GoBack from "../../../../../Reducer/GoBack/GoBack";
+import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
+import EditRoundedIcon from "@material-ui/icons/EditRounded";
+import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -56,11 +59,10 @@ const TestCase = (props) => {
       );
       if (status === 200) {
         setTestcases(data.testcases);
-        props.snackBar(data.message,"success")
-
+        // props.snackBar(data.message,"success")
       }
     } catch (err) {
-       props.snackBar(err.data.message,"error")
+      //  props.snackBar(err.data.message,"error")
     }
   };
   useEffect(() => {
@@ -240,7 +242,8 @@ const TestCase = (props) => {
       </div>
       <div className="create-con">
         <button className="p-2 mt-3" onClick={handleClickOpen}>
-          <i className="fas fa-plus pr-2 pl-2"></i>ADD TESTCASE
+          <AddCircleRoundedIcon />
+          <span className="ml-2">ADD TESTCASE</span>
         </button>
       </div>
       <h4 className="m-2 p-2 text-uppercase text-center font-weight-bolder">
@@ -253,7 +256,7 @@ const TestCase = (props) => {
       ) : (
         <div className="d-flex p-2 flex-wrap">
           {testcases?.sample?.map((testcase) => (
-            <div className="p-2">
+            <div className="p-2" key={testcase._id}>
               <div
                 className="card test-card p-3"
                 style={{
@@ -263,14 +266,17 @@ const TestCase = (props) => {
                 }}
               >
                 <div className="edit-delete d-flex ml-auto p-2 m-2">
-                  <i
-                    className="fas fa-edit"
+                  <IconButton
                     onClick={() => updateTestcaseHandler("sample", testcase)}
-                  ></i>
-                  <i
-                    className="fas fa-trash ml-2 "
+                  >
+                    <EditRoundedIcon />
+                  </IconButton>
+
+                  <IconButton
                     onClick={() => deleteTestcaseHandler("sample", testcase)}
-                  ></i>
+                  >
+                    <DeleteRoundedIcon />
+                  </IconButton>
                 </div>
                 <div className="input">
                   <h4 className="font-weight-bolder text-highlight">Input</h4>
@@ -302,7 +308,7 @@ const TestCase = (props) => {
       ) : (
         <div className="d-flex flex-wrap">
           {testcases?.hidden?.map((testcase) => (
-            <div className="p-2">
+            <div className="p-2" key={testcase._id}>
               <div
                 className="card test-card p-3"
                 style={{
@@ -312,14 +318,16 @@ const TestCase = (props) => {
                 }}
               >
                 <div className="edit-delete d-flex ml-auto p-2 m-2">
-                  <i
-                    className="fas fa-edit"
+                  <IconButton
                     onClick={() => updateTestcaseHandler("hidden", testcase)}
-                  ></i>
-                  <i
-                    className="fas fa-trash ml-2 "
+                  >
+                    <EditRoundedIcon />
+                  </IconButton>
+                  <IconButton
                     onClick={() => deleteTestcaseHandler("hidden", testcase)}
-                  ></i>
+                  >
+                    <DeleteRoundedIcon />
+                  </IconButton>
                 </div>
                 <div className="input">
                   <h4 className="font-weight-bolder text-highlight">Input</h4>

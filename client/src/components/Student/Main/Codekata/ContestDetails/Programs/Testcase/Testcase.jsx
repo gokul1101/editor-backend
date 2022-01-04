@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import "./Testcase.css";
 import Loader from "../../../../../../Images/loader.gif";
 import CompilerError from "../CompileError/CompilerError";
+import LockRoundedIcon from '@material-ui/icons/LockRounded';
 const Accordion = withStyles({
   root: {
     border: "1px solid rgba(0, 0, 0, .125)",
@@ -184,7 +185,7 @@ const Testcase = ({
                           </Typography>
 
                           <div className="lock-icon p-2 float-right">
-                            <i className="fas fa-lock"></i>
+                            <LockRoundedIcon/>
                           </div>
                         </AccordionSummary>
                       </Accordion>

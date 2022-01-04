@@ -9,6 +9,7 @@ import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import GoBack from "../../../../../Reducer/GoBack/GoBack";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import "./CreateChallenge.css";
 const CreateChallenge = (props) => {
   const [authState] = useContext(AuthContext);
@@ -351,7 +352,7 @@ const CreateChallenge = (props) => {
             className="btn-hover color-11 mt-2 mb-5 float-right"
             onClickHandler={props?.title ? updateChallenge : createChallenge}
           >
-            <i className="fas fa-plus pr-2 pl-2"></i>{" "}
+            <AddCircleIcon/>{" "}
             {props?.title ? props?.title.toUpperCase() : "CREATE CHALLENGE"}
           </CustomButton>
         </div>

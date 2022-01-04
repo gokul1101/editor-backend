@@ -11,7 +11,9 @@ import helperService from "../../../../../services/helperService";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 import DialogBox from "../../../../Reducer/DialogBox/DialogBox";
 import { parseCode } from "../../../../../services/utils";
-
+import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
+import StarRoundedIcon from "@material-ui/icons/StarRounded";
+import FiberManualRecordRoundedIcon from "@material-ui/icons/FiberManualRecordRounded";
 const ContestDetails = ({ setSideToggle, snackBar }) => {
   const [loader, showLoader, hideLoader] = useLoader();
   const { id } = useParams();
@@ -169,7 +171,8 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
         </div>
         <div className="mt-3 p-2 d-flex">
           <h3 className="font-weight-bolder mx-2 my-2 color-highlight">
-            <i className="fas fa-star"></i>Max Score :{" "}
+            <StarRoundedIcon />
+            Max Score :{" "}
           </h3>
           <div className="max-score d-flex align-items-center justify-content-center text-center">
             {authState?.contest?.contest?.max_score}
@@ -187,7 +190,8 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
           className="btn-hover color-11 mt-2"
           onClickHandler={alertOpen}
         >
-          <i className="fas fa-rocket px-2"></i> SUBMIT CONTEST
+          <AllInclusiveIcon />
+          <span className="ml-2">SUBMIT CONTEST</span>
         </CustomButton>
         <DialogBox
           open={open}
@@ -222,23 +226,21 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
               <span className="quiz-instruct">Instructions :</span>
               <div className="instruction-content d-flex flex-column mt-2">
                 <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
+                  <FiberManualRecordRoundedIcon />
                   In this round each team has its own quota of 4 questions and
                   other questions passed to it from the previous team that did
                   not answer.
                 </span>
                 <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
+                  <FiberManualRecordRoundedIcon /> In this round each team has
+                  its own quota of 4 questions and other questions passed to it
+                  from the previous team that did not answer.
                 </span>
 
                 <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
+                  <FiberManualRecordRoundedIcon /> In this round each team has
+                  its own quota of 4 questions and other questions passed to it
+                  from the previous team that did not answer.
                 </span>
               </div>
             </div>
@@ -256,28 +258,24 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
               <span className="quiz-instruct">Instructions :</span>
               <div className="instruction-content d-flex flex-column mt-2">
                 <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
+                  <FiberManualRecordRoundedIcon /> In this round each team has
+                  its own quota of 4 questions and other questions passed to it
+                  from the previous team that did not answer.
                 </span>
                 <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
+                  <FiberManualRecordRoundedIcon /> In this round each team has
+                  its own quota of 4 questions and other questions passed to it
+                  from the previous team that did not answer.
                 </span>
                 <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
+                  <FiberManualRecordRoundedIcon /> In this round each team has
+                  its own quota of 4 questions and other questions passed to it
+                  from the previous team that did not answer.
                 </span>
                 <span className="mt-2">
-                  <i className="fas fa-circle constraints-dot mr-2"></i>
-                  In this round each team has its own quota of 4 questions and
-                  other questions passed to it from the previous team that did
-                  not answer.
+                  <FiberManualRecordRoundedIcon /> In this round each team has
+                  its own quota of 4 questions and other questions passed to it
+                  from the previous team that did not answer.
                 </span>
               </div>
             </div>

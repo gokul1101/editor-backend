@@ -1,4 +1,5 @@
-const Quiz = require("../models/quizzes");
+const Quiz = require("../models/quizzes")
+const { updateContestService } = require("./contestService");
 
 const updateQuizService = async ({ id, name, total_mcqs, contest_id }) => {
     try {

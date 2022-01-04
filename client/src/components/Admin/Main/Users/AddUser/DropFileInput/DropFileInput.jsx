@@ -148,9 +148,7 @@ const DropFileInput = (props) => {
         <div className="drop-file-preview__item mt-2 d-flex flex-column align-items-center justify-content-center">
           No file choosen. Excel file only be uploaded.
           <div className="d-flex align-items-center justify-content-center mt-3">
-            {/* <button className="loop-btn pr-2 pl-2 mt-2 mb-2">
-              <i className="fas fa-download pr-2 pl-2"></i>Download Sample file
-            </button> */}
+            
             <CustomButton className="btn-hover color-11 mt-4">
               <GetAppIcon/>Download Sample file
             </CustomButton>

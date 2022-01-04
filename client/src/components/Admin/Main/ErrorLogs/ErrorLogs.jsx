@@ -3,7 +3,10 @@ import helperService from "../../../../services/helperService";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import { useParams } from "react-router-dom";
 import ErrorLogDialogBox from "../../../Reducer/ErrorLogDialogBox/ErrorLogDialogBox";
-
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import ErrorIcon from "@material-ui/icons/Error";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import { IconButton } from "@material-ui/core";
 const ErrorLogs = (props) => {
   const { id } = useParams();
   const [authState] = useContext(AuthContext);
@@ -17,7 +20,7 @@ const ErrorLogs = (props) => {
 
   const handleClose = () => {
     setOpen(false);
-    setErrorLog({})
+    setErrorLog({});
   };
 
   const fetchErrorLogs = async () => {
@@ -27,11 +30,11 @@ const ErrorLogs = (props) => {
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 200) {
-        props.snackBar(data.message,"success")
+        props.snackBar(data.message, "success");
         setErrorLogs(data.errorLogs);
       }
     } catch (err) {
-      props.snackBar(err.data,"error")
+      props.snackBar(err.data, "error");
     }
   };
   useEffect(() => {
@@ -52,19 +55,18 @@ const ErrorLogs = (props) => {
             NO. OF LOGS
           </div>
           <div className="col-md-2 text-center content-nav-title">
-            <i className="fas fa-check-circle"></i>
+            <CheckCircleIcon />
           </div>
           <div className="col-md-2 text-center content-nav-title">
-            <i className="fas fa-times-circle"></i>
+            <ErrorIcon />
           </div>
           <div className="col-md-2 text-center content-nav-title">
             SHOW
-            {/* <i className="fas fa-external-link-alt"></i> */}
           </div>
         </div>
         <div className="d-flex flex-column border-top border-bottom mt-1 p-2 mb-1">
           {errorLogs.map((log) => (
-            <div className="d-flex">
+            <div className="d-flex mt-2">
               <div
                 className="col-md-3 text-center content-nav-title"
                 key={log._id}
@@ -81,14 +83,15 @@ const ErrorLogs = (props) => {
                 {log.errorLogs.length}
               </div>
               <div className="col-md-2 text-center content-nav-title">
-                <i
+                <IconButton
                   style={{ cursor: "pointer" }}
-                  className="fas fa-external-link-alt"
                   onClick={() => {
                     setErrorLog(log);
                     handleClickOpen();
                   }}
-                ></i>
+                >
+                  <VisibilityIcon />
+                </IconButton>
               </div>
             </div>
           ))}

@@ -4,7 +4,7 @@ import InputReducer from "../../../Reducer/InputReducer";
 import SelectReducer from "../../../Reducer/SelectReducer/SelectReducer";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-// import { emailCheck } from "../../../../services/utils";
+import SaveIcon from '@material-ui/icons/Save';
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
 import GoBack from "../../../Reducer/GoBack/GoBack";
 import PasswordField from "../../../Reducer/PasswordField/PasswordField";
@@ -242,7 +242,7 @@ const Profile = (props) => {
                 className="btn-hover color-11 mt-3 mr-3"
                 onClickHandler={userEditedDetails}
               >
-                <i className="fas fa-save pr-2 pl-2"></i> SAVE CHANGES
+                <SaveIcon/> <span className="ml-2">SAVE CHANGES</span>
               </CustomButton>
             </div>
           </div>
