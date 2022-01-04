@@ -1,7 +1,7 @@
+const { updateQuizService } = require("../services");
 const {
   createQuizService,
   getQuizService,
-  updateQuizService,
   getAllQuizzesWithContestId,
   deleteQuizService,
 } = require("../services/quizService");
