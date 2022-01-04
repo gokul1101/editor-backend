@@ -98,6 +98,9 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
+        const user = localStorage.getItem("user");
+        localStorage.clear();
+        localStorage.setItem("user", user);
         snackBar(message, "success");
         history.push("/codekata");
       }

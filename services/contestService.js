@@ -103,7 +103,7 @@ const updateContestService = async ({
         message: "Contest not found",
       });
     if (max_score) {
-      contest.max_score += max_score;
+      contest.max_score += +max_score;
     }
     if (name) {
       let contestNameExists = await Contest.findOne({ name });
