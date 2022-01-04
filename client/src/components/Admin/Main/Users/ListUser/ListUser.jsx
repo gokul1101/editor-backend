@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import FileDownload from "js-file-download";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -96,6 +97,28 @@ const ListUser = (props) => {
       hideLoader();
     }
   };
+  const downloadStudentsDetails = async () => {
+    try {
+      const { data, status } = await helperService.downloadStudentsDetails(
+        // TODO : user quries
+        {  },
+        {
+          headers: { Authorization: authState?.user?.token },
+          responseType: "arraybuffer",
+        }
+      );
+      if (status === 200) {
+        console.log(data);
+        const blob = new Blob([data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+
+        FileDownload(blob, `${"UserDetails"}.xlsx`);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -189,7 +212,7 @@ const ListUser = (props) => {
             </div>
 
             <div>
-              <button className="pr-4 pl-4 mr-2 d-load-btn ml-3">
+              <button className="pr-4 pl-4 mr-2 d-load-btn ml-3" onClick={downloadStudentsDetails}>
                 <GetAppIcon/>
                 <span className="ml-2 font-weight-bolder">
                   Download Details

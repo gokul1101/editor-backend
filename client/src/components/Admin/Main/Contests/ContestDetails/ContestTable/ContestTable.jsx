@@ -15,7 +15,7 @@ const ContestTable = ({
         <table className="table">
           <thead className="thead-dark">
             <tr>
-              <th>Quiz Name</th>
+              <th>{`${setUpdateQuestion ? "Quiz" : "Challenge"} Name`}</th>
               <th>Created At</th>
               <th>Max Score</th>
               <th>delete</th>

@@ -115,7 +115,7 @@ const getSubmissionsService = async (
         : contest_id
         ? await Submission.find({ contest_id })
             .populate({ path: "user_id", model: "users", select: "name regno" })
-            .sort({ score: "desc" })
+            .sort({ score: "desc", created_at: "asc" })
             .limit(limit * 1)
             .skip((page > 0 ? page - 1 : 1) * limit)
         : [];

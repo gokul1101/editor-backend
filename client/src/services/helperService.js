@@ -640,5 +640,53 @@ const helperService = {
       });
     }
   },
+  downloadStatistics : async (payload, config) => {
+    try {
+      const {
+        data,
+        status,
+      } = await axios.post(
+        `${baseURL}/api/v1/submission/export`,
+        payload,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
+      console.log(err.response)
+      return Promise.reject({
+        status: err.response.status,
+        message: err.response.data,
+      });
+    }
+  },
+  downloadStudentsDetails : async (payload, config) => {
+    try {
+      const {
+        data,
+        status,
+      } = await axios.post(
+        `${baseURL}/api/v1/user/export`,
+        payload,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
+      console.log(err.response)
+      return Promise.reject({
+        status: err.response.status,
+        message: err.response.data,
+      });
+    }
+  } 
 };
 export default helperService;
