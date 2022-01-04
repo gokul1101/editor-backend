@@ -56,11 +56,11 @@ const TestCase = (props) => {
       );
       if (status === 200) {
         setTestcases(data.testcases);
-        props.snackBar(data.message,"success")
+        // props.snackBar(data.message,"success")
 
       }
     } catch (err) {
-       props.snackBar(err.data.message,"error")
+      //  props.snackBar(err.data.message,"error")
     }
   };
   useEffect(() => {
@@ -253,7 +253,7 @@ const TestCase = (props) => {
       ) : (
         <div className="d-flex p-2 flex-wrap">
           {testcases?.sample?.map((testcase) => (
-            <div className="p-2">
+            <div className="p-2" key={testcase._id}>
               <div
                 className="card test-card p-3"
                 style={{
@@ -302,7 +302,7 @@ const TestCase = (props) => {
       ) : (
         <div className="d-flex flex-wrap">
           {testcases?.hidden?.map((testcase) => (
-            <div className="p-2">
+            <div className="p-2" key={testcase._id}>
               <div
                 className="card test-card p-3"
                 style={{

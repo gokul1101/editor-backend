@@ -19,7 +19,7 @@ const ContestTable = ({
               <th>Created At</th>
               <th>Max Score</th>
               <th>delete</th>
-              {setUpdateQuestion ? (<th>edit</th>) : null}
+              {setUpdateQuestion ? <th>edit</th> : null}
             </tr>
           </thead>
           <tbody>
@@ -29,7 +29,11 @@ const ContestTable = ({
                   <td>
                     <Link
                       style={{ color: "white" }}
-                      to={`/quizzes/${question._id}/add-question`}
+                      to={
+                        setUpdateQuestion
+                          ? `/quizzes/${question._id}/add-question`
+                          : `/challenges/${question._id}/update`
+                      }
                     >
                       <span className="pl-2 text-dark">{question.name}</span>
                     </Link>
@@ -67,7 +71,9 @@ const ContestTable = ({
           </tbody>
         </table>
       ) : (
-        <span>{setUpdateQuestion? "Quizzes" : "Challenges"} not created yet.</span>
+        <span>
+          {setUpdateQuestion ? "Quizzes" : "Challenges"} not created yet.
+        </span>
       )}
     </div>
   );
