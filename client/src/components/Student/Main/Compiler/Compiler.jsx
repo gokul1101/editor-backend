@@ -86,7 +86,11 @@ const Compiler = (props) => {
         setOutput(data);
       }
     } catch (err) {
+<<<<<<< HEAD
       setOutput(err.data);
+=======
+      setOutput(err.data.err);
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
     }
   };
   return (

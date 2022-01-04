@@ -55,6 +55,7 @@ const getQuizService = async (id) => {
     });
   }
 };
+<<<<<<< HEAD
 const updateQuizService = async ({ id, name, total_mcqs, contest_id }) => {
   try {
     let quiz = await Quiz.findById(id);
@@ -88,6 +89,9 @@ const updateQuizService = async ({ id, name, total_mcqs, contest_id }) => {
     });
   }
 };
+=======
+
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
 const getAllQuizzesWithContestId = async (id) => {
   try {
     const quizzes = await Quiz.find({ contest_id: id });
@@ -138,7 +142,11 @@ const deleteQuizService = async ({ id, name }) => {
     );
     if (quiz.max_score)
       await updateContestService({
+<<<<<<< HEAD
         max_score: -quiz.max_score,
+=======
+        max_score: -(quiz.max_score),
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
         id: quiz.contest_id,
       });
 
@@ -157,7 +165,10 @@ const deleteQuizService = async ({ id, name }) => {
 module.exports = {
   createQuizService,
   getQuizService,
+<<<<<<< HEAD
   updateQuizService,
+=======
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
   getAllQuizzesWithContestId,
   deleteQuizService,
 };

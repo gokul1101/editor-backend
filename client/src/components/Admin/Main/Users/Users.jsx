@@ -4,6 +4,10 @@ import { NavLink, Switch, Route, Redirect, useHistory } from "react-router-dom";
 import AddUser from "./AddUser/AddUser";
 import ListUser from "./ListUser/ListUser";
 import GoBack from "../../../Reducer/GoBack/GoBack";
+<<<<<<< HEAD
+=======
+import PageNotFound from "../../../Reducer/PageNotFound/404";
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 const Users = (props) => {
@@ -55,6 +59,12 @@ const Users = (props) => {
             path="/users"
             render={() => <Redirect to="/users/add-user" />}
           />
+<<<<<<< HEAD
+=======
+          <Route path="*">
+            <PageNotFound />
+          </Route>
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
         </Switch>
       </div>
     </div>

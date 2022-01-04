@@ -1,4 +1,15 @@
+<<<<<<< HEAD
 .btn-save,.btn-cancel{
     background-color: #0B7E5B !important;
     color : white !important;
+=======
+.btn-save,
+.btn-cancel {
+  background-color: #0b7e5b !important;
+  color: white !important;
+}
+.go-back {
+  top: 0 !important;
+  left: 0;
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
 }

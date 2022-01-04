@@ -11,7 +11,11 @@ const DialogBox = ({ localData, ...props }) => {
     const questions = [
       ...data.unSubmittedChallenges,
       ...data.unSubmittedQuizzes,
+<<<<<<< HEAD
     ].toString();
+=======
+    ];
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
     return questions;
   };
   return (
@@ -35,6 +39,7 @@ const DialogBox = ({ localData, ...props }) => {
           >
             {localData ? (
               <>
+<<<<<<< HEAD
                 <p>
                   Some sections are not sumbitted!!!.
                 </p>
@@ -42,6 +47,21 @@ const DialogBox = ({ localData, ...props }) => {
               </>
             ) : (
               <p>{props.bodyMsg}</p>
+=======
+                <p className="font-weight-bold">
+                  Some sections are not sumbitted!!!.
+                </p>
+                {unSubmittedQuestions().map((ques) => {
+                  return (
+                    <span className="badge badge-success font-weight-normal px-2 py-2 m-1">
+                      {ques}
+                    </span>
+                  );
+                })}
+              </>
+            ) : (
+              <p className="font-weight-bold">{props.bodyMsg}</p>
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
             )}
           </DialogContentText>
         </DialogContent>
@@ -51,7 +71,11 @@ const DialogBox = ({ localData, ...props }) => {
               className="btn-hover color-11 mt-1"
               onClickHandler={props.handleClose}
             >
+<<<<<<< HEAD
               OK
+=======
+              <i className="fas fa-bell pr-2 pl-2"></i> Ok
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
             </CustomButton>
           ) : (
             <>
@@ -59,7 +83,11 @@ const DialogBox = ({ localData, ...props }) => {
                 className="btn-hover color-11 mt-1"
                 onClickHandler={props.handleOpen}
               >
+<<<<<<< HEAD
                 <i className="fas fa-times pr-2 pl-2"></i> YES
+=======
+                <i className="fas fa-check pr-2 pl-2"></i> YES
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
               </CustomButton>
 
               <CustomButton

@@ -93,17 +93,29 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
       return localCode;
     });
     try {
+<<<<<<< HEAD
       const { code, message } = await helperService.createSubmission(
         { ...payload },
         { headers: { Authorization: authState.user.token } }
       );
       if (code === 201) {
+=======
+      const { status, message } = await helperService.createSubmission(
+        { ...payload },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 201) {
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
         snackBar(message, "success");
         history.push("/codekata");
       }
     } catch (err) {
+<<<<<<< HEAD
       console.log(err);
       snackBar(err.message || "", "success");
+=======
+      snackBar(err.message, "error");
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
     } finally {
       hideLoader();
     }
@@ -168,6 +180,7 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
         <div className="challenge-name ml-4 font-weight-bolder">
           <h1>{authState?.contest?.contest.name}</h1>
         </div>
+<<<<<<< HEAD
         <div className="mt-3 p-2">
           <h3 className="font-weight-bolder color-highlight">
             <i className="fas fa-star"></i>Max Score :{" "}
@@ -175,6 +188,15 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
               {authState?.contest?.contest?.max_score}
             </span>
           </h3>
+=======
+        <div className="mt-3 p-2 d-flex">
+          <h3 className="font-weight-bolder mx-2 my-2 color-highlight">
+            <i className="fas fa-star"></i>Max Score :{" "}
+          </h3>
+          <div className="max-score d-flex align-items-center justify-content-center text-center">
+            {authState?.contest?.contest?.max_score}
+          </div>
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
         </div>
       </div>
       <div className="d-flex mt-1 mb-1">

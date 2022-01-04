@@ -274,7 +274,13 @@ const TestCase = (props) => {
                 </div>
                 <div className="input">
                   <h4 className="font-weight-bolder text-highlight">Input</h4>
+<<<<<<< HEAD
                   <h6>{testcase.input}</h6>
+=======
+                  <h6>
+                    <pre>{testcase?.input && JSON.parse(testcase?.input)}</pre>
+                  </h6>
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
                 </div>
                 <div className="output">
                   <h4 className="font-weight-bolder text-highlight">Output</h4>
@@ -321,7 +327,13 @@ const TestCase = (props) => {
                 </div>
                 <div className="input">
                   <h4 className="font-weight-bolder text-highlight">Input</h4>
+<<<<<<< HEAD
                   <h6>{testcase.input}</h6>
+=======
+                  <h6>
+                    <pre>{testcase?.input && JSON.parse(testcase?.input)}</pre>
+                  </h6>
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
                 </div>
                 <div className="output">
                   <h4 className="font-weight-bolder text-highlight">Output</h4>
@@ -357,9 +369,15 @@ const TestCase = (props) => {
               multiline
               rows={4}
               variant="outlined"
+<<<<<<< HEAD
               value={testcase.input}
               onClickHandler={(value) =>
                 setTestcase({ ...testcase, input: value })
+=======
+              value={testcase?.input && JSON.parse(testcase?.input)}
+              onClickHandler={(value) =>
+                setTestcase({ ...testcase, input: JSON.stringify(value) })
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
               }
             />
           </DialogContentText>

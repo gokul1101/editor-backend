@@ -46,7 +46,11 @@ const Dashboard = (props) => {
                   <span className="header-article">Become a</span>
                   <span className="header-article">Full Stack</span>
                   <span className="header-article mb-3">Web Developer</span>
+<<<<<<< HEAD
                   <NavLink to="/articles">
+=======
+                  <NavLink to="/roadmap">
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
                     <span className="span-arrow">
                       <i className="fas fa-arrow-circle-right"></i> Learn more..
                     </span>

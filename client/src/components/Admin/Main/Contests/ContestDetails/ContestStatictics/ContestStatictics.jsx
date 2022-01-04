@@ -25,10 +25,16 @@ const ContestStatictics = (props) => {
         setSubmissions(data?.submissions?.submissions || []);
 
         if (!total) setTotal(data?.submissions?.totalCount || 0);
+<<<<<<< HEAD
         if (+page === 1) setLeaderBoard(data?.submissions.slice(0,5) || []);
       }
     } catch (err) {
     }
+=======
+        setLeaderBoard(data?.submissions?.submissions?.slice(0, 5) || []);
+      }
+    } catch (err) {}
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
   };
   useEffect(() => {
     fethContestSubmissions();
@@ -57,12 +63,19 @@ const ContestStatictics = (props) => {
                 <div className="col-md-2 stats-detail">{id + 1}</div>
                 <div className="col-md-2 stats-detail">{e.user_id.regno}</div>
                 <div className="col-md-3 stats-detail">{e.user_id.name}</div>
+<<<<<<< HEAD
                 <div className="col-md-2 stats-detail">{new Date(e.created_at).toLocaleString()}</div>
+=======
+                <div className="col-md-2 stats-detail">
+                  {new Date(e.created_at).toLocaleString()}
+                </div>
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
                 <div className="col-md-3 stats-detail">{e.score}</div>
               </div>
             );
           })}
           <div>
+<<<<<<< HEAD
             {
               total > limit && 
             <Pagination
@@ -73,10 +86,24 @@ const ContestStatictics = (props) => {
             onChange={(e, value) => handlePagination(e, value)}
             />
           }
+=======
+            {total > limit && (
+              <Pagination
+                count={
+                  Math.floor(total / limit) + (total % limit !== 0 ? 1 : 0)
+                }
+                color="primary"
+                variant="text"
+                className="mt-5 d-flex justify-content-center"
+                onChange={(e, value) => handlePagination(e, value)}
+              />
+            )}
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
           </div>
         </div>
 
         <div className="col-md-3 stats-right d-flex flex-column m-1">
+<<<<<<< HEAD
             <div className="top-part mx-2 my-2 p-2">
               <div className="d-flex align-items-center justify-content-center mt-2 mb-2">
                 <img
@@ -104,6 +131,37 @@ const ContestStatictics = (props) => {
                 ))}
               </div>
             </div>
+=======
+          <div className="top-part mx-2 my-2 p-2">
+            <div className="d-flex align-items-center justify-content-center mt-2 mb-2">
+              <img
+                alt="someImage"
+                src="https://img.icons8.com/emoji/30/000000/trophy-emoji.png"
+                className="pr-3 img-fluid"
+              />
+              <span className="top-participants">Top 3 Participants</span>
+            </div>
+            <div className="d-flex flex-column mt-4">
+              {leaderBoard.map((submission, idx) => (
+                <div className="d-flex mt-2 mb-2">
+                  <div className="col-md-2">
+                    <button className="correct">{idx + 1}</button>
+                  </div>
+                  <div className="col-md-6 top-scorer">
+                    {submission.user_id.name}
+                  </div>
+                  <div className="col-md-4 d-flex justify-content-between align-items-center">
+                    <img
+                      alt="someImage"
+                      src="https://img.icons8.com/emoji/30/000000/coin-emoji.png"
+                    />
+                    <span className="score-point">{submission.score}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
           <div className="top-part mx-2 my-2 p-3">
             <div className="submissions d-flex flex-column align-items-center justify-content-center">
               <img src={SubmissionGif} height="98" width="96" />

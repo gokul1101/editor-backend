@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< HEAD
 import {
   Box,
   Typography,
@@ -48,6 +49,57 @@ const Articles = (props) => {
         <p className="font-italic">Let's get or acquire some knowledge</p>
       </div>
       <div className="container d-flex">
+=======
+// import {
+//   Box,
+//   Typography,
+//   Card,
+//   CardContent,
+//   Grid,
+//   Container,
+//   makeStyles,
+// } from "@material-ui/core";
+// import Pagination from "@material-ui/lab/Pagination";
+import "./Articles.css";
+// import { useState, useEffect } from "react";
+const Articles = (props) => {
+  // const useStyles = makeStyles((theme) => ({
+  //   root: {
+  //     "& .Mui-selected": {
+  //       backgroundColor: "#0ba360",
+  //       color: "#ffffff",
+  //     },
+  //     "& .Mui-selected:focus": {
+  //       backgroundColor: "#0ba360",
+  //       color: "#ffffff",
+  //     },
+  //   },
+  // }));
+  // const classes = useStyles();
+  // const [posts, setPosts] = useState([]);
+  // const [page, setPage] = useState(1);
+  // const api_key = "11b7cb68c300471a1c8507dd72dcce6f";
+  // const loadPosts = async () => {
+  //   const res = await fetch(
+  //     `http://api.mediastack.com/v1/news?access_key=${api_key}&categories=technology&_page=${page}`,
+  //     {
+  //       method: "GET",
+  //     }
+  //   );
+  //   const data = await res.json();
+  // };
+  // useEffect(() => {
+  //   props.setSideToggle(false);
+  //   loadPosts();
+  // }, [page]);
+  return (
+    <div>
+      <div className="jumbotron text-center tab-class">
+        <h1 className="text-white text-italic">Articles Coming soon</h1>
+        <p className="font-italic">Let's get or acquire some knowledge</p>
+      </div>
+      {/* <div className="container d-flex">
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
         <div class="card">
           <div class="date">
             <span>27</span>FEB
@@ -120,7 +172,11 @@ const Articles = (props) => {
             onChange={(e, value) => setPage(value)}
           />
         </Box>
+<<<<<<< HEAD
       </Container>
+=======
+      </Container> */}
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
     </div>
   );
 };

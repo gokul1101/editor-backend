@@ -144,6 +144,7 @@ const CreateChallenge = (props) => {
       input_format: authState?.challenge?.input_format ?? "",
       output_format: authState?.challenge?.output_format ?? "",
       constraints: authState?.challenge?.constraints ?? "",
+<<<<<<< HEAD
       difficulty_id: authState?.challenge?.difficulty_id?.level ?? "",
       max_score: authState?.challenge?.max_score ?? "",
     });
@@ -151,6 +152,12 @@ const CreateChallenge = (props) => {
     // return () => {
     //   if (authState?.challenge) setChallenge({});
     // };
+=======
+      difficulty_id: authState?.challenge?.difficulty_id?.level ?? "easy",
+      max_score: authState?.challenge?.max_score,
+    });
+    setDifficultyId(authState?.challenge?.difficulty_id?.level ?? "easy") ;
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
   }, [authState]);
   return (
     <div className="container">

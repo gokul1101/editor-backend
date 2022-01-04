@@ -6,8 +6,13 @@ import CustomButton from "../Reducer/CustomButton/CustomButton";
 import { AuthContext } from "../../contexts/AuthContext";
 import helperService from "../../services/helperService";
 import { useHistory } from "react-router";
+<<<<<<< HEAD
   // import Visibility from '@mui/icons-material/Visibility';
   // import VisibilityOff from '@mui/icons-material/VisibilityOff';
+=======
+// import Visibility from '@mui/icons-material/Visibility';
+// import VisibilityOff from '@mui/icons-material/VisibilityOff';
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
 const Login = (props) => {
   const history = useHistory();
   //** Context Consumer */
@@ -67,8 +72,12 @@ const Login = (props) => {
       props.snackBar(err.message, "error");
     }
   };
+<<<<<<< HEAD
   React.useEffect(() => {
   }, [change]);
+=======
+  React.useEffect(() => {}, [change]);
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
   const handleKeypress = (e) => {
     if (e.keyCode === 13) {
       handleSubmit();
@@ -85,7 +94,11 @@ const Login = (props) => {
               <p className="text-muted">Learn , code , repeat</p>
 
               <div className="input-field mb-2">
+<<<<<<< HEAD
               <i className="fas fa-id-card-alt"></i>  
+=======
+                <i className="fas fa-id-card-alt"></i>
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
                 <input
                   type="text"
                   placeholder="Register number"
@@ -98,7 +111,11 @@ const Login = (props) => {
                   type="password"
                   placeholder="Password"
                   // {...password ? <VisibilityOff /> : <Visibility />}
+<<<<<<< HEAD
                    onChange={(e) => setPassword(e.target.value)}
+=======
+                  onChange={(e) => setPassword(e.target.value)}
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
                 />
               </div>
               <CustomButton
@@ -113,7 +130,11 @@ const Login = (props) => {
               <h2 className="title">Admin Sign in</h2>
               <p className="highlight">Learn , Code , Repeat</p>
               <div className="input-field">
+<<<<<<< HEAD
               <i className="fas fa-id-card-alt"></i>
+=======
+                <i className="fas fa-id-card-alt"></i>
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
                 <input
                   type="text"
                   placeholder="Register no"

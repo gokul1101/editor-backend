@@ -1,6 +1,10 @@
 .clip-content {
   position: relative;
+<<<<<<< HEAD
   width: 100%;
+=======
+  width: 100vw;
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
   background-color: #fff;
   min-height: 100vh;
   overflow: hidden;
@@ -168,7 +172,11 @@ form.sign-in-form {
 
 .right-panel .image,
 .right-panel .content {
+<<<<<<< HEAD
   transform: translateX(800px);
+=======
+  transform: translateX(1300px); /* transform panel */
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
 }
 
 .clip-content.sign-up-mode:before {
@@ -178,7 +186,11 @@ form.sign-in-form {
 
 .clip-content.sign-up-mode .left-panel .image,
 .clip-content.sign-up-mode .left-panel .content {
+<<<<<<< HEAD
   transform: translateX(-800px);
+=======
+  transform: translateX(-1300px); /* transform panel */
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
 }
 
 .clip-content.sign-up-mode .signin-signup {
@@ -215,7 +227,11 @@ form.sign-in-form {
   }
   .signin-signup {
     width: 100%;
+<<<<<<< HEAD
     top: 95%;
+=======
+    top: 80%;
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
     transform: translate(-50%, -100%);
     transition: 1s 0.8s ease-in-out;
   }
@@ -247,7 +263,11 @@ form.sign-in-form {
   }
 
   .image {
+<<<<<<< HEAD
     width: 200px;
+=======
+    width: 270px;
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
     transition: transform 0.9s ease-in-out;
     transition-delay: 0.6s;
   }
@@ -306,7 +326,11 @@ form.sign-in-form {
   }
 
   .clip-content.sign-up-mode .signin-signup {
+<<<<<<< HEAD
     top: 5%;
+=======
+    top: 25%;
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
     transform: translate(-50%, 0);
   }
 }

@@ -9,6 +9,10 @@ import CreateChallenge from "../../Challenges/ChallengeDashboard/CreateChallenge
 import { useContext, useEffect } from "react";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import helperService from "../../../../../services/helperService";
+<<<<<<< HEAD
+=======
+import PageNotFound from "../../../../Reducer/PageNotFound/404";
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
 const convertDate = (date) => {
   if (date) return date.split("T")[0];
   return "";
@@ -49,6 +53,7 @@ const ContestDetails = (props) => {
     };
   }, []);
   return (
+<<<<<<< HEAD
     <div style={{height:'100vh',overflowY:'scroll'}}>
       <ul className="container-fluid list-group d-flex flex-row py-2 my-3">
         {authState?.contest &&
@@ -98,6 +103,57 @@ const ContestDetails = (props) => {
             <i className="fas fa-clipboard-list pr-2 pl-1"></i>Statictics
           </NavLink>
         </li>
+=======
+    <div style={{ height: "100vh", overflowY: "scroll" }}>
+      <ul className="container-fluid list-group d-flex flex-row py-2 px-3 my-3">
+        {authState?.contest &&
+        !(new Date(authState?.contest?.end_date) < new Date()) ? (
+          <>
+            <NavLink
+              exact
+              className="edit-contest-li px-3 mt-2 mb-2"
+              to={`/contests/${id}/edit`}
+              activeClassName="box arrow-bottom"
+            >
+              <li className="list-group-item user-group-pill position-relative">
+                <i className="fas fa-plus pr-1 pl-1"></i> Details
+              </li>
+            </NavLink>
+            <NavLink
+              exact
+              className="edit-contest-li px-3 mt-2 mb-2"
+              to={`/contests/${id}/quizzes`}
+              activeClassName="box arrow-bottom"
+            >
+              <li className="list-group-item user-group-pill position-relative">
+                <i className="fas fa-clipboard-list pr-2 pl-1"></i> Quizzes List
+              </li>
+            </NavLink>
+            <NavLink
+              exact
+              className="edit-contest-li px-3 mt-2 mb-2"
+              to={`/contests/${id}/challenges`}
+              activeClassName="box arrow-bottom"
+            >
+              <li className="list-group-item user-group-pill position-relative">
+                <i className="fas fa-clipboard-list pr-2 pl-1"></i>Challenges
+                List
+              </li>
+            </NavLink>
+          </>
+        ) : null}
+
+        <NavLink
+          exact
+          className="edit-contest-li px-3 mt-2 mb-2"
+          to={`/contests/${id}/statistics`}
+          activeClassName="box arrow-bottom"
+        >
+          <li className="list-group-item user-group-pill position-relative">
+            <i className="fas fa-clipboard-list pr-2 pl-1"></i>Statictics
+          </li>
+        </NavLink>
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
       </ul>
       <div>
         <Switch>
@@ -122,6 +178,7 @@ const ContestDetails = (props) => {
                 <ContestStatictics snackBar={props.snackBar} />
               </Route>
             </>
+<<<<<<< HEAD
           ) : null}
           <Route path={`/contests/:id/statistics`} exact>
             <ContestStatictics snackBar={props.snackBar} />
@@ -131,6 +188,22 @@ const ContestDetails = (props) => {
             path={`/contests/:id`}
             render={() => <Redirect to={`/contests/${id}/edit`} />}
           />
+=======
+          ) : (
+            <></>
+          )}
+          <Route path={`/contests/:id/statistics`} exact>
+            <ContestStatictics snackBar={props.snackBar} />
+          </Route>
+
+          {/* <Route
+            path={`/contests/:id`}
+            render={() => <Redirect to={`/contests/${id}/edit`} />}
+          /> */}
+          <Route path="*">
+            <PageNotFound />
+          </Route>
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
         </Switch>
       </div>
     </div>

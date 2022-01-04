@@ -1,6 +1,10 @@
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
+<<<<<<< HEAD
 const { updateQuizService } = require("./quizService");
+=======
+const { updateQuizService } = require(".");
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
 const createMCQ = async ({ type_id, quiz_id, statement, options }) => {
   let question = {
     type_id,
@@ -120,7 +124,11 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
     response.modelCount = count;
     const questions = await Question.find({ quiz_id: id })
       .limit(limit * 1)
+<<<<<<< HEAD
       .skip((page - 1) * limit);
+=======
+      .skip((page > 0 ? page - 1 : 1) * limit);
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
     let mcqs = [];
     for (let i = 0; i < questions.length; i++) {
       let mcq = {

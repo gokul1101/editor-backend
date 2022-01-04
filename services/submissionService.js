@@ -88,7 +88,11 @@ const getSubmissionsService = async (
     submissions["leaderBoard"] = await Submission.find({ contest_id })
       .sort({ score: "desc", created_at: "asc" })
       .limit(limit * 1)
+<<<<<<< HEAD
       .skip((page - 1) * limit);
+=======
+      .skip((page > 0 ? page - 1 : 1) * limit);
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
     if (page == 1) {
       submissions["totalCount"] =
         user_id && contest_id
@@ -111,13 +115,21 @@ const getSubmissionsService = async (
             .populate({ path: "user_id", model: "users", select: "name regno" })
             .sort({ score: "desc" })
             .limit(limit * 1)
+<<<<<<< HEAD
             .skip((page - 1) * limit)
+=======
+            .skip((page > 0 ? page - 1 : 1) * limit)
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
         : contest_id
         ? await Submission.find({ contest_id })
             .populate({ path: "user_id", model: "users", select: "name regno" })
             .sort({ score: "desc" })
             .limit(limit * 1)
+<<<<<<< HEAD
             .skip((page - 1) * limit)
+=======
+            .skip((page > 0 ? page - 1 : 1) * limit)
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
         : [];
     return Promise.resolve({
       status: 200,
@@ -138,7 +150,11 @@ const getAllSubmissionsService = async (page, limit) => {
     response.modelCount = await Submission.countDocuments();
     const submissions = await Submission.find({})
       .limit(limit * 1)
+<<<<<<< HEAD
       .skip((page - 1) * limit);
+=======
+      .skip((page > 0 ? page - 1 : 1) * limit);
+>>>>>>> 8c8eb1f7bbe9348f454449d77f15a5eddf533f2c
     response.total = submissions.length;
     response.submissions = submissions;
     return Promise.resolve({
