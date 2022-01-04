@@ -27,6 +27,10 @@ const Contests = (props) => {
       fetchContests(value, true);
     }
   };
+  const copyToClipboard = async (text) => {
+    await navigator.clipboard.writeText(text ?? "");
+    props.snackBar("Code Copied", "success");
+  }
   const fetchContests = async (page = 1, past = false) => {
     try {
       if (!past) showLoader();
@@ -89,6 +93,9 @@ const Contests = (props) => {
         </div>
         <div className="d-flex border-top border-bottom mt-2 p-2 mb-2">
           <div className="col-md-3 text-center content-nav-title">Title</div>
+          <div className="col-md-1 text-center content-nav-title">
+            CODE
+          </div>
           <div className="col-md-3 text-center content-nav-title">
             Starts at
           </div>
@@ -111,13 +118,16 @@ const Contests = (props) => {
                     <span>{event.name}</span>
                   </Link>
                 </div>
+                <div className="col-md-1 text-center">
+                  <span>{event.code}</span>
+                </div>
                 <div className="col-md-3 text-center">{`${new Date(
                   event.start_date
                   ).toLocaleString()} `}</div>
                 <div className="col-md-3 text-center">{`${new Date(
                   event.end_date
-                  ).toLocaleString()} `}</div>
-                <div className="col-md-3 text-center">
+                ).toLocaleString()} `}</div>
+                <div className="col-md-2 text-center">
                   <span>{event.duration}</span>
                 </div>
               </div>
@@ -133,6 +143,9 @@ const Contests = (props) => {
         </div>
         <div className="d-flex border-top border-bottom mt-2 p-2 mb-2">
           <div className="col-md-3 text-center content-nav-title">Title</div>
+          <div className="col-md-1 text-center content-nav-title">
+            CODE
+          </div>
           <div className="col-md-3 text-center content-nav-title">
             Starts at
           </div>
@@ -155,13 +168,16 @@ const Contests = (props) => {
                     <span>{event.name}</span>
                   </Link>
                 </div>
+                <div className="col-md-1 text-center">
+                  <span>{event.code}</span>
+                </div>
                 <div className="col-md-3 text-center">{`${new Date(
                   event.start_date
                 ).toLocaleString()} `}</div>
                 <div className="col-md-3 text-center">{`${new Date(
                   event.end_date
                 ).toLocaleString()} `}</div>
-                <div className="col-md-3 text-center">
+                <div className="col-md-2 text-center">
                   <span>{event.duration}</span>
                 </div>
               </div>

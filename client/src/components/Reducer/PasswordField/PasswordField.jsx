@@ -42,7 +42,7 @@ const PasswordField = (props) => {
           {props.type}
         </InputLabel>
         <OutlinedInput
-          id="outlined-adornment-password"
+          id={props.id ?? "inputid"}
           type={showPassword ? "text" : "password"}
           value={props.value}
           onChange={props.onClickHandler}

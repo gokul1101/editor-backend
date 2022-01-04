@@ -156,7 +156,7 @@ const CreateChallenge = (props) => {
         <GoBack
           onClickHandler={() => {
             props?.title 
-              ? history.push(`/contests/${authState?.challenge?.contest_id}`)
+              ? history.push(`/contests/${authState?.challenge?.contest_id}/challenges`)
               : history.goBack();
           }}
         />

@@ -34,6 +34,4 @@ const updateQuizService = async ({ id, name, total_mcqs, contest_id }) => {
       });
     }
   };
-  module.exports = {
-    updateQuizService
-  }
+  module.exports = {updateQuizService}

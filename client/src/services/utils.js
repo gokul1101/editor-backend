@@ -10,7 +10,7 @@ export const template = {
     c: `#include<stdio.h>
 
 int main(){
-  printf("Welcome to Loop")
+  printf("Welcome to Loop");
   return 0;
 }
 `,

@@ -1,6 +1,6 @@
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
-const { updateQuizService } = require(".");
+const { updateQuizService } = require("./index");
 const createMCQ = async ({ type_id, quiz_id, statement, options }) => {
   let question = {
     type_id,

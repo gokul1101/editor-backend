@@ -182,8 +182,8 @@ const challengeSubmissionService = async (
   if (submission && !question_id)
     return Promise.resolve({ status: 200, score: 0 });
   let complilationError = false,
-    isSampleFailed = false;
-  score = 0;
+    isSampleFailed = false,
+    score = 0;
   try {
     const max_score = (await Question.findById(question_id))?.max_score || 1;
     const testcases = (await Answer.findOne({ question_id }))?.testcases || {};
@@ -194,7 +194,7 @@ const challengeSubmissionService = async (
       try {
         let { output } = await compilerService(
           code,
-          testcases?.sample[i].input,
+          JSON.parse(testcases?.sample[i].input || '""'),
           lang
         );
         output = JSON.stringify(output.replace(/[\n\r]$/, "")) || "";
@@ -211,7 +211,6 @@ const challengeSubmissionService = async (
         }
         sampleTestCaseOutput.push(testCaseOutput);
       } catch (err) {
-        console.log(err);
         if (i == 0) {
           return Promise.resolve({
             status: 200,
@@ -238,7 +237,11 @@ const challengeSubmissionService = async (
     const hiddenTestCaseOutput = await Promise.all(
       testcases?.hidden?.map(async (testcase) => {
         try {
-          let { output } = await compilerService(code, testcase.input, lang);
+          let { output } = await compilerService(
+            code,
+            JSON.parse(testcase.input || '""'),
+            lang
+          );
           output = JSON.stringify(output.replace(/[\n\r]$/, "")) || "";
           if (output === testcase.output) {
             if (submission) score++;
@@ -251,6 +254,8 @@ const challengeSubmissionService = async (
     );
     if (submission) {
       let total_score = Math.round((score / totalTestCases) * max_score);
+      console.log(score, totalTestCases, max_score);
+      console.log(total_score);
       return Promise.resolve({ status: 200, score: total_score });
     }
     return Promise.resolve({

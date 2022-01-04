@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Profile.css";
 import InputReducer from "../../../Reducer/InputReducer";
 import SelectReducer from "../../../Reducer/SelectReducer/SelectReducer";
@@ -8,6 +8,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
 import GoBack from "../../../Reducer/GoBack/GoBack";
 import PasswordField from "../../../Reducer/PasswordField/PasswordField";
+import { AuthContext } from "../../../../contexts/AuthContext";
 const useStyles = makeStyles((theme) => ({
   root: {
     border: "1px solid #1E2D64",
@@ -31,31 +32,49 @@ const useStyles = makeStyles((theme) => ({
 const Profile = (props) => {
   const history = useHistory();
   const classes = useStyles();
-  const [user, setUser] = useState({
-    email: "",
-    register_number: "",
-    old_password: "",
+  const [authState, authDispatch] = useContext(AuthContext);
+  const formSchema = {
+    email: authState?.user?.email ?? "",
+    regno: authState?.user?.regno ?? "",
+    confirm_password: "",
     new_password: "",
-    name: "",
-    phone_number: "",
-    gender: "",
-  });
+    name: authState?.user?.name ?? "",
+    phone_no: authState?.user?.phone_no ?? "",
+    gender_id: authState?.user?.gender_id ?? "",
+    stream_id: authState?.user?.stream_id ?? "",
+    course_id: authState?.user?.course_id ?? "",
+    college_id: authState?.user?.college_id ?? "",
+    batch_id: authState?.user?.batch_id ?? "",
+  };
+  const [user, setUser] = useState(formSchema);
+  const studentDetails = () => {
+    setUser(formSchema);
+  };
   useEffect(() => {
     props.setSideToggle(false);
-  });
+    studentDetails();
+  }, [authState]);
   const userEditedDetails = () => {
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let charRegex = /^[A-Za-z0-9 ]+$/;
-    if (
-      emailRegex.test(user.email) &&
-      user.register_number.length === 7 &&
-      user.new_password.length >= 6 &&
-      charRegex.test(user.name)
-    ) {
-      props.snackBar("Your details are updated , Have Fun !!!", "success");
-    } else {
-      props.snackBar("invalid details Please check the fields", "error");
+    let username = /^[a-zA-Z\_]{3,25}$/;
+
+    if (!username.test(user.name)) {
+      props.snackBar("Username is Invalid", "error");
+      return;
     }
+    if (!emailRegex.test(user.email)) {
+      props.snackBar("Email is Incorrect", "error");
+      return;
+    }
+    if (user.phone_no.length !== 10) {
+      props.snackBar("Phone Number is Incorrect", "error");
+      return;
+    }
+    if (user.gender_id === "") {
+      props.snackBar("Gender is not Selected", "error");
+      return;
+    }
+    
   };
   return (
     <div
@@ -66,9 +85,6 @@ const Profile = (props) => {
         <GoBack onClickHandler={() => history.push("/dashboard")} />
       </div>
       <div className="container">
-        {/* <div className="position-absolute mx-3 my-2 go-back">
-        <GoBack onClickHandler={() => history.push("/dashboard")} />
-      </div> */}
         <div className={classes.margin}>
           <div>
             <p className="containertext-left dash-title-category">
@@ -91,19 +107,20 @@ const Profile = (props) => {
                 <InputReducer
                   placeholder="Register Number"
                   name="Register no"
+                  id="Register number1"
                   type="text"
                   label="Register Number"
-                  value={user.register_number}
+                  value={user.regno}
+                  disabled={true}
                   className={classes.fieldColor}
-                  onClickHandler={(value) =>
-                    setUser({ ...user, register_number: value })
-                  }
+                  onClickHandler={(value) => setUser({ ...user, regno: value })}
                 />
               </div>
               <div className="col-md-6">
                 <InputReducer
                   placeholder="Enter Name"
                   name="Name"
+                  id="Name1"
                   type="text"
                   label="Name"
                   value={user.name}
@@ -117,6 +134,7 @@ const Profile = (props) => {
                 <InputReducer
                   placeholder="Enter Email"
                   name="Email"
+                  id="Email1"
                   type="email"
                   label="Email"
                   value={user.email}
@@ -126,14 +144,15 @@ const Profile = (props) => {
               </div>
               <div className="col-md-6">
                 <InputReducer
-                  placeholder="Enter Phone Nuber"
+                  placeholder="Enter Phone Number"
                   name="Phone number"
                   label="Phone number"
+                  id="Phone number1"
                   type="Number"
-                  value={user.phone_number}
+                  value={user.phone_no}
                   className={classes.fieldColor}
                   onClickHandler={(value) =>
-                    setUser({ ...user, phone_number: value })
+                    setUser({ ...user, phone_no: value })
                   }
                 />
               </div>
@@ -144,17 +163,31 @@ const Profile = (props) => {
                   className={classes.fieldColor}
                   array={["B.E", "B.Tech"]}
                   name="Stream"
+                  id="Stream1"
+                  value={user.stream_id}
+                  disabled={true}
                 />
               </div>
               <div className="col-md-6">
                 <SelectReducer
                   className={classes.fieldColor}
-                  array={[
-                    "Computer Science & Engineering",
-                    "Information Technology",
-                    "Civil Engineering",
-                  ]}
+                  array={
+                    user.stream_id === "B.Tech"
+                      ? ["Information Technology"]
+                      : [
+                          "Computer Science & Engineering",
+                          "Electrical & Electronics Engineering",
+                          "Electronics and Communication Engineering",
+                          "Mechanical Engineering",
+                          "Automobile Engineering",
+                          "Civil Engineering",
+                          "Safety & Fire Engineering",
+                        ]
+                  }
                   name="Course Name"
+                  id="Course Name1"
+                  disabled={true}
+                  value={user.course_id}
                 />
               </div>
             </div>
@@ -169,6 +202,8 @@ const Profile = (props) => {
                     "KSR Institute for Engineering & Technology",
                   ]}
                   name="College Name"
+                  id="College Name1"
+                  disabled={true}
                 />
               </div>
               <div className="col-md-6">
@@ -180,9 +215,16 @@ const Profile = (props) => {
                     "2020-2024",
                     "2021-2025",
                     "2022-2026",
+                    "2023-2027",
+                    "2024-2028",
+                    "2025-2029",
+                    "2026-2030",
                   ]}
-                  name="batch year"
+                  name="Batch year"
                   label="Batch year"
+                  id="Batch year1"
+                  disabled={true}
+                  value={user.batch_id}
                 />
               </div>
             </div>
@@ -192,12 +234,12 @@ const Profile = (props) => {
             >
               <div className="col-md-6 ml-2">
                 <SelectReducer
-                  array={["MALE", "FEMALE"]}
+                  array={["male", "female", "other"]}
                   name="Select gender"
-                  value={user.gender}
-                  defaultValue={user.gender}
-                  handleSelect={(value) =>
-                    setUser({ ...user, gender: value.target.value })
+                  id="Gender"
+                  value={user.gender_id}
+                  handleSelect={(e) =>
+                    setUser({ ...user, gender_id: e.target.value })
                   }
                   className={classes.fieldColor}
                 />
@@ -218,20 +260,24 @@ const Profile = (props) => {
               <div className="col-md-6">
                 <PasswordField
                   type="New Password"
+                  name="new password"
+                  id="new password"
                   labelWidth={108}
-                  value={user.old_password}
+                  value={user.new_password}
                   onClickHandler={(e) =>
-                    setUser({ ...user, old_password: e.target.value })
+                    setUser({ ...user, new_password: e.target.value })
                   }
                 />
               </div>
               <div className="col-md-6">
                 <PasswordField
                   type="Confirm Password"
+                  name="confirm password"
+                  id="confirm password"
                   labelWidth={133}
-                  value={user.new_password}
+                  value={user.confirm_password}
                   onClickHandler={(e) =>
-                    setUser({ ...user, new_password: e.target.value })
+                    setUser({ ...user, confirm_password: e.target.value })
                   }
                 />
               </div>
