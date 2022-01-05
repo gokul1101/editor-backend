@@ -12,7 +12,8 @@ const common = [
   "createSubmission",
   "compiler",
   "getTestCases",
-  "executeContestChallenge"
+  "executeContestChallenge",
+  "getSubmission"
 ];
 const student = [...common];
 const admin = [
@@ -31,7 +32,13 @@ const admin = [
   "createTestCase",
   "updateTestCase",
   "createMultipleTestCases",
-  "deleteQuestion"
+  "deleteQuestion",
+  "errorLogs",
+  "deleteTestCase",
+  "deleteQuiz",
+  "exportSubmissions",
+  "exportUsers",
+  "adminDashboard"
 ];
 
 module.exports = {

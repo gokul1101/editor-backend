@@ -1,4 +1,3 @@
-const { success, error } = require("consola");
 const Contest = require("../models/contests");
 const {
   getAllChallengesWithContestId,
@@ -7,7 +6,6 @@ const {
   createContestService,
   updateContestService,
   getContestService,
-  getAllContestService,
   getAllContestWithFilter,
 } = require("../services/contestService");
 const { getAllQuizzesWithContestId } = require("../services/quizService");
@@ -19,32 +17,23 @@ const {
 const createContest = async (req, res) => {
   let contest = req.body;
   try {
-    let { code, message } = await createContestService(contest);
-    res.status(code).send({ message });
-  } catch ({code, status, message}) {
-    console.log(message)
-    if (!code && !status) {
-      code = 500;
-      message = `Internal server Error on creating contest`;
-    }
-    res.status(status? status : code).send(message);
+    let { status, message } = await createContestService(contest);
+    res.status(status).send({ message });
+  } catch ({ status, message }) {
+    res.status(status).send(message);
   }
 };
 const getContest = async (req, res) => {
   const { id, code } = req.query;
   try {
-    let {status,message,contest} = await getContestService(
+    let { status, message, contest } = await getContestService(
       id,
       code,
       req.user.role_id
     );
-    res.status(status).send({message,contest });
-  } catch ({code, status, message}) {
-    if (!code && !status) {
-      code = 500;
-      message = `Internal server Error on getting contest`;
-    }
-    res.status(status? status : code).send(message);
+    res.status(status).send({ message, contest });
+  } catch ({ status, message }) {
+    res.status(status).send(message);
   }
 };
 const getContestForDashboard = async (req, res) => {
@@ -73,10 +62,10 @@ const getContestForDashboard = async (req, res) => {
         let now = +new Date();
         let end_date = +session.ends_at;
         if (now > end_date) {
-          res.status(403).send({ message: "Your session was expired." });
+          return res.status(403).send({ message: "Your session was expired." });
         }
       } catch (err) {
-        if (err.code === 404) {
+        if (err.status === 404) {
           let userSession = await createSessionService({
             user_id,
             contest_id: contest._id,
@@ -90,28 +79,21 @@ const getContestForDashboard = async (req, res) => {
     response.quizzes = contestQuizzes.quizzes;
     let ContestChallenges = await getAllChallengesWithContestId(contest._id);
     response.challenges = ContestChallenges.challenges;
-    res.status(status).send({ contest: response });
-  } catch ({ status, code, message }) {
+    return res
+      .status(status)
+      .send({ contest: response, message: "Your session is started." });
+  } catch ({ status, message }) {
     console.log(message);
-    if (!status && !code) {
-      status = 500;
-      message = `Internal server Error on getting contest`;
-    }
-    res.status(status ? status : code).send(message);
+    return res.status(status).send(message);
   }
 };
 const updateContest = async (req, res) => {
   let updateDetails = req.body;
   try {
-    let { code, message } = await updateContestService(updateDetails);
-    res.status(code).send({ message });
+    let { status, message } = await updateContestService(updateDetails);
+    res.status(status).send({ message });
   } catch (err) {
-    console.log(err);
-    if (!err.code) {
-      err.code = 500;
-      err.message = `Internal server Error on update contest`;
-    }
-    res.status(err.code).send(err.message);
+    res.status(err.status).send(err.message);
   }
 };
 const deleteContest = async (req, res) => {
@@ -142,10 +124,6 @@ const deleteContest = async (req, res) => {
       success: true,
     });
   } catch (err) {
-    error({
-      message: `Unable to delete contest with name ${contest.name} \n${err}`,
-      badge: true,
-    });
     return res.status(500).json({
       message: `Unable to delete a contest with name ${contest.name}`,
       success: false,
@@ -153,20 +131,15 @@ const deleteContest = async (req, res) => {
   }
 };
 const getAllContests = async (req, res) => {
-  const { page = 1, limit = 10,past } = req.query;
+  const { page = 1, limit = 10, past } = req.query;
   try {
     // let { code, message } = await getAllContestService(page, limit);
-    let { code, message } = await getAllContestWithFilter(page, limit,past);
-    res.status(code).send({ message });
+    let { status, message } = await getAllContestWithFilter(req.user._id,page, limit,past);
+    res.status(status).send({ message });
   } catch (err) {
-    if (!err.code) {
-      err.code = 500;
-      err.message = `Internal server Error on getting contest`;
-    }
-    res.status(err.code).send(err.message);
+    res.status(err.status).send(err.message);
   }
 };
-
 
 module.exports = {
   createContest,

@@ -1,19 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import "./Dashboard.css";
 import Male from "../../../Images/man.png";
 import DashImg1 from "../../../Images/card-image-1.png";
 import DashImg2 from "../../../Images/card-image-2.png";
 import DashImg3 from "../../../Images/card-image-3.png";
-import HeaderArt from "../../../Images/header-art.svg";
 import ProblemKit from "../../../Images/problem-img.svg";
 import LoopHeader from "../../../Images/Loop start.svg";
 import Img1 from "../../../Images/img-1 (1).svg";
 import Img2 from "../../../Images/img-1 (2).svg";
 import Img3 from "../../../Images/img-1 (3).svg";
 import { AuthContext } from "../../../../contexts/AuthContext";
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 const Dashboard = (props) => {
-  const [authState, authDispatch] = useContext(AuthContext);
+  const [authState, ] = useContext(AuthContext);
 
   return (
     <div className="container-fluid dashboard">
@@ -47,9 +47,9 @@ const Dashboard = (props) => {
                   <span className="header-article">Become a</span>
                   <span className="header-article">Full Stack</span>
                   <span className="header-article mb-3">Web Developer</span>
-                  <NavLink to="/articles">
+                  <NavLink to="/roadmap">
                     <span className="span-arrow">
-                      <i className="fas fa-arrow-circle-right"></i> Learn more..
+                      <PlayCircleFilledIcon/> Learn more..
                     </span>
                   </NavLink>
                 </div>
@@ -76,7 +76,7 @@ const Dashboard = (props) => {
                   <span className="problem-span mb-2">For students</span>
                   <NavLink to="/codekata">
                     <span className="arrow-span">
-                      <i className="fas fa-arrow-circle-right"></i> Learn more..
+                    <PlayCircleFilledIcon/> Learn more..
                     </span>
                   </NavLink>
                 </div>

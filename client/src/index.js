@@ -13,7 +13,7 @@ ReactDOM.render(
     <AuthProvider
       initialState={
         localStorage.getItem("user")
-          ? {user:JSON.parse(localStorage.getItem("user"))}
+          ? { user: JSON.parse(localStorage.getItem("user")) }
           : initialState
       }
       AuthReducer={AuthReducer}

@@ -7,7 +7,15 @@ import Timer from "../../Timer/Timer";
 import { useContext } from "react";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import helperService from "../../../../../../services/helperService";
+import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
+import GoBack from "../../../../../Reducer/GoBack/GoBack";
+import DialogBox from "../../../../../Reducer/DialogBox/DialogBox";
+import AllInclusiveRoundedIcon from '@material-ui/icons/AllInclusiveRounded';
+import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
 const Quiz = ({ setSideToggle }) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const location = useParams();
   const history = useHistory();
   const [authState] = useContext(AuthContext);
@@ -21,6 +29,10 @@ const Quiz = ({ setSideToggle }) => {
   let [currentQuestion, setCurrentQuestion] = useState({});
   const [status, setStatus] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [quizOpen, setQuizOpen] = useState(false);
+  const handleOpenQuiz = () => setQuizOpen(true);
+  const quizRedirect = () => history.goBack();
+  const handleCloseQuiz = () => setQuizOpen(false);
   const parseQuiz = () => JSON.parse(localStorage.getItem(quiz?.name) || "[]");
   let [currentQuestionNumber, setCurrentQuestionNumber] = useState(
     parseQuiz().length
@@ -29,11 +41,14 @@ const Quiz = ({ setSideToggle }) => {
     await initComponent();
   }, []);
 
+  let isLast = currentQuestionNumber === quiz?.total_mcqs;
   const initComponent = async () => {
     setSideToggle(true);
     let [mcqs] = await getQuestions();
     setCurrentQuestion(mcqs);
-    setCurrentQuestionNumber(currentQuestionNumber + 1);
+    setCurrentQuestionNumber(
+      isLast ? currentQuestionNumber : currentQuestionNumber + 1
+    );
   };
   const getQuestions = async () => {
     try {
@@ -41,16 +56,14 @@ const Quiz = ({ setSideToggle }) => {
         status,
         data: { mcqs },
       } = await helperService.getQuizQuestions(
-        { id: location.questionId, page: currentQuestionNumber + 1 },
+        { id: location.questionId, page: isLast ? currentQuestionNumber : currentQuestionNumber + 1 },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) return mcqs;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
+    return [];
   };
   let answers = parseQuiz();
-  let isLast = currentQuestionNumber === quiz?.total_mcqs;
   const handleNext = async () => {
     if (!status) return;
     let obj = {
@@ -88,14 +101,22 @@ const Quiz = ({ setSideToggle }) => {
     history.push(`/codekata/${location.id}`);
   };
   return (
-    <div className="container-fluid p-0 Quiz-question-container">
+    <div
+      className="container-fluid p-0 Quiz-question-container"
+      style={{ height: "100vh", overflowY: "scroll" }}
+    >
       <div className="d-flex">
-        <div
-          className="back-btn mr-auto mt-3 ml-4"
-          onClick={() => history.push(`/codekata/${location.id}`)}
-        >
-          <div className="triangle"></div>
-          <div className="halfcircle"></div>
+        <div className="mr-auto mt-3 ml-4">
+          <GoBack onClickHandler={handleOpenQuiz} />
+          <DialogBox
+            open={quizOpen}
+            bodyMsg={`Are you sure do you want to exit from ${quiz?.name}`}
+            handleClose={handleCloseQuiz}
+            handleOpen={quizRedirect}
+          />
+        </div>
+        <div className="mr-auto">
+          <p className="text-left mb-0 mt-4 problem-article">{quiz?.name}</p>
         </div>
         <div className="user-info position-relative">
           <div className="d-flex mx-4 pt-3 user-det justify-content-end">
@@ -111,10 +132,6 @@ const Quiz = ({ setSideToggle }) => {
       </div>
       <div className="d-flex p-2" style={{ marginTop: "40px" }}>
         <div className="col-md-8 p-3 pl-5">
-          <p className="text-left dash-title-category">
-            ROOM CODE : <span className="room-code p-2">{location.id}</span>
-          </p>
-          <p className="text-left problem-article">{quiz?.name}</p>
           <div className="col p-0">
             <div className="col question-outoff p-0">
               <span className="question-order p-2 bg-dark text-white">
@@ -134,9 +151,9 @@ const Quiz = ({ setSideToggle }) => {
             <div className="d-flex">
               <div className="numberCircle ml-3">{currentQuestionNumber}</div>
               <div className="question-up ml-3">
-                <span className="span-question font-weight-bolder">
+                <pre className="span-question">
                   {currentQuestion?.statement}
-                </span>
+                </pre>
               </div>
             </div>
             <div className="d-flex flex-column align-items-center justify-content-center mt-3">
@@ -163,15 +180,13 @@ const Quiz = ({ setSideToggle }) => {
             </div>
             {!isLast ? (
               <div className="mt-2 d-flex justify-content-end mr-4">
-                <button
-                  className="mr-2 btn-hover pr-1 pl-1 color-11"
-                  color="primary"
-                  variant="contained"
-                  onClick={handleNext}
+                <CustomButton
+                  className="btn-hover color-11"
+                  onClickHandler={handleNext}
                   disabled={isLast}
                 >
-                  Next
-                </button>
+                <SkipNextRoundedIcon/> NEXT
+                </CustomButton>
               </div>
             ) : null}
           </div>
@@ -192,16 +207,16 @@ const Quiz = ({ setSideToggle }) => {
               </h2>
               <p className="font-weight-bolder">remaining</p>
               <div className="d-flex">
-              <span className="timer-hand mr-2 ml-3 font-weight-bolder">
+                <span className="timer-hand mr-2 ml-3 font-weight-bolder">
                   Days
                 </span>
                 <span className="timer-hand mr-2 ml-3 font-weight-bolder">
                   Hours
                 </span>
-                <span className="timer-hand mr-2 font-weight-bolder">
+                <span className="timer-hand mr-2 ml-3 font-weight-bolder">
                   Minutes
                 </span>
-                <span className="timer-hand mr-2 font-weight-bolder">
+                <span className="timer-hand mr-2 ml-3 font-weight-bolder">
                   Seconds
                 </span>
               </div>
@@ -229,14 +244,20 @@ const Quiz = ({ setSideToggle }) => {
               </div>
             </div>
             <div className="d-flex justify-content-end mt-2">
-              <button
-                className="mr-2 btn-hover pr-1 pl-1 color-11"
-                color="primary"
-                variant="contained"
-                onClick={submitQuiz}
+              <CustomButton
+                className="btn-hover color-11 mt-3"
+                onClickHandler={handleOpen}
               >
-               <i className="fas fa-rocket mr-2 ml-2 p-1"></i> SUBMIT QUIZ
-              </button>
+                <AllInclusiveRoundedIcon/> 
+                <span className="ml-2">SUBMIT QUIZ</span>
+              </CustomButton>
+              <DialogBox
+                headerMsg={"This is a warning message !"}
+                bodyMsg={`Are you sure do you want to exit from the ${quiz?.name}`}
+                open={open}
+                handleClose={handleClose}
+                handleOpen={submitQuiz}
+              />
             </div>
           </div>
         </div>

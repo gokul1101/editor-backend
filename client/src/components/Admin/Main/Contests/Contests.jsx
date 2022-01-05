@@ -2,11 +2,17 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Contests.css";
 import { Link } from "react-router-dom";
 import helperService from "../../../../services/helperService";
-import { AuthContext } from "../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../contexts/AuthContext";
 import Pagination from "@material-ui/lab/Pagination";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
-
+import LinkIcon from '@material-ui/icons/Link';
+import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
+import PeopleIcon from '@material-ui/icons/People';
+import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 const Contests = (props) => {
+  const [loader, showLoader, hideLoader] = useLoader();
+  const limit = 3;
   const [authState, authDispatch] = useContext(AuthContext);
   const [contests, setContests] = useState({
     upcoming: [],
@@ -15,16 +21,21 @@ const Contests = (props) => {
     pastContestsCount: 0,
   });
   const [page, setPage] = useState(1);
-  const handlePagination = (e,value) => {
-    if(page !== value){
-    setPage(value)
-    fetchContests(value,true)
+  const handlePagination = (e, value) => {
+    if (page !== value) {
+      setPage(value);
+      fetchContests(value, true);
     }
   };
-  const fetchContests = async (page = 1,past=false,limit=1) => {
+  const copyToClipboard = async (text) => {
+    await navigator.clipboard.writeText(text ?? "");
+    props.snackBar("Code Copied", "success");
+  }
+  const fetchContests = async (page = 1, past = false) => {
     try {
+      if (!past) showLoader();
       const { status, data } = await helperService.getAllContests(
-        {page,past,limit},
+        { page, past, limit },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
@@ -34,16 +45,22 @@ const Contests = (props) => {
           upcomingContests,
           pastContestsCount,
         } = data.message;
-        // console.log(data);
         setContests({
           pastContestsCount,
           past: pastContests,
-          ongoing: [...contests.ongoing, ...ongoingContests],
-          upcoming: [...contests.upcoming, ...upcomingContests],
+          ongoing:
+            ongoingContests.length > 0
+              ? [...ongoingContests]
+              : contests.ongoing,
+          upcoming:
+            upcomingContests.length > 0
+              ? [...upcomingContests]
+              : contests.upcoming,
         });
+        if (!past) hideLoader();
       }
     } catch (err) {
-      console.log(err);
+      hideLoader();
     }
   };
   useEffect(() => {
@@ -55,15 +72,16 @@ const Contests = (props) => {
   return (
     <div
       className="container-fluid"
-      style={{ height: "100vh", overflowY: "scroll", marginTop: "20px" }}
+      style={{ height: "100vh", overflowY: "scroll", marginTop: "40px" }}
     >
+      {loader}
       <div className="d-flex">
         <div className="contest-header mr-auto">
           <p className="text-left dash-title-category pb-2">Contests</p>
         </div>
         <Link to="/contests/create-contest">
           <CustomButton className="btn-hover color-11 mt-0">
-            <i className="fas fa-plus pr-2 pl-2"></i>CREATE CONTEST
+            <AddCircleIcon/><span className="ml-2">CREATE CONTEST</span>
           </CustomButton>
         </Link>
       </div>
@@ -75,20 +93,24 @@ const Contests = (props) => {
         </div>
         <div className="d-flex border-top border-bottom mt-2 p-2 mb-2">
           <div className="col-md-3 text-center content-nav-title">Title</div>
+          <div className="col-md-1 text-center content-nav-title">
+            CODE
+          </div>
           <div className="col-md-3 text-center content-nav-title">
             Starts at
           </div>
           <div className="col-md-3 text-center content-nav-title">Ends at</div>
           <div className="col-md-3 text-center content-nav-title">
-            <i className="fas fa-clock"></i>
+            <AccessAlarmIcon/>
           </div>
         </div>
         <div className="d-flex flex-column">
           {contests?.ongoing?.map((event) => {
             return (
-              <div className="d-flex mt-2 mb-2">
-                <div className="col-md-3 d-flex justify-content-between text-center upcoming-task">
-                  <i className="fas fa-link text-left mt-2"></i>
+              <div className="d-flex mt-2 mb-2" key={event._id}>
+                <LinkIcon className="contest-link position-relative"/>
+                
+                <div className="col-md-3 text-center upcoming-task">
                   <Link
                     to={`/contests/${event._id}/edit`}
                     onClick={() => setContest(event)}
@@ -96,13 +118,16 @@ const Contests = (props) => {
                     <span>{event.name}</span>
                   </Link>
                 </div>
+                <div className="col-md-1 text-center">
+                  <span>{event.code}</span>
+                </div>
                 <div className="col-md-3 text-center">{`${new Date(
                   event.start_date
-                ).toLocaleString()} `}</div>
+                  ).toLocaleString()} `}</div>
                 <div className="col-md-3 text-center">{`${new Date(
                   event.end_date
                 ).toLocaleString()} `}</div>
-                <div className="col-md-3 text-center">
+                <div className="col-md-2 text-center">
                   <span>{event.duration}</span>
                 </div>
               </div>
@@ -118,21 +143,24 @@ const Contests = (props) => {
         </div>
         <div className="d-flex border-top border-bottom mt-2 p-2 mb-2">
           <div className="col-md-3 text-center content-nav-title">Title</div>
+          <div className="col-md-1 text-center content-nav-title">
+            CODE
+          </div>
           <div className="col-md-3 text-center content-nav-title">
             Starts at
           </div>
           <div className="col-md-3 text-center content-nav-title">Ends at</div>
           <div className="col-md-3 text-center content-nav-title">
-            <i className="fas fa-clock"></i>
+          <AccessAlarmIcon/>
           </div>
         </div>
         <div className="d-flex flex-column">
           {contests?.upcoming?.map((event) => {
-            console.log(event);
             return (
-              <div className="d-flex mt-2 mb-2">
-                <div className="col-md-3 d-flex justify-content-between text-center upcoming-task">
-                  <i className="fas fa-link text-left mt-2"></i>
+              <div className="d-flex mt-2 mb-2" key={event._id}>
+                
+                <LinkIcon className="contest-link position-relative"/>
+                <div className="col-md-3 text-center upcoming-task">
                   <Link
                     to={`/contests/${event._id}/edit`}
                     onClick={() => setContest(event)}
@@ -140,13 +168,16 @@ const Contests = (props) => {
                     <span>{event.name}</span>
                   </Link>
                 </div>
+                <div className="col-md-1 text-center">
+                  <span>{event.code}</span>
+                </div>
                 <div className="col-md-3 text-center">{`${new Date(
                   event.start_date
                 ).toLocaleString()} `}</div>
                 <div className="col-md-3 text-center">{`${new Date(
                   event.end_date
                 ).toLocaleString()} `}</div>
-                <div className="col-md-3 text-center">
+                <div className="col-md-2 text-center">
                   <span>{event.duration}</span>
                 </div>
               </div>
@@ -166,10 +197,10 @@ const Contests = (props) => {
             Started at
           </div>
           <div className="col-md-2 text-center content-nav-title">
-            <i className="fas fa-users"></i>
+            <PeopleIcon/>
           </div>
           <div className="col-md-2 text-center content-nav-title">
-            <i className="fas fa-clock"></i>
+          <AccessAlarmIcon/>
           </div>
           <div className="col-md-2 text-center content-nav-title">Status</div>
         </div>
@@ -177,20 +208,26 @@ const Contests = (props) => {
         <div className="d-flex flex-column">
           {contests?.past?.map((event) => {
             return (
-              <div className="d-flex mt-2 mb-2">
-                <div className="col-md-3 d-flex justify-content-between text-center upcoming-task">
-                  <i className="fas fa-link text-left mt-2"></i>
-                  <span>{event.name}</span>
+              <div className="d-flex mt-2 mb-2" key={event._id}>
+                <LinkIcon className="contest-link position-relative"/>
+                <div className="col-md-3 text-center upcoming-task">
+                  <Link
+                    to={`/contests/${event._id}/statistics`}
+                    onClick={() => setContest(event)}
+                  >
+                    <span>{event.name}</span>
+                  </Link>
                 </div>
                 <div className="col-md-3 text-center">{`${new Date(
                   event.start_date
                 ).toLocaleString()} `}</div>
-                <div className="col-md-2 text-center">180</div>
+                <div className="col-md-2 text-center">{event.submissionsCount}</div>
                 <div className="col-md-2 text-center">
                   <span>{event.duration}</span>
                 </div>
                 <div className="col-md-2 text-center">
-                  <i className="fas fa-times" style={{ color: "red" }}></i>
+                  <CloseRoundedIcon style={{ color: "red" }}/>
+                  
                 </div>
               </div>
             );
@@ -198,13 +235,19 @@ const Contests = (props) => {
         </div>
       </div>
       <div>
+        {
+          contests?.pastContestsCount > limit && 
         <Pagination
-          count={contests?.pastContestsCount / 1}
-          color="primary"
-          variant="text"
-          className="mt-5 d-flex justify-content-center"
-          onChange={(e, value) => handlePagination(e,value)}
+        count={
+          Math.floor(contests?.pastContestsCount / limit) +
+          (contests?.pastContestsCount % limit !== 0 ? 1 : 0)
+        }
+        color="primary"
+        variant="text"
+        className="mt-5 d-flex justify-content-center"
+        onChange={(e, value) => handlePagination(e, value)}
         />
+      }
       </div>
     </div>
   );

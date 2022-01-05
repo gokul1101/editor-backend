@@ -1,4 +1,5 @@
 .dcard {
+  cursor: pointer;
   perspective: 500px;
 }
 .dcard .card {
@@ -12,23 +13,23 @@
   height: 300px;
   width: 300px;
 }
-.dcard .card-green{
+.dcard .card-green {
   background: linear-gradient(to right, #0ba360, #3cba92, #30dd8a, #2bb673);
 }
-.dcard .card-blue{
+.dcard .card-blue {
   background: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
 }
-.dcard .question-card-image{
+.dcard .question-card-image {
   top: 50%;
-  left : 50%;
-  transform : translate(-50%, -60%);
+  left: 50%;
+  transform: translate(-50%, -60%);
 }
 .dcard .frame {
   width: 100%;
   height: 74px;
   border-radius: 0 0 47px 47px;
   bottom: 0;
-  left : 0;
+  left: 0;
 }
 
 .dcard .trigger {
@@ -108,10 +109,21 @@
 .dcard .trigger:nth-child(9):hover ~ .card-code {
   transform: rotateY(-8deg) rotateX(5deg);
 }
-
+.max-score {
+  background-color: #21a366;
+  color: white;
+  border-radius: 50%;
+  height: 38px;
+  width: 38px;
+}
 .question-name-span {
   font-size: 17px;
   font-weight: 400;
+  width: 240px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .question-warm-span {
   color: #0ba360;
@@ -128,11 +140,11 @@
   background-color: rgb(7, 71, 7);
 }
 
-.fa-star{
+.fa-star {
   color: orangered;
   padding-right: 10px;
 }
 
-.fa-star{
+.fa-star {
   color: rgb(255, 255, 0);
 }

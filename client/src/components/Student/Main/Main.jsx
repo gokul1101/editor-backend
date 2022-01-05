@@ -1,5 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
-import { NavLink, Route, Redirect, Switch } from "react-router-dom";
+import {
+  NavLink,
+  Route,
+  Redirect,
+  Switch,
+  useLocation,
+} from "react-router-dom";
 import "./Main.css";
 import LoopLogo from "../../Images/Loop1.jpg";
 import { Avatar } from "@material-ui/core";
@@ -13,9 +19,17 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import Programs from "./Codekata/ContestDetails/Programs/Programs";
 import Quiz from "./Codekata/ContestDetails/Quiz/Quiz";
 import ContestDetails from "./Codekata/ContestDetails/ContestDetails";
+import HomeIcon from "@material-ui/icons/Home";
+import PageNotFound from "../../Reducer/PageNotFound/404";
+import CodeIcon from "@material-ui/icons/Code";
+import MenuBookIcon from "@material-ui/icons/MenuBook";
+import MapIcon from "@material-ui/icons/Map";
+import DeveloperModeIcon from "@material-ui/icons/DeveloperMode";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 const Main = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle, setSideToggle] = useState(false);
+  const location = useLocation();
   useEffect(() => {
     if (localStorage.getItem("user") && !authState.user.regno)
       props.fetchUser();
@@ -43,11 +57,13 @@ const Main = (props) => {
             <li className="nav-item dash-item mb-2 color-11">
               <NavLink
                 exact
-                className="nav-link dash-li"
+                className="nav-link dash-li d-flex"
                 to="/dashboard"
                 activeClassName="home-active color-11"
               >
-                <i className="fas fa-home pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <HomeIcon />
+                </div>
                 <span className="hide-span">Dashboard</span>
                 <span className="tooltip">Dashboard</span>
               </NavLink>
@@ -56,9 +72,11 @@ const Main = (props) => {
               <NavLink
                 activeClassName="active-class"
                 to="/codekata"
-                className="nav-link dash-li color-11"
+                className="nav-link dash-li color-11 d-flex"
               >
-                <i className="fas fa-tasks pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <CodeIcon />
+                </div>
                 <span className="hide-span">Codekata</span>
                 <span className="tooltip">Codekata</span>
               </NavLink>
@@ -67,9 +85,11 @@ const Main = (props) => {
               <NavLink
                 activeClassName="active-class color-11"
                 to="/articles"
-                className="nav-link dash-li"
+                className="nav-link dash-li d-flex"
               >
-                <i className="fas fa-trophy pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <MenuBookIcon />
+                </div>
                 <span className="hide-span">Articles</span>
                 <span className="tooltip">Articles</span>
               </NavLink>
@@ -78,9 +98,11 @@ const Main = (props) => {
               <NavLink
                 activeClassName="active-class color-11"
                 to="/roadmap"
-                className="nav-link dash-li"
+                className="nav-link dash-li d-flex"
               >
-                <i className="fas fa-road pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <MapIcon />
+                </div>
                 <span className="hide-span">Roadmap</span>
                 <span className="tooltip">Roadmap</span>
               </NavLink>
@@ -89,9 +111,11 @@ const Main = (props) => {
               <NavLink
                 activeClassName="active-class color-11"
                 to="/compiler"
-                className="nav-link dash-li"
+                className="nav-link dash-li d-flex"
               >
-                <i className="fas fa-bell pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <DeveloperModeIcon />
+                </div>
                 <span className="hide-span">Compiler</span>
                 <span className="tooltip">Compiler</span>
               </NavLink>
@@ -104,9 +128,11 @@ const Main = (props) => {
                   authDispatch({ type: "REMOVE_USER", payload: null });
                   localStorage.clear();
                 }}
-                className="nav-link dash-li"
+                className="nav-link dash-li d-flex"
               >
-                <i className="fas fa-sign-out-alt pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <ExitToAppIcon />
+                </div>
                 <span className="hide-span">Logout</span>
                 <span className="tooltip">Logout</span>
               </NavLink>
@@ -128,7 +154,10 @@ const Main = (props) => {
         <div className="main-div w-100">
           <Switch>
             <Route path="/dashboard" exact>
-              <Dashboard setSideToggle={setSideToggle} snackBar={props.snackBar} />
+              <Dashboard
+                setSideToggle={setSideToggle}
+                snackBar={props.snackBar}
+              />
             </Route>
             <Route path="/articles" exact>
               <Articles setSideToggle={setSideToggle} />
@@ -137,18 +166,26 @@ const Main = (props) => {
               <Roadmap setSideToggle={setSideToggle} />
             </Route>
             <Route path="/compiler" exact>
-              <Compiler setSideToggle={setSideToggle} snackBar={props.snackBar}  />
+              <Compiler
+                setSideToggle={setSideToggle}
+                snackBar={props.snackBar}
+              />
             </Route>
             <Route path="/profile" exact>
-              <Profile setSideToggle={setSideToggle} snackBar={props.snackBar}  />
+              <Profile
+                setSideToggle={setSideToggle}
+                snackBar={props.snackBar}
+              />
             </Route>
-            <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+
             <Route path="/codekata" exact>
               <Codekata
-                snackBar={props.snackBar} 
+                snackBar={props.snackBar}
                 setSideToggle={setSideToggle}
               />
             </Route>
+            <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+
             {authState?.contest ? (
               [
                 <>
@@ -159,12 +196,23 @@ const Main = (props) => {
                     <Programs setSideToggle={setSideToggle} />
                   </Route>
                   <Route path="/codekata/:id" exact>
-                    <ContestDetails setSideToggle={setSideToggle} />
+                    <ContestDetails
+                      setSideToggle={setSideToggle}
+                      snackBar={props.snackBar}
+                    />
                   </Route>
                 </>,
               ]
             ) : (
-              <Redirect to="/codekata" />
+              <>
+                {location.pathname.includes("/codekata") ? (
+                  <Redirect to="/codekata" />
+                ) : (
+                  <Route path="*">
+                    <PageNotFound />
+                  </Route>
+                )}
+              </>
             )}
           </Switch>
         </div>

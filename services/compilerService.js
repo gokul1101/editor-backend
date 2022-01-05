@@ -13,13 +13,16 @@ const compilerService = async (code, input, lang) => {
     logFolder = folderPath;
     const output = await executeCode(filePath, input);
     return Promise.resolve({
-      code: 200,
+      status: 200,
       output,
+      message : "Complied Successfully."
     });
   } catch (err) {
+    console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       err,
+      message : "Error in compilation"
     });
   } finally {
     fs.rmdir(logFolder, { recursive: true }, (err) => {

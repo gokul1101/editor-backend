@@ -4,29 +4,19 @@ const { challengeSubmissionService } = require("../services/submissionService");
 const compile = async (req, res) => {
   try {
     const { input, code, lang } = req.body;
-    const result = await compilerService(code, input, lang);
-    if (result.code === 200) res.status(result.code).json(result.output);
-  } catch (err) {
-    if (!err.code) {
-      err.code = 500;
-      err.err = "Internal Server Error";
-    }
-    res.status(500).send(err.err);
+    const {status, output} = await compilerService(code, input, lang);
+    res.status(status).json(output);
+  } catch ({status, err, message}) {
+    res.status(status).json({err, message});
   }
 };
 const executeContestChallenge = async (req, res) => {
   try {
     const { id, code, lang } = req.body;
     const result = await challengeSubmissionService(id, code, lang);
-    res.send(result)
-    // if (result.code === 200) res.status(result.code).json(result.output);
+    res.status(result.status).json(result)
   } catch (err) {
-    console.log(err)
-    if (!err.code) {
-      err.code = 500;
-      err.err = "Internal Server Error";
-    }
-    res.status(500).send(err);
+    res.status(err.status).json(err);
   }
 }
 module.exports = { compile, executeContestChallenge};

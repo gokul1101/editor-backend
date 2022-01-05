@@ -8,20 +8,23 @@ import Contests from "./Contests/Contests";
 import Users from "./Users/Users";
 import CreateContest from "./Contests/CreateContest/CreateContest";
 import ContestDetails from "./Contests/ContestDetails/ContestDetails";
-import Quizzes from "./Quizzes/Quizzes";
 import CreateQuiz from "./Quizzes/CreateQuiz/CreateQuiz";
 import AddQuiz from "./Quizzes/CreateQuiz/AddQuiz/AddQuiz";
 import { AuthContext } from "../../../contexts/AuthContext";
 import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
-import Report from "./Report/Report";
 import ErrorLogs from "./ErrorLogs/ErrorLogs";
 import CreateChallenge from "./Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
+import PageNotFound from "../../Reducer/PageNotFound/404";
+import HomeIcon from "@material-ui/icons/Home";
+import GroupIcon from "@material-ui/icons/Group";
+import AssignmentIcon from "@material-ui/icons/Assignment";
+import WarningIcon from "@material-ui/icons/Warning";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 const Main = (props) => {
-  const [, authDispatch] = useContext(AuthContext);
+  const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle] = useState(false);
   useEffect(() => {
     props.fetchUser();
-    console.log(props.snackBar);
   }, []);
   return (
     <div className="container-fluid p-0">
@@ -46,11 +49,13 @@ const Main = (props) => {
             <li className="nav-item dash-item mb-2 color-11">
               <NavLink
                 exact
-                className="nav-link dash-li"
+                className="d-flex nav-link dash-li"
                 to="/admin-dashboard"
                 activeClassName="home-active color-11"
               >
-                <i className="fas fa-home pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <HomeIcon />
+                </div>
                 <span className="hide-span">Dashboard</span>
                 <span className="tooltip">Dashboard</span>
               </NavLink>
@@ -59,9 +64,11 @@ const Main = (props) => {
               <NavLink
                 activeClassName="active-class"
                 to="/users"
-                className="nav-link dash-li color-11"
+                className="d-flex nav-link dash-li color-11"
               >
-                <i className="fas fa-tasks pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <GroupIcon />
+                </div>
                 <span className="hide-span">Users</span>
                 <span className="tooltip">Users</span>
               </NavLink>
@@ -70,9 +77,11 @@ const Main = (props) => {
               <NavLink
                 activeClassName="active-class color-11"
                 to="/contests"
-                className="nav-link dash-li"
+                className="d-flex nav-link dash-li"
               >
-                <i className="fas fa-trophy pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <AssignmentIcon />
+                </div>
                 <span className="hide-span">Contests</span>
                 <span className="tooltip">Contests</span>
               </NavLink>
@@ -80,21 +89,12 @@ const Main = (props) => {
             <li className="nav-item dash-item mb-2 color-11">
               <NavLink
                 activeClassName="active-class color-11"
-                to="/report"
-                className="nav-link dash-li"
+                to={`/error-logs/${authState?.user?._id}`}
+                className="d-flex nav-link dash-li"
               >
-                <i className="fas fa-road pr-4 pl-4 dash-icon shake"></i>
-                <span className="hide-span">Report</span>
-                <span className="tooltip">Report</span>
-              </NavLink>
-            </li>
-            <li className="nav-item dash-item mb-2 color-11">
-              <NavLink
-                activeClassName="active-class color-11"
-                to="/error-logs"
-                className="nav-link dash-li"
-              >
-                <i className="fas fa-road pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <WarningIcon/>
+                </div>
                 <span className="hide-span">Error Logs</span>
                 <span className="tooltip">Error Logs</span>
               </NavLink>
@@ -112,7 +112,7 @@ const Main = (props) => {
                   }}
                   className="nav-link dash-li"
                 >
-                  <i className="fas fa-sign-out-alt pr-5  dash-icon shake"></i>
+                  <ExitToAppIcon className=" dash-icon shake"  style={{ position: "relative", left: "-40px" }}/>
                   <span
                     className="hide-span"
                     style={{ position: "relative", left: "-20px" }}
@@ -130,10 +130,10 @@ const Main = (props) => {
             <Route path="/admin-dashboard" exact>
               <AdminDashboard snackBar={props.snackBar} />
             </Route>
-            <Route path="/users" >
-              <Users snackBar={props.snackBar}/>
+            <Route path="/users">
+              <Users snackBar={props.snackBar} />
             </Route>
-            <Route path="/contests" >
+            <Route path="/contests">
               <Switch>
                 <Route path="/contests/create-contest" exact>
                   <CreateContest
@@ -147,6 +147,9 @@ const Main = (props) => {
                 <Route path="/contests" exact>
                   <Contests snackBar={props.snackBar} />
                 </Route>
+                <Route path="*">
+                  <PageNotFound />
+                </Route>
               </Switch>
             </Route>
             <Route path="/quizzes">
@@ -155,9 +158,6 @@ const Main = (props) => {
               </Route>
               <Route path={`/quizzes/:id/add-question`}>
                 <AddQuiz snackBar={props.snackBar} />
-              </Route>
-              <Route path="/quizzes" exact>
-                <Quizzes snackBar={props.snackBar} />
               </Route>
             </Route>
             <Route path="/challenges">
@@ -168,10 +168,7 @@ const Main = (props) => {
                 <CreateChallenge snackBar={props.snackBar} />
               </Route>
             </Route>
-            <Route path="/report" exact>
-              <Report snackBar={props.snackBar} />
-            </Route>
-            <Route path="/error-logs" exact>
+            <Route path="/error-logs/:id" exact>
               <ErrorLogs snackBar={props.snackBar} />
             </Route>
             <Route
@@ -179,6 +176,9 @@ const Main = (props) => {
               path="/"
               render={() => <Redirect to="/admin-dashboard" />}
             />
+            <Route path="*">
+              <PageNotFound />
+            </Route>
           </Switch>
         </div>
       </div>

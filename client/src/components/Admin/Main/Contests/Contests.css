@@ -10,13 +10,16 @@
   background: #b0d7c0;
   border-radius: 20px 20px 0px 0px;
 }
-.content-nav-title{
-    font-size: 17px;
-    color: #00511B;
+.content-nav-title {
+  font-size: 17px;
+  color: #00511b;
 }
-.upcoming-task{
-    color: dodgerblue;
+.upcoming-task {
+  color: dodgerblue;
 }
-.upcoming-task i{
-    color: #00511B;
+.upcoming-task i {
+  color: #00511b;
+}
+.contest-link {
+  left: 13px;
 }

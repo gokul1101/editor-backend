@@ -11,84 +11,123 @@ const createSubmissionService = async (submissionDetails) => {
     let user = await User.findById(user_id);
     if (!user)
       return Promise.reject({
-        code: 404,
+        status: 404,
         message: `User not found`,
       });
     let contest = await Contest.findById(contest_id);
     if (!contest)
       return Promise.reject({
-        code: 404,
+        status: 404,
         message: `Contest not found`,
       });
     let submission = await Submission.findOne({ user_id, contest_id });
     if (submission)
       return Promise.reject({
-        code: 403,
+        status: 403,
         message: `Contest already submitted.`,
       });
-    // const reducer = (previousValue, currentValue) =>
-    //   previousValue + currentValue;
+    const reducer = (previousValue, currentValue) =>
+      previousValue + currentValue;
     let total_score = 0;
-    // let quizScore = await Promise.all(
-    //   quizzes.map(async (quiz) => {
-    //     try {
-    //       const { score } = await quizSubmissionService(quiz);
-    //       return score;
-    //     } catch (err) {
-    //       console.log(err);
-    //     }
-    //     return 0;
-    //   })
-    // );
-    // total_score += quizScore.reduce(reducer);
-    // challenges.map(async (challenge) => {
-    //   challenge.submission = true;
-    //   try {
-    //     const { score } = await challengeSubmissionService(challenge);
-    //     total_score += score;
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // });
+    let quizScore = await Promise.all(
+      quizzes.map(async (quiz) => {
+        try {
+          const { score } = await quizSubmissionService(quiz);
+          return score || 0;
+        } catch (err) {
+          console.log(err);
+        }
+        return 0;
+      })
+    );
+    total_score += quizScore.reduce(reducer);
+    let challengeScore = await Promise.all(
+      challenges.map(async (challenge) => {
+        try {
+          const { score } = await challengeSubmissionService(
+            challenge.question_id,
+            challenge.code,
+            challenge.lang,
+            true
+          );
+          return score || 0;
+        } catch (err) {
+          console.log(err);
+        }
+        return 0;
+      })
+    );
+    total_score += challengeScore.reduce(reducer);
     let newSubmission = new Submission({
       user_id,
       contest_id,
       score: total_score,
     });
     await newSubmission.save();
-    await updateSessionService(contest_id, user_id, new Date())
+    await updateSessionService(contest_id, user_id, new Date());
     return Promise.resolve({
-      code: 201,
+      status: 201,
       message: `Submitted successfully!`,
     });
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `Error in submitting.`,
     });
   }
 };
-const getSubmissionsService = async (submissionDetails) => {
+const getSubmissionsService = async (
+  page = 1,
+  limit = 10,
+  submissionDetails
+) => {
   let { user_id, contest_id } = submissionDetails;
   try {
-    let submissions =
+    const submissions = {};
+    submissions["leaderBoard"] = await Submission.find({ contest_id })
+      .sort({ score: "desc", created_at: "asc" })
+      .limit(limit * 1)
+      .skip((page > 0 ? page - 1 : 1) * limit);
+    if (page == 1) {
+      submissions["totalCount"] =
+        user_id && contest_id
+          ? await Submission.countDocuments({ user_id, contest_id })
+          : user_id
+          ? await Submission.countDocuments({ user_id })
+          : contest_id
+          ? await Submission.countDocuments({ contest_id })
+          : 0;
+    }
+    submissions["submissions"] =
       user_id && contest_id
-        ? await Submission.find({ user_id, contest_id })
+        ? await Submission.find({ user_id, contest_id }).populate({
+            path: "user_id",
+            model: "users",
+            select: "name regno",
+          })
         : user_id
         ? await Submission.find({ user_id })
+            .populate({ path: "user_id", model: "users", select: "name regno" })
+            .sort({ score: "desc" })
+            .limit(limit * 1)
+            .skip((page > 0 ? page - 1 : 1) * limit)
         : contest_id
         ? await Submission.find({ contest_id })
-        : null;
+            .populate({ path: "user_id", model: "users", select: "name regno" })
+            .sort({ score: "desc", created_at: "asc" })
+            .limit(limit * 1)
+            .skip((page > 0 ? page - 1 : 1) * limit)
+        : [];
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: `Submissions found!`,
       submissions,
     });
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `Error in getting submissions.`,
     });
   }
@@ -99,18 +138,18 @@ const getAllSubmissionsService = async (page, limit) => {
     response.modelCount = await Submission.countDocuments();
     const submissions = await Submission.find({})
       .limit(limit * 1)
-      .skip((page - 1) * limit);
+      .skip((page > 0 ? page - 1 : 1) * limit);
     response.total = submissions.length;
     response.submissions = submissions;
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: `Submissions found!`,
       response,
     });
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `Error in getting submissions.`,
     });
   }
@@ -130,7 +169,7 @@ const quizSubmissionService = async (quizAnswers) => {
   );
   answers.forEach((ans) => (ans ? score++ : null));
   return Promise.resolve({
-    code: 200,
+    status: 200,
     score,
   });
 };
@@ -138,77 +177,97 @@ const challengeSubmissionService = async (
   question_id,
   code,
   lang,
-  submission = false,
+  submission = false
 ) => {
-  let flag = true, isSampleFailed = false
+  if (submission && !question_id)
+    return Promise.resolve({ status: 200, score: 0 });
+  let complilationError = false,
+    isSampleFailed = false,
     score = 0;
   try {
     const max_score = (await Question.findById(question_id))?.max_score || 1;
     const testcases = (await Answer.findOne({ question_id }))?.testcases || {};
-    const totalTestCases = testcases?.sample?.length + testcases?.hidden?.length;
+    const totalTestCases =
+      testcases?.sample?.length + testcases?.hidden?.length;
     let sampleTestCaseOutput = [];
-    for(let i = 0; i < testcases?.sample.length; i++) {
+    for (let i = 0; i < testcases?.sample.length; i++) {
       try {
-        const { output } = await compilerService(code, testcases?.sample[i].input, lang);
-        output = output.replace(/\n+$/, "");
-        if (submission && testcases?.sample[i].output === output) score++;
-        else isSampleFailed = false;
-        sampleTestCaseOutput.push({
+        let { output } = await compilerService(
+          code,
+          JSON.parse(testcases?.sample[i].input || '""'),
+          lang
+        );
+        output = JSON.stringify(output.replace(/[\n\r]$/, "")) || "";
+        let testCaseOutput = {
           expectedOutput: testcases?.sample[i].output,
           actualOutput: output,
-          errors: false,
-        })
-      } catch (err) {
-        if(i == 0) {
-          return Promise.resolve({
-            code: 200,
-            errors : true,
-            err : err.err
-          })
+        };
+        if (testCaseOutput.expectedOutput === output) {
+          if (submission) score++;
+          testCaseOutput.errors = false;
+        } else {
+          isSampleFailed = true;
+          testCaseOutput.errors = true;
         }
-        flag = false;
+        sampleTestCaseOutput.push(testCaseOutput);
+      } catch (err) {
+        if (i == 0) {
+          return Promise.resolve({
+            status: 200,
+            errors: true,
+            err: err.err,
+          });
+        }
+        complilationError = true;
         sampleTestCaseOutput.push({
           expectedOutput: testcases?.sample[i].output,
           actualOutput: err,
           errors: true,
-        })
+        });
         break;
       }
     }
-    if (!submission && (!flag || isSampleFailed))
+    if (!submission && (complilationError || isSampleFailed))
       return Promise.resolve({
-        code: 200,
+        status: 200,
         isSampleFailed,
-        sampleTestCaseOutput,
+        sample: sampleTestCaseOutput,
+        message: "Sample testCases Failed.",
       });
     const hiddenTestCaseOutput = await Promise.all(
       testcases?.hidden?.map(async (testcase) => {
         try {
-          const { output } = await compilerService(code, testcase.input, lang);
-          console.log(output)
+          let { output } = await compilerService(
+            code,
+            JSON.parse(testcase.input || '""'),
+            lang
+          );
+          output = JSON.stringify(output.replace(/[\n\r]$/, "")) || "";
           if (output === testcase.output) {
             if (submission) score++;
             return true;
           } else return false;
         } catch (err) {
-          console.log(err);
           return false;
         }
       })
     );
     if (submission) {
       let total_score = Math.round((score / totalTestCases) * max_score);
-      return Promise.resolve({ code : 200, score: total_score });
+      console.log(score, totalTestCases, max_score);
+      console.log(total_score);
+      return Promise.resolve({ status: 200, score: total_score });
     }
     return Promise.resolve({
-      code: 200,
+      status: 200,
       sample: sampleTestCaseOutput,
       hidden: hiddenTestCaseOutput,
+      message: "Compiled Successfully",
     });
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: "Error in checking testcases.",
     });
   }
@@ -218,5 +277,5 @@ module.exports = {
   getSubmissionsService,
   getAllSubmissionsService,
   quizSubmissionService,
-  challengeSubmissionService
+  challengeSubmissionService,
 };

@@ -2,10 +2,12 @@ import React, { useEffect, useContext } from "react";
 import { NavLink, Route, Switch, Redirect, useParams } from "react-router-dom";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import helperService from "../../../../../services/helperService";
+import PageNotFound from "../../../../Reducer/PageNotFound/404";
 import CreateChallenge from "./CreateChallenge/CreateChallenge";
+import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import TestCase from "./TestCase/TestCase";
+import LibraryAddCheckRoundedIcon from '@material-ui/icons/LibraryAddCheckRounded';
 const ChallengeDashboard = (props) => {
-  console.log("At line challenge dashboard", props)
   const [authState, authDispatch] = useContext(AuthContext);
   const { id } = useParams();
   const fetchChallenge = async () => {
@@ -20,41 +22,45 @@ const ChallengeDashboard = (props) => {
       if (status === 200) {
         authDispatch({ type: "SET_CHALLENGE", payload: { ...question } });
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
-  useEffect(async () => {
-    if (!authState?.challenge) await fetchChallenge();
+  useEffect(() => {
+    if (!authState?.challenge) fetchChallenge();
   }, []);
 
   return (
     <>
-      <div className="challenge-container h-auto">
-        <ul class="list-group d-flex align-items-center justify-content-center flex-row p-2 mt-3 mb-3">
-          <li class="list-group-item user-group-pill">
+      <div
+        className="challenge-container"
+        style={{ height: "100vh", overflowY: "auto" }}
+      >
+        <ul className="list-group d-flex align-items-center justify-content-center flex-row p-2 mt-3 mb-3">
+          <li className="list-group-item user-group-pill">
             <NavLink
               exact
-              className="user-navlink pr-3 pl-3 m-2"
+              className="user-navlink pr-3 pl-3 m-2 btn nav-button d-flex justify-content-center align-items-center"
               to={`/challenges/${id}/update`}
               activeClassName="active-user-pill"
             >
-              <i className="fas fa-plus pr-1 pl-1"></i> Challenge
+              <AddCircleRoundedIcon/><span >Challenge</span>
             </NavLink>
           </li>
           <li className="list-group-item user-group-pill">
             <NavLink
               exact
-              className="user-navlink pr-3 pl-3 m-2"
+              className="user-navlink pr-3 pl-3 m-2 btn nav-button d-flex justify-content-center align-items-center"
               to={`/challenges/${id}/create-testcase`}
               activeClassName="active-user-pill"
             >
-              <i className="fas fa-clipboard-list pr-2 pl-1"></i>
+              <LibraryAddCheckRoundedIcon/>
+              <span >
+
               TestCase
+              </span>
             </NavLink>
           </li>
         </ul>
-        <div className=" p-0">
+        <div>
           <Switch>
             <Route path={`/challenges/:id/update`} exact>
               <CreateChallenge
@@ -64,7 +70,10 @@ const ChallengeDashboard = (props) => {
               />
             </Route>
             <Route path={`/challenges/:id/create-testcase`} exact>
-              <TestCase />
+              <TestCase snackBar={props.snackBar} />
+            </Route>
+            <Route path="*">
+              <PageNotFound />
             </Route>
             <Route
               exact

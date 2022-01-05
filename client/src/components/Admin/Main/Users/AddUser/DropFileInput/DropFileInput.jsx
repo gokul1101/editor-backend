@@ -1,28 +1,19 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Slide from "@material-ui/core/Slide";
-import Chip from "@material-ui/core/Chip";
+
 import "./DropFileInput.css";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
-import { NavLink } from "react-router-dom";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import ErrorLogDialogBox from "../../../../../Reducer/ErrorLogDialogBox/ErrorLogDialogBox";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
+import DeleteIcon from "@material-ui/icons/Delete";
 const DropFileInput = (props) => {
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const wrapperRef = useRef(null);
-
+  
   const [fileList, setFileList] = useState([]);
-
+  const [open, setOpen] = React.useState(false);
+  const [, setLogs] = useState({});
+  
   const onDragEnter = () => wrapperRef.current.classList.add("dragover");
 
   const onDragLeave = () => wrapperRef.current.classList.remove("dragover");
@@ -31,36 +22,42 @@ const DropFileInput = (props) => {
 
   const onFileDrop = (e) => {
     const newFile = e.target.files[0];
+
     if (
       newFile &&
       newFile.type ===
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
-      // const updatedList = [newFile];
       setFileList([newFile]);
-      props.onFileChange([newFile]);
     } else {
-      alert("Please select a valid excel file");
+      props.snackBar("Please select a valid  excel file", "error");
     }
   };
 
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
+  const bulkUserUpload = async () => {
+    const flag = await props.onFileChange(fileList);
+    if(flag) setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClickOpen = () => setOpen(true);
+
+  const handleClose = () => setOpen(false);
 
   const fileRemove = (file) => {
     const updatedList = [fileList];
     updatedList.splice(fileList.indexOf(file), 1);
     setFileList(updatedList);
-    props.onFileChange(updatedList);
+    props.setLogs({});
   };
-
+  useEffect(() => {
+    if (props.reqflag) {
+      props.removeFileHandler(setFileList);
+      props.setReqflag(false);
+    }
+  }, [props.reqflag]);
+  useEffect(() => {
+    setLogs(props?.logs);
+  });
   return (
     <>
       <div
@@ -100,99 +97,51 @@ const DropFileInput = (props) => {
                 <span>{item.name}</span>
                 <div className="d-flex justify-content-between">
                   <span>{item.size}B</span>
-                  <i
-                    className="far fa-trash-alt del-item m-1"
-                    onClick={() => fileRemove(item)}
-                  ></i>
+
+                  <CustomButton onClickHandler={() => fileRemove(item)}>
+                    <DeleteIcon />
+                  </CustomButton>
                 </div>
               </div>
             </div>
           ))}
 
           <div className="d-flex align-items-center justify-content-center mt-3">
-            <CustomButton className="btn-hover color-11 mt-2">
-              <i className="fas fa-upload pr-2 pl-2"></i>Upload Excel file
+            <CustomButton
+              className="btn-hover color-11 mt-2"
+              onClickHandler={bulkUserUpload}
+            >
+              <CreateNewFolderIcon />
+              {"create Users"}
             </CustomButton>
           </div>
           <div className="d-flex align-items-end justify-content-end mt-3 p-2">
-            <div className="log-file">
-              <span
-                className="badge badge-pill badge-secondary"
-                onClick={handleClickOpen}
-              >
-                Logs
-              </span>
-            </div>
-            <Dialog
+            {props?.logs?.totalLogs >= 0 && (
+              <div className="log-file">
+                <span
+                  className="badge badge-pill badge-secondary"
+                  onClick={handleClickOpen}
+                >
+                  Logs
+                </span>
+              </div>
+            )}
+
+            <ErrorLogDialogBox
               open={open}
-              fullScreen={fullScreen}
-              TransitionComponent={Transition}
-              keepMounted
-              maxWidth="sm"
-              fullWidth
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-slide-title"
-              aria-describedby="alert-dialog-slide-description"
-            >
-              <DialogTitle id="alert-dialog-slide-title">
-                {"Error logs"}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-slide-description">
-                  <span className="model-correct p-2">
-                    <i className="fas fa-check-circle pr-3 pl-3"></i>12 students
-                    data added successfully
-                  </span>
-                </DialogContentText>
-                <DialogContentText id="alert-dialog-slide-description">
-                  <span className="model-wrong p-2">
-                    <i className="fas fa-bug pr-3 pl-3"></i>12 students data
-                    having some error
-                  </span>
-                </DialogContentText>
-                <DialogContentText
-                  id="alert-dialog-slide-description"
-                  className="mt-3"
-                >
-                  <div className="p-2 d-flex flex-wrap">
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                    <Chip label="1813015" className="m-1" />
-                  </div>
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={handleClose}
-                  color="primary"
-                  variant="outlined"
-                >
-                  CLOSE
-                </Button>
-              </DialogActions>
-            </Dialog>
+              handleClose={handleClose}
+              log={props?.logs}
+            />
           </div>
         </div>
       ) : (
         <div className="drop-file-preview__item mt-2 d-flex flex-column align-items-center justify-content-center">
           No file choosen. Excel file only be uploaded.
           <div className="d-flex align-items-center justify-content-center mt-3">
-            {/* <button className="loop-btn pr-2 pl-2 mt-2 mb-2">
-              <i className="fas fa-download pr-2 pl-2"></i>Download Sample file
-            </button> */}
+            
             <CustomButton className="btn-hover color-11 mt-4">
-              <i className="fas fa-download pr-2 pl-2"></i>Download Sample file
+              <GetAppIcon />
+              Download Sample file
             </CustomButton>
           </div>
         </div>

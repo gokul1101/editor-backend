@@ -3,9 +3,9 @@ import { useContext } from "react";
 import { useState, useEffect } from "react";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import "./Timer.css";
-const Timer = () => {
+const Timer = ({timeoutSubmit}) => {
   const [authState] = useContext(AuthContext);
-  const ends_at = authState?.duration;
+  const ends_at = authState?.contest?.contest?.end_date;
   const calculateTimeLeft = () => {
     let difference = +new Date(ends_at) - +new Date();
     let timeLeft = {};
@@ -18,14 +18,15 @@ const Timer = () => {
         seconds: Math.floor((difference / 1000) % 60),
       };
     }
+    
     return timeLeft;
   };
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   useEffect(() => {
-    
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
+    if(Object.keys(timeLeft).length === 0) timeoutSubmit()
     return () => clearTimeout(timer);
   });
 
@@ -35,17 +36,15 @@ const Timer = () => {
     if (!timeLeft[interval]) {
       return;
     }
-    timerComponents.push(
-      `${timeLeft[interval]}${interval.charAt(0)}`
-    );
+    timerComponents.push(`${timeLeft[interval]}${interval.charAt(0)}`);
   });
   return (
-    <div className="d-flex">
+    <div className="d-flex align-items-center justify-content-center">
+      
       {timerComponents.length === 0 ? (
-        <span>Time's up</span>
+        <span style={{lineHeight:'34px'}}>Time's up</span>
       ) : (
         <div className="d-flex align-items-center justify-content-center countdown-timer">
-          
           {timerComponents.map((component, index) => {
             let suffix = index + 1 !== timerComponents.length ? " : " : "";
             return (

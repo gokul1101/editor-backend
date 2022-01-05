@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import helperService from "../../../../../services/helperService";
 import InputReducer from "../../../../Reducer/InputReducer";
-import { AuthContext } from "../../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import "./CreateContest.css";
 import { useHistory, useParams } from "react-router-dom";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import InfoIcon from '@material-ui/icons/Info';
 const CreateContest = (props) => {
+  const [loader, showLoader, hideLoader] = useLoader();
   const history = useHistory();
   const { id } = useParams();
   const convertDate = (date) => {
@@ -14,7 +17,7 @@ const CreateContest = (props) => {
   };
   //**state declartion start */
   const [authState, authDispatch] = useContext(AuthContext);
-  const [name, setName] = useState(authState?.contest?.name);
+  const [name, setName] = useState(authState?.contest?.name || "");
   const [date, setDate] = useState({
     start_date: convertDate(authState?.contest?.start_date),
     end_date: convertDate(authState?.contest?.end_date),
@@ -23,67 +26,68 @@ const CreateContest = (props) => {
     start_time: authState?.contest?.start_time,
     end_time: authState?.contest?.end_time,
   });
-  //**state declartion end */
-  const fetchContest = async () => {
-    try {
-      const { data, status } = await helperService.getContest(
-        { id },
-        { headers: { Authorization: authState.user.token } }
-      );
-      if (status === 200) {
-        console.log(data);
-        setName(data?.contest?.name);
-        setDate({
-          start_date: convertDate(data?.contest?.start_date),
-          end_date: convertDate(data?.contest?.end_date),
-        });
-        setTime({
-          start_time: data?.contest?.start_time,
-          end_time: data?.contest?.end_time,
-        });
-
-        // authDispatch({})
-      }
-    } catch (err) {
-      console.log(err);
+  const validateContestDetails = () => {
+    if (name?.length < 4) {
+      props.snackBar("Contest Name should ", "error");
+      return false;
     }
+    if (!date.start_date) {
+      props.snackBar("Contest start date in empty", "error");
+      return false;
+    }
+    if (!time.start_time) {
+      props.snackBar("Contest start time in empty", "error");
+      return false;
+    }
+    if (!date.end_date) {
+      props.snackBar("Contest end date in empty", "error");
+      return false;
+    }
+    if (!time.end_time) {
+      props.snackBar("Contest end time in empty", "error");
+      return false;
+    }
+    if (+new Date() > +new Date(`${date.start_date} ${time.start_time}`)) {
+      props.snackBar("Check contest start date or start time", "error");
+      return false;
+    }
+    if (+new Date() > +new Date(`${date.end_date} ${time.end_time}`)) {
+      props.snackBar("Check contest end date or end time", "error");
+      return false;
+    }
+    return true;
   };
-
-  
   const createContest = async () => {
-    // if(name.length === 0){
-    //   props.snackBar("Contest Name is Empty","error")
-    // }
-
-    //     if(new Date(`${date.start_date}`) >= new Date()){
-    //         console.log("already day Ends");
-    //     }
-    
+    const flag = validateContestDetails();
+    if (!flag) return;
     try {
-      const { status, data } = await helperService.createContest(
+      showLoader();
+      const { status } = await helperService.createContest(
         {
           name,
           start_date: date.start_date,
           end_date: date.end_date,
           start_time: time.start_time,
           end_time: time.end_time,
+          created_by: authState?.user?._id,
         },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
+        hideLoader();
         props.snackBar("Contest created successfully", "success");
         history.push(`/contests`);
       }
     } catch (error) {
-      console.log(error);
+      hideLoader();
       props.snackBar(error.data, "error");
-      // props.snackBar(error.error,"error")
     }
   };
   const updateContest = async () => {
-
-   
+    const flag = validateContestDetails();
+    if (!flag) return;
     try {
+      showLoader();
       const { data, status } = await helperService.updateContest(
         {
           id,
@@ -96,28 +100,26 @@ const CreateContest = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        console.log(data);
-        props.snackBar("Contest updated successfully", "success");
+        props.snackBar(data.message, "success");
+        hideLoader();
       }
     } catch (error) {
-      console.log(error);
-      props.snackBar(error.data, "success");
-      // props.snackBar(error.error,"error")
+      hideLoader();
     }
-
-
   };
   useEffect(() => {
-    if (props?.title && !authState?.contest) fetchContest();
-    return () => {
-      authDispatch({ type: "REMOVE_CONTEST" });
-    };
+    console.log(props.snackBar);
+    // if (props?.title && !authState?.contest) {
+    //   fetchContest();
+    // }
+    // return () => {
+    //   authDispatch({ type: "REMOVE_CONTEST" });
+    // };
   }, []);
-  useEffect(() => {
-    console.log(date, time);
-  }, [date, time]);
+
   return (
     <div className="container mt-5">
+      {loader}
       <div className="d-flex flex-column">
         <p className="text-left dash-title-category pb-2">{props?.title}</p>
         <span className="create-con-text mt-1">
@@ -149,10 +151,9 @@ const CreateContest = (props) => {
         </div>
         <div className="d-flex mt-2 mb-3">
           <span className="contest-line-height col-md-2">
-            Date <span className="contest-star">*</span>
+            Start Time <span className="contest-star">*</span>
           </span>
           <div className="col-md-4">
-            {console.log("At line 79", date)}
             <InputReducer
               placeholder="Starts at"
               name="Starts at"
@@ -161,8 +162,25 @@ const CreateContest = (props) => {
               onClickHandler={(e) => setDate({ ...date, start_date: e })}
             />
           </div>
-          
+
           <span className="contest-line-height mr-2">at</span>
+          <div className="col-md-4">
+            <InputReducer
+              placeholder="Starts at"
+              name="Starts at"
+              type="time"
+              value={time.start_time}
+              onClickHandler={(e) => setTime({ ...time, start_time: e })}
+            />
+          </div>
+          <span className="info-circle mr-2 mt-3">
+          <InfoIcon/>
+          </span>
+        </div>
+        <div className="d-flex">
+          <span className="contest-line-height col-md-2">
+            End Time <span className="contest-star">*</span>
+          </span>
           <div className="col-md-4">
             <InputReducer
               placeholder="Ends at"
@@ -170,23 +188,6 @@ const CreateContest = (props) => {
               type="date"
               value={date.end_date}
               onClickHandler={(e) => setDate({ ...date, end_date: e })}
-            />
-          </div>
-          <span className="info-circle mr-2 mt-3">
-            <i className="fas fa-info-circle"></i>
-          </span>
-        </div>
-        <div className="d-flex">
-          <span className="contest-line-height col-md-2">
-            Time <span className="contest-star">*</span>
-          </span>
-          <div className="col-md-4">
-            <InputReducer
-              placeholder="Ends at"
-              name="Ends at"
-              type="time"
-              value={time.start_time}
-              onClickHandler={(e) => setTime({ ...time, start_time: e })}
             />
           </div>
           <span className="contest-line-height mr-2">at</span>
@@ -200,18 +201,21 @@ const CreateContest = (props) => {
             />
           </div>
           <span className="info-circle mr-2 mt-3">
-            <i className="fas fa-info-circle"></i>
+            <InfoIcon/>
           </span>
         </div>
       </div>
-
       <CustomButton
         className="btn-hover color-11 mt-4 float-right"
+        disabled={
+          props?.title !== "Create Contest" &&
+          new Date(authState?.contest?.end_date) < new Date()
+        }
         onClickHandler={
           props?.title !== "Create Contest" ? updateContest : createContest
         }
       >
-        <i className="fas fa-plus pr-2 pl-2"></i> {props?.title?.toUpperCase()}
+        <AddCircleIcon/> {props?.title?.toUpperCase()}
       </CustomButton>
     </div>
   );

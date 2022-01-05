@@ -1,74 +1,80 @@
-import React from "react";
+import React, { useEffect } from "react";
+import FileDownload from "js-file-download";
 import "./ContestStatictics.css";
 import SubmissionGif from "../../../../../Images/submission.gif";
 import Pagination from "@material-ui/lab/Pagination";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import { useContext } from "react";
+import { AuthContext } from "../../../../../../contexts/AuthContext";
+import { useParams } from "react-router-dom";
+import helperService from "../../../../../../services/helperService";
+import { useState } from "react";
+import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
+const limit = 10,
+  leaderBoardCount = 5;
 const ContestStatictics = (props) => {
-  const stats = [
-    {
-      reg: 1813015,
-      name: "Dhanush",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813016,
-      name: "Dhusanthan",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813017,
-      name: "Gajendhiran M",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813018,
-      name: "Gobi",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813019,
-      name: "Gokul",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813015,
-      name: "Dhanush",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813016,
-      name: "Dhusanthan",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813017,
-      name: "Gajendhiran M",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813018,
-      name: "Gobi",
-      time: 120,
-      points: 98,
-    },
-    {
-      reg: 1813019,
-      name: "Gokul",
-      time: 120,
-      points: 98,
-    },
-  ];
+  const { id } = useParams();
+  const [authState] = useContext(AuthContext);
+  const [leaderBoard, setLeaderBoard] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const fethContestSubmissions = async () => {
+    try {
+      const { data, status } = await helperService.getContestSubmissions(
+        { page, limit, contest_id: id },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 200) {
+        setSubmissions(data?.submissions?.submissions || []);
+
+        if (!total) setTotal(data?.submissions?.totalCount || 0);
+        setLeaderBoard(
+          data?.submissions?.submissions?.slice(0, leaderBoardCount) || []
+        );
+      }
+    } catch (err) {}
+  };
+  useEffect(() => {
+    fethContestSubmissions();
+  }, []);
+  const handlePagination = (e, value) => {
+    if (page !== value) {
+      setPage(value);
+      fethContestSubmissions(value);
+    }
+  };
+  const downloadStatistics = async () => {
+    try {
+      const { data, status } = await helperService.downloadStatistics(
+        { contest_id: id },
+        {
+          headers: { Authorization: authState?.user?.token },
+          responseType: "arraybuffer",
+        }
+      );
+      if (status === 200) {
+        console.log(data);
+        const blob = new Blob([data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+
+        FileDownload(blob, `${authState?.contest?.name}_Submissions.xlsx`);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="container-fluid w-100 mt-5">
-      <div className="d-flex">
-        <div className="col-md-9 d-flex flex-column border">
+      <div>
+        <CustomButton onClickHandler={downloadStatistics}>
+          <GetAppIcon />
+          Download
+        </CustomButton>
+      </div>
+      <div className="d-flex stats-main">
+        <div className="col-md-9 mb-5 stats-left d-flex flex-column border">
           <div className="statistics-nav d-flex justify-content-center mt-3 mb-2 w-100">
             <div className="col-md-2 inner-stat-nav">S.NO</div>
             <div className="col-md-2 inner-stat-nav">REG.NO</div>
@@ -77,84 +83,79 @@ const ContestStatictics = (props) => {
             <div className="col-md-3 inner-stat-nav">POINTS</div>
           </div>
 
-          {stats.map((e, id) => {
+          {submissions.map((e, id) => {
             return (
-              <div className="stats d-flex w-100">
+              <div className="stats d-flex w-100" key={id}>
                 <div className="col-md-2 stats-detail">{id + 1}</div>
-                <div className="col-md-2 stats-detail">{e.reg}</div>
-                <div className="col-md-3 stats-detail">{e.name}</div>
-                <div className="col-md-2 stats-detail">{e.time}</div>
-                <div className="col-md-3 stats-detail">{e.points}</div>
+                <div className="col-md-2 stats-detail">{e.user_id.regno}</div>
+                <div className="col-md-3 stats-detail">{e.user_id.name}</div>
+                <div className="col-md-2 stats-detail">
+                  {new Date(e.created_at).toLocaleString()}
+                </div>
+                <div className="col-md-3 stats-detail">{e.score}</div>
               </div>
             );
           })}
-
+          <div>
+            {total > limit && (
+              <Pagination
+                count={
+                  Math.floor(total / limit) + (total % limit !== 0 ? 1 : 0)
+                }
+                color="primary"
+                variant="text"
+                className="mt-5 d-flex justify-content-center"
+                onChange={(e, value) => handlePagination(e, value)}
+              />
+            )}
+          </div>
         </div>
-        
-        <div className="col-md-3 d-flex flex-column m-1">
-          <div className="top-part mt-2 mb-2 p-2">
+
+        <div className="col-md-3 stats-right d-flex flex-column m-1">
+          <div className="top-part mx-2 my-2 p-2">
             <div className="d-flex align-items-center justify-content-center mt-2 mb-2">
               <img
-              alt="someImage"
+                alt="someImage"
                 src="https://img.icons8.com/emoji/30/000000/trophy-emoji.png"
                 className="pr-3 img-fluid"
               />
-              <span className="top-participants">Top 3 Participants</span>
+              <span className="top-participants">
+                Top {leaderBoardCount} Participants
+              </span>
             </div>
             <div className="d-flex flex-column mt-4">
-              <div className="d-flex mt-2 mb-2">
-                <div className="col-md-2">
-                  <button className="correct">1</button>
+              {leaderBoard.map((submission, idx) => (
+                <div className="d-flex mt-2 mb-2">
+                  <div className="col-md-2">
+                    <button className="correct">{idx + 1}</button>
+                  </div>
+                  <div className="col-md-6 top-scorer">
+                    {submission.user_id.name}
+                  </div>
+                  <div className="col-md-4 d-flex justify-content-between align-items-center">
+                    <img
+                      alt="someImage"
+                      src="https://img.icons8.com/emoji/30/000000/coin-emoji.png"
+                    />
+                    <span className="score-point">{submission.score}</span>
+                  </div>
                 </div>
-                <div className="col-md-6 top-scorer">Dhanush Karthick</div>
-                <div className="col-md-4 d-flex justify-content-between align-items-center">
-                  <img alt="someImage" src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
-                  <span className="score-point">1029</span>
-                </div>
-              </div>
-              <div className="d-flex mt-2 mb-2">
-                <div className="col-md-2">
-                  <button className="correct">2</button>
-                </div>
-                <div className="col-md-6 top-scorer">Dhanush Karthick</div>
-                <div className="col-md-4 d-flex justify-content-between align-items-center">
-                  <img alt="someImage" src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
-                  <span className="score-point">102</span>
-                </div>
-              </div>
-              <div className="d-flex mt-2 mb-2">
-                <div className="col-md-2">
-                  <button className="correct">3</button>
-                </div>
-                <div className="col-md-6 top-scorer">Dhanush Karthick</div>
-                <div className="col-md-4 d-flex justify-content-between align-items-center">
-                  <img alt="someImage" src="https://img.icons8.com/emoji/30/000000/coin-emoji.png" />
-                  <span className="score-point">10</span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-          <div className="top-part mt-2 mb-2 p-3">
+          <div className="top-part mx-2 my-2 p-3">
             <div className="submissions d-flex flex-column align-items-center justify-content-center">
               <img src={SubmissionGif} height="98" width="96" />
-              <span className="mt-4">Total no. of submissions : <span className="submission-count">40</span></span>
-              <span>No. of submissions Left : <span className="submission-count">20</span></span>
-              <span>Ena vaikrathunu therla : <span className="submission-count">10</span></span>
+              <span className="mt-4">
+                Total no. of submissions :{" "}
+                <h1 className="submission-count d-flex justify-content-center">
+                  {total}
+                </h1>
+              </span>
             </div>
-
           </div>
         </div>
-
       </div>
-      <div>
-      <Pagination
-            count={13}
-            color="primary"
-            variant="text"
-          className="mt-5 d-flex justify-content-end"
-          />
-      </div>
-
     </div>
   );
 };

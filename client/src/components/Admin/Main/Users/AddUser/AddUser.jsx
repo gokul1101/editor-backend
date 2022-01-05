@@ -4,12 +4,11 @@ import DropFileInput from "./DropFileInput/DropFileInput";
 import SelectReducer from "../../../../Reducer/SelectReducer/SelectReducer";
 import "../../../../Student/Main/Dashboard/Dashboard.css";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
-import { AuthContext } from "../../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
-
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 const useStyles = makeStyles((theme) => ({
   root: {
     border: "1px solid #1E2D64",
@@ -32,22 +31,11 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
   },
 }));
-const colleges = {
-  KSRCE: "KSR College of Engineering",
-  KSRCT: "KSR College of Technology",
-  KSRIET: "KSR Institute for Engineering & Technology",
-};
-const courses = {
-  CSE: "Computer Science & Engineering",
-  IT: "Information Technology",
-  ECE: "Electronics and Communication Engineering",
-  EEE: "Electrical & Electronics Engineering",
-  CIVIL: "Civil Engineering",
-  MECH: "Mechanical Engineering",
-  SF: "Safety & Fire Engineering",
-  AUTO: "Automobile Engineering",
-};
+
 const AddUser = (props) => {
+  const [loader, showLoader, hideLoader] = useLoader();
+  const [reqflag, setReqflag] = useState(false);
+  const [logs, setLogs] = useState({});
   const [authState] = useContext(AuthContext);
   const [user, setUser] = useState({
     regno: "",
@@ -58,90 +46,103 @@ const AddUser = (props) => {
     course_id: "",
     college_id: "",
     phone_no: "",
+    batch_id: "",
   });
-  const [batchStart, setBatchStart] = useState("");
-  const [batchEnd, setBatchEnd] = useState("");
   const classes = useStyles();
-
+  const removeFileHandler = (setFileList) => {
+    setFileList([]);
+  };
   const onFileChange = async (files) => {
+    const formData = new FormData();
+    formData.append("file", files[0]);
+    formData.get("file");
+    //**This is modified when compare to other api calls*/
     try {
       const { data, status } = await helperService.createBulkUsers(
-        {},
-        { headers: { Authorization: authState?.user?.token } }
+        { file: formData },
+        {
+          Authorization: authState?.user?.token,
+          "Content-Type": "multipart/form-data",
+        }
       );
       if (status === 201) {
+        if(data?.errorLogs?.errorLogs.length >= 0)
+          setLogs(data.errorLogs);
+          return true;
       }
-    } catch (err) {
-      console.log(err);
+    } catch ({message}) {
+      props.snackBar(message, "error");
     }
+    return false;
   };
   const createUser = async () => {
     //Regex
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let charRegex =  /^[A-Za-z0-9]+$/;
-  
-    if(!user.name.length >=3 && !user.name.length <=25){
-      props.snackBar("Username is Incorrect","error")
+    let username = /^[a-zA-Z\_]{3,25}$/;
+
+    if (!username.test(user.name)) {
+      props.snackBar("Username is Invalid", "error");
       return;
     }
-    if(user.regno.length !== 7){
-      props.snackBar("Register Number is Incorrect","error");
+    if (user.regno.length !== 7) {
+      props.snackBar("Please check the register Number", "error");
       return;
     }
-    if(user.stream_id === ""){
-      props.snackBar("Stream is not selected","error")
+    if (user.stream_id === "") {
+      props.snackBar("Stream is not selected", "error");
       return;
     }
-    if(user.course_id === ""){
-      props.snackBar(" Course is not selected","error")
-      return
-    }
-    if(user.college_id === ""){
-      props.snackBar("College is not selected","error")
-      return
-    }
-    if(!emailRegex.test(user.email)){
-      props.snackBar("Email is Incorrect","error")
+    if (user.course_id === "") {
+      props.snackBar(" Course is not selected", "error");
       return;
     }
-    
-    if(user.phone_no.length !== 10){
-      console.log(user.phone_no.length );
-      props.snackBar("Phone Number is Incorrect","error")
+    if (user.college_id === "") {
+      props.snackBar("College is not selected", "error");
       return;
     }
-    if(user.gender_id === ""){
-      props.snackBar("Gender is not Selected","error")
+    if (!emailRegex.test(user.email)) {
+      props.snackBar("Email is Incorrect", "error");
       return;
     }
-    
+    if (user.phone_no.length !== 10) {
+      props.snackBar("Phone Number is Incorrect", "error");
+      return;
+    }
+    if (user.gender_id === "") {
+      props.snackBar("Gender is not Selected", "error");
+      return;
+    }
+    if (!user.batch_id) {
+      props.snackBar("Batch is not Selected", "error");
+      return;
+    }
+
     try {
-      console.log({
-        ...user,
-        college_id: colleges[user.college_id],
-        course_id: courses[user.course_id],
-        batch_id: `${batchStart.substring(0, 4)}-${batchEnd.substring(0, 4)}`,
-      });
+      showLoader();
+
       const { status, data } = await helperService.createUser(
         {
           ...user,
-          college_id: colleges[user.college_id],
-          course_id: courses[user.course_id],
-          batch_id: `${batchStart.substring(0, 4)}-${batchEnd.substring(0, 4)}`,
+          college_id: user.college_id,
+          batch_id: `${user.batch_id.substring(0, 4)}-${user.batch_id.substring(
+            user.batch_id.length - 4,
+            user.batch_id.length
+          )}`,
         },
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 201) {
-        console.log(data, status);
-        props.snackBar("Successfully user created", "success");
+        hideLoader();
+        props.snackBar(data.message, "success");
       }
     } catch (err) {
       props.snackBar(err.data, "error");
-
+      hideLoader();
     }
   };
   return (
     <div className="container">
+      {loader}
       <p className="text-left dash-title-category pb-2">Add Details *</p>
       <div className="col p-0" style={{ marginTop: "-20px" }}>
         <div className="hr">
@@ -167,7 +168,9 @@ const AddUser = (props) => {
                 name="Name"
                 type="text"
                 value={user.name}
-                onClickHandler={(value) => setUser({ ...user, name: value.trim() })}
+                onClickHandler={(value) =>
+                  setUser({ ...user, name: value.trim() })
+                }
               />
             </div>
             <div className="col-md-6 p-1">
@@ -178,7 +181,9 @@ const AddUser = (props) => {
                 name="Register Number"
                 type="text"
                 value={user.regno}
-                onClickHandler={(value) => setUser({ ...user, regno: value.trim() })}
+                onClickHandler={(value) =>
+                  setUser({ ...user, regno: value.trim() })
+                }
               />
             </div>
           </div>
@@ -190,16 +195,26 @@ const AddUser = (props) => {
                 name="Stream"
                 value={user.stream_id}
                 handleSelect={(e) =>
-                  setUser({ ...user, stream_id: e.target.value })
+                  setUser({ ...user, stream_id: e.target.value, course_id : "" })
                 }
-                // value = {user.regno}
-                // onClickHandler = {(value) => setUser({...user,regno:value})}
               />
             </div>
             <div className="col-md-6 p-1">
               <SelectReducer
                 className={classes.fieldColor}
-                array={["CSE", "IT", "CIVIL"]}
+                array={
+                  user.stream_id === "B.Tech"
+                    ? ["Information Technology"]
+                    : [
+                        "Computer Science & Engineering",
+                        "Electrical & Electronics Engineering",
+                        "Electronics and Communication Engineering",
+                        "Mechanical Engineering",
+                        "Automobile Engineering",
+                        "Civil Engineering",
+                        "Safety & Fire Engineering",
+                      ]
+                }
                 name="Course Name"
                 handleSelect={(e) =>
                   setUser({ ...user, course_id: e.target.value })
@@ -213,7 +228,11 @@ const AddUser = (props) => {
               <SelectReducer
                 value={user.college_id}
                 className={classes.fieldColor}
-                array={["KSRCT", "KSRCE", "KSRIET"]}
+                array={[
+                  "KSR College of Engineering",
+                  "KSR College of Technology",
+                  "KSR Institute for Engineering & Technology",
+                ]}
                 name="College Name"
                 handleSelect={(e) =>
                   setUser({ ...user, college_id: e.target.value })
@@ -228,7 +247,9 @@ const AddUser = (props) => {
                 name="Email"
                 type="email"
                 value={user.email}
-                onClickHandler={(value) => setUser({ ...user, email: value.trim() })}
+                onClickHandler={(value) =>
+                  setUser({ ...user, email: value.trim() })
+                }
               />
             </div>
           </div>
@@ -250,7 +271,7 @@ const AddUser = (props) => {
             <div className="col-md-6 p-1">
               <SelectReducer
                 className={classes.fieldColor}
-                array={["male", "female"]}
+                array={["male", "female", "other"]}
                 name="Gender"
                 handleSelect={(e) =>
                   setUser({ ...user, gender_id: e.target.value })
@@ -261,32 +282,25 @@ const AddUser = (props) => {
           </div>
           <div className="d-flex mt-3 mb-2">
             <div className="col-md-6 p-1">
-              <TextField
-                id="date"
-                label="Batch starts"
-                type="month"
-                defaultValue="2017-05-24"
-                value={batchStart}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(e) => setBatchStart(e.target.value)}
-              />
-            </div>
-            <div className="col-md-4 p-1">
-              <TextField
-                id="date"
-                label="Batch ends"
-                type="month"
-                defaultValue="2017-05-24"
-                value={batchEnd}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                // value = {}
-                onChange={(e) => setBatchEnd(e.target.value)}
+              <SelectReducer
+                className={classes.fieldColor}
+                array={[
+                  "2018-2022",
+                  "2019-2023",
+                  "2020-2024",
+                  "2021-2025",
+                  "2022-2026",
+                  "2023-2027",
+                  "2024-2028",
+                  "2025-2029",
+                  "2026-2030",
+                ]}
+                name="Batch year"
+                label="Batch year"
+                handleSelect={(e) =>
+                  setUser({ ...user, batch_id: e.target.value })
+                }
+                value={user.batch_id}
               />
             </div>
           </div>
@@ -294,11 +308,20 @@ const AddUser = (props) => {
             className="btn-hover color-11 mt-4"
             onClickHandler={createUser}
           >
-            <i className="fas fa-plus pr-2 pl-2"></i>CREATE USER
+            <AddCircleIcon />
+            <span className="ml-2">CREATE USER</span>
           </CustomButton>
         </div>
         <div className="col-md-4 p-2 border m-1">
-          <DropFileInput onFileChange={onFileChange} />
+          <DropFileInput
+            logs={logs}
+            setLogs={setLogs}
+            onFileChange={onFileChange}
+            snackBar={props.snackBar}
+            removeFileHandler={removeFileHandler}
+            reqflag={reqflag}
+            setReqflag={setReqflag}
+          />
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ const {
   deleteUser,
   createBulkUsers,
   getAllUsers,
+  adminDashboard,
 } = require("../controllers/userController");
 const {
   createContest,
@@ -29,15 +30,24 @@ const {
   getQuiz,
   updateQuiz,
   getAllQuizzes,
+  deleteQuiz,
 } = require("../controllers/quizController");
 const {
   createMultipleTestCases,
   updateTestCase,
   getTestCases,
+  deleteTestCase,
 } = require("../controllers/testcaseController");
-const { createSubmission } = require("../controllers/submissionController");
+const {
+  createSubmission,
+  getSubmission,
+} = require("../controllers/submissionController");
 const { getErrorLogs } = require("../controllers/errorLogsController");
-const { compile, executeContestChallenge } = require("../controllers/compileController");
+const {
+  compile,
+  executeContestChallenge,
+} = require("../controllers/compileController");
+const { exportSubmissions, exportUsers } = require("../controllers/exportController");
 
 //? Public Routes
 //* =============Login=============
@@ -86,6 +96,12 @@ router.get(
   userAuth,
   routeAuth("getAllUsers"),
   getAllUsers
+);
+router.post(
+  "/api/v1/user/export",
+  userAuth,
+  routeAuth("exportUsers"),
+  exportUsers
 );
 //* =============Contest================
 router.post(
@@ -145,6 +161,12 @@ router.get(
   routeAuth("getAllQuizzes"),
   getAllQuizzes
 );
+router.post(
+  "/api/v1/quiz/delete",
+  userAuth,
+  routeAuth("deleteQuiz"),
+  deleteQuiz
+);
 //* ==============Question===============
 router.post(
   "/api/v1/question/create",
@@ -196,6 +218,12 @@ router.post(
   routeAuth("updateTestCase"),
   updateTestCase
 );
+router.post(
+  "/api/v1/testcase/delete",
+  userAuth,
+  routeAuth("deleteTestCase"),
+  deleteTestCase
+);
 //* =============Submission===============*//
 router.post(
   "/api/v1/submission/create",
@@ -203,10 +231,30 @@ router.post(
   routeAuth("createSubmission"),
   createSubmission
 );
+router.post(
+  "/api/v1/submission/get",
+  userAuth,
+  routeAuth("getSubmission"),
+  getSubmission
+);
+router.post(
+  "/api/v1/submission/export",
+  userAuth,
+  routeAuth("exportSubmissions"),
+  exportSubmissions
+);
+
 //* ==============Compiler===============*//
 router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compile);
-router.post("/api/v1/run-code", userAuth, routeAuth("executeContestChallenge"), executeContestChallenge);
+router.post(
+  "/api/v1/run-code",
+  userAuth,
+  routeAuth("executeContestChallenge"),
+  executeContestChallenge
+);
 
 //* =============== Error Logs =========== *//
 router.get("/api/v1/errorLogs", userAuth, routeAuth("errorLogs"), getErrorLogs);
+//* =============== Admin Dashboard =========== *//
+router.get("/api/v1/user/admindashboard",userAuth,routeAuth("adminDashboard"),adminDashboard)
 module.exports = router;

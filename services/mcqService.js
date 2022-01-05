@@ -1,6 +1,6 @@
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
-const { updateQuizService } = require("./quizService");
+const { updateQuizService } = require("./index");
 const createMCQ = async ({ type_id, quiz_id, statement, options }) => {
   let question = {
     type_id,
@@ -14,11 +14,11 @@ const createMCQ = async ({ type_id, quiz_id, statement, options }) => {
   };
   let newAnswer = new Answer(answer);
   try {
+    await updateQuizService({ id: quiz_id, total_mcqs: 1 });
     await newQuestion.save();
     await newAnswer.save();
-    await updateQuizService({ id: quiz_id, total_mcqs: 1 });
     return Promise.resolve({
-      code: 201,
+      status: 201,
       message: "MCQ created successfully.",
       mcq: {
         question_id: newQuestion._id,
@@ -31,7 +31,7 @@ const createMCQ = async ({ type_id, quiz_id, statement, options }) => {
     //! Error in creating mcq
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `Error in creating Mcq`,
     });
   }
@@ -41,7 +41,7 @@ const getMCQ = async (id, role) => {
     let question = await Question.findById(id);
     if (!question) {
       return Promise.reject({
-        code: 404,
+        status: 404,
         message: `MCQ not found`,
       });
     } else {
@@ -53,7 +53,7 @@ const getMCQ = async (id, role) => {
         D: options.D,
       };
       return Promise.resolve({
-        code: 200,
+        status: 200,
         message: "MCQ is found",
         question: {
           id: question._id,
@@ -68,7 +68,7 @@ const getMCQ = async (id, role) => {
   } catch (err) {
     //! Error in getting MCQ
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `Error in getting Mcq`,
     });
   }
@@ -101,14 +101,14 @@ const updateMCQ = async ({
       });
     }
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: "Mcq Updated",
     });
   } catch (err) {
     //! Error in updating mcq
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `Error in updating Mcq`,
     });
   }
@@ -120,7 +120,7 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
     response.modelCount = count;
     const questions = await Question.find({ quiz_id: id })
       .limit(limit * 1)
-      .skip((page - 1) * limit);
+      .skip((page > 0 ? page - 1 : 1) * limit);
     let mcqs = [];
     for (let i = 0; i < questions.length; i++) {
       let mcq = {
@@ -137,7 +137,7 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
       });
     }
     return Promise.resolve({
-      code: 200,
+      status: 200,
       message: "MCQs has been found.",
       mcqs,
     });
@@ -145,25 +145,35 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
     //! Error in getting mcqs
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `Error in getting mcqs`,
     });
   }
 };
-const deleteMCQ = async ({ question_id, answer_id }) => {
+const deleteMCQ = async ({
+  question_id,
+  answer_id,
+  quiz_id,
+  need_update = true,
+}) => {
   try {
-    if (!question_id || !answer_id) {
+    console.log(question_id,answer_id,quiz_id,need_update)
+    if (!question_id && !answer_id) {
       return Promise.reject({
-        code: 406,
+        status: 406,
         message: `Invalid parameters found`,
       });
     }
     const question_result = await Question.findByIdAndDelete(question_id);
+    if (need_update) await updateQuizService({ id: quiz_id, total_mcqs: -1 });
     if (question_result) {
-      const answer_result = await Answer.findByIdAndDelete(answer_id);
+      let answer_result = null;
+      if (answer_id) answer_result = await Answer.findByIdAndDelete(answer_id);
+      else if (!answer_result)
+        answer_result = await Answer.findOneAndDelete({ question_id });
       if (answer_result) {
         return Promise.resolve({
-          code: 202,
+          status: 202,
           message: "MCQ question deleted Sucessfully",
         });
       }
@@ -172,7 +182,7 @@ const deleteMCQ = async ({ question_id, answer_id }) => {
   } catch (err) {
     console.log(err);
     return Promise.reject({
-      code: 500,
+      status: 500,
       message: `Error in deleting Mcq`,
     });
   }

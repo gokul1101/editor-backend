@@ -13,10 +13,12 @@ import { useState } from "react";
 import helperService from "../../../../../../services/helperService";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
+import ContestTable from "../ContestTable/ContestTable";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const ContestChallenges = () => {
+const ContestChallenges = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const { id } = useParams();
   const [challenges, setChallenges] = useState([]);
@@ -28,23 +30,36 @@ const ContestChallenges = () => {
       );
       if (status === 200) {
         setChallenges(data.challenges);
+        props.snackBar(data.message,"success")
       }
     } catch (err) {
-      console.log(err);
+    }
+  };
+  const deleteQuestion = async (challenge) => {
+    try {
+      const { status } = await helperService.deleteQuestion(
+        { ...challenge, type_id: "problem" },
+        { headers: { Authorization: authState.user.token } }
+      );
+      if (status === 202) {
+        props.snackBar("Question deleted successfully", "success");
+        console.log(challenge,challenges)
+        setChallenges(
+          challenges.filter((ques) => ques._id !== challenge._id)
+        );
+      }
+    } catch (err) {
+      props.snackBar(err.data, "error");
     }
   };
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    console.log("button clicked");
-    setOpen(true);
-  };
+
 
   const handleClose = () => {
     setOpen(false);
   };
   const addQuiz = () => {
-    console.log("Quiz Added");
   };
   useEffect(() => {
     fetchChallenges();
@@ -66,7 +81,7 @@ const ContestChallenges = () => {
       </div>
       <NavLink to={`/contests/${id}/challenges/create`}>
         <CustomButton className="btn-hover color-11 mt-4">
-          <i className="fas fa-plus pr-2 pl-2"></i>ADD CHALLENGES
+          <AddCircleIcon/><span className="ml-2">ADD CHALLENGES</span>
         </CustomButton>
       </NavLink>
       <Dialog
@@ -97,34 +112,10 @@ const ContestChallenges = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <div className="challenge-chips d-flex flex-wrap border p-2 mt-4">
-        {challenges?.length > 0 ? (
-          challenges.map((challenge) => {
-            return (
-              <div className="create-con" key={challenge._id}>
-                <div
-                  className="p-2 mr-2 ml-2 quizzes-chip"
-                  style={{
-                    background: "#21A366",
-                    color: "#fff",
-                    borderRadius: "10px",
-                  }}
-                >
-                  <DeleteOutlineIcon />
-                  <Link
-                    to={`/challenges/${challenge._id}`}
-                    style={{ color: "white" }}
-                  >
-                    <span className="pl-2">{challenge.name}</span>
-                  </Link>
-                </div>
-              </div>
-            );
-          })
-        ) : (
-          <span>No changes have been made yet</span>
-        )}
-      </div>
+      <ContestTable
+        data={challenges}
+        deleteQuestion={deleteQuestion}
+      />
     </div>
   );
 };

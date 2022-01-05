@@ -1,5 +1,5 @@
 import "./App.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Login from "./components/Login/Login";
 import AdminMain from "./components/Admin/Main/Main";
 import Main from "./components/Student/Main/Main";
@@ -14,6 +14,8 @@ import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { AuthContext } from "./contexts/AuthContext";
 import helperService from "./services/helperService";
+import PageNotFound from "./components/Reducer/PageNotFound/404";
+// import Loader from "./components/Reducer/Loader/Loader";
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -34,14 +36,14 @@ const App = () => {
     setMessage(snackMessage);
     setOpen(true);
   };
-  // const unauthorized = (message) => {
-  //   snackBar(message, "error");
-  //   localStorage.clear();
-  //   authDispatch({
-  //     type: "REMOVE_USER",
-  //   });
-  //   history.push("/login");
-  // };
+  const unauthorized = (message) => {
+    snackBar(message, "error");
+    localStorage.clear();
+    authDispatch({
+      type: "REMOVE_USER",
+    });
+    history.push("/login");
+  };
   const fetchUser = async () => {
     try {
       const { status, data } = await helperService.getUser(
@@ -55,20 +57,19 @@ const App = () => {
         });
       }
     } catch (err) {
-      console.log(err);
-      // if (err.status === 401) unauthorized(err.data);
-      // snackBar(err.data, "error");
+      if (err.status === 401) unauthorized(err.data);
+      snackBar(err.data, "error");
     }
   };
-  const disabledEvent = (e) => {
-    if (e.stopPropagation) {
-      e.stopPropagation();
-    } else if (window.event) {
-      window.event.cancelBubble = true;
-    }
-    e.preventDefault();
-    return false;
-  };
+  // const disabledEvent = (e) => {
+  //   if (e.stopPropagation) {
+  //     e.stopPropagation();
+  //   } else if (window.event) {
+  //     window.event.cancelBubble = true;
+  //   }
+  //   e.preventDefault();
+  //   return false;
+  // };
 
   // useEffect(() => {
   //   document.addEventListener("contextmenu", (e) => disabledEvent(e));
@@ -110,12 +111,16 @@ const App = () => {
                 authState.user.role === "student" ? (
                   <Main snackBar={snackBar} fetchUser={fetchUser} />
                 ) : (
+                  // <Loader />
                   <AdminMain snackBar={snackBar} fetchUser={fetchUser} />
                 ),
               ]
             ) : (
               <Redirect exact to="/login" />
             )}
+          </Route>
+          <Route path="*">
+            <PageNotFound />
           </Route>
         </Switch>
       </div>

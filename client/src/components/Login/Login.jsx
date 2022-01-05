@@ -6,7 +6,10 @@ import CustomButton from "../Reducer/CustomButton/CustomButton";
 import { AuthContext } from "../../contexts/AuthContext";
 import helperService from "../../services/helperService";
 import { useHistory } from "react-router";
-
+import LocalLibraryRoundedIcon from '@material-ui/icons/LocalLibraryRounded';
+import { IconButton } from "@material-ui/core";
+import LockRoundedIcon from '@material-ui/icons/LockRounded';
+import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 const Login = (props) => {
   const history = useHistory();
   //** Context Consumer */
@@ -32,7 +35,6 @@ const Login = (props) => {
         return;
       }
     } else if (change) {
-      console.log(register);
       if (!/^\w{6}/.test(register)) {
         props.snackBar(
           "Register number should contain only 6 characters.",
@@ -63,13 +65,11 @@ const Login = (props) => {
         props.snackBar(message, "success");
       }
     } catch (err) {
-      if (!err.status) props.snackBar("Network Error", "error");
-      else props.snackBar(err.message, "error");
+      // if (!err.status) props.snackBar("Network Error", "error");
+      props.snackBar(err.message, "error");
     }
   };
-  React.useEffect(() => {
-    console.log(change);
-  }, [change]);
+  React.useEffect(() => {}, [change]);
   const handleKeypress = (e) => {
     if (e.keyCode === 13) {
       handleSubmit();
@@ -86,7 +86,10 @@ const Login = (props) => {
               <p className="text-muted">Learn , code , repeat</p>
 
               <div className="input-field mb-2">
-              <i class="fas fa-id-card-alt"></i>  
+                <IconButton>
+
+              <LocalLibraryRoundedIcon/>
+                </IconButton>
                 <input
                   type="text"
                   placeholder="Register number"
@@ -94,27 +97,33 @@ const Login = (props) => {
                 />
               </div>
               <div className="input-field mb-4">
-                <i className="fas fa-lock"></i>
+                <IconButton>
+                  <LockRoundedIcon/>
+                </IconButton>
+                
                 <input
                   type="password"
                   placeholder="Password"
-                  // onKeyPress={handleKeypress}
+                  // {...password ? <VisibilityOff /> : <Visibility />}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <CustomButton
-                className="btn-hover color-11"
+                className="btn-hover color-11 p-2"
                 onKeyPress={handleKeypress}
                 type="submit"
               >
-                SIGN IN <i className="fas fa-sign-in-alt mr-2 ml-2"></i>
+                SIGN IN <ExitToAppRoundedIcon/>
               </CustomButton>
             </form>
             <form action="#" className="sign-up-form" onSubmit={handleSubmit}>
               <h2 className="title">Admin Sign in</h2>
               <p className="highlight">Learn , Code , Repeat</p>
               <div className="input-field">
-              <i class="fas fa-id-card-alt"></i>
+              <IconButton>
+
+<LocalLibraryRoundedIcon/>
+  </IconButton>
                 <input
                   type="text"
                   placeholder="Register no"
@@ -122,7 +131,9 @@ const Login = (props) => {
                 />
               </div>
               <div className="input-field">
-                <i className="fas fa-lock"></i>
+              <IconButton>
+                  <LockRoundedIcon/>
+                </IconButton>
                 <input
                   type="password"
                   placeholder="Password"
@@ -134,7 +145,7 @@ const Login = (props) => {
                 onKeyPress={handleKeypress}
                 type="submit"
               >
-                SIGN IN <i className="fas fa-sign-out-alt mr-2 ml-2"></i>
+                SIGN IN  <ExitToAppRoundedIcon/>
               </CustomButton>
             </form>
           </div>
@@ -142,7 +153,7 @@ const Login = (props) => {
 
         <div className="panels-cont">
           <div className="panel left-panel">
-            <div className="content">
+            <div className="content d-flex align-items-center justify-content-center flex-column">
               <h3>Are you admin ?</h3>
               <p>
                 Click here to login with you adminstration ID to create contest
@@ -159,7 +170,7 @@ const Login = (props) => {
             <img src={Hello} className="image img-fluid" alt="admin-signin" />
           </div>
           <div className="panel right-panel">
-            <div className="content">
+            <div className="content d-flex align-items-center justify-content-center flex-column">
               <h3>Are you Student ?</h3>
               <p>
                 Click here to login as a student with the help of register

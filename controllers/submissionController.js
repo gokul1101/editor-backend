@@ -8,42 +8,35 @@ const createSubmission = async (req, res) => {
   let submissionDetails = req.body;
   try {
     const response = await createSubmissionService(submissionDetails);
-    res.status(response.code).send(response);
+    res.status(response.status).send(response);
   } catch (err) {
     //! Error in creating submission
-    if (!err.code) {
-      err.code = 500;
-      err.message = `Internal server Error on creating submission`;
-    }
-    return res.status(err.code).send(err.message);
+    return res.status(err.status).send(err.message);
   }
 };
 const getSubmission = async (req, res) => {
+  const { page, limit } = req.query;
   let submissionDetails = req.body;
   try {
-    const response = await getSubmissionsService(submissionDetails);
-    res.status(response.code).send(response);
+    const response = await getSubmissionsService(
+      page,
+      limit,
+      submissionDetails
+    );
+    res.status(response.status).send(response);
   } catch (err) {
     //! Error in getting submissions
-    if (!err.code) {
-      err.code = 500;
-      err.message = `Internal server Error on getting submissions`;
-    }
-    return res.status(err.code).send(err.message);
+    return res.status(err.status).send(err.message);
   }
 };
 const getAllSubmissions = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   try {
     const response = await getAllSubmissionsService(page, limit);
-    res.status(response.code).send(response);
+    res.status(response.status).send(response);
   } catch (err) {
     //! Error in getting submissions
-    if (!err.code) {
-      err.code = 500;
-      err.message = `Internal server Error on getting submissions`;
-    }
-    return res.status(err.code).send(err.message);
+    return res.status(err.status).send(err.message);
   }
 };
 module.exports = {

@@ -11,6 +11,7 @@ const { DB, PORT } = require("./config/index");
 const app = express();
 const fileupload = require("express-fileupload");
 //* MIDDLEWARES
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -24,7 +25,7 @@ app.use(require("./router/route"));
 const startApp = async () => {
   try {
     //* DB CONNECTION
-    await connect(DB, {
+    connect(DB, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
     });

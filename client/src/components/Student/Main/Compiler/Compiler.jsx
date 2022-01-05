@@ -1,31 +1,23 @@
 import React, { useEffect, useContext } from "react";
-import AceEditor from "react-ace";
-import "ace-builds/src-noconflict/mode-java";
-import "ace-builds/src-noconflict/ext-language_tools";
-import "ace-builds/src-noconflict/mode-c_cpp";
-import "ace-builds/src-noconflict/mode-java";
-import "ace-builds/src-noconflict/theme-xcode";
-import "ace-builds/src-noconflict/theme-github";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/src-noconflict/theme-one_dark";
-import "ace-builds/src-noconflict/theme-nord_dark";
-import "ace-builds/src-noconflict/theme-textmate";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import "./Compiler.css";
-import { useHistory } from "react-router-dom";
 import Male from "../../../Images/man.png";
 import TextField from "@material-ui/core/TextField";
-import { Button } from "@material-ui/core";
 import ComImg from "../../../Images/Loop1.jpg";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import helperService from "../../../../services/helperService";
 import { parseCode, template } from "../../../../services/utils";
 import Editor from "../../../Reducer/Editor/Editor";
+import GoBack from "../../../Reducer/GoBack/GoBack";
+import CustomButton from "../../../Reducer/CustomButton/CustomButton";
+import { useHistory } from "react-router-dom";
+import CodeRoundedIcon from "@material-ui/icons/CodeRounded";
 const Compiler = (props) => {
+  const history = useHistory();
   const [authState] = useContext(AuthContext);
   const themes = [
     "xcode",
@@ -55,7 +47,6 @@ const Compiler = (props) => {
       : template.java
   );
 
-  // const [compilerInput, setCompilerInput] = React.useState("");
   const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -66,7 +57,6 @@ const Compiler = (props) => {
     },
   }));
   const classes = useStyles();
-  let history = useHistory();
 
   useEffect(() => {
     props.setSideToggle(true);
@@ -94,22 +84,17 @@ const Compiler = (props) => {
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 200) {
-        console.log(data);
         setOutput(data);
       }
     } catch (err) {
-      console.log(err);
-      setOutput(err.data);
+      setOutput(err.data.err);
     }
   };
   return (
     <div className="container-fluid p-0 compiler-container">
       <div className="d-flex">
         <div className="d-flex mr-auto mt-2">
-          <div className="back-btn mt-3 ml-4" onClick={() => history.goBack()}>
-            <div className="triangle"></div>
-            <div className="halfcircle"></div>
-          </div>
+          <GoBack onClickHandler={() => history.goBack()} />
           <div className="complier-img">
             <img
               src={ComImg}
@@ -135,32 +120,13 @@ const Compiler = (props) => {
       </div>
       <div className="d-flex">
         <div className="col-md-9 p-0">
-          <Editor 
-          language={language}
-          theme={themeName}
-          onChangeHandler={(value) => setCode(value)}
-          value={code}
+          <Editor
+            language={language}
+            theme={themeName}
+            height="calc(100vh - 66px)"
+            onChangeHandler={(value) => setCode(value)}
+            value={code}
           />
-          {/* <AceEditor
-            className="mt-3"
-            height="100vh"
-            width="100%"
-            placeholder="Your code goes here.."
- 
-            name="Editor"
-            fontSize={20}
-            showPrintMargin={false}
-            showGutter={true}
-            highlightActiveLine={true}
-            
-            setOptions={{
-              enableBasicAutocompletion: true,
-              enableLiveAutocompletion: true,
-              enableSnippets: true,
-              showLineNumbers: true,
-              tabSize: 2,
-            }}
-          /> */}
         </div>
         <div className="col-md-3 p-3">
           <div className="d-flex w-100">
@@ -219,15 +185,21 @@ const Compiler = (props) => {
               onChange={(e) => setInput(e.target.value)}
             />
             <div className="d-flex align-items-end justify-content-end border-bottom">
-              <Button
-                className="w-25 mt-3 mb-3 pr-2 pl-2 compile-button"
-                onClick={compile}
+              <CustomButton
+                className="btn-hover color-11 mt-3 mb-3"
+                onClickHandler={compile}
               >
-                COMPILE
-              </Button>
+                <CodeRoundedIcon />
+                <span className="ml-2"> COMPILE</span>
+              </CustomButton>
             </div>
             <div className="d-flex flex-column">
-              <span className="mt-3 text-highlight font-weight-bolder">OUTPUT :</span>
+              <span className="mt-3 text-highlight font-weight-bolder">
+                OUTPUT :
+              </span>
+              {/* <input className="output-box" value={output} /> */}
+              {/* <>{output}</> */}
+
               <TextField
                 className="mt-2 text-output"
                 id="outlined-multiline-static"
@@ -246,13 +218,4 @@ const Compiler = (props) => {
 
 export default Compiler;
 
-/* 
-  <div className="d-flex">
-        
-       
-      </div>
-      
-      <button className="btn-hover color-11 mt-2 float-right">
-        COMPILE <i className="fas fa-code  mr-2 ml-2"></i>
-      </button>
-*/
+

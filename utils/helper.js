@@ -7,7 +7,7 @@ const Batch = require("../models/batches");
 const Course = require("../models/courses");
 const College = require("../models/colleges");
 const Difficult = require("../models/difficulties");
-
+const excel = require("exceljs");
 const UUID = () => uuidv4();
 const getDuration = (start, end) => {
   const days = parseInt((end - start) / (1000 * 60 * 60 * 24));
@@ -26,7 +26,7 @@ const validate = async (data) => {
     let user = await User.findOne(data);
     return user;
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 const mapRoleId = async (name) => {
@@ -67,7 +67,7 @@ const mapBatchId = async ([start, end]) => {
   }
 };
 const mapCourseId = async (name) => {
-  console.log(name)
+  console.log(name);
   try {
     let course = await Course.findOne({ name });
     return Promise.resolve(course._id);
@@ -101,21 +101,34 @@ const mapDifficultyId = async (level) => {
 };
 const setTime = (date, duration) => {
   let [days, hours, minutes, seconds] = duration.split(" ");
-  days = +(days.slice(0, -1));
-  hours = +(hours.slice(0, -1));
-  minutes = +(minutes.slice(0, -1));
-  seconds = +(seconds.slice(0, -1));
-  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-  date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
-  date.setTime(date.getTime() + (minutes * 60 * 1000));
-  date.setTime(date.getTime() + (seconds *  1000));
+  days = +days.slice(0, -1);
+  hours = +hours.slice(0, -1);
+  minutes = +minutes.slice(0, -1);
+  seconds = +seconds.slice(0, -1);
+  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+  date.setTime(date.getTime() + hours * 60 * 60 * 1000);
+  date.setTime(date.getTime() + minutes * 60 * 1000);
+  date.setTime(date.getTime() + seconds * 1000);
   return date;
-}
+};
 
-const modifyData = (data) => {
-  
-}
-
+const modifyData = (data) => {};
+const exportToExcel = async (rows, username, sheetName, columns) => {
+  console.log(rows, username, sheetName, columns);
+  let workbook = new excel.Workbook();
+  workbook.creator = username;
+  workbook.lastModifiedBy = username;
+  workbook.created = new Date();
+  workbook.modified = new Date();
+  let worksheet = await workbook.addWorksheet(sheetName, {
+    views: [{ state: "frozen", xSplit: 0, ySplit: 1 }],
+  });
+  worksheet.state = "visible";
+  worksheet.properties.defaultColWidth = 30;
+  worksheet.columns = columns
+  worksheet.addRows(rows)
+  return workbook;
+};
 module.exports = {
   UUID,
   getDuration,
@@ -128,5 +141,6 @@ module.exports = {
   mapStreamId,
   mapUserId,
   mapDifficultyId,
-  setTime
+  setTime,
+  exportToExcel,
 };

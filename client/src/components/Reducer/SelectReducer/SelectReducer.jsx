@@ -13,10 +13,11 @@ const SelectReducer = (props) => {
         </InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
+          id={props.id ?? "select id"}
           value={props.value}
           onChange={props.handleSelect}
           defaultValue={props.defaultValue}
+          disabled={props.disabled}
           label={props.name}
         >
           {props.array.map((item, id) => {

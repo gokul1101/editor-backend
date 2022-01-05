@@ -6,10 +6,12 @@ const CustomButton = ({
   id,
   onClickHandler,
   onKeyPressHandler,
+  disabled
 }) => {
   return (
     <button
-      className={`${className} pr-4 pl-4`}
+      disabled = {disabled}
+      className={`${className} pr-4 pl-3`}
       id={id}
       onClick={onClickHandler}
       onKeyPress={onKeyPressHandler}

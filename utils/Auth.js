@@ -69,11 +69,11 @@ const serializeUser = (user) => {
   userDetails.regno = user.regno;
   userDetails.name = user.name;
   userDetails.email = user.email;
-  userDetails.role_id = user.role_id.name;
-  userDetails.gender_id = user.gender_id.name;
-  userDetails.stream_id = user.stream_id.name;
-  userDetails.college_id = user.college_id.name;
-  userDetails.course_id = user.course_id.name;
+  userDetails.role_id = user.role_id?.name;
+  userDetails.gender_id = user.gender_id?.name;
+  userDetails.stream_id = user.stream_id?.name;
+  userDetails.college_id = user.college_id?.name;
+  userDetails.course_id = user.course_id?.name;
   userDetails.phone_no = user.phone_no;
   if (user.batch_id)
     userDetails.batch_id = `${user.batch_id.start_year}-${user.batch_id.end_year}`;

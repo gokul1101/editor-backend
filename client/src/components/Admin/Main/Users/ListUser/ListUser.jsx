@@ -1,142 +1,64 @@
 import React, { useEffect, useState } from "react";
+import FileDownload from "js-file-download";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
+
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import InputReducer from "../../../../Reducer/InputReducer";
 import SelectReducer from "../../../../Reducer/SelectReducer/SelectReducer";
-import { Button, TextField } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+
 import Pagination from "@material-ui/lab/Pagination";
 import "./ListUser.css";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
-import { AuthContext } from "../../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
+import FilterListIcon from '@material-ui/icons/FilterList';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import EditIcon from '@material-ui/icons/Edit';
+import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const tableData = [
-  {
-    reg_no: 1813015,
-    name: "Dhanush Kaarthick  ",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018-2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    border: "1px solid #1E2D64",
   },
-  {
-    reg_no: 1813016,
-    name: "Dhusanthan R",
-    email: "dhusanthanr1999g@gmail.com",
-    gender: "Female",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
+  fieldColor: {
+    width: "100%",
+    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#00511B",
+    },
+    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#00511B",
+    },
+    "& .MuiInputLabel-outlined.Mui-focused": {
+      color: "#00511B",
+    },
   },
-  {
-    reg_no: 1813017,
-    name: "Gajendhiran M",
-    email: "gajendhiranmohan@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
   },
-  {
-    reg_no: 1813018,
-    name: "Gobinath S",
-    email: "gobigobi@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813019,
-    name: "Gokul S",
-    email: "gokul@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813046,
-    name: "Nanthakumar B",
-    email: "codingnanthu@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813076,
-    name: " Vasanthan P",
-    email: "vasausa@gmail.com",
-    gender: "Female",
-    stream: "B.E",
-    batch: "2018 - 2022",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-  {
-    reg_no: 1813015,
-    name: "Dhanush",
-    email: "dhanush@gmail.com",
-    gender: "Male",
-    stream: "B.E",
-    batch: "2011 - 5415",
-    course: "Computer Science and Engineering",
-    college: "KSRCE",
-    phone: 3764376762,
-  },
-];
+}));
+
+const limit = 3;
 const ListUser = (props) => {
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const handlePagination = (e, value) => {
+    if (page !== value) {
+      setPage(value);
+      fetchUsers(value);
+    }
+  };
+  const classes = useStyles();
+  const [loader, showLoader, hideLoader] = useLoader();
   const [user, setUser] = useState({
     regno: "",
     name: "",
@@ -146,90 +68,119 @@ const ListUser = (props) => {
     course_id: "",
     college_id: "",
     phone_no: "",
+    batch_id: "",
   });
+  const [updateDetails, setUpdateDetails] = useState({});
   const [open, setOpen] = React.useState(false);
-  //   const [posts, setPosts] = useState([]);
-  //   const [page, setPage] = useState(1);
-  //   const loadPosts = async () => {
-  //     const res = await fetch(
-  //       `https://jsonplaceholder.typicode.com/todos?_page=${page}`,
-  //       {
-  //         method: "GET",
-  //       }
-  //     );
-  //     const data = await res.json();
-  //     console.log(data);
-  //     setPosts(data);
-  //   };
-  //   useEffect(() => {
-  //     loadPosts();
-  //   }, [page]);
-  //   const classes = useStyles();
-  // const sortTypes = {
-  //   up: {
-  //     class: "sort-up",
-  //     fn: (a, b) => a.register_number - b.register_number,
-  //   },
-  //   down: {
-  //     class: "sort-down",
-  //     fn: (a, b) => b.register_number - a.register_number,
-  //   },
-  //   default: {
-  //     class: "sort",
-  //     fn: (a, b) => a,
-  //   },
-  // };
 
-  // const [currentSort, setCurrentSort] = useState("default");
-  // const onSortChange = () => {
-  //   let nextSort;
-
-  //   if (currentSort === "down") nextSort = "up";
-  //   else if (currentSort === "up") nextSort = "default";
-  //   else if (currentSort === "default") nextSort = "down";
-
-  //   setCurrentSort(nextSort);
-  // };
   const [authState] = useContext(AuthContext);
   const [users, setUsers] = useState([]);
-  const [pagination, setPagination] = useState({ page: 1, limit: 10 });
-  const fetchUsers = async () => {
+  const [, setRegno] = useState("");
+  const fetchUsers = async (page = 1) => {
     try {
-      const { status, data } = await helperService.getUsers(pagination, {
-        headers: { Authorization: authState.user.token },
-      });
+      showLoader();
+      const { status, data } = await helperService.getUsers(
+        { page, limit },
+        {
+          headers: { Authorization: authState.user.token },
+        }
+      );
       if (status === 200) {
+        //TODO :
+        props.snackBar("List of Users", "success");
         setUsers(data.users);
+        setRegno(data.users.reg_no);
+        if (!total) setTotal(data?.modelCount || 0);
+        hideLoader();
+      }
+    } catch (err) {
+      hideLoader();
+    }
+  };
+  const downloadStudentsDetails = async () => {
+    try {
+      const { data, status } = await helperService.downloadStudentsDetails(
+        // TODO : user quries
+        {  },
+        {
+          headers: { Authorization: authState?.user?.token },
+          responseType: "arraybuffer",
+        }
+      );
+      if (status === 200) {
+        console.log(data);
+        const blob = new Blob([data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+
+        FileDownload(blob, `${"UserDetails"}.xlsx`);
       }
     } catch (err) {
       console.log(err);
     }
   };
   useEffect(() => {
-    console.log(user);
     fetchUsers();
   }, []);
 
   const editUserDetail = (data) => {
-    console.log("at line", data);
     setUser(data);
-
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
+
+  const updateUser = async () => {
+    // console.log(user,updateDetails);
+    // let checkStatus = false;
+    // for(let i in user){
+    //   if(Object.keys(updateDetails).length !== 0 ){
+    //     for(let j in updateDetails){
+    //       if(user[i] === updateDetails[j]){
+    //         checkStatus = true
+    //       }
+    //     }
+    //   }
+    // } 
+    // if(checkStatus === true || Object.keys(updateDetails).length === 0 ){      
+    //   props.snackBar("Already Up-to-Date","info")  
+    //   return
+    // }
+    try {
+      const { status, data } = await helperService.updateUser(
+        {
+          id: user._id,
+          updateDetails,
+        },
+        {
+          headers: { Authorization: authState.user.token },
+        }
+      );
+      if (status === 200) {
+        props.snackBar("Updated Successfully", "success");
+        handleClose();
+        setUsers(
+          users.map((exist_user) => {
+            if (exist_user.regno === user.regno) return user;
+            return exist_user;
+          })
+        );
+      }
+    } catch (err) {}
+  };
   return (
     <>
       <div className="container-fluid">
+        {loader}
         <div className="d-flex justify-content-between p-3 m-3">
           <div>
             <div className="filter d-flex">
-              <i className="fas fa-filter mt-3"></i>
-              <h6 className="ml-4 font-weight-bolder mt-3 highlight-textz ">
+              <FilterListIcon className="m-2"/>
+              <h6 className="ml-4 font-weight-bolder mt-3 highlight-text ">
                 Filter By :{" "}
               </h6>
-              <div className="dropdown mx-3">
+              {/* <div className="dropdown mx-3">
                 <button
                   className="drop-button dropdown-toggle"
                   type="button"
@@ -247,7 +198,7 @@ const ListUser = (props) => {
                   <a className="dropdown-item">Desending</a>
                   <a className="dropdown-item">Random</a>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="d-flex">
@@ -261,8 +212,8 @@ const ListUser = (props) => {
             </div>
 
             <div>
-              <button className="pr-4 pl-4 mr-2 d-load-btn ml-3">
-                <i class="fas fa-download"></i>
+              <button className="pr-4 pl-4 mr-2 d-load-btn ml-3" onClick={downloadStudentsDetails}>
+                <GetAppIcon/>
                 <span className="ml-2 font-weight-bolder">
                   Download Details
                 </span>
@@ -290,9 +241,6 @@ const ListUser = (props) => {
               <div className="col-md-1 list-table-header text-center">
                 Stream
               </div>
-              <div className="col-md-2 list-table-header text-center">
-                Batch
-              </div>
               <div className="col-md-3 list-table-header text-center">
                 Course
               </div>
@@ -300,97 +248,95 @@ const ListUser = (props) => {
                 College
               </div>
               <div className="col-md-2 list-table-header text-center">
+                Batch
+              </div>
+              <div className="col-md-2 list-table-header text-center">
                 Phone Number
               </div>
             </div>
-            {users.map((e) => {
-              return (
-                <div className="d-flex" key={e._id}>
-                  <div
-                    className="col-md-1 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.regno}
-                  </div>
-                  <div
-                    className="col-md-3 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.name}
-                  </div>
-                  <div
-                    className="col-md-3 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.email}
-                  </div>
-                  <div
-                    className="col-md-1 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.gender_id}
-                  </div>
-                  <div
-                    className="col-md-1 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.stream_id}
-                  </div>
-                  <div
-                    className="col-md-2 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.batch_id}
-                  </div>
-                  <div
-                    className="col-md-3 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.course_id}
-                  </div>
-                  <div
-                    className="col-md-3 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.college_id}
-                  </div>
-                  <div
-                    className="col-md-2 list-table-data p-2 text-center data"
-                    style={{ height: "50px" }}
-                  >
-                    {e.phone_no}
-                  </div>
+            {users?.map((e) => (
+              <div className="d-flex" key={e._id}>
+                <div
+                  className="col-md-1 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.regno}
                 </div>
-              );
-            })}
+                <div
+                  className="col-md-3 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.name}
+                </div>
+                <div
+                  className="col-md-3 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.email}
+                </div>
+                <div
+                  className="col-md-1 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.gender_id}
+                </div>
+                <div
+                  className="col-md-1 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.stream_id}
+                </div>
+                <div
+                  className="col-md-3 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.course_id}
+                </div>
+                <div
+                  className="col-md-3 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.college_id}
+                </div>
+                <div
+                  className="col-md-2 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.batch_id}
+                </div>
+                <div
+                  className="col-md-2 list-table-data p-2 text-center data"
+                  style={{ height: "50px" }}
+                >
+                  {e.phone_no}
+                </div>
+              </div>
+            ))}
           </div>
           <div className="col-md-3 ">
             <div className="d-flex flex-column">
               <div className="col-md-12 list-table-header text-center">
                 EDIT / DELETE
               </div>
-              {users.map((e) => {
-                return (
-                  <>
-                    <div
-                      className="col-md-12 p-0 d-flex p-2 align-items-center justify-content-center"
-                      style={{ marginTop: "6px", height: "50px" }}
+              {users.map((e) =>(
+                  <div
+                    key={e._id}
+                    className="col-md-12 p-0 d-flex p-2 align-items-center justify-content-center"
+                    style={{ marginTop: "6px", height: "50px" }}
+                  >
+                    <button
+                      className="pr-4 pl-4 mr-2 edit-btn "
+                      onClick={() => editUserDetail(e)}
                     >
-                      <button
-                        className="pr-4 pl-4 mr-2 edit-btn "
-                        onClick={() => editUserDetail(e)}
-                      >
-                        <i class="fas fa-pencil-alt"></i>
-                        <span className="ml-2">Edit</span>
-                      </button>
-                      <button className="pr-4 pl-4 delete-btn" disabled>
-                        <i class="fas fa-trash"></i>
-                        <span className="ml-2">Delete</span>
-                      </button>
-                    </div>
-                  </>
-                );
-              })}
+                      <EditIcon/>
+                      <span className="ml-2">Edit</span>
+                    </button>
+                    <button className="pr-4 pl-4 delete-btn" disabled>
+                      <RestoreFromTrashIcon/>
+                      <span className="ml-2">Delete</span>
+                    </button>
+                  </div>
+                ))}
             </div>
           </div>
           <div>
@@ -411,123 +357,168 @@ const ListUser = (props) => {
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <InputReducer
+                      className={classes.fieldColor}
                       id="outlined-multiline-static"
                       label="Register Name"
                       variant="outlined"
                       value={user.regno}
-                      onClickHandler={(value) => setUser({ ...user, regno: value.trim() })}
+                      disabled={true}
+                      // onClickHandler={(value) =>
+                      //   setUser({ ...user, regno: value })
+                      // }
                     />
                   </div>
                   <div className="col-md-6">
                     <InputReducer
+                      className={classes.fieldColor}
                       id="outlined-multiline-static"
                       label="Name"
                       variant="outlined"
                       value={user.name}
-                      onClickHandler = {(value) => setUser({ ...user, name: value.trim() })}
+                      onClickHandler={(value) => {
+                        setUpdateDetails({ ...updateDetails, name: value });
+                        setUser({ ...user, name: value });
+                      }}
                     />
                   </div>
                 </div>
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <InputReducer
+                      className={classes.fieldColor}
                       id="outlined-multiline-static"
                       label="Email"
                       variant="outlined"
                       value={user.email}
-                      onClickHandler={(value) => setUser({ ...user, email: value.trim() })}
-
+                      onClickHandler={(value) => {
+                        setUpdateDetails({ ...updateDetails, email: value });
+                        setUser({ ...user, email: value });
+                      }}
                     />
                   </div>
                   <div className="col-md-6">
                     <SelectReducer
+                      className={classes.fieldColor}
                       label="gender"
                       array={["male", "female"]}
                       name="Gender"
-                      className="w-100"
                       value={user.gender_id}
-                      onClickHandler={(value) => setUser({ ...user, gender_id: value.trim() })}
-
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          gender_id: e.target.value,
+                        });
+                        setUser({ ...user, gender_id: e.target.value });
+                      }}
                     />
                   </div>
                 </div>
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <SelectReducer
+                      className={classes.fieldColor}
                       array={["B.E", "B.Tech"]}
                       name="Stream"
                       label="Stream"
-                      className="w-100"
+                      defaultValue={user.stream_id}
                       value={user.stream_id}
-                      onClickHandler={(value) => setUser({ ...user, stream_id: value.trim() })}
-
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          stream_id: e.target.value,
+                        });
+                        setUser({ ...user, stream_id: e.target.value });
+                      }}
                     />
                   </div>
                   <div className="col-md-6">
                     <SelectReducer
-                      array={["CSE", "IT", "CIVIL"]}
+                      className={classes.fieldColor}
+                      array={[
+                        "Computer Science & Engineering",
+                        "Information Technology",
+                        "Civil Engineering",
+                      ]}
                       name="Course Name"
-                      label="course"
-                      className="w-100"
+                      label="Course Name"
+                      defaultValue={user.course_id}
                       value={user.course_id}
-                      onClickHandler={(value) => setUser({ ...user, course_id: value.trim() })}
-
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          course_id: e.target.value,
+                        });
+                        setUser({ ...user, course_id: e.target.value });
+                      }}
                     />
                   </div>
                 </div>
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
                     <SelectReducer
-                      array={["KSRCT", "KSRCE", "KSRIET"]}
+                      className={classes.fieldColor}
+                      array={[
+                        "KSR College of Engineering",
+                        "KSR College of Technology",
+                        "KSR Institute for Engineering & Technology",
+                      ]}
                       name="College Name"
-                      className="w-100"
+                      label="college name"
+                      defaultValue={user.college_id}
                       value={user.college_id}
-                      onClickHandler={(value) => setUser({ ...user, college_id: value.trim() })}
-
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          college_id: e.target.value,
+                        });
+                        setUser({ ...user, college_id: e.target.value });
+                      }}
                     />
                   </div>
                   <div className="col-md-6">
                     <InputReducer
+                      className={classes.fieldColor}
                       placeholder="Phone number"
                       label="Phone number"
                       name="Phone number"
                       type="text"
-                      className="w-100"
                       value={user.phone_no}
-                      onClickHandler={(value) => setUser({ ...user, phone_no: value.trim() })}
-
+                      onClickHandler={(value) => {
+                        setUpdateDetails({ ...updateDetails, phone_no: value });
+                        setUser({ ...user, phone_no: value });
+                      }}
                     />
                   </div>
                 </div>
                 <div className="d-flex mx-2 my-3">
                   <div className="col-md-6">
-                  <TextField
-                    id="date"
-                    label="Batch starts"
-                    type="month"
-                    defaultValue="2017-05-24"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
+                    <SelectReducer
+                      className={classes.fieldColor}
+                      array={[
+                        "2018-2022",
+                        "2019-2023",
+                        "2020-2024",
+                        "2021-2025",
+                        "2022-2026",
+                      ]}
+                      name="Batch year"
+                      label="Batch year"
+                      defaultValue={user.batch_id}
+                      value={user.batch_id}
+                      handleSelect={(e) => {
+                        setUpdateDetails({
+                          ...updateDetails,
+                          batch_id: e.target.value,
+                        });
+                        setUser({ ...user, batch_id: e.target.value });
+                      }}
+                    />
                   </div>
-                  <div className="col-md-6">
-                  <TextField
-                    id="date"
-                    label="Batch ends"
-                    type="month"
-                    defaultValue="2017-05-24"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                  </div>
-
                 </div>
               </DialogContent>
 
               <DialogActions>
-                <button  className="btn btn-success">
+                <button className="btn btn-success" onClick={updateUser}>
                   Update User
                 </button>
 
@@ -538,87 +529,18 @@ const ListUser = (props) => {
             </Dialog>
           </div>
         </div>
+        {total > limit &&
         <Pagination
-          count={13}
+          count={Math.floor(total / limit) + (total % limit !== 0 ? 1 : 0)}
           color="primary"
           variant="text"
-          className="mt-5 d-flex justify-content-end"
+          className="mt-5 d-flex justify-content-center"
+          onChange={(e, value) => handlePagination(e, value)}
         />
+}
       </div>
     </>
   );
 };
 
 export default ListUser;
-
-/*  
-<div className="container-fluid mt-5">
-        <div className="d-flex flex-column" id="style-default">
-          
-          <div
-            className="d-flex col-md-8 p-0"
-            style={{ overflowX: "scroll", overflowY: "hidden" }}
-          >
-            <div className="col-md-3 list-table-header">
-              Register number
-              <button onClick={onSortChange} className="sort-btn pl-3">
-                <i className={`fas fa-${sortTypes[currentSort].class}`} />
-              </button>
-            </div>
-            <div className="col-md-3 list-table-header">Stream</div>
-            <div className="col-md-3 list-table-header">Course</div>
-            <div className="col-md-3 list-table-header">College</div>
-            <div className="col-md-3 list-table-header">Phone Number</div>
-            <div className="col-md-3 list-table-header">Name</div>
-          </div>
-          <div
-            className="d-flex"
-            style={{ overflowX: "scroll" }}
-          >
-            {[...tableData].sort(sortTypes[currentSort].fn).map((p) => {
-              return (
-                <>
-                  <div className="d-flex col-md-8 p-0">
-                    <div className="col-md-3 list-table-data p-2">
-                      {p.register_number}
-                    </div>
-                    <div className="col-md-3 list-table-data p-2">
-                      {p.stream}
-                    </div>
-                    <div className="col-md-3 list-table-data p-2">
-                      {p.course}
-                    </div>
-                    <div className="col-md-3 list-table-data p-2">
-                      {p.college}
-                    </div>
-                    <div className="col-md-3 list-table-data p-2">
-                      {p.batch}
-                    </div>
-                    <div className="col-md-3 list-table-data p-2">
-                      {p.batch}
-                    </div>
-                  </div>
-                  <div className="d-flex pr-3 col-md-4">
-                    <button className="pr-4 pl-4 mr-2 edit-btn">Edit</button>
-                    <button className="pr-4 pl-4 delete-btn" disabled>
-                      Delete
-                    </button>
-                  </div>
-                </>
-              );
-            })}
-          </div>
-        </div>
-        
-        <div className="mt-3 mb-5">
-          <P agination
-            className="float-right"
-            count={13}
-            variant="text"
-            color="primary"
-            //   onChange={(e, value) => setPage(value)}
-          />
-        </div>
-      </div>
-
-*/
