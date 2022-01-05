@@ -7,6 +7,7 @@ const {
   deleteUser,
   createBulkUsers,
   getAllUsers,
+  adminDashboard,
 } = require("../controllers/userController");
 const {
   createContest,
@@ -254,4 +255,6 @@ router.post(
 
 //* =============== Error Logs =========== *//
 router.get("/api/v1/errorLogs", userAuth, routeAuth("errorLogs"), getErrorLogs);
+//* =============== Admin Dashboard =========== *//
+router.get("/api/v1/user/admindashboard",userAuth,routeAuth("adminDashboard"),adminDashboard)
 module.exports = router;

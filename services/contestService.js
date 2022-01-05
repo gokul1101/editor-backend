@@ -1,4 +1,5 @@
 const Contest = require("../models/contests");
+const Submission = require("../models/submissions");
 const { getDuration, UUID } = require("../utils/helper");
 
 const createContestService = async (contest) => {
@@ -161,13 +162,17 @@ const getAllContestWithFilter = async (created_by, page, limit, past) => {
       end_date: { $lte: new Date() },
       created_by,
     }).countDocuments();
-    const pastContests = await Contest.find({
+    let pastContests = await Contest.find({
       end_date: { $lte: new Date() },
       created_by,
     })
       .sort({ start_date: "desc" })
       .limit(limit * 1)
       .skip((page > 0 ? page - 1 : 1) * limit);
+      pastContests = await Promise.all(pastContests.map(async(contest)=>{
+        const submissionsCount = await Submission.countDocuments({contest_id:contest._id})
+        return {...contest._doc,submissionsCount}
+      }))
     //**ongoing contests */
     if (past === "false") {
       ongoingContests = await Contest.find({

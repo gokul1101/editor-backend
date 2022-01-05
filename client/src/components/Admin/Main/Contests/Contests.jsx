@@ -221,7 +221,7 @@ const Contests = (props) => {
                 <div className="col-md-3 text-center">{`${new Date(
                   event.start_date
                 ).toLocaleString()} `}</div>
-                <div className="col-md-2 text-center">180</div>
+                <div className="col-md-2 text-center">{event.submissionsCount}</div>
                 <div className="col-md-2 text-center">
                   <span>{event.duration}</span>
                 </div>

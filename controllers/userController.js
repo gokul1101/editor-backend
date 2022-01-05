@@ -17,6 +17,8 @@ let {
   UUID,
 } = require("../utils/helper");
 const Role = require("../models/roles");
+const { contestSubmissionsChartService } = require("../services/chartServices");
+const { default: consolaGlobalInstance } = require("consola");
 //? To register the User
 const createUser = async (req, res) => {
   let userDetails = req.body;
@@ -374,6 +376,27 @@ const getAllUsers = async (req, res) => {
     });
   }
 };
+const adminDashboard = async (req, res) => {
+  try {
+    console.log(req.user)
+    const { _id } = req.user;
+    //TODO:How users count shown ?    
+    const usersCount = await User.countDocuments();
+    const { contestSubmissions, message, status } =
+      await contestSubmissionsChartService(_id);
+    res
+      .status(status)
+      .json({
+        dashboarDetails: { contestSubmissions, usersCount },
+        message,
+        status,
+        success: true,
+      });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
+};
 module.exports = {
   createUser,
   getUser,
@@ -381,4 +404,5 @@ module.exports = {
   deleteUser,
   createBulkUsers,
   getAllUsers,
+  adminDashboard,
 };

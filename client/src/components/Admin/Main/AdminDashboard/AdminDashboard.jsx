@@ -1,6 +1,92 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import Chart from "react-apexcharts";
+
 import "./AdminDashboard.css";
+
+import helperService from "../../../../services/helperService";
+import { AuthContext } from "../../../../contexts/AuthContext";
+
 const AdminDashboard = () => {
+  const [totalCounts, setTotalCounts] = useState({
+    users: 0,
+    contests: 0,
+    submissions: 0,
+  });
+  const [contestSubmissions, setContestSubmissions] = useState({
+    options: {
+      chart: {
+        type: "area",
+        height: 350,
+        zoom: {
+          enabled: false,
+        },
+      },
+      xaxis: {
+        categories: [],
+      },
+      yaxis: {
+        labels: {
+          formatter: (val) => val.toFixed(0),
+        },
+      },
+      title: {
+        text: "Total Contest Submissions",
+        align: "center",
+      },
+    },
+    series: [
+      {
+        name: "series-1",
+        data: [],
+      },
+    ],
+  });
+  const [authState] = useContext(AuthContext);
+  const fetchAdminDashboard = async () => {
+    try {
+      const { data:{dashboarDetails}, status } = await helperService.adminDashboard(
+        {},
+        { headers: { Authorization: authState?.user?.token } }
+      );
+      if (status === 200) {
+        setContestSubmissions({
+          ...contestSubmissions,
+          options: {
+            ...contestSubmissions.options,
+            xaxis: {
+              ...contestSubmissions.options.xaxis,
+              categories: [...dashboarDetails.contestSubmissions.contests],
+            },
+          },
+          series: [
+            {
+              name: "Submission Count",
+              data: [...dashboarDetails.contestSubmissions.submissionsCount],
+            },
+          ],
+        });
+        setTotalCounts({
+          ...totalCounts,
+          contests: dashboarDetails.contestSubmissions.contests.length,
+          users:dashboarDetails.usersCount,
+          submissions: dashboarDetails.contestSubmissions.submissionsCount.reduce(
+            (total, count) => total + count,
+            0
+          ),
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    fetchAdminDashboard();
+    return () => {};
+  }, []);
+  useEffect(() => {
+    console.log(contestSubmissions);
+    return () => {};
+  }, [contestSubmissions]);
   return (
     <div className="container-fluid">
       <div
@@ -10,7 +96,7 @@ const AdminDashboard = () => {
         <div className="col-md-3 m-2 dash-highlight p-3">
           <div className="d-flex justify-content-between">
             <div className="d-flex flex-column">
-              <h1 className="user-count">121</h1>
+              <h1 className="user-count">{totalCounts.users}</h1>
               <span className="user-span">Total no. of users</span>
             </div>
             <div className="img-start ">
@@ -27,12 +113,12 @@ const AdminDashboard = () => {
         <div className="col-md-3 m-2 dash-highlight p-3">
           <div className="d-flex justify-content-between">
             <div className="d-flex flex-column">
-              <h1 className="user-count">08</h1>
+              <h1 className="user-count">{totalCounts.contests}</h1>
               <span className="user-span">Total no. of Contests</span>
             </div>
             <div className="img-start">
               <img
-              alt="someImage"
+                alt="someImage"
                 src="https://cdn-icons-png.flaticon.com/512/3141/3141839.png"
                 height="80"
                 width="80"
@@ -44,12 +130,12 @@ const AdminDashboard = () => {
         <div className="col-md-3 m-2 dash-highlight p-3">
           <div className="d-flex justify-content-between">
             <div className="d-flex flex-column">
-              <h1 className="user-count">21</h1>
+              <h1 className="user-count">{totalCounts.submissions}</h1>
               <span className="user-span">Total no. of Submissions</span>
             </div>
             <div className="img-start">
               <img
-              alt="someImage"
+                alt="someImage"
                 src="https://cdn-icons-png.flaticon.com/512/3874/3874088.png"
                 height="80"
                 width="80"
@@ -58,6 +144,20 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="charts-container mt-5 container d-flex align-items-center justify-content-between flex-wrap">
+        <Chart
+          options={contestSubmissions.options}
+          series={contestSubmissions.series}
+          type="area"
+          width="500"
+        />
+        <Chart
+          options={contestSubmissions.options}
+          series={contestSubmissions.series}
+          type="bar"
+          width="500"
+        />
       </div>
     </div>
   );
