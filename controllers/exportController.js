@@ -88,17 +88,21 @@ const exportUsers = async (req, res) => {
         email,
         gender_id,
         stream_id,
-        batch_id,
         course_id,
+        college_id,
+        batch_id,
         phone_no,
-      }) => [regno,
-        name,
-        email,
-        gender_id.name,
-        stream_id.name,
-        `${batch_id.start_year}-${batch_id.end_year}`,
-        course_id.name,
-        phone_no]
+      }) => [
+        regno ?? "",
+        name ?? "",
+        email ?? "",
+        gender_id?.name ?? "",
+        stream_id?.name ?? "",
+        `${batch_id?.start_year}-${batch_id?.end_year}` ?? "",
+        course_id?.name ?? "",
+        college_id?.name ?? "",
+        phone_no ?? "",
+      ]
     );
     const columns = [
       { header: "Register No", key: "Register No", width: 20 },
@@ -108,10 +112,10 @@ const exportUsers = async (req, res) => {
       { header: "Stream", key: "Stream", width: 20 },
       { header: "Batch", key: "Batch", width: 20 },
       { header: "Course", key: "Course", width: 20 },
+      { header: "College", key: "College", width: 20 },
       { header: "Phone number", key: "Phone number", width: 20 },
-      
     ];
-    const username = req.user.name
+    const username = req.user.name;
     const workbook = await exportToExcel(
       rows,
       username,
@@ -127,6 +131,7 @@ const exportUsers = async (req, res) => {
     await workbook.xlsx.write(res);
     return res.status(200).send("File Downloaded Successfully");
   } catch (err) {
+    console.log(err);
     return res.status(500).send("Error in downloading users details");
   }
 };
