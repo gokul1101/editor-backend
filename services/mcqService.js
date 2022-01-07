@@ -169,7 +169,7 @@ const deleteMCQ = async ({
     if (question_result) {
       let answer_result = null;
       if (answer_id) answer_result = await Answer.findByIdAndDelete(answer_id);
-      else if (question_id && answer_result)
+      else if (!answer_result)
         answer_result = await Answer.findOneAndDelete({ question_id });
       if (answer_result) {
         return Promise.resolve({
