@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./Quiz.css";
 import { useParams, useHistory } from "react-router-dom";
-import TimerImg from "../../../../../Images/timer.png";
-import Male from "../../../../../Images/man.png";
+import TimerImg from "../../../../../../images/timer.png";
+import Male from "../../../../../../images/man.png";
 import Timer from "../../Timer/Timer";
 import { useContext } from "react";
 import { AuthContext } from "../../../../../../contexts/AuthContext";

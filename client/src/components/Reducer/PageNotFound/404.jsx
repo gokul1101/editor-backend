@@ -1,5 +1,5 @@
 import React from "react";
-import NoMatch from "../../Images/PageNotFound.webp";
+import NoMatch from "../../../images/PageNotFound.webp";
 const PageNotFound = () => {
   return (
     <div className="container d-flex align-items-center justify-content-center h-100">

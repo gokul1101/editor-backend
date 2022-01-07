@@ -3,11 +3,11 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import CustomButton from "../CustomButton/CustomButton";
-import WarningGif from "../../Images/dribbble_1.gif";
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded';
 import NotificationsActiveRoundedIcon from '@material-ui/icons/NotificationsActiveRounded';
+import WarningGif from "../../../images/dribbble_1.gif";
+import CustomButton from "../CustomButton/CustomButton";
 const DialogBox = ({ localData, ...props }) => {
   const unSubmittedQuestions = () => {
     const data = localData();

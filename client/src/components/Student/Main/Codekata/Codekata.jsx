@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
+import CodeIcon from '@material-ui/icons/Code';
 import { AuthContext } from "../../../../contexts/AuthContext";
 import helperService from "../../../../services/helperService";
-import codekata from "../../../Images/codekata.svg";
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
-import "./Codekata.css";
 import { useLoader } from "../../../../contexts/AuthContext";
-import CodeIcon from '@material-ui/icons/Code';
+import codekata from "../../../../images/codekata.svg";
+import "./Codekata.css";
+
 const Codekata = ({ setSideToggle, ...props }) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const history = useHistory();
