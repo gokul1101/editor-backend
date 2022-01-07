@@ -1,5 +1,8 @@
 import React from "react";
 import "./AdminDashboard.css";
+import adminUser from "../../../../images/admin-dashboard-user.png";
+import adminStar from "../../../../images/admin-star.png";
+import adminSubmission from "../../../../images/admin-submission.png";
 const AdminDashboard = () => {
   return (
     <div className="container-fluid">
@@ -16,7 +19,7 @@ const AdminDashboard = () => {
             <div className="img-start ">
               <img
                 alt="someImage"
-                src="https://cdn-icons-png.flaticon.com/512/476/476863.png"
+                src={adminUser}
                 height="80"
                 width="80"
                 className="img-fluid "
@@ -33,7 +36,7 @@ const AdminDashboard = () => {
             <div className="img-start">
               <img
               alt="someImage"
-                src="https://cdn-icons-png.flaticon.com/512/3141/3141839.png"
+                src={adminStar}
                 height="80"
                 width="80"
                 className="img-fluid"
@@ -50,7 +53,7 @@ const AdminDashboard = () => {
             <div className="img-start">
               <img
               alt="someImage"
-                src="https://cdn-icons-png.flaticon.com/512/3874/3874088.png"
+                src={adminSubmission}
                 height="80"
                 width="80"
                 className="img-fluid"

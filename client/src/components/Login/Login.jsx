@@ -6,10 +6,10 @@ import CustomButton from "../Reducer/CustomButton/CustomButton";
 import { AuthContext } from "../../contexts/AuthContext";
 import helperService from "../../services/helperService";
 import { useHistory } from "react-router";
-import LocalLibraryRoundedIcon from '@material-ui/icons/LocalLibraryRounded';
+import LocalLibraryRoundedIcon from "@material-ui/icons/LocalLibraryRounded";
 import { IconButton } from "@material-ui/core";
-import LockRoundedIcon from '@material-ui/icons/LockRounded';
-import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
+import LockRoundedIcon from "@material-ui/icons/LockRounded";
+import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
 const Login = (props) => {
   const history = useHistory();
   //** Context Consumer */
@@ -86,9 +86,8 @@ const Login = (props) => {
               <p className="text-muted">Learn , code , repeat</p>
 
               <div className="input-field mb-2">
-                <IconButton>
-
-              <LocalLibraryRoundedIcon/>
+                <IconButton disabled={true}>
+                  <LocalLibraryRoundedIcon />
                 </IconButton>
                 <input
                   type="text"
@@ -97,10 +96,10 @@ const Login = (props) => {
                 />
               </div>
               <div className="input-field mb-4">
-                <IconButton>
-                  <LockRoundedIcon/>
+                <IconButton disabled={true}>
+                  <LockRoundedIcon />
                 </IconButton>
-                
+
                 <input
                   type="password"
                   placeholder="Password"
@@ -113,17 +112,16 @@ const Login = (props) => {
                 onKeyPress={handleKeypress}
                 type="submit"
               >
-                SIGN IN <ExitToAppRoundedIcon/>
+                SIGN IN <ExitToAppRoundedIcon />
               </CustomButton>
             </form>
             <form action="#" className="sign-up-form" onSubmit={handleSubmit}>
               <h2 className="title">Admin Sign in</h2>
               <p className="highlight">Learn , Code , Repeat</p>
               <div className="input-field">
-              <IconButton>
-
-<LocalLibraryRoundedIcon/>
-  </IconButton>
+                <IconButton disabled={true}>
+                  <LocalLibraryRoundedIcon />
+                </IconButton>
                 <input
                   type="text"
                   placeholder="Register no"
@@ -131,8 +129,8 @@ const Login = (props) => {
                 />
               </div>
               <div className="input-field">
-              <IconButton>
-                  <LockRoundedIcon/>
+                <IconButton disabled={true}>
+                  <LockRoundedIcon />
                 </IconButton>
                 <input
                   type="password"
@@ -145,7 +143,7 @@ const Login = (props) => {
                 onKeyPress={handleKeypress}
                 type="submit"
               >
-                SIGN IN  <ExitToAppRoundedIcon/>
+                SIGN IN <ExitToAppRoundedIcon />
               </CustomButton>
             </form>
           </div>
