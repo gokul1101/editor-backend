@@ -11,6 +11,7 @@ import Img1 from "../../../Images/img-1 (1).svg";
 import Img2 from "../../../Images/img-1 (2).svg";
 import Img3 from "../../../Images/img-1 (3).svg";
 import { AuthContext } from "../../../../contexts/AuthContext";
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 const Dashboard = (props) => {
   const [authState, ] = useContext(AuthContext);
 
@@ -48,7 +49,7 @@ const Dashboard = (props) => {
                   <span className="header-article mb-3">Web Developer</span>
                   <NavLink to="/roadmap">
                     <span className="span-arrow">
-                      <i className="fas fa-arrow-circle-right"></i> Learn more..
+                      <PlayCircleFilledIcon/> Learn more..
                     </span>
                   </NavLink>
                 </div>
@@ -75,7 +76,7 @@ const Dashboard = (props) => {
                   <span className="problem-span mb-2">For students</span>
                   <NavLink to="/codekata">
                     <span className="arrow-span">
-                      <i className="fas fa-arrow-circle-right"></i> Learn more..
+                    <PlayCircleFilledIcon/> Learn more..
                     </span>
                   </NavLink>
                 </div>

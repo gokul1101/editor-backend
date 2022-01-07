@@ -55,7 +55,6 @@ const getQuizService = async (id) => {
     });
   }
 };
-
 const getAllQuizzesWithContestId = async (id) => {
   try {
     const quizzes = await Quiz.find({ contest_id: id });

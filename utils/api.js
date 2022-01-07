@@ -35,7 +35,10 @@ const admin = [
   "deleteQuestion",
   "errorLogs",
   "deleteTestCase",
-  "deleteQuiz"
+  "deleteQuiz",
+  "exportSubmissions",
+  "exportUsers",
+  "adminDashboard"
 ];
 
 module.exports = {

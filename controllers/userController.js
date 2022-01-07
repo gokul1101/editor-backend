@@ -17,6 +17,8 @@ let {
   UUID,
 } = require("../utils/helper");
 const Role = require("../models/roles");
+const { contestSubmissionsChartService } = require("../services/chartServices");
+const { default: consolaGlobalInstance } = require("consola");
 //? To register the User
 const createUser = async (req, res) => {
   let userDetails = req.body;
@@ -279,7 +281,10 @@ const createBulkUsers = async (req, res) => {
   });
   const schema = {
     regno: { prop: "regno", type: String },
-    name: { prop: "name", type: String },
+    stream_id: { prop: "stream_id", type: String },
+    course_id: { prop: "course_id", type: String },
+    college_id: { prop: "college_id", type: String },
+    batch_id: { prop: "batch_id", type: String },
   };
   try {
     let errors = [],
@@ -307,7 +312,7 @@ const createBulkUsers = async (req, res) => {
   } catch (err) {
     //! Error in creating user
     console.log(err);
-    res.status(500).json({
+    res.status(500).send({
       message: `Error in creating users, Try again later.`,
     });
   } finally {
@@ -371,6 +376,27 @@ const getAllUsers = async (req, res) => {
     });
   }
 };
+const adminDashboard = async (req, res) => {
+  try {
+    console.log(req.user)
+    const { _id } = req.user;
+    //TODO:How users count shown ?    
+    const usersCount = await User.countDocuments();
+    const { contestSubmissions, message, status } =
+      await contestSubmissionsChartService(_id);
+    res
+      .status(status)
+      .json({
+        dashboarDetails: { contestSubmissions, usersCount },
+        message,
+        status,
+        success: true,
+      });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
+};
 module.exports = {
   createUser,
   getUser,
@@ -378,4 +404,5 @@ module.exports = {
   deleteUser,
   createBulkUsers,
   getAllUsers,
+  adminDashboard,
 };

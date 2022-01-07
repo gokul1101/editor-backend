@@ -19,7 +19,13 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import Programs from "./Codekata/ContestDetails/Programs/Programs";
 import Quiz from "./Codekata/ContestDetails/Quiz/Quiz";
 import ContestDetails from "./Codekata/ContestDetails/ContestDetails";
+import HomeIcon from "@material-ui/icons/Home";
 import PageNotFound from "../../Reducer/PageNotFound/404";
+import CodeIcon from "@material-ui/icons/Code";
+import MenuBookIcon from "@material-ui/icons/MenuBook";
+import MapIcon from "@material-ui/icons/Map";
+import DeveloperModeIcon from "@material-ui/icons/DeveloperMode";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 const Main = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle, setSideToggle] = useState(false);
@@ -51,11 +57,13 @@ const Main = (props) => {
             <li className="nav-item dash-item mb-2 color-11">
               <NavLink
                 exact
-                className="nav-link dash-li"
+                className="nav-link dash-li d-flex"
                 to="/dashboard"
                 activeClassName="home-active color-11"
               >
-                <i className="fas fa-home pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <HomeIcon />
+                </div>
                 <span className="hide-span">Dashboard</span>
                 <span className="tooltip">Dashboard</span>
               </NavLink>
@@ -64,9 +72,11 @@ const Main = (props) => {
               <NavLink
                 activeClassName="active-class"
                 to="/codekata"
-                className="nav-link dash-li color-11"
+                className="nav-link dash-li color-11 d-flex"
               >
-                <i className="fas fa-tasks pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <CodeIcon />
+                </div>
                 <span className="hide-span">Codekata</span>
                 <span className="tooltip">Codekata</span>
               </NavLink>
@@ -75,9 +85,11 @@ const Main = (props) => {
               <NavLink
                 activeClassName="active-class color-11"
                 to="/articles"
-                className="nav-link dash-li"
+                className="nav-link dash-li d-flex"
               >
-                <i className="fas fa-trophy pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <MenuBookIcon />
+                </div>
                 <span className="hide-span">Articles</span>
                 <span className="tooltip">Articles</span>
               </NavLink>
@@ -86,9 +98,11 @@ const Main = (props) => {
               <NavLink
                 activeClassName="active-class color-11"
                 to="/roadmap"
-                className="nav-link dash-li"
+                className="nav-link dash-li d-flex"
               >
-                <i className="fas fa-road pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <MapIcon />
+                </div>
                 <span className="hide-span">Roadmap</span>
                 <span className="tooltip">Roadmap</span>
               </NavLink>
@@ -97,9 +111,11 @@ const Main = (props) => {
               <NavLink
                 activeClassName="active-class color-11"
                 to="/compiler"
-                className="nav-link dash-li"
+                className="nav-link dash-li d-flex"
               >
-                <i className="fas fa-bell pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <DeveloperModeIcon />
+                </div>
                 <span className="hide-span">Compiler</span>
                 <span className="tooltip">Compiler</span>
               </NavLink>
@@ -112,9 +128,11 @@ const Main = (props) => {
                   authDispatch({ type: "REMOVE_USER", payload: null });
                   localStorage.clear();
                 }}
-                className="nav-link dash-li"
+                className="nav-link dash-li d-flex"
               >
-                <i className="fas fa-sign-out-alt pr-4 pl-4 dash-icon shake"></i>
+                <div className="px-3 dash-icon shake">
+                  <ExitToAppIcon />
+                </div>
                 <span className="hide-span">Logout</span>
                 <span className="tooltip">Logout</span>
               </NavLink>
@@ -178,7 +196,10 @@ const Main = (props) => {
                     <Programs setSideToggle={setSideToggle} />
                   </Route>
                   <Route path="/codekata/:id" exact>
-                    <ContestDetails setSideToggle={setSideToggle} snackBar={props.snackBar}/>
+                    <ContestDetails
+                      setSideToggle={setSideToggle}
+                      snackBar={props.snackBar}
+                    />
                   </Route>
                 </>,
               ]

@@ -1,13 +1,17 @@
 import React, { useEffect } from "react";
+import FileDownload from "js-file-download";
 import "./ContestStatictics.css";
 import SubmissionGif from "../../../../../Images/submission.gif";
 import Pagination from "@material-ui/lab/Pagination";
+import GetAppIcon from "@material-ui/icons/GetApp";
 import { useContext } from "react";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import { useParams } from "react-router-dom";
 import helperService from "../../../../../../services/helperService";
 import { useState } from "react";
-const limit = 10,leaderBoardCount = 5;
+import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
+const limit = 10,
+  leaderBoardCount = 5;
 const ContestStatictics = (props) => {
   const { id } = useParams();
   const [authState] = useContext(AuthContext);
@@ -25,7 +29,9 @@ const ContestStatictics = (props) => {
         setSubmissions(data?.submissions?.submissions || []);
 
         if (!total) setTotal(data?.submissions?.totalCount || 0);
-        setLeaderBoard(data?.submissions?.submissions?.slice(0, leaderBoardCount) || []);
+        setLeaderBoard(
+          data?.submissions?.submissions?.slice(0, leaderBoardCount) || []
+        );
       }
     } catch (err) {}
   };
@@ -38,8 +44,35 @@ const ContestStatictics = (props) => {
       fethContestSubmissions(value);
     }
   };
+  const downloadStatistics = async () => {
+    try {
+      const { data, status } = await helperService.downloadStatistics(
+        { contest_id: id },
+        {
+          headers: { Authorization: authState?.user?.token },
+          responseType: "arraybuffer",
+        }
+      );
+      if (status === 200) {
+        console.log(data);
+        const blob = new Blob([data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+
+        FileDownload(blob, `${authState?.contest?.name}_Submissions.xlsx`);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="container-fluid w-100 mt-5">
+      <div>
+        <CustomButton onClickHandler={downloadStatistics}>
+          <GetAppIcon />
+          Download
+        </CustomButton>
+      </div>
       <div className="d-flex stats-main">
         <div className="col-md-9 mb-5 stats-left d-flex flex-column border">
           <div className="statistics-nav d-flex justify-content-center mt-3 mb-2 w-100">
@@ -86,7 +119,9 @@ const ContestStatictics = (props) => {
                 src="https://img.icons8.com/emoji/30/000000/trophy-emoji.png"
                 className="pr-3 img-fluid"
               />
-              <span className="top-participants">Top {leaderBoardCount} Participants</span>
+              <span className="top-participants">
+                Top {leaderBoardCount} Participants
+              </span>
             </div>
             <div className="d-flex flex-column mt-4">
               {leaderBoard.map((submission, idx) => (

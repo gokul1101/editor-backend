@@ -14,6 +14,7 @@ import { AuthContext } from "../../../../../../contexts/AuthContext";
 import { Link, useParams } from "react-router-dom";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import ContestTable from "../ContestTable/ContestTable";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -142,7 +143,7 @@ const ContestQuizzes = (props) => {
         className="btn-hover color-11 mt-4"
         onClickHandler={handleClickOpen}
       >
-        <i className="fas fa-plus pr-2 pl-2"></i>ADD QUIZZES
+        <AddCircleIcon/><span className="ml-2">ADD QUIZZES</span>
       </CustomButton>
       <Dialog
         open={open}

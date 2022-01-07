@@ -6,8 +6,10 @@ import CustomButton from "../Reducer/CustomButton/CustomButton";
 import { AuthContext } from "../../contexts/AuthContext";
 import helperService from "../../services/helperService";
 import { useHistory } from "react-router";
-// import Visibility from '@mui/icons-material/Visibility';
-// import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import LocalLibraryRoundedIcon from '@material-ui/icons/LocalLibraryRounded';
+import { IconButton } from "@material-ui/core";
+import LockRoundedIcon from '@material-ui/icons/LockRounded';
+import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 const Login = (props) => {
   const history = useHistory();
   //** Context Consumer */
@@ -84,7 +86,10 @@ const Login = (props) => {
               <p className="text-muted">Learn , code , repeat</p>
 
               <div className="input-field mb-2">
-                <i className="fas fa-id-card-alt"></i>
+                <IconButton>
+
+              <LocalLibraryRoundedIcon/>
+                </IconButton>
                 <input
                   type="text"
                   placeholder="Register number"
@@ -92,7 +97,10 @@ const Login = (props) => {
                 />
               </div>
               <div className="input-field mb-4">
-                <i className="fas fa-lock"></i>
+                <IconButton>
+                  <LockRoundedIcon/>
+                </IconButton>
+                
                 <input
                   type="password"
                   placeholder="Password"
@@ -101,18 +109,21 @@ const Login = (props) => {
                 />
               </div>
               <CustomButton
-                className="btn-hover color-11"
+                className="btn-hover color-11 p-2"
                 onKeyPress={handleKeypress}
                 type="submit"
               >
-                SIGN IN <i className="fas fa-sign-in-alt mr-2 ml-2"></i>
+                SIGN IN <ExitToAppRoundedIcon/>
               </CustomButton>
             </form>
             <form action="#" className="sign-up-form" onSubmit={handleSubmit}>
               <h2 className="title">Admin Sign in</h2>
               <p className="highlight">Learn , Code , Repeat</p>
               <div className="input-field">
-                <i className="fas fa-id-card-alt"></i>
+              <IconButton>
+
+<LocalLibraryRoundedIcon/>
+  </IconButton>
                 <input
                   type="text"
                   placeholder="Register no"
@@ -120,7 +131,9 @@ const Login = (props) => {
                 />
               </div>
               <div className="input-field">
-                <i className="fas fa-lock"></i>
+              <IconButton>
+                  <LockRoundedIcon/>
+                </IconButton>
                 <input
                   type="password"
                   placeholder="Password"
@@ -132,7 +145,7 @@ const Login = (props) => {
                 onKeyPress={handleKeypress}
                 type="submit"
               >
-                SIGN IN <i className="fas fa-sign-out-alt mr-2 ml-2"></i>
+                SIGN IN  <ExitToAppRoundedIcon/>
               </CustomButton>
             </form>
           </div>
