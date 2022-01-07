@@ -8,7 +8,6 @@ import Contests from "./Contests/Contests";
 import Users from "./Users/Users";
 import CreateContest from "./Contests/CreateContest/CreateContest";
 import ContestDetails from "./Contests/ContestDetails/ContestDetails";
-import Quizzes from "./Quizzes/Quizzes";
 import CreateQuiz from "./Quizzes/CreateQuiz/CreateQuiz";
 import AddQuiz from "./Quizzes/CreateQuiz/AddQuiz/AddQuiz";
 import { AuthContext } from "../../../contexts/AuthContext";
@@ -159,9 +158,6 @@ const Main = (props) => {
               </Route>
               <Route path={`/quizzes/:id/add-question`}>
                 <AddQuiz snackBar={props.snackBar} />
-              </Route>
-              <Route path="/quizzes" exact>
-                <Quizzes snackBar={props.snackBar} />
               </Route>
             </Route>
             <Route path="/challenges">

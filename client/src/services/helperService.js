@@ -681,6 +681,29 @@ const helperService = {
         message: err.response.data,
       });
     }
+  },
+  adminDashboard : async (payload, config) => {
+    try {
+      const {
+        data,
+        status,
+      } = await axios.get(
+        `${baseURL}/api/v1/user/admindashboard`,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
+      console.log(err.response)
+      return Promise.reject({
+        status: err.response.status,
+        message: err.response.data,
+      });
+    }
   } 
 };
 export default helperService;

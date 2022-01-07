@@ -37,7 +37,8 @@ const admin = [
   "deleteTestCase",
   "deleteQuiz",
   "exportSubmissions",
-  "exportUsers"
+  "exportUsers",
+  "adminDashboard"
 ];
 
 module.exports = {
