@@ -7,7 +7,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import "./Main.css";
-import LoopLogo from "../../Images/Loop1.jpg";
+import LoopLogo from "../../../images/Loop1.jpg";
 import { Avatar } from "@material-ui/core";
 import Dashboard from "./Dashboard/Dashboard";
 import Codekata from "./Codekata/Codekata";

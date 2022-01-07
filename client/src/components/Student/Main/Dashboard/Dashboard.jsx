@@ -1,15 +1,15 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import "./Dashboard.css";
-import Male from "../../../Images/man.png";
-import DashImg1 from "../../../Images/card-image-1.png";
-import DashImg2 from "../../../Images/card-image-2.png";
-import DashImg3 from "../../../Images/card-image-3.png";
-import ProblemKit from "../../../Images/problem-img.svg";
-import LoopHeader from "../../../Images/Loop start.svg";
-import Img1 from "../../../Images/img-1 (1).svg";
-import Img2 from "../../../Images/img-1 (2).svg";
-import Img3 from "../../../Images/img-1 (3).svg";
+import Male from "../../../../images/man.png";
+import DashImg1 from "../../../../images/card-image-1.png";
+import DashImg2 from "../../../../images/card-image-2.png";
+import DashImg3 from "../../../../images/card-image-3.png";
+import ProblemKit from "../../../../images/problem-img.svg";
+import LoopHeader from "../../../../images/Loop start.svg";
+import Img1 from "../../../../images/img-1 (1).svg";
+import Img2 from "../../../../images/img-1 (2).svg";
+import Img3 from "../../../../images/img-1 (3).svg";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 const Dashboard = (props) => {
