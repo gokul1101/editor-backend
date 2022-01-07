@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const Submission = require("../models/submissions");
 const User = require("../models/users");
 const { exportToExcel } = require("../utils/helper");
@@ -91,14 +93,16 @@ const exportUsers = async (req, res) => {
         batch_id,
         course_id,
         phone_no,
-      }) => [regno,
+      }) => [
+        regno,
         name,
         email,
         gender_id.name,
         stream_id.name,
         `${batch_id.start_year}-${batch_id.end_year}`,
         course_id.name,
-        phone_no]
+        phone_no,
+      ]
     );
     const columns = [
       { header: "Register No", key: "Register No", width: 20 },
@@ -109,9 +113,8 @@ const exportUsers = async (req, res) => {
       { header: "Batch", key: "Batch", width: 20 },
       { header: "Course", key: "Course", width: 20 },
       { header: "Phone number", key: "Phone number", width: 20 },
-      
     ];
-    const username = req.user.name
+    const username = req.user.name;
     const workbook = await exportToExcel(
       rows,
       username,
@@ -130,5 +133,16 @@ const exportUsers = async (req, res) => {
     return res.status(500).send("Error in downloading users details");
   }
 };
-
-module.exports = { exportSubmissions, exportUsers };
+const exportSampleUsersDetails = async (req, res) => {
+  try {
+    const filePath = path.join(__dirname, "/../bulk_upload.xlsx") 
+    if(!fs.existsSync(filePath)){
+      return res.status(404).json({message:"File Not Found"})
+    }
+    return res.sendFile(filePath);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Error in downloading users details");
+  }
+};
+module.exports = { exportSubmissions, exportUsers, exportSampleUsersDetails };

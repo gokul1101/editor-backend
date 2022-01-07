@@ -704,6 +704,29 @@ const helperService = {
         message: err.response.data,
       });
     }
-  } 
+  },
+  downloadSampleExcel : async (payload, config) => {
+    try {
+      const {
+        data,
+        status,
+      } = await axios.get(
+        `${baseURL}/api/v1/sample_excel/download`,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
+      console.log(err.response)
+      return Promise.reject({
+        status: err.response.status,
+        message: err.response.data,
+      });
+    }
+  }  
 };
 export default helperService;

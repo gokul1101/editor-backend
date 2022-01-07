@@ -150,14 +150,9 @@ const AdminDashboard = () => {
           options={contestSubmissions.options}
           series={contestSubmissions.series}
           type="area"
-          width="500"
+          width="1000"
         />
-        <Chart
-          options={contestSubmissions.options}
-          series={contestSubmissions.series}
-          type="bar"
-          width="500"
-        />
+       
       </div>
     </div>
   );
