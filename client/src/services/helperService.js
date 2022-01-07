@@ -1,5 +1,6 @@
 import axios from "axios";
 const baseURL = "http://localhost:5000";
+// const baseURL = "http://172.16.15.173";
 // const baseURL = "https://03ba-103-70-191-34.ngrok.io";
 
 const helperService = {
@@ -704,6 +705,29 @@ const helperService = {
         message: err.response.data,
       });
     }
-  } 
+  },
+  downloadSampleExcel : async (payload, config) => {
+    try {
+      const {
+        data,
+        status,
+      } = await axios.get(
+        `${baseURL}/api/v1/sample_excel/download`,
+        config
+      );
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
+      console.log(err.response)
+      return Promise.reject({
+        status: err.response.status,
+        message: err.response.data,
+      });
+    }
+  }  
 };
 export default helperService;

@@ -378,10 +378,10 @@ const getAllUsers = async (req, res) => {
 };
 const adminDashboard = async (req, res) => {
   try {
-    console.log(req.user)
-    const { _id } = req.user;
+    let { _id,college_id} = req.user;
+    college_id = await mapCollegeId(college_id)
     //TODO:How users count shown ?    
-    const usersCount = await User.countDocuments();
+    const usersCount = await User.countDocuments({college_id});
     const { contestSubmissions, message, status } =
       await contestSubmissionsChartService(_id);
     res

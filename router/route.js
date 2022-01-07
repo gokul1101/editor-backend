@@ -47,7 +47,7 @@ const {
   compile,
   executeContestChallenge,
 } = require("../controllers/compileController");
-const { exportSubmissions, exportUsers } = require("../controllers/exportController");
+const { exportSubmissions, exportUsers, exportSampleUsersDetails } = require("../controllers/exportController");
 
 //? Public Routes
 //* =============Login=============
@@ -243,7 +243,11 @@ router.post(
   routeAuth("exportSubmissions"),
   exportSubmissions
 );
-
+router.get("/api/v1/sample_excel/download",
+userAuth,
+routeAuth("exportSampleUsersDetails"),
+exportSampleUsersDetails
+)
 //* ==============Compiler===============*//
 router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compile);
 router.post(

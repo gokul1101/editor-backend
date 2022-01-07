@@ -16,10 +16,10 @@ import "./ListUser.css";
 import helperService from "../../../../../services/helperService";
 import { useContext } from "react";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
-import FilterListIcon from '@material-ui/icons/FilterList';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import EditIcon from '@material-ui/icons/Edit';
-import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
+import FilterListIcon from "@material-ui/icons/FilterList";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import EditIcon from "@material-ui/icons/Edit";
+import RestoreFromTrashIcon from "@material-ui/icons/RestoreFromTrash";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -101,7 +101,7 @@ const ListUser = (props) => {
     try {
       const { data, status } = await helperService.downloadStudentsDetails(
         // TODO : user quries
-        {  },
+        {},
         {
           headers: { Authorization: authState?.user?.token },
           responseType: "arraybuffer",
@@ -119,6 +119,7 @@ const ListUser = (props) => {
       console.log(err);
     }
   };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -142,9 +143,9 @@ const ListUser = (props) => {
     //       }
     //     }
     //   }
-    // } 
-    // if(checkStatus === true || Object.keys(updateDetails).length === 0 ){      
-    //   props.snackBar("Already Up-to-Date","info")  
+    // }
+    // if(checkStatus === true || Object.keys(updateDetails).length === 0 ){
+    //   props.snackBar("Already Up-to-Date","info")
     //   return
     // }
     try {
@@ -176,7 +177,7 @@ const ListUser = (props) => {
         <div className="d-flex justify-content-between p-3 m-3">
           <div>
             <div className="filter d-flex">
-              <FilterListIcon className="m-2"/>
+              <FilterListIcon className="m-2" />
               <h6 className="ml-4 font-weight-bolder mt-3 highlight-text ">
                 Filter By :{" "}
               </h6>
@@ -212,8 +213,11 @@ const ListUser = (props) => {
             </div>
 
             <div>
-              <button className="pr-4 pl-4 mr-2 d-load-btn ml-3" onClick={downloadStudentsDetails}>
-                <GetAppIcon/>
+              <button
+                className="pr-4 pl-4 mr-2 d-load-btn ml-3"
+                onClick={downloadStudentsDetails}
+              >
+                <GetAppIcon />
                 <span className="ml-2 font-weight-bolder">
                   Download Details
                 </span>
@@ -318,25 +322,25 @@ const ListUser = (props) => {
               <div className="col-md-12 list-table-header text-center">
                 EDIT / DELETE
               </div>
-              {users.map((e) =>(
-                  <div
-                    key={e._id}
-                    className="col-md-12 p-0 d-flex p-2 align-items-center justify-content-center"
-                    style={{ marginTop: "6px", height: "50px" }}
+              {users.map((e) => (
+                <div
+                  key={e._id}
+                  className="col-md-12 p-0 d-flex p-2 align-items-center justify-content-center"
+                  style={{ marginTop: "6px", height: "50px" }}
+                >
+                  <button
+                    className="pr-4 pl-4 mr-2 edit-btn "
+                    onClick={() => editUserDetail(e)}
                   >
-                    <button
-                      className="pr-4 pl-4 mr-2 edit-btn "
-                      onClick={() => editUserDetail(e)}
-                    >
-                      <EditIcon/>
-                      <span className="ml-2">Edit</span>
-                    </button>
-                    <button className="pr-4 pl-4 delete-btn" disabled>
-                      <RestoreFromTrashIcon/>
-                      <span className="ml-2">Delete</span>
-                    </button>
-                  </div>
-                ))}
+                    <EditIcon />
+                    <span className="ml-2">Edit</span>
+                  </button>
+                  <button className="pr-4 pl-4 delete-btn" disabled>
+                    <RestoreFromTrashIcon />
+                    <span className="ml-2">Delete</span>
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
           <div>
@@ -529,15 +533,15 @@ const ListUser = (props) => {
             </Dialog>
           </div>
         </div>
-        {total > limit &&
-        <Pagination
-          count={Math.floor(total / limit) + (total % limit !== 0 ? 1 : 0)}
-          color="primary"
-          variant="text"
-          className="mt-5 d-flex justify-content-center"
-          onChange={(e, value) => handlePagination(e, value)}
-        />
-}
+        {total > limit && (
+          <Pagination
+            count={Math.floor(total / limit) + (total % limit !== 0 ? 1 : 0)}
+            color="primary"
+            variant="text"
+            className="mt-5 d-flex justify-content-center"
+            onChange={(e, value) => handlePagination(e, value)}
+          />
+        )}
       </div>
     </>
   );

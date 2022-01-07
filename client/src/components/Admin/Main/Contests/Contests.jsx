@@ -10,6 +10,8 @@ import LinkIcon from '@material-ui/icons/Link';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import PeopleIcon from '@material-ui/icons/People';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import { IconButton, Tooltip } from "@material-ui/core";
 const Contests = (props) => {
   const [loader, showLoader, hideLoader] = useLoader();
   const limit = 3;
@@ -118,8 +120,13 @@ const Contests = (props) => {
                     <span>{event.name}</span>
                   </Link>
                 </div>
-                <div className="col-md-1 text-center">
+                <div className="col-md-1 d-flex text-center">
                   <span>{event.code}</span>
+                  <Tooltip title="Contest code">
+                    <IconButton onClick={() => copyToClipboard(event.code)}>
+                      <FileCopyIcon />
+                    </IconButton>
+                  </Tooltip>
                 </div>
                 <div className="col-md-3 text-center">{`${new Date(
                   event.start_date

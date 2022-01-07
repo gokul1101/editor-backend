@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import FileDownload from "js-file-download";
 import "./ContestStatictics.css";
-import SubmissionGif from "../../../../../Images/submission.gif";
+import SubmissionGif from "../../../../../../images/submission.gif";
 import Pagination from "@material-ui/lab/Pagination";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { useContext } from "react";

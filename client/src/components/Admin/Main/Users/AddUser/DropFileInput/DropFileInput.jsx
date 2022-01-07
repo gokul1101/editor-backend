@@ -7,13 +7,17 @@ import ErrorLogDialogBox from "../../../../../Reducer/ErrorLogDialogBox/ErrorLog
 import GetAppIcon from "@material-ui/icons/GetApp";
 import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
 import DeleteIcon from "@material-ui/icons/Delete";
+import helperService from "../../../../../../services/helperService";
+import { useContext } from "react";
+import { AuthContext } from "../../../../../../contexts/AuthContext";
+import fileDownload from "js-file-download";
 const DropFileInput = (props) => {
   const wrapperRef = useRef(null);
-  
+  const [authState] = useContext(AuthContext);
   const [fileList, setFileList] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [, setLogs] = useState({});
-  
+
   const onDragEnter = () => wrapperRef.current.classList.add("dragover");
 
   const onDragLeave = () => wrapperRef.current.classList.remove("dragover");
@@ -36,7 +40,7 @@ const DropFileInput = (props) => {
 
   const bulkUserUpload = async () => {
     const flag = await props.onFileChange(fileList);
-    if(flag) setOpen(true);
+    if (flag) setOpen(true);
   };
 
   const handleClickOpen = () => setOpen(true);
@@ -48,6 +52,22 @@ const DropFileInput = (props) => {
     updatedList.splice(fileList.indexOf(file), 1);
     setFileList(updatedList);
     props.setLogs({});
+  };
+  const downloadSampleExcel = async () => {
+    try {
+      const { data, status } = await helperService.downloadSampleExcel(
+        {},
+        {
+          headers: { Authorization: authState?.user?.token },
+          responseType: "arraybuffer",
+        }
+      );
+      if (status == 200) {
+        fileDownload(data, "Sample_Bulk_Upload.xlsx");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
   useEffect(() => {
     if (props.reqflag) {
@@ -138,8 +158,10 @@ const DropFileInput = (props) => {
         <div className="drop-file-preview__item mt-2 d-flex flex-column align-items-center justify-content-center">
           No file choosen. Excel file only be uploaded.
           <div className="d-flex align-items-center justify-content-center mt-3">
-            
-            <CustomButton className="btn-hover color-11 mt-4">
+            <CustomButton
+              className="btn-hover color-11 mt-4"
+              onClickHandler={downloadSampleExcel}
+            >
               <GetAppIcon />
               Download Sample file
             </CustomButton>

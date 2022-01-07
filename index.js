@@ -10,9 +10,15 @@ const { DB, PORT } = require("./config/index");
 //* APP INTIALIZATION
 const app = express();
 const fileupload = require("express-fileupload");
+const path = require("path");
 //* MIDDLEWARES
-
-app.use(cors());
+const corsOptions = {
+  "origin": "*",
+  "methods": "GET,POST",
+  "preflightContinue": false,
+  "optionsSuccessStatus": 204
+}
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(fileupload());
@@ -21,6 +27,13 @@ require("./middlewares/passport")(passport);
 
 //* Router Middleware
 app.use(require("./router/route"));
+
+// Making Build Folder as Public 
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+
+app.get("*", (request, response) => {
+  response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});
 
 const startApp = async () => {
   try {

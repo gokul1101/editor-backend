@@ -6,6 +6,9 @@ import "./AdminDashboard.css";
 import helperService from "../../../../services/helperService";
 import { AuthContext } from "../../../../contexts/AuthContext";
 
+import adminUser from "../../../../images/admin-dashboard-user.png";
+import adminStar from "../../../../images/admin-star.png";
+import adminSubmission from "../../../../images/admin-submission.png";
 const AdminDashboard = () => {
   const [totalCounts, setTotalCounts] = useState({
     users: 0,
@@ -102,7 +105,7 @@ const AdminDashboard = () => {
             <div className="img-start ">
               <img
                 alt="someImage"
-                src="https://cdn-icons-png.flaticon.com/512/476/476863.png"
+                src={adminUser}
                 height="80"
                 width="80"
                 className="img-fluid "
@@ -118,8 +121,8 @@ const AdminDashboard = () => {
             </div>
             <div className="img-start">
               <img
-                alt="someImage"
-                src="https://cdn-icons-png.flaticon.com/512/3141/3141839.png"
+              alt="someImage"
+                src={adminStar}
                 height="80"
                 width="80"
                 className="img-fluid"
@@ -135,8 +138,8 @@ const AdminDashboard = () => {
             </div>
             <div className="img-start">
               <img
-                alt="someImage"
-                src="https://cdn-icons-png.flaticon.com/512/3874/3874088.png"
+              alt="someImage"
+                src={adminSubmission}
                 height="80"
                 width="80"
                 className="img-fluid"
@@ -150,14 +153,9 @@ const AdminDashboard = () => {
           options={contestSubmissions.options}
           series={contestSubmissions.series}
           type="area"
-          width="500"
+          width="1000"
         />
-        <Chart
-          options={contestSubmissions.options}
-          series={contestSubmissions.series}
-          type="bar"
-          width="500"
-        />
+       
       </div>
     </div>
   );

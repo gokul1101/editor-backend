@@ -5,7 +5,7 @@ import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import "./Testcase.css";
-import Loader from "../../../../../../Images/loader.gif";
+import Loader from "../../../../../../../images/loader.gif";
 import CompilerError from "../CompileError/CompilerError";
 import LockRoundedIcon from '@material-ui/icons/LockRounded';
 const Accordion = withStyles({
