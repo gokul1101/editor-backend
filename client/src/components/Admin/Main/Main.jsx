@@ -8,7 +8,6 @@ import Contests from "./Contests/Contests";
 import Users from "./Users/Users";
 import CreateContest from "./Contests/CreateContest/CreateContest";
 import ContestDetails from "./Contests/ContestDetails/ContestDetails";
-import CreateQuiz from "./Quizzes/CreateQuiz/CreateQuiz";
 import AddQuiz from "./Quizzes/CreateQuiz/AddQuiz/AddQuiz";
 import { AuthContext } from "../../../contexts/AuthContext";
 import ChallengeDashboard from "./Challenges/ChallengeDashboard/ChallengeDashboard";
@@ -107,7 +106,6 @@ const Main = (props) => {
                   to="/login"
                   onClick={() => {
                     authDispatch({ type: "REMOVE_USER", payload: null });
-
                     localStorage.clear();
                   }}
                   className="nav-link dash-li"
@@ -152,10 +150,7 @@ const Main = (props) => {
                 </Route>
               </Switch>
             </Route>
-            <Route path="/quizzes">
-              <Route path="/quizzes/create-quiz">
-                <CreateQuiz snackBar={props.snackBar} />
-              </Route>
+            <Route path="/quizzes">              
               <Route path={`/quizzes/:id/add-question`}>
                 <AddQuiz snackBar={props.snackBar} />
               </Route>

@@ -128,7 +128,7 @@ const DropFileInput = (props) => {
 
           <div className="d-flex align-items-center justify-content-center mt-3">
             <CustomButton
-              className="btn-hover color-11 mt-2"
+              className="btn-hover color-11 mt-2 d-flex align-items-center py-2 px-3"
               onClickHandler={bulkUserUpload}
             >
               <CreateNewFolderIcon />
@@ -159,7 +159,7 @@ const DropFileInput = (props) => {
           No file choosen. Excel file only be uploaded.
           <div className="d-flex align-items-center justify-content-center mt-3">
             <CustomButton
-              className="btn-hover color-11 mt-4"
+              className="btn-hover color-11 mt-4 d-flex align-items-center py-2 px-3"
               onClickHandler={downloadSampleExcel}
             >
               <GetAppIcon />

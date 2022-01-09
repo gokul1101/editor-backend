@@ -186,7 +186,7 @@ const Compiler = (props) => {
             />
             <div className="d-flex align-items-end justify-content-end border-bottom">
               <CustomButton
-                className="btn-hover color-11 mt-3 mb-3"
+                className="btn-hover color-11 my-3 d-flex align-items-center py-2 px-3"
                 onClickHandler={compile}
               >
                 <CodeRoundedIcon />

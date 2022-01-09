@@ -68,9 +68,12 @@ const ContestStatictics = (props) => {
   return (
     <div className="container-fluid w-100 mt-5">
       <div>
-        <CustomButton onClickHandler={downloadStatistics}>
+        <CustomButton
+          className="btn-hover color-11 mt-4 d-flex align-items-center py-2 px-3"
+          onClickHandler={downloadStatistics}
+        >
           <GetAppIcon />
-          Download
+          <span className="ml-2">Download</span>
         </CustomButton>
       </div>
       <div className="d-flex stats-main">
@@ -125,7 +128,7 @@ const ContestStatictics = (props) => {
             </div>
             <div className="d-flex flex-column mt-4">
               {leaderBoard.map((submission, idx) => (
-                <div className="d-flex mt-2 mb-2">
+                <div className="d-flex mt-2 mb-2" key={submission._id}>
                   <div className="col-md-2">
                     <button className="correct">{idx + 1}</button>
                   </div>

@@ -1,7 +1,6 @@
 import axios from "axios";
 const baseURL = "http://localhost:5000";
 // const baseURL = "http://172.16.15.173";
-// const baseURL = "https://03ba-103-70-191-34.ngrok.io";
 
 const helperService = {
   rejectionHandler: ({ response }) => {
@@ -133,7 +132,7 @@ const helperService = {
     } catch (err) {
       return Promise.reject({
         status: err.response.status,
-        data: err.response.data,
+        message: err.response.data.message,
       });
     }
   },

@@ -77,7 +77,7 @@ const Codekata = ({ setSideToggle, ...props }) => {
               <b>* By entering the code you can attend the test.</b>
             </span>
             <CustomButton
-              className="btn-hover color-11 mt-3"
+              className="btn-hover color-11 mt-3 d-flex align-items-center py-2 px-3"
               onClickHandler={submitCode}
             >
               <CodeIcon/><span className="ml-2">ENTER CODE</span>

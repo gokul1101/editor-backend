@@ -20,6 +20,7 @@ import GoBack from "../../../../../Reducer/GoBack/GoBack";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
+import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -31,7 +32,7 @@ const GreenCheckbox = withStyles({
     },
   },
   checked: {},
-})((props) => <Checkbox color="default" {...props} />);
+})((props, index) => <Checkbox color="default" {...props} />);
 let type = null;
 let oldTestcase = null;
 const testcasesDefaultValue = {
@@ -59,10 +60,10 @@ const TestCase = (props) => {
       );
       if (status === 200) {
         setTestcases(data.testcases);
-        // props.snackBar(data.message,"success")
+        props.snackBar(data.message, "success");
       }
     } catch (err) {
-      //  props.snackBar(err.data.message,"error")
+      props.snackBar(err.data.message, "error");
     }
   };
   useEffect(() => {
@@ -230,21 +231,23 @@ const TestCase = (props) => {
             Create Testcase
           </p>
         </div>
-
         <span className="create-con-text mt-1">
           Add testcase to the challenge to the contest by selecting challenge
           from our library or create
         </span>
         <span className="create-con-text">
           of your own challenges here. To record your challenges, simply select
-          the challenge and drag and
+          the challenge and drag
         </span>
       </div>
-      <div className="create-con">
-        <button className="p-2 mt-3" onClick={handleClickOpen}>
+      <div className="create-con my-3 position-relative">
+        <CustomButton
+          className="btn-hover color-11 d-flex align-items-center px-3 py-2"
+          onClick={handleClickOpen}
+        >
           <AddCircleRoundedIcon />
           <span className="ml-2">ADD TESTCASE</span>
-        </button>
+        </CustomButton>
       </div>
       <h4 className="m-2 p-2 text-uppercase text-center font-weight-bolder">
         Sample Test Cases
@@ -298,7 +301,7 @@ const TestCase = (props) => {
         </div>
       )}
 
-      <h4 className="m-2 p-2  text-uppercase text-center font-weight-bolder">
+      <h4 className="m-2 p-2 text-uppercase text-center font-weight-bolder">
         Hidden Test Cases
       </h4>
       {testcases?.hidden?.length === 0 ? (

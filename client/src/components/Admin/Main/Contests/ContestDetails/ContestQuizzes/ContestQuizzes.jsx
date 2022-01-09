@@ -7,7 +7,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import helperService from "../../../../../../services/helperService";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
@@ -140,7 +140,7 @@ const ContestQuizzes = (props) => {
         <span className="create-con-text">drop to the desired location </span>
       </div>
       <CustomButton
-        className="btn-hover color-11 mt-4"
+        className="btn-hover color-11 mt-4 d-flex align-items-center py-2 px-3"
         onClickHandler={handleClickOpen}
       >
         <AddCircleIcon/><span className="ml-2">ADD QUIZZES</span>
@@ -167,10 +167,10 @@ const ContestQuizzes = (props) => {
                 }
               />
             </div>
-            <p className="text-muted mt-3">
+            <Typography className="text-muted mt-3">
               Note : Should contain a valid quiz name , Please don't use
               previous names
-            </p>
+            </Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>

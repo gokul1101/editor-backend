@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import helperService from "../../../../../services/helperService";
 import InputReducer from "../../../../Reducer/InputReducer";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import "./CreateContest.css";
 import { useHistory, useParams } from "react-router-dom";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import InfoIcon from '@material-ui/icons/Info';
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import InfoIcon from "@material-ui/icons/Info";
 const CreateContest = (props) => {
   const [loader, showLoader, hideLoader] = useLoader();
   const history = useHistory();
@@ -107,15 +107,6 @@ const CreateContest = (props) => {
       hideLoader();
     }
   };
-  useEffect(() => {
-    console.log(props.snackBar);
-    // if (props?.title && !authState?.contest) {
-    //   fetchContest();
-    // }
-    // return () => {
-    //   authDispatch({ type: "REMOVE_CONTEST" });
-    // };
-  }, []);
 
   return (
     <div className="container mt-5">
@@ -174,7 +165,7 @@ const CreateContest = (props) => {
             />
           </div>
           <span className="info-circle mr-2 mt-3">
-          <InfoIcon/>
+            <InfoIcon />
           </span>
         </div>
         <div className="d-flex">
@@ -201,12 +192,12 @@ const CreateContest = (props) => {
             />
           </div>
           <span className="info-circle mr-2 mt-3">
-            <InfoIcon/>
+            <InfoIcon />
           </span>
         </div>
       </div>
       <CustomButton
-        className="btn-hover color-11 mt-4 float-right"
+        className="btn-hover color-11 mt-4 float-right d-flex align-items-center py-2 px-3"
         disabled={
           props?.title !== "Create Contest" &&
           new Date(authState?.contest?.end_date) < new Date()
@@ -215,7 +206,8 @@ const CreateContest = (props) => {
           props?.title !== "Create Contest" ? updateContest : createContest
         }
       >
-        <AddCircleIcon/> {props?.title?.toUpperCase()}
+        <AddCircleIcon />
+        <span className="ml-2">{props?.title?.toUpperCase()}</span>
       </CustomButton>
     </div>
   );

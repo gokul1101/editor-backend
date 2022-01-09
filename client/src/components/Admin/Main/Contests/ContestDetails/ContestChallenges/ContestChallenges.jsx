@@ -80,7 +80,7 @@ const ContestChallenges = (props) => {
         <span className="create-con-text">drop to the desired location </span>
       </div>
       <NavLink to={`/contests/${id}/challenges/create`}>
-        <CustomButton className="btn-hover color-11 mt-4">
+        <CustomButton className="btn-hover color-11 mt-4 d-flex align-items-center py-2 px-3">
           <AddCircleIcon/><span className="ml-2">ADD CHALLENGES</span>
         </CustomButton>
       </NavLink>

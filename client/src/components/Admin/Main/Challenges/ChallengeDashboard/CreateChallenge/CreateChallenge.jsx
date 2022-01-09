@@ -9,7 +9,7 @@ import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import GoBack from "../../../../../Reducer/GoBack/GoBack";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import "./CreateChallenge.css";
 const CreateChallenge = (props) => {
   const [authState] = useContext(AuthContext);
@@ -66,25 +66,24 @@ const CreateChallenge = (props) => {
   };
   const updateChallenge = async () => {
     let checkStatus = false;
-    for(let i in challenge){
-      if(Object.keys(updateDetails).length !== 0 ){
-        for(let j in updateDetails){
-          if(challenge[i] === updateDetails[j]){
-            checkStatus = true
-                   
+    for (let i in challenge) {
+      if (Object.keys(updateDetails).length !== 0) {
+        for (let j in updateDetails) {
+          if (challenge[i] === updateDetails[j]) {
+            checkStatus = true;
           }
         }
       }
-    } 
-    if(checkStatus === true || Object.keys(updateDetails).length === 0 ){
-      props.snackBar("Already Up-to-Date","info")
-      return
     }
-    if(Object.keys(updateDetails).length === 0 ){
-      props.snackBar("Already Up-to-Date","info")
-      return
+    if (checkStatus === true || Object.keys(updateDetails).length === 0) {
+      props.snackBar("Already Up-to-Date", "info");
+      return;
     }
-   
+    if (Object.keys(updateDetails).length === 0) {
+      props.snackBar("Already Up-to-Date", "info");
+      return;
+    }
+
     if (challenge.name.length <= 0) {
       props.snackBar("Challenge Name is Empty", "error");
       return;
@@ -148,15 +147,17 @@ const CreateChallenge = (props) => {
       difficulty_id: authState?.challenge?.difficulty_id?.level ?? "easy",
       max_score: authState?.challenge?.max_score,
     });
-    setDifficultyId(authState?.challenge?.difficulty_id?.level ?? "easy") ;
+    setDifficultyId(authState?.challenge?.difficulty_id?.level ?? "easy");
   }, [authState]);
   return (
     <div className="container">
       <div className="d-flex">
         <GoBack
           onClickHandler={() => {
-            props?.title 
-              ? history.push(`/contests/${authState?.challenge?.contest_id}/challenges`)
+            props?.title
+              ? history.push(
+                  `/contests/${authState?.challenge?.contest_id}/challenges`
+                )
               : history.goBack();
           }}
         />
@@ -179,12 +180,10 @@ const CreateChallenge = (props) => {
               InputLabelProps={{
                 shrink: true,
               }}
-              onClickHandler={(value) =>{
-
-                setUpdateDetails({...updateDetails,name:value});
+              onClickHandler={(value) => {
+                setUpdateDetails({ ...updateDetails, name: value });
                 setChallenge({ ...challenge, name: value });
-              }
-              }
+              }}
             />
           </div>
         </div>
@@ -205,11 +204,10 @@ const CreateChallenge = (props) => {
                 shrink: true,
               }}
               value={challenge.statement}
-              onClickHandler={(value) =>{
-                setUpdateDetails({...updateDetails,statement:value});
+              onClickHandler={(value) => {
+                setUpdateDetails({ ...updateDetails, statement: value });
                 setChallenge({ ...challenge, statement: value });
-              }
-              }
+              }}
             />
           </div>
         </div>
@@ -229,11 +227,10 @@ const CreateChallenge = (props) => {
               }}
               variant="outlined"
               value={challenge.input_format}
-              onClickHandler={(value) =>{
-                setUpdateDetails({...updateDetails,input_format:value});
+              onClickHandler={(value) => {
+                setUpdateDetails({ ...updateDetails, input_format: value });
                 setChallenge({ ...challenge, input_format: value });
-              }
-              }
+              }}
             />
           </div>
         </div>
@@ -253,11 +250,10 @@ const CreateChallenge = (props) => {
               }}
               variant="outlined"
               value={challenge.output_format}
-              onClickHandler={(value) =>{
-                setUpdateDetails({...updateDetails,output_format:value});
+              onClickHandler={(value) => {
+                setUpdateDetails({ ...updateDetails, output_format: value });
                 setChallenge({ ...challenge, output_format: value });
-              }
-              }
+              }}
             />
           </div>
         </div>
@@ -277,11 +273,10 @@ const CreateChallenge = (props) => {
                 shrink: true,
               }}
               value={challenge.description}
-              onClickHandler={(value) =>{
-                setUpdateDetails({...updateDetails,description:value});
+              onClickHandler={(value) => {
+                setUpdateDetails({ ...updateDetails, description: value });
                 setChallenge({ ...challenge, description: value });
-              }
-              }
+              }}
             />
           </div>
         </div>
@@ -299,11 +294,10 @@ const CreateChallenge = (props) => {
                 shrink: true,
               }}
               value={challenge.constraints}
-              onClickHandler={(value) =>{
-                setUpdateDetails({...updateDetails,constraints:value});
+              onClickHandler={(value) => {
+                setUpdateDetails({ ...updateDetails, constraints: value });
                 setChallenge({ ...challenge, constraints: value });
-              }
-              }
+              }}
             />
           </div>
         </div>
@@ -338,22 +332,22 @@ const CreateChallenge = (props) => {
                 shrink: true,
               }}
               value={challenge.max_score}
-              onClickHandler={(value) =>{
-
-                setUpdateDetails({...updateDetails,max_score:value});
+              onClickHandler={(value) => {
+                setUpdateDetails({ ...updateDetails, max_score: value });
                 setChallenge({ ...challenge, max_score: value });
-              }
-              }
+              }}
             />
           </div>
         </div>
         <div className="m-0">
           <CustomButton
-            className="btn-hover color-11 mt-2 mb-5 float-right"
+            className="btn-hover color-11 mt-2 mb-5 float-right d-flex align-items-center px-3 py-2"
             onClickHandler={props?.title ? updateChallenge : createChallenge}
           >
-            <AddCircleIcon/>{" "}
-            {props?.title ? props?.title.toUpperCase() : "CREATE CHALLENGE"}
+            <AddCircleIcon />{" "}
+            <span className="ml-2">
+              {props?.title ? props?.title.toUpperCase() : "CREATE CHALLENGE"}
+            </span>
           </CustomButton>
         </div>
       </div>

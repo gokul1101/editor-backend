@@ -266,23 +266,19 @@ const AddQuiz = (props) => {
             />
           </div>
           <CustomButton
-            className="btn-hover color-11 mt-4 float-right"
+            className="btn-hover color-11 mt-4 float-right d-flex align-items-center py-2 px-3"
             onClickHandler={updateFlag ? updateQuestion : createQuestion}
           >
             {updateFlag ? (
-              <span className="d-flex">
-                UPADTE QUIZ
-                <div className="ml-2">
-                  <UpdateIcon />
-                </div>
-              </span>
+              <>
+                <span>UPADTE QUIZ</span>
+                <UpdateIcon />
+              </>
             ) : (
-              <span className="d-flex">
-                ADD QUIZ
-                <div className="ml-2">
-                  <AddCircleIcon />
-                </div>
-              </span>
+              <>
+                <span>ADD QUIZ</span>
+                <AddCircleIcon />
+              </>
             )}
           </CustomButton>
         </div>
@@ -290,6 +286,7 @@ const AddQuiz = (props) => {
           {questions.map((question, index) => {
             return (
               <QuizQuestion
+                key={question._id}
                 question={question}
                 index={index}
                 updateDetails={updateDetails}

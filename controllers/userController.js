@@ -167,34 +167,15 @@ const updateUser = async (req, res) => {
         select: "start_year end_year",
       },
     ]);
+
     //! User not found
     if (!user || user.deleted_at)
       return res.status(404).json({
         message: `user not found`,
         success: false,
       });
-    //* Validate register number
-    if (updateDetails.regno) {
-      let registerNumberNotTaken = await validate({
-        regno: updateDetails.regno,
-      });
-      if (registerNumberNotTaken)
-        return res.status(403).json({
-          message: `Register number already exists.`,
-          success: false,
-        });
-    }
-    //* Validate email
-    if (updateDetails.email) {
-      let emailNotTaken = await validate({ email: updateDetails.email });
-      if (emailNotTaken)
-        return res.status(403).json({
-          message: `Email already exists.`,
-          success: false,
-        });
-    }
     //! Student cannot access admin data
-    if (req.user.role_id === "student" && user.role.name === "admin")
+    if (req.user.role_id === "student" && user.role_id.name === "admin")
       return res.status(401).json({
         message: `Unauthorized access`,
         success: false,
@@ -210,6 +191,8 @@ const updateUser = async (req, res) => {
       user.password = hashedPassword;
     }
     if (updateDetails.name) user.name = updateDetails.name;
+    //* Validate email
+    if (updateDetails.email) user.email = updateDetails.email;
     if (updateDetails.phone_no) user.phone_no = updateDetails.phone_no;
     if (updateDetails.gender)
       user.gender_id = await mapGenderId(updateDetails.gender);
@@ -378,20 +361,18 @@ const getAllUsers = async (req, res) => {
 };
 const adminDashboard = async (req, res) => {
   try {
-    let { _id,college_id} = req.user;
-    college_id = await mapCollegeId(college_id)
-    //TODO:How users count shown ?    
-    const usersCount = await User.countDocuments({college_id});
+    let { _id, college_id } = req.user;
+    college_id = await mapCollegeId(college_id);
+    //TODO:How users count shown ?
+    const usersCount = await User.countDocuments({ college_id });
     const { contestSubmissions, message, status } =
       await contestSubmissionsChartService(_id);
-    res
-      .status(status)
-      .json({
-        dashboarDetails: { contestSubmissions, usersCount },
-        message,
-        status,
-        success: true,
-      });
+    res.status(status).json({
+      dashboarDetails: { contestSubmissions, usersCount },
+      message,
+      status,
+      success: true,
+    });
   } catch (err) {
     console.log(err);
     return res.status(500).send("Internal Server Error");

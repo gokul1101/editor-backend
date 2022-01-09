@@ -308,15 +308,15 @@ const Programs = (props) => {
                 onChangeHandler={(value) => setCode(value)}
                 value={code}
               />
-              <div className="mt-3 d-flex justify-content-end">
+              <div className="my-3 d-flex justify-content-end">
                 <CustomButton
-                  className="btn-hover color-11 mt-2 mr-2"
+                  className="btn-hover color-11 mr-2 d-flex align-items-center py-2 px-3"
                   onClickHandler={compile}
                 >
                  <CodeRoundedIcon/><span className="ml-2">RUN CODE</span>
                 </CustomButton>
                 <CustomButton
-                  className="btn-hover color-11 mt-2"
+                  className="btn-hover color-11 d-flex align-items-center py-2 px-3"
                   onClickHandler={submitChallenge}
                 >
                  <DoneAllRoundedIcon/><span className="ml-2">SUBMIT</span>

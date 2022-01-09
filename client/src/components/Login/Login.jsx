@@ -65,8 +65,7 @@ const Login = (props) => {
         authDispatch({ type: "SET_USER", payload: user });
         props.snackBar(message, "success");
       }
-    } catch (err) {
-      // if (!err.status) props.snackBar("Network Error", "error");
+    } catch (err) {      
       props.snackBar(err.message, "error");
     }
   };
@@ -109,11 +108,12 @@ const Login = (props) => {
                 />
               </div>
               <CustomButton
-                className="btn-hover color-11 p-2"
+                className="btn-hover color-11 d-flex align-items-center py-2 px-3"
                 onKeyPress={handleKeypress}
                 type="submit"
               >
-                SIGN IN <ExitToAppRoundedIcon />
+                <span className="mr-2">SIGN IN</span>
+                <ExitToAppRoundedIcon />
               </CustomButton>
             </form>
             <form action="#" className="sign-up-form" onSubmit={handleSubmit}>
@@ -140,11 +140,12 @@ const Login = (props) => {
                 />
               </div>
               <CustomButton
-                className="btn-hover color-11 mt-2"
+                className="btn-hover color-11 mt-2 d-flex align-items-center py-2 px-3"
                 onKeyPress={handleKeypress}
                 type="submit"
               >
-                SIGN IN <ExitToAppRoundedIcon />
+                <span className="mr-2">SIGN IN</span>
+                <ExitToAppRoundedIcon />
               </CustomButton>
             </form>
           </div>

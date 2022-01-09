@@ -305,7 +305,7 @@ const AddUser = (props) => {
             </div>
           </div>
           <CustomButton
-            className="btn-hover color-11 mt-4"
+            className="btn-hover color-11 mt-4 d-flex align-items-center py-2 px-3"
             onClickHandler={createUser}
           >
             <AddCircleIcon />

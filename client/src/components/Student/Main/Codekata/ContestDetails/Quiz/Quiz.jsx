@@ -179,9 +179,9 @@ const Quiz = ({ setSideToggle }) => {
               </div>
             </div>
             {!isLast ? (
-              <div className="mt-2 d-flex justify-content-end mr-4">
+              <div className="my-2 d-flex justify-content-end mr-4">
                 <CustomButton
-                  className="btn-hover color-11"
+                  className="btn-hover color-11 d-flex align-items-center py-2 px-3"
                   onClickHandler={handleNext}
                   disabled={isLast}
                 >
@@ -243,9 +243,9 @@ const Quiz = ({ setSideToggle }) => {
                 })}
               </div>
             </div>
-            <div className="d-flex justify-content-end mt-2">
+            <div className="d-flex justify-content-end my-2">
               <CustomButton
-                className="btn-hover color-11 mt-3"
+                className="btn-hover color-11 mt-3 d-flex align-items-center py-2 px-3"
                 onClickHandler={handleOpen}
               >
                 <AllInclusiveRoundedIcon/> 
