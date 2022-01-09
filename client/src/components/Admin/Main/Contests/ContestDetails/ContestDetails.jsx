@@ -1,25 +1,20 @@
-import { NavLink, Switch, Route, useParams, Redirect } from "react-router-dom";
+import { NavLink, Switch, Route, useParams } from "react-router-dom";
 import "./ContestDetails.css";
 import ContestChallenges from "./ContestChallenges/ContestChallenges";
 import ContestQuizzes from "./ContestQuizzes/ContestQuizzes";
 import ContestStatictics from "./ContestStatictics/ContestStatictics";
 import CreateContest from "../CreateContest/CreateContest";
-
 import CreateChallenge from "../../Challenges/ChallengeDashboard/CreateChallenge/CreateChallenge";
 import { useContext, useEffect } from "react";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import helperService from "../../../../../services/helperService";
 import PageNotFound from "../../../../Reducer/PageNotFound/404";
-import DetailsIcon from '@material-ui/icons/Details';
-import SubtitlesIcon from '@material-ui/icons/Subtitles';
-import PostAddIcon from '@material-ui/icons/PostAdd';
-import AssessmentIcon from '@material-ui/icons/Assessment';
-const convertDate = (date) => {
-  if (date) return date.split("T")[0];
-  return "";
-};
+import DetailsIcon from "@material-ui/icons/Details";
+import SubtitlesIcon from "@material-ui/icons/Subtitles";
+import PostAddIcon from "@material-ui/icons/PostAdd";
+import AssessmentIcon from "@material-ui/icons/Assessment";
 const ContestDetails = (props) => {
-  const [loader, showLoader, hideLoader] = useLoader();
+  const [, showLoader, hideLoader] = useLoader();
   const [authState, authDispatch] = useContext(AuthContext);
   const { id } = useParams();
   const fetchContest = async () => {
@@ -66,7 +61,7 @@ const ContestDetails = (props) => {
               activeClassName="box arrow-bottom"
             >
               <li className="list-group-item user-group-pill position-relative">
-                <DetailsIcon/> <span>Details</span>
+                <DetailsIcon /> <span>Details</span>
               </li>
             </NavLink>
             <NavLink
@@ -76,7 +71,7 @@ const ContestDetails = (props) => {
               activeClassName="box arrow-bottom"
             >
               <li className="list-group-item user-group-pill position-relative">
-                <SubtitlesIcon/> <span>Quizzes List</span>
+                <SubtitlesIcon /> <span>Quizzes List</span>
               </li>
             </NavLink>
             <NavLink
@@ -86,7 +81,8 @@ const ContestDetails = (props) => {
               activeClassName="box arrow-bottom"
             >
               <li className="list-group-item user-group-pill position-relative">
-                <PostAddIcon/><span className="ml-2">Challenges</span>
+                <PostAddIcon />
+                <span className="ml-2">Challenges</span>
                 List
               </li>
             </NavLink>
@@ -100,7 +96,8 @@ const ContestDetails = (props) => {
           activeClassName="box arrow-bottom"
         >
           <li className="list-group-item user-group-pill position-relative">
-            <AssessmentIcon/><span className="ml-2">Statictics</span>
+            <AssessmentIcon />
+            <span className="ml-2">Statictics</span>
           </li>
         </NavLink>
       </ul>
@@ -110,7 +107,10 @@ const ContestDetails = (props) => {
           !(new Date(authState?.contest?.end_date) < new Date()) ? (
             <>
               <Route path={`/contests/:id/edit`} exact>
-                <CreateContest title="Update Contest" snackBar={props.snackBar}/>
+                <CreateContest
+                  title="Update Contest"
+                  snackBar={props.snackBar}
+                />
               </Route>
               <Route path={`/contests/:id/quizzes`} exact>
                 <ContestQuizzes snackBar={props.snackBar} />

@@ -1,4 +1,4 @@
-  .create-con-text {
+.create-con-text {
   color: rgb(155, 152, 152);
 }
 .contest-line-height {
@@ -7,19 +7,18 @@
   color: black;
   font-weight: 600;
 }
-.contest-star{
-    color: red;
+.contest-star {
+  color: red;
 }
-.info-circle i{
+.info-circle i {
   color: blue;
   /* background-color: blue !important; */
 }
 
-.bg-input-change{
+.bg-input-change {
   border: 1px solid green;
 }
 
-.bg-input-change:focus{
+.bg-input-change:focus {
   border: 1px solid green !important;
 }
-

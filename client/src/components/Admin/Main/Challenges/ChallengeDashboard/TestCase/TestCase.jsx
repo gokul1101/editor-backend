@@ -32,7 +32,7 @@ const GreenCheckbox = withStyles({
     },
   },
   checked: {},
-})((props, index) => <Checkbox color="default" {...props} />);
+})((props) => <Checkbox color="default" {...props} />);
 let type = null;
 let oldTestcase = null;
 const testcasesDefaultValue = {

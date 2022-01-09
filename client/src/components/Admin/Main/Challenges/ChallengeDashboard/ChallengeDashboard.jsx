@@ -4,9 +4,9 @@ import { AuthContext } from "../../../../../contexts/AuthContext";
 import helperService from "../../../../../services/helperService";
 import PageNotFound from "../../../../Reducer/PageNotFound/404";
 import CreateChallenge from "./CreateChallenge/CreateChallenge";
-import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
+import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
 import TestCase from "./TestCase/TestCase";
-import LibraryAddCheckRoundedIcon from '@material-ui/icons/LibraryAddCheckRounded';
+import LibraryAddCheckRoundedIcon from "@material-ui/icons/LibraryAddCheckRounded";
 const ChallengeDashboard = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const { id } = useParams();
@@ -22,7 +22,9 @@ const ChallengeDashboard = (props) => {
       if (status === 200) {
         authDispatch({ type: "SET_CHALLENGE", payload: { ...question } });
       }
-    } catch (err) {}
+    } catch (err) {
+      props.snakBar(err.message, "error");
+    }
   };
   useEffect(() => {
     if (!authState?.challenge) fetchChallenge();
@@ -42,7 +44,8 @@ const ChallengeDashboard = (props) => {
               to={`/challenges/${id}/update`}
               activeClassName="active-user-pill"
             >
-              <AddCircleRoundedIcon/><span >Challenge</span>
+              <AddCircleRoundedIcon />
+              <span>Challenge</span>
             </NavLink>
           </li>
           <li className="list-group-item user-group-pill">
@@ -52,11 +55,8 @@ const ChallengeDashboard = (props) => {
               to={`/challenges/${id}/create-testcase`}
               activeClassName="active-user-pill"
             >
-              <LibraryAddCheckRoundedIcon/>
-              <span >
-
-              TestCase
-              </span>
+              <LibraryAddCheckRoundedIcon />
+              <span>TestCase</span>
             </NavLink>
           </li>
         </ul>

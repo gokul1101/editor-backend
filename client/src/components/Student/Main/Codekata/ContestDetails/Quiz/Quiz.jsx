@@ -10,9 +10,9 @@ import helperService from "../../../../../../services/helperService";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import GoBack from "../../../../../Reducer/GoBack/GoBack";
 import DialogBox from "../../../../../Reducer/DialogBox/DialogBox";
-import AllInclusiveRoundedIcon from '@material-ui/icons/AllInclusiveRounded';
-import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
-const Quiz = ({ setSideToggle }) => {
+import AllInclusiveRoundedIcon from "@material-ui/icons/AllInclusiveRounded";
+import SkipNextRoundedIcon from "@material-ui/icons/SkipNextRounded";
+const Quiz = ({ setSideToggle, snackBar }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -56,11 +56,16 @@ const Quiz = ({ setSideToggle }) => {
         status,
         data: { mcqs },
       } = await helperService.getQuizQuestions(
-        { id: location.questionId, page: isLast ? currentQuestionNumber : currentQuestionNumber + 1 },
+        {
+          id: location.questionId,
+          page: isLast ? currentQuestionNumber : currentQuestionNumber + 1,
+        },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) return mcqs;
-    } catch (err) {}
+    } catch (err) {
+      snackBar(err.message, "error");
+    }
     return [];
   };
   let answers = parseQuiz();
@@ -185,7 +190,7 @@ const Quiz = ({ setSideToggle }) => {
                   onClickHandler={handleNext}
                   disabled={isLast}
                 >
-                <SkipNextRoundedIcon/> NEXT
+                  <SkipNextRoundedIcon /> NEXT
                 </CustomButton>
               </div>
             ) : null}
@@ -248,7 +253,7 @@ const Quiz = ({ setSideToggle }) => {
                 className="btn-hover color-11 mt-3 d-flex align-items-center py-2 px-3"
                 onClickHandler={handleOpen}
               >
-                <AllInclusiveRoundedIcon/> 
+                <AllInclusiveRoundedIcon />
                 <span className="ml-2">SUBMIT QUIZ</span>
               </CustomButton>
               <DialogBox

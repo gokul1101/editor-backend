@@ -48,9 +48,7 @@ const ErrorLogs = (props) => {
       </span>
       <div className="mt-4 d-flex flex-column">
         <div className="d-flex upcoming-header border-top border-bottom mt-2 p-2 mb-1">
-          <div className="col-md-2 text-center content-nav-title">
-            S.NO
-          </div>
+          <div className="col-md-2 text-center content-nav-title">S.NO</div>
           <div className="col-md-2 text-center content-nav-title">
             NO. OF LOGS
           </div>
@@ -60,17 +58,13 @@ const ErrorLogs = (props) => {
           <div className="col-md-2 text-center content-nav-title">
             <ErrorIcon />
           </div>
-          <div className="col-md-2 text-center content-nav-title">
-            SHOW
-          </div>
+          <div className="col-md-2 text-center content-nav-title">SHOW</div>
         </div>
         <div className="d-flex flex-column border-top border-bottom mt-1 p-2 mb-1">
           {errorLogs.map((log, index) => (
             <div className="d-flex" key={log._id}>
-              <div
-                className="col-md-2 text-center content-nav-title"                
-              >
-                {index+1}) 
+              <div className="col-md-2 text-center content-nav-title">
+                {index + 1})
               </div>
               <div className="col-md-2 text-center content-nav-title">
                 {log.totalLogs}

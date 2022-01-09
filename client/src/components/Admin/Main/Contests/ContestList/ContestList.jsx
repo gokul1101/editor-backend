@@ -4,7 +4,7 @@ import LinkIcon from "@material-ui/icons/Link";
 import AccessAlarmIcon from "@material-ui/icons/AccessAlarm";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { IconButton, Tooltip } from "@material-ui/core";
-const ContestList = ({ contests, setContest, snackBar, ...props}) => {
+const ContestList = ({ contests, contestName, setContest, snackBar }) => {
   const copyToClipboard = async (text) => {
     await navigator.clipboard.writeText(text ?? "");
     snackBar("Code Copied", "success");
@@ -13,7 +13,7 @@ const ContestList = ({ contests, setContest, snackBar, ...props}) => {
     <div className="my-3">
       <div className="upcoming-events">
         <div className="upcoming-header">
-          <span>Current Contests</span>
+          <span>{`${contestName} Contests`}</span>
         </div>
       </div>
       <div className="d-flex border-top border-bottom mt-2 py-2">
@@ -45,8 +45,11 @@ const ContestList = ({ contests, setContest, snackBar, ...props}) => {
               <div className="col-md-1 d-flex align-items-center">
                 <span className="mr-1">{event.code}</span>
                 <Tooltip title="Contest code">
-                  <IconButton size="small" onClick={() => copyToClipboard(event.code)}>
-                    <FileCopyIcon style={{transform : "scale(0.8)"}} />
+                  <IconButton
+                    size="small"
+                    onClick={() => copyToClipboard(event.code)}
+                  >
+                    <FileCopyIcon style={{ transform: "scale(0.8)" }} />
                   </IconButton>
                 </Tooltip>
               </div>

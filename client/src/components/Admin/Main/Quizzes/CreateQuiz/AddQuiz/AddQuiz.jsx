@@ -44,7 +44,9 @@ const AddQuiz = (props) => {
       if (status === 200) {
         setQuestions(mcqs);
       }
-    } catch (err) {}
+    } catch (err) {
+      props.snackBar(err.message, "error");
+    }
   };
   const createQuestion = async () => {
     if (question.statement.length === 0) {

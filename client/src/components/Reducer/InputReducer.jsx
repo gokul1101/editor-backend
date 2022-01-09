@@ -1,6 +1,5 @@
 import React from "react";
 import "./InputReducer.css";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
 const InputReducer = (props) => {

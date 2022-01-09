@@ -47,7 +47,7 @@
   background-color: #d2f7cf;
 }
 .problem-header .timer {
-  height : 40px;
+  height: 40px;
   border: 1px solid #ccc;
   border-radius: 8px;
 }
@@ -114,17 +114,18 @@
   font-size: 18px;
 }
 
-.ip-highlight,.op-highlight{
-  font-size:20px;
- color: #00c3ff;
+.ip-highlight,
+.op-highlight {
+  font-size: 20px;
+  color: #00c3ff;
 }
-.program-score{
+.program-score {
   border-radius: 50%;
   background-color: #05a04b;
   color: white;
 }
 
-.score-card{
+.score-card {
   color: #05a04b;
   font-weight: bolder;
 }

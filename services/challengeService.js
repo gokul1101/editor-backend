@@ -104,13 +104,11 @@ const updateChallenge = async (question) => {
         question.difficulty_id = await mapDifficultyId(question.difficulty_id);
       if (question.type_id) delete question["type_id"];
 
-
       if (max_score)
         await updateContestService({
           max_score: max_score - exist_question.max_score,
-          id : contest_id
+          id: contest_id,
         });
-
 
       await Question.findByIdAndUpdate(id, {
         ...question,
@@ -161,7 +159,7 @@ const deleteChallenge = async ({ _id }) => {
     const { max_score, contest_id } = await Question.findByIdAndDelete(_id);
     if (!max_score || !contest_id)
       return Promise.reject({ status: 404, message: `Challenge not found` });
-    await updateContestService({ max_score : -(max_score), id: contest_id });
+    await updateContestService({ max_score: -max_score, id: contest_id });
     return Promise.resolve({
       status: 202,
       message: `Challenge deleted successfully`,

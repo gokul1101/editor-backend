@@ -33,7 +33,9 @@ const ContestStatictics = (props) => {
           data?.submissions?.submissions?.slice(0, leaderBoardCount) || []
         );
       }
-    } catch (err) {}
+    } catch (err) {
+      props.snackBar(err.message, "error");
+    }
   };
   useEffect(() => {
     fethContestSubmissions();

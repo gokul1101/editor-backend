@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-
 import "./ContestQuizzes.css";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -11,10 +10,10 @@ import { Button, Typography } from "@material-ui/core";
 import InputReducer from "../../../../../Reducer/InputReducer";
 import helperService from "../../../../../../services/helperService";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import ContestTable from "../ContestTable/ContestTable";
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -143,7 +142,8 @@ const ContestQuizzes = (props) => {
         className="btn-hover color-11 mt-4 d-flex align-items-center py-2 px-3"
         onClickHandler={handleClickOpen}
       >
-        <AddCircleIcon/><span className="ml-2">ADD QUIZZES</span>
+        <AddCircleIcon />
+        <span className="ml-2">ADD QUIZZES</span>
       </CustomButton>
       <Dialog
         open={open}

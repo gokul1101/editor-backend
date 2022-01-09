@@ -15,14 +15,14 @@ const compilerService = async (code, input, lang) => {
     return Promise.resolve({
       status: 200,
       output,
-      message : "Complied Successfully."
+      message: "Complied Successfully.",
     });
   } catch (err) {
     console.log(err);
     return Promise.reject({
       status: 500,
       err,
-      message : "Error in compilation"
+      message: "Error in compilation",
     });
   } finally {
     fs.rmdir(logFolder, { recursive: true }, (err) => {

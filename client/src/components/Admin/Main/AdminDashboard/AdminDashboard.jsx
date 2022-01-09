@@ -47,7 +47,10 @@ const AdminDashboard = () => {
   const [authState] = useContext(AuthContext);
   const fetchAdminDashboard = async () => {
     try {
-      const { data:{dashboarDetails}, status } = await helperService.adminDashboard(
+      const {
+        data: { dashboarDetails },
+        status,
+      } = await helperService.adminDashboard(
         {},
         { headers: { Authorization: authState?.user?.token } }
       );
@@ -71,11 +74,12 @@ const AdminDashboard = () => {
         setTotalCounts({
           ...totalCounts,
           contests: dashboarDetails.contestSubmissions.contests.length,
-          users:dashboarDetails.usersCount,
-          submissions: dashboarDetails.contestSubmissions.submissionsCount.reduce(
-            (total, count) => total + count,
-            0
-          ),
+          users: dashboarDetails.usersCount,
+          submissions:
+            dashboarDetails.contestSubmissions.submissionsCount.reduce(
+              (total, count) => total + count,
+              0
+            ),
         });
       }
     } catch (err) {
@@ -121,7 +125,7 @@ const AdminDashboard = () => {
             </div>
             <div className="img-start">
               <img
-              alt="someImage"
+                alt="someImage"
                 src={adminStar}
                 height="80"
                 width="80"
@@ -138,7 +142,7 @@ const AdminDashboard = () => {
             </div>
             <div className="img-start">
               <img
-              alt="someImage"
+                alt="someImage"
                 src={adminSubmission}
                 height="80"
                 width="80"
@@ -155,7 +159,6 @@ const AdminDashboard = () => {
           type="area"
           width="1000"
         />
-       
       </div>
     </div>
   );

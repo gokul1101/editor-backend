@@ -12,7 +12,10 @@ const Roadmap = (props) => {
             <div className="main-timeline">
               <div className="timeline">
                 <div className="timeline-icon">
-                  <img src="https://img.icons8.com/color/96/000000/html-5--v1.png" alt="HTML" />
+                  <img
+                    src="https://img.icons8.com/color/96/000000/html-5--v1.png"
+                    alt="HTML"
+                  />
                 </div>
                 <div className="timeline-content">
                   <h3 className="title">HYPERTEXT MARKUP LANGUAGE </h3>
@@ -25,7 +28,10 @@ const Roadmap = (props) => {
               </div>
               <div className="timeline">
                 <div className="timeline-icon">
-                  <img src="https://img.icons8.com/color/96/000000/css3.png" alt="CSS" />
+                  <img
+                    src="https://img.icons8.com/color/96/000000/css3.png"
+                    alt="CSS"
+                  />
                 </div>
                 <div className="timeline-content">
                   <h3 className="title">CASADING STYLE SHEET</h3>
@@ -38,7 +44,10 @@ const Roadmap = (props) => {
               </div>
               <div className="timeline">
                 <div className="timeline-icon">
-                  <img src="https://img.icons8.com/color/96/000000/javascript--v1.png" alt="JS"/>
+                  <img
+                    src="https://img.icons8.com/color/96/000000/javascript--v1.png"
+                    alt="JS"
+                  />
                 </div>
                 <div className="timeline-content">
                   <h3 className="title">JAVASCRIPT</h3>
@@ -51,7 +60,10 @@ const Roadmap = (props) => {
               </div>
               <div className="timeline">
                 <div className="timeline-icon">
-                  <img src="https://img.icons8.com/ios-filled/96/000000/jquery.png" alt="JQUERY"/>
+                  <img
+                    src="https://img.icons8.com/ios-filled/96/000000/jquery.png"
+                    alt="JQUERY"
+                  />
                 </div>
                 <div className="timeline-content">
                   <h3 className="title">JQUERY</h3>

@@ -13,7 +13,7 @@ const common = [
   "compiler",
   "getTestCases",
   "executeContestChallenge",
-  "getSubmission"
+  "getSubmission",
 ];
 const student = [...common];
 const admin = [
@@ -39,9 +39,9 @@ const admin = [
   "exportSubmissions",
   "exportUsers",
   "adminDashboard",
-  "exportSampleUsersDetails"
+  "exportSampleUsersDetails",
 ];
 
 module.exports = {
-  API: {student, admin },
+  API: { student, admin },
 };

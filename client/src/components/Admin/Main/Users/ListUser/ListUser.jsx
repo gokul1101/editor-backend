@@ -108,15 +108,14 @@ const ListUser = (props) => {
         }
       );
       if (status === 200) {
-        console.log(data);
         const blob = new Blob([data], {
           type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
-
         FileDownload(blob, `${"UserDetails"}.xlsx`);
+        props.snackBar("Sample file downloaded", "success");
       }
     } catch (err) {
-      console.log(err);
+      props.snackBar(err.message, "error");
     }
   };
 
@@ -134,7 +133,7 @@ const ListUser = (props) => {
 
   const updateUser = async () => {
     try {
-      const { status, data } = await helperService.updateUser(
+      const { status } = await helperService.updateUser(
         {
           id: user._id,
           updateDetails,
@@ -153,7 +152,9 @@ const ListUser = (props) => {
           })
         );
       }
-    } catch (err) {}
+    } catch (err) {
+      props.snackBar(err.message, "error");
+    }
   };
   return (
     <>

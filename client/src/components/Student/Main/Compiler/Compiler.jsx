@@ -217,5 +217,3 @@ const Compiler = (props) => {
 };
 
 export default Compiler;
-
-

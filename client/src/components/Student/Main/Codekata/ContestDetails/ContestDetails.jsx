@@ -66,7 +66,7 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
     history.push(`/codekata/${id}`);
     sumbitContest();
   };
-  const sumbitContest = async (e) => {
+  const sumbitContest = async () => {
     setOpen(false);
     showLoader();
     let payload = {

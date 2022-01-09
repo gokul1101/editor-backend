@@ -12,8 +12,7 @@ const generateFile = async (code, input, lang) => {
   try {
     fs.mkdirSync(folderPath, { recursive: true });
     fs.writeFileSync(filePath, code);
-    if (input)
-      fs.writeFileSync(path.join(folderPath, "input.txt"), input);
+    if (input) fs.writeFileSync(path.join(folderPath, "input.txt"), input);
   } catch (e) {
     return Promise.reject({
       status: 500,

@@ -7,7 +7,11 @@ import Select from "@material-ui/core/Select";
 const SelectReducer = (props) => {
   return (
     <div>
-      <FormControl variant="outlined" size={props.size? props.size : "medium"} className={props.className}>
+      <FormControl
+        variant="outlined"
+        size={props.size ? props.size : "medium"}
+        className={props.className}
+      >
         <InputLabel id="demo-simple-select-outlined-label">
           {props.name}
         </InputLabel>

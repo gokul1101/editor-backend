@@ -139,9 +139,9 @@ const exportUsers = async (req, res) => {
 };
 const exportSampleUsersDetails = async (req, res) => {
   try {
-    const filePath = path.join(__dirname, "/../bulk_upload.xlsx") 
-    if(!fs.existsSync(filePath)){
-      return res.status(404).json({message:"File Not Found"})
+    const filePath = path.join(__dirname, "/../bulk_upload.xlsx");
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ message: "File Not Found" });
     }
     return res.sendFile(filePath);
   } catch (err) {

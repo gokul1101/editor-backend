@@ -13,11 +13,11 @@ const fileupload = require("express-fileupload");
 const path = require("path");
 //* MIDDLEWARES
 const corsOptions = {
-  "origin": "*",
-  "methods": "GET,POST",
-  "preflightContinue": false,
-  "optionsSuccessStatus": 204
-}
+  origin: "*",
+  methods: "GET,POST",
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,7 +28,7 @@ require("./middlewares/passport")(passport);
 //* Router Middleware
 app.use(require("./router/route"));
 
-// Making Build Folder as Public 
+// Making Build Folder as Public
 app.use(express.static(path.resolve(__dirname, "./client/build")));
 
 app.get("*", (request, response) => {

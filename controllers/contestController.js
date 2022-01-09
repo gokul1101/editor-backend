@@ -134,7 +134,12 @@ const getAllContests = async (req, res) => {
   const { page = 1, limit = 10, past } = req.query;
   try {
     // let { code, message } = await getAllContestService(page, limit);
-    let { status, message } = await getAllContestWithFilter(req.user._id,page, limit,past);
+    let { status, message } = await getAllContestWithFilter(
+      req.user._id,
+      page,
+      limit,
+      past
+    );
     res.status(status).send({ message });
   } catch (err) {
     res.status(err.status).send(err.message);

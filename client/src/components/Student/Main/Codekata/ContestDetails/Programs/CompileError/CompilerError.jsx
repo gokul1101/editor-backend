@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./CompilerError.css";
 const CompilerError = ({ errors }) => {
   return (

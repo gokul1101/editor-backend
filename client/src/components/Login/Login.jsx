@@ -6,15 +6,13 @@ import Hello from "../../images/Hello.svg";
 import CustomButton from "../Reducer/CustomButton/CustomButton";
 import { AuthContext } from "../../contexts/AuthContext";
 import helperService from "../../services/helperService";
-import { useHistory } from "react-router";
 import LocalLibraryRoundedIcon from "@material-ui/icons/LocalLibraryRounded";
 import { IconButton } from "@material-ui/core";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
 import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
 const Login = (props) => {
-  const history = useHistory();
   //** Context Consumer */
-  const [authState, authDispatch] = useContext(AuthContext);
+  const [, authDispatch] = useContext(AuthContext);
   const [change, setChange] = useState(false);
   const [register, setRegister] = useState("");
   const [password, setPassword] = useState("");
@@ -65,7 +63,7 @@ const Login = (props) => {
         authDispatch({ type: "SET_USER", payload: user });
         props.snackBar(message, "success");
       }
-    } catch (err) {      
+    } catch (err) {
       props.snackBar(err.message, "error");
     }
   };

@@ -125,8 +125,8 @@ const exportToExcel = async (rows, username, sheetName, columns) => {
   });
   worksheet.state = "visible";
   worksheet.properties.defaultColWidth = 30;
-  worksheet.columns = columns
-  worksheet.addRows(rows)
+  worksheet.columns = columns;
+  worksheet.addRows(rows);
   return workbook;
 };
 module.exports = {

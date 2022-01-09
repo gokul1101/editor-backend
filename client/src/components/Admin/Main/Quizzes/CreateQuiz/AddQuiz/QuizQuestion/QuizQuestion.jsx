@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import CustomButton from "../../../../../../Reducer/CustomButton/CustomButton";
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from "@material-ui/core/IconButton";
 
 const QuizQuestion = ({ question, index, updateDetails, deleteQuestion }) => {
   const [isActive, setIsActive] = useState(false);
@@ -12,17 +11,17 @@ const QuizQuestion = ({ question, index, updateDetails, deleteQuestion }) => {
         <div
           className="p-2 px-4 quiz-ques mr-auto d-flex m-1 flex-column"
           style={{ width: "90%", wordWrap: "break-word" }}
-          onClick={(e) => setIsActive(!isActive)}
+          onClick={() => setIsActive(!isActive)}
         >
           <span>{question.statement}</span>
           <span>Correct Option : {question.options.correctOption}</span>
         </div>
         <div className="edit-add-quiz p-2 d-flex align-items-end justify-content-end">
-          <IconButton onClick={() =>deleteQuestion(question)}>
-            <DeleteIcon  />
+          <IconButton onClick={() => deleteQuestion(question)}>
+            <DeleteIcon />
           </IconButton>
-          <IconButton  onClick={() => updateDetails(question)} >
-            <EditIcon/>
+          <IconButton onClick={() => updateDetails(question)}>
+            <EditIcon />
           </IconButton>
         </div>
       </div>

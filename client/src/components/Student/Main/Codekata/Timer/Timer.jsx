@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { useState, useEffect } from "react";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import "./Timer.css";
-const Timer = ({timeoutSubmit}) => {
+const Timer = ({ timeoutSubmit }) => {
   const [authState] = useContext(AuthContext);
   const ends_at = authState?.contest?.contest?.end_date;
   const calculateTimeLeft = () => {
@@ -18,7 +18,7 @@ const Timer = ({timeoutSubmit}) => {
         seconds: Math.floor((difference / 1000) % 60),
       };
     }
-    
+
     return timeLeft;
   };
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
@@ -26,7 +26,7 @@ const Timer = ({timeoutSubmit}) => {
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
-    if(Object.keys(timeLeft).length === 0) timeoutSubmit()
+    if (Object.keys(timeLeft).length === 0) timeoutSubmit();
     return () => clearTimeout(timer);
   });
 
@@ -40,9 +40,8 @@ const Timer = ({timeoutSubmit}) => {
   });
   return (
     <div className="d-flex align-items-center justify-content-center">
-      
       {timerComponents.length === 0 ? (
-        <span style={{lineHeight:'34px'}}>Time's up</span>
+        <span style={{ lineHeight: "34px" }}>Time's up</span>
       ) : (
         <div className="d-flex align-items-center justify-content-center countdown-timer">
           {timerComponents.map((component, index) => {

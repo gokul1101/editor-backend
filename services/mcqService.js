@@ -157,7 +157,7 @@ const deleteMCQ = async ({
   need_update = true,
 }) => {
   try {
-    console.log(question_id,answer_id,quiz_id,need_update)
+    console.log(question_id, answer_id, quiz_id, need_update);
     if (!question_id && !answer_id) {
       return Promise.reject({
         status: 406,

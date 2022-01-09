@@ -146,7 +146,7 @@ const updateContestService = async ({
       message: "Contest updated.",
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return Promise.reject({
       status: 500,
       message: "Unable to find contest.",
@@ -169,10 +169,14 @@ const getAllContestWithFilter = async (created_by, page, limit, past) => {
       .sort({ start_date: "desc" })
       .limit(limit * 1)
       .skip((page > 0 ? page - 1 : 1) * limit);
-      pastContests = await Promise.all(pastContests.map(async(contest)=>{
-        const submissionsCount = await Submission.countDocuments({contest_id:contest._id})
-        return {...contest._doc,submissionsCount}
-      }))
+    pastContests = await Promise.all(
+      pastContests.map(async (contest) => {
+        const submissionsCount = await Submission.countDocuments({
+          contest_id: contest._id,
+        });
+        return { ...contest._doc, submissionsCount };
+      })
+    );
     //**ongoing contests */
     if (past === "false") {
       ongoingContests = await Contest.find({

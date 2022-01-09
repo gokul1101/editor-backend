@@ -190,10 +190,16 @@ const Main = (props) => {
               [
                 <>
                   <Route path="/codekata/:id/quiz/:questionId" exact>
-                    <Quiz setSideToggle={setSideToggle} />
+                    <Quiz
+                      setSideToggle={setSideToggle}
+                      snackBar={props.snackBar}
+                    />
                   </Route>
                   <Route path="/codekata/:id/problem/:questionId" exact>
-                    <Programs setSideToggle={setSideToggle} />
+                    <Programs
+                      setSideToggle={setSideToggle}
+                      snackBar={props.snackBar}
+                    />
                   </Route>
                   <Route path="/codekata/:id" exact>
                     <ContestDetails

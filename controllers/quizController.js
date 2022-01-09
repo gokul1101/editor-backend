@@ -46,23 +46,23 @@ const getAllQuizzes = async (req, res) => {
     return res.status(err.status).send(err.message);
   }
 };
-const deleteQuiz = async (req,res) => {
-  try{
-    const response = await deleteQuizService(req.body)
-    res.status(response.status).send(response)
-  }catch(err){
-    console.log(err)
-    if(err.code){
-      err.code = 500
-      err.message = "Internal Server Error"
+const deleteQuiz = async (req, res) => {
+  try {
+    const response = await deleteQuizService(req.body);
+    res.status(response.status).send(response);
+  } catch (err) {
+    console.log(err);
+    if (err.code) {
+      err.code = 500;
+      err.message = "Internal Server Error";
     }
-    return res.status(err.status).send(err.message)
+    return res.status(err.status).send(err.message);
   }
-}
+};
 module.exports = {
   createQuiz,
   getQuiz,
   updateQuiz,
   getAllQuizzes,
-  deleteQuiz
+  deleteQuiz,
 };

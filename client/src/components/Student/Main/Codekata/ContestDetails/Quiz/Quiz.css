@@ -16,7 +16,7 @@ hr {
 .question-outoff .question-order {
   color: #00511b;
 }
-.question-up{
+.question-up {
   max-height: 254px;
   overflow-y: scroll;
 }

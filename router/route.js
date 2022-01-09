@@ -47,7 +47,11 @@ const {
   compile,
   executeContestChallenge,
 } = require("../controllers/compileController");
-const { exportSubmissions, exportUsers, exportSampleUsersDetails } = require("../controllers/exportController");
+const {
+  exportSubmissions,
+  exportUsers,
+  exportSampleUsersDetails,
+} = require("../controllers/exportController");
 
 //? Public Routes
 //* =============Login=============
@@ -243,11 +247,12 @@ router.post(
   routeAuth("exportSubmissions"),
   exportSubmissions
 );
-router.get("/api/v1/sample_excel/download",
-userAuth,
-routeAuth("exportSampleUsersDetails"),
-exportSampleUsersDetails
-)
+router.get(
+  "/api/v1/sample_excel/download",
+  userAuth,
+  routeAuth("exportSampleUsersDetails"),
+  exportSampleUsersDetails
+);
 //* ==============Compiler===============*//
 router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compile);
 router.post(
@@ -260,5 +265,10 @@ router.post(
 //* =============== Error Logs =========== *//
 router.get("/api/v1/errorLogs", userAuth, routeAuth("errorLogs"), getErrorLogs);
 //* =============== Admin Dashboard =========== *//
-router.get("/api/v1/user/admindashboard",userAuth,routeAuth("adminDashboard"),adminDashboard)
+router.get(
+  "/api/v1/user/admindashboard",
+  userAuth,
+  routeAuth("adminDashboard"),
+  adminDashboard
+);
 module.exports = router;

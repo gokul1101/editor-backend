@@ -10,8 +10,6 @@ import LinkIcon from "@material-ui/icons/Link";
 import AccessAlarmIcon from "@material-ui/icons/AccessAlarm";
 import PeopleIcon from "@material-ui/icons/People";
 import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
-import { IconButton, Tooltip } from "@material-ui/core";
 import ContestList from "./ContestList/ContestList";
 const Contests = (props) => {
   const [loader, showLoader, hideLoader] = useLoader();
@@ -88,11 +86,13 @@ const Contests = (props) => {
       </div>
       <ContestList
         contests={contests?.ongoing}
+        contestName={"current"}
         setContest={setContest}
         snackBar={props.snackBar}
       />
       <ContestList
         contests={contests?.upcoming}
+        contestName={"upcoming"}
         setContest={setContest}
         snackBar={props.snackBar}
       />

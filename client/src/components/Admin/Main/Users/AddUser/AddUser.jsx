@@ -66,18 +66,18 @@ const AddUser = (props) => {
         }
       );
       if (status === 201) {
-        if(data?.errorLogs?.errorLogs.length >= 0)
-          setLogs(data.errorLogs);
-          return true;
+        if (data?.errorLogs?.errorLogs.length >= 0) setLogs(data.errorLogs);
+        return true;
       }
-    } catch ({message}) {
+    } catch ({ message }) {
       props.snackBar(message, "error");
     }
     return false;
   };
   const createUser = async () => {
-    //Regex
+    /* eslint-disable no-useless-escape */
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    /* eslint-disable no-useless-escape */
     let username = /^[a-zA-Z\_]{3,25}$/;
 
     if (!username.test(user.name)) {
@@ -195,7 +195,7 @@ const AddUser = (props) => {
                 name="Stream"
                 value={user.stream_id}
                 handleSelect={(e) =>
-                  setUser({ ...user, stream_id: e.target.value, course_id : "" })
+                  setUser({ ...user, stream_id: e.target.value, course_id: "" })
                 }
               />
             </div>

@@ -11,7 +11,7 @@ import React from "react";
 // import Pagination from "@material-ui/lab/Pagination";
 import "./Articles.css";
 // import { useState, useEffect } from "react";
-const Articles = (props) => {
+const Articles = () => {
   // const useStyles = makeStyles((theme) => ({
   //   root: {
   //     "& .Mui-selected": {

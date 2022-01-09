@@ -5,8 +5,8 @@ import AddUser from "./AddUser/AddUser";
 import ListUser from "./ListUser/ListUser";
 import GoBack from "../../../Reducer/GoBack/GoBack";
 import PageNotFound from "../../../Reducer/PageNotFound/404";
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import ListAltIcon from '@material-ui/icons/ListAlt';
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import ListAltIcon from "@material-ui/icons/ListAlt";
 const Users = (props) => {
   const history = useHistory();
   return (
@@ -24,9 +24,8 @@ const Users = (props) => {
                 to="/users/add-user"
                 activeClassName="active-user-pill"
               >
-                <AddCircleIcon/>
+                <AddCircleIcon />
                 <span className="pl-1">Add user</span>
-                 
               </NavLink>
             </li>
             <li className="list-group-item user-group-pill">
@@ -36,7 +35,7 @@ const Users = (props) => {
                 to="/users/list-user"
                 activeClassName="active-user-pill"
               >
-                <ListAltIcon/>
+                <ListAltIcon />
                 <span className="pl-1">List user</span>
               </NavLink>
             </li>

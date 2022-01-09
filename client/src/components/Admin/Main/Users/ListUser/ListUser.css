@@ -47,10 +47,9 @@
   color: red;
 }
 
-
-.d-load-btn{
- height: 40px;
- background-color: #B0D7C0;
+.d-load-btn {
+  height: 40px;
+  background-color: #b0d7c0;
 }
 
 .has-search .form-control {
@@ -69,7 +68,7 @@
   color: #aaa;
 }
 
-.highlight-text{
+.highlight-text {
   color: #21a366;
 }
 /* 
@@ -81,7 +80,6 @@
   background-color:#fff;
   } */
 
-
-  .highlight-text{
-    color: #21a366 !important;
-  }
+.highlight-text {
+  color: #21a366 !important;
+}

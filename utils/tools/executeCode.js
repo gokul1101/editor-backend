@@ -26,7 +26,7 @@ const executeCode = (filePath, input) => {
       command = `javac ${filePath} && java -cp ${path.dirname(filePath)} Main`;
   }
   return new Promise((resolve, reject) => {
-    exec(command, {maxBuffer: 1024 * 1024}, (error, stdout, stderr) => {
+    exec(command, { maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
       if (error) {
         stderr = stderr.split(filePath);
         stderr = stderr.filter((err) => err !== "").map((err) => `Main ${err}`);

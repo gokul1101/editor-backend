@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -8,8 +8,8 @@ import Slide from "@material-ui/core/Slide";
 import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
 import { useMediaQuery, useTheme } from "@material-ui/core";
-import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
-import BugReportRoundedIcon from '@material-ui/icons/BugReportRounded';
+import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
+import BugReportRoundedIcon from "@material-ui/icons/BugReportRounded";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -33,19 +33,19 @@ const ErrorLogDialogBox = ({ open, handleClose, log }) => {
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
           <span className="model-correct p-2">
-            <CheckCircleRoundedIcon/>
-            <span className="ml-2">{+log?.totalLogs - +log?.errorLogs?.length} students data created
-            successfully</span>
-            
+            <CheckCircleRoundedIcon />
+            <span className="ml-2">
+              {+log?.totalLogs - +log?.errorLogs?.length} students data created
+              successfully
+            </span>
           </span>
         </DialogContentText>
         <DialogContentText id="alert-dialog-slide-description">
           <span className="model-wrong p-2">
-            <BugReportRoundedIcon/>
+            <BugReportRoundedIcon />
             <span className="ml-2">
-            {+log?.errorLogs?.length} students data having some error
+              {+log?.errorLogs?.length} students data having some error
             </span>
-            
           </span>
         </DialogContentText>
         <DialogContentText id="alert-dialog-slide-description" className="mt-3">

@@ -11,9 +11,9 @@ import { parseCode, template } from "../../../../../../services/utils";
 import GoBack from "../../../../../Reducer/GoBack/GoBack";
 import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import DialogBox from "../../../../../Reducer/DialogBox/DialogBox";
-import CodeRoundedIcon from '@material-ui/icons/CodeRounded';
-import DoneAllRoundedIcon from '@material-ui/icons/DoneAllRounded';
-import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
+import CodeRoundedIcon from "@material-ui/icons/CodeRounded";
+import DoneAllRoundedIcon from "@material-ui/icons/DoneAllRounded";
+import FiberManualRecordRoundedIcon from "@material-ui/icons/FiberManualRecordRounded";
 const Programs = (props) => {
   let history = useHistory();
   const { id, questionId } = useParams();
@@ -25,7 +25,7 @@ const Programs = (props) => {
     );
     return problem || {};
   };
-  const [challenge, setChallenge] = useState(findChallenge());
+  const [challenge] = useState(findChallenge());
   let [testCases, setTestCases] = useState({});
   const [themeName, setThemeName] = useState("nord_dark");
   const [language, setLanguage] = useState("java");
@@ -51,13 +51,15 @@ const Programs = (props) => {
   const getTestCases = async () => {
     try {
       const {
-        data: { message, testcases },
+        data: { testcases },
       } = await helperService.getTestCases(
         { questionId },
         { headers: { Authorization: authState.user.token } }
       );
       setTestCases(testcases || {});
-    } catch (err) {}
+    } catch (err) {
+      props.snackBar(err.message, "error");
+    }
   };
   const setCodeInLocal = (code) => {
     let parsedCode = parseCode(code);
@@ -89,6 +91,7 @@ const Programs = (props) => {
         setOutput({ sample: data?.sample || [], hidden: data?.hidden || [] });
       }
     } catch (err) {
+      props.snackBar(err.message, "error");
     } finally {
       setIsLoading(false);
     }
@@ -134,7 +137,10 @@ const Programs = (props) => {
           <div className="w-100 d-flex flex-row-reverse mt-3 mb-2">
             <div>
               <h5 className="mt-2 score-card">
-                Maximum Score : <span className="program-score p-2">{challenge?.max_score}</span>
+                Maximum Score :{" "}
+                <span className="program-score p-2">
+                  {challenge?.max_score}
+                </span>
               </h5>
             </div>
             <div className="w-25 mx-2">
@@ -240,12 +246,11 @@ const Programs = (props) => {
                     </span>
                     <div className="constraints-content d-flex flex-column mt-2">
                       <span className="mt-2">
-                        <FiberManualRecordRoundedIcon/>
+                        <FiberManualRecordRoundedIcon />
                         <span className="constraints-highlight pr-2 pl-2 mr-1 ">
                           {challenge?.constraints}
                         </span>
                       </span>
-                     
                     </div>
                   </div>
                   <div className="problem-input d-flex flex-column mt-4 mb-2">
@@ -313,13 +318,15 @@ const Programs = (props) => {
                   className="btn-hover color-11 mr-2 d-flex align-items-center py-2 px-3"
                   onClickHandler={compile}
                 >
-                 <CodeRoundedIcon/><span className="ml-2">RUN CODE</span>
+                  <CodeRoundedIcon />
+                  <span className="ml-2">RUN CODE</span>
                 </CustomButton>
                 <CustomButton
                   className="btn-hover color-11 d-flex align-items-center py-2 px-3"
                   onClickHandler={submitChallenge}
                 >
-                 <DoneAllRoundedIcon/><span className="ml-2">SUBMIT</span>
+                  <DoneAllRoundedIcon />
+                  <span className="ml-2">SUBMIT</span>
                 </CustomButton>
               </div>
             </div>

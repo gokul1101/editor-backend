@@ -271,7 +271,7 @@ const helperService = {
       });
     }
   },
-  updateQuiz : async (payload,config) => {
+  updateQuiz: async (payload, config) => {
     try {
       const { data, status } = await axios.post(
         `${baseURL}/api/v1/quiz/update`,
@@ -291,7 +291,7 @@ const helperService = {
       });
     }
   },
-  deleteQuiz : async (payload,config) => {
+  deleteQuiz: async (payload, config) => {
     try {
       const { status, data } = await axios.post(
         `${baseURL}/api/v1/quiz/delete`,
@@ -326,7 +326,7 @@ const helperService = {
     } catch (err) {
       return Promise.reject({
         status: err.response.status,
-        data: err.response.data,
+        message: err.response.data.message,
       });
     }
   },
@@ -386,7 +386,7 @@ const helperService = {
     } catch (err) {
       return Promise.reject({
         status: err.response.status,
-        data: err.response.data,
+        message: err.response.data.message,
       });
     }
   },
@@ -406,7 +406,7 @@ const helperService = {
     } catch (err) {
       return Promise.reject({
         status: err.response.status,
-        data: err.response.data,
+        message: err.response.data.message,
       });
     }
   },
@@ -574,7 +574,7 @@ const helperService = {
   createSubmission: async (payload, config) => {
     try {
       const {
-        data: { code, message },
+        data: { message },
         status,
       } = await axios.post(
         `${baseURL}/api/v1/submission/create`,
@@ -588,7 +588,7 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err.response)
+      console.log(err.response);
       return Promise.reject({
         status: err.response.status,
         message: err.response.data,
@@ -634,12 +634,9 @@ const helperService = {
       });
     }
   },
-  downloadStatistics : async (payload, config) => {
+  downloadStatistics: async (payload, config) => {
     try {
-      const {
-        data,
-        status,
-      } = await axios.post(
+      const { data, status } = await axios.post(
         `${baseURL}/api/v1/submission/export`,
         payload,
         config
@@ -651,19 +648,16 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err.response)
+      console.log(err.response);
       return Promise.reject({
         status: err.response.status,
         message: err.response.data,
       });
     }
   },
-  downloadStudentsDetails : async (payload, config) => {
+  downloadStudentsDetails: async (payload, config) => {
     try {
-      const {
-        data,
-        status,
-      } = await axios.post(
+      const { data, status } = await axios.post(
         `${baseURL}/api/v1/user/export`,
         payload,
         config
@@ -675,19 +669,16 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err.response)
+      console.log(err.response);
       return Promise.reject({
         status: err.response.status,
         message: err.response.data,
       });
     }
   },
-  adminDashboard : async (payload, config) => {
+  adminDashboard: async (payload, config) => {
     try {
-      const {
-        data,
-        status,
-      } = await axios.get(
+      const { data, status } = await axios.get(
         `${baseURL}/api/v1/user/admindashboard`,
         config
       );
@@ -698,19 +689,16 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err.response)
+      console.log(err.response);
       return Promise.reject({
         status: err.response.status,
         message: err.response.data,
       });
     }
   },
-  downloadSampleExcel : async (payload, config) => {
+  downloadSampleExcel: async (payload, config) => {
     try {
-      const {
-        data,
-        status,
-      } = await axios.get(
+      const { data, status } = await axios.get(
         `${baseURL}/api/v1/sample_excel/download`,
         config
       );
@@ -721,12 +709,12 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err.response)
+      console.log(err.response);
       return Promise.reject({
         status: err.response.status,
         message: err.response.data,
       });
     }
-  }  
+  },
 };
 export default helperService;

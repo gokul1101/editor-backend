@@ -18,7 +18,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import GroupIcon from "@material-ui/icons/Group";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import WarningIcon from "@material-ui/icons/Warning";
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 const Main = (props) => {
   const [authState, authDispatch] = useContext(AuthContext);
   const [sideToggle] = useState(false);
@@ -92,7 +92,7 @@ const Main = (props) => {
                 className="d-flex nav-link dash-li"
               >
                 <div className="px-3 dash-icon shake">
-                  <WarningIcon/>
+                  <WarningIcon />
                 </div>
                 <span className="hide-span">Error Logs</span>
                 <span className="tooltip">Error Logs</span>
@@ -110,7 +110,10 @@ const Main = (props) => {
                   }}
                   className="nav-link dash-li"
                 >
-                  <ExitToAppIcon className=" dash-icon shake"  style={{ position: "relative", left: "-40px" }}/>
+                  <ExitToAppIcon
+                    className=" dash-icon shake"
+                    style={{ position: "relative", left: "-40px" }}
+                  />
                   <span
                     className="hide-span"
                     style={{ position: "relative", left: "-20px" }}
@@ -150,7 +153,7 @@ const Main = (props) => {
                 </Route>
               </Switch>
             </Route>
-            <Route path="/quizzes">              
+            <Route path="/quizzes">
               <Route path={`/quizzes/:id/add-question`}>
                 <AddQuiz snackBar={props.snackBar} />
               </Route>

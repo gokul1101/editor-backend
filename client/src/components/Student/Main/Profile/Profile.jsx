@@ -10,7 +10,7 @@ import GoBack from "../../../Reducer/GoBack/GoBack";
 import PasswordField from "../../../Reducer/PasswordField/PasswordField";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import helperService from "../../../../services/helperService";
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     border: "1px solid #1E2D64",
   },
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const Profile = ({setSideToggle, ...props}) => {
+const Profile = ({ setSideToggle, ...props }) => {
   const history = useHistory();
   const classes = useStyles();
   const [authState, authDispatch] = useContext(AuthContext);
@@ -51,7 +51,9 @@ const Profile = ({setSideToggle, ...props}) => {
     studentDetails();
   }, [authState]);
   const userEditedDetails = async () => {
+    /* eslint-disable no-useless-escape */
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    /* eslint-disable no-useless-escape */
     let username = /^[a-zA-Z\_]{3,25}$/;
 
     if (!username.test(updateDetails.name ?? user.name)) {

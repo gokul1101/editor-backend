@@ -28,7 +28,10 @@ const Challenges = () => {
                 <h5>Lorem Ipsum is simply dummy text to the heaven...</h5>
               </span>
               <span className="section_right">
-                <Link to="/challenges/challenges-dashboard/create-challenge" className="card_but">
+                <Link
+                  to="/challenges/challenges-dashboard/create-challenge"
+                  className="card_but"
+                >
                   <i className="fa fa-pen"></i>
                 </Link>
               </span>
@@ -40,4 +43,4 @@ const Challenges = () => {
   );
 };
 
-export default Challenges
+export default Challenges;

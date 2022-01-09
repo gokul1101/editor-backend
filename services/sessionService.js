@@ -1,6 +1,6 @@
 const Session = require("../models/sessions");
 const Contest = require("../models/contests");
-const {setTime} = require("../utils/helper")
+const { setTime } = require("../utils/helper");
 const createSessionService = async ({ user_id, contest_id }) => {
   try {
     let contest = await Contest.findById(contest_id);
@@ -29,7 +29,7 @@ const createSessionService = async ({ user_id, contest_id }) => {
     return Promise.resolve({
       status: 201,
       message: "Session create successfully.",
-      newSession
+      newSession,
     });
   } catch (err) {
     console.log(err);
@@ -62,7 +62,7 @@ const getSessionService = async (sessionDetails) => {
 };
 const updateSessionService = async (contest_id, user_id, ends_at) => {
   try {
-    let session = await Session.findOne({contest_id, user_id});
+    let session = await Session.findOne({ contest_id, user_id });
     if (!session)
       return Promise.reject({
         status: 404,
@@ -114,5 +114,5 @@ module.exports = {
   createSessionService,
   getSessionService,
   updateSessionService,
-  getAllSessionsService
+  getAllSessionsService,
 };

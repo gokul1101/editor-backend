@@ -45,7 +45,7 @@ module.exports = (passport) => {
           },
         ]);
         user = serializeUser(user);
-        (user && !user.deleted_at) ? done(null, { ...user }) : done(null, false);
+        user && !user.deleted_at ? done(null, { ...user }) : done(null, false);
       } catch (err) {
         done(null, false);
       }

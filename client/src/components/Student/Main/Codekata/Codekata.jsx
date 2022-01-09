@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import CodeIcon from '@material-ui/icons/Code';
+import CodeIcon from "@material-ui/icons/Code";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import helperService from "../../../../services/helperService";
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
@@ -28,7 +28,7 @@ const Codekata = ({ setSideToggle, ...props }) => {
       showLoader();
       const {
         status,
-        data : {contest, message}
+        data: { contest, message },
       } = await helperService.getContestWithCode(
         { code },
         { headers: { Authorization: authState.user.token } }
@@ -45,7 +45,7 @@ const Codekata = ({ setSideToggle, ...props }) => {
         history.push(`/codekata/${code}`);
       }
       props.snackBar(message, "success");
-    } catch ({message}) {
+    } catch ({ message }) {
       props.snackBar(message, "error");
     } finally {
       hideLoader();
@@ -80,7 +80,8 @@ const Codekata = ({ setSideToggle, ...props }) => {
               className="btn-hover color-11 mt-3 d-flex align-items-center py-2 px-3"
               onClickHandler={submitCode}
             >
-              <CodeIcon/><span className="ml-2">ENTER CODE</span>
+              <CodeIcon />
+              <span className="ml-2">ENTER CODE</span>
             </CustomButton>
           </div>
         </div>

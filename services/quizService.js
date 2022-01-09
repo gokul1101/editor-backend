@@ -105,7 +105,7 @@ const deleteQuizService = async ({ id, name }) => {
     );
     if (quiz.max_score)
       await updateContestService({
-        max_score: -(quiz.max_score),
+        max_score: -quiz.max_score,
         id: quiz.contest_id,
       });
 

@@ -16,7 +16,7 @@ const CreateContest = (props) => {
     return "";
   };
   //**state declartion start */
-  const [authState, authDispatch] = useContext(AuthContext);
+  const [authState] = useContext(AuthContext);
   const [name, setName] = useState(authState?.contest?.name || "");
   const [date, setDate] = useState({
     start_date: convertDate(authState?.contest?.start_date),

@@ -11,9 +11,9 @@ import Img1 from "../../../../images/img-1 (1).svg";
 import Img2 from "../../../../images/img-1 (2).svg";
 import Img3 from "../../../../images/img-1 (3).svg";
 import { AuthContext } from "../../../../contexts/AuthContext";
-import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
-const Dashboard = (props) => {
-  const [authState, ] = useContext(AuthContext);
+import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
+const Dashboard = () => {
+  const [authState] = useContext(AuthContext);
 
   return (
     <div className="container-fluid dashboard">
@@ -49,7 +49,7 @@ const Dashboard = (props) => {
                   <span className="header-article mb-3">Web Developer</span>
                   <NavLink to="/roadmap">
                     <span className="span-arrow">
-                      <PlayCircleFilledIcon/> Learn more..
+                      <PlayCircleFilledIcon /> Learn more..
                     </span>
                   </NavLink>
                 </div>
@@ -76,7 +76,7 @@ const Dashboard = (props) => {
                   <span className="problem-span mb-2">For students</span>
                   <NavLink to="/codekata">
                     <span className="arrow-span">
-                    <PlayCircleFilledIcon/> Learn more..
+                      <PlayCircleFilledIcon /> Learn more..
                     </span>
                   </NavLink>
                 </div>
