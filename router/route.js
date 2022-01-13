@@ -64,8 +64,8 @@ router.post(
 //* User registration
 router.post(
   "/api/v1/user/create",
-  userAuth,
-  routeAuth("createUser"),
+  // userAuth,
+  // routeAuth("createUser"),
   createUser
 );
 

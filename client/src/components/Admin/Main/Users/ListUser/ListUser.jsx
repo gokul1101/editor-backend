@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const limit = 3;
+const limit = 10;
 const ListUser = (props) => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
