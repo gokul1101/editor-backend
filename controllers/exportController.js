@@ -2,7 +2,15 @@ const fs = require("fs");
 const path = require("path");
 const Submission = require("../models/submissions");
 const User = require("../models/users");
-const { exportToExcel } = require("../utils/helper");
+const {
+  exportToExcel,
+  mapRoleId,
+  mapStreamId,
+  mapCourseId,
+  mapCollegeId,
+  mapBatchId,
+  mapGenderId,
+} = require("../utils/helper");
 const exportSubmissions = async (req, res) => {
   const { contest_id } = req.body;
   try {
@@ -48,8 +56,18 @@ const exportSubmissions = async (req, res) => {
 };
 const exportUsers = async (req, res) => {
   try {
-    const { queries } = req.body;
-    const users = await User.find()
+    let { queries = {} } = req.body;
+    queries.role_id = await mapRoleId("student");
+    if (queries.stream_id)
+      queries.stream_id = await mapStreamId(queries.stream_id);
+    if (queries.course_id)
+      queries.mapCourseId = await mapCourseId(queries.mapCourseId);
+    if (queries.college_id)
+      queries.college_id = await mapCollegeId(queries.college_id);
+    if (queries.batch_id) queries.batch_id = await mapBatchId(queries.batch_id);
+    if (queries.gender_id)
+      queries.gender_id = await mapGenderId(queries.gender_id);
+    const users = await User.find(queries)
       .sort({ regno: "asc" })
       .populate([
         {
@@ -124,7 +142,6 @@ const exportUsers = async (req, res) => {
       "UsersDetails",
       columns
     );
-    // console.log(req.get("X-username"))
     res.set({
       "Content-disposition": `attachment;filename=${username}.xlsx`,
       "Content-Type":

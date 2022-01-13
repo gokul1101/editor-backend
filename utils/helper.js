@@ -95,7 +95,6 @@ const mapDifficultyId = async (level) => {
     if (difficult) return Promise.resolve(difficult._id);
     throw "Invalid difficulty level name found";
   } catch (err) {
-    // console.log(err);
     return Promise.reject(err);
   }
 };
@@ -111,8 +110,6 @@ const setTime = (date, duration) => {
   date.setTime(date.getTime() + seconds * 1000);
   return date;
 };
-
-const modifyData = (data) => {};
 const exportToExcel = async (rows, username, sheetName, columns) => {
   console.log(rows, username, sheetName, columns);
   let workbook = new excel.Workbook();

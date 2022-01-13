@@ -20,6 +20,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import EditIcon from "@material-ui/icons/Edit";
 import RestoreFromTrashIcon from "@material-ui/icons/RestoreFromTrash";
+import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const limit = 3;
+const limit = 10;
 const ListUser = (props) => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -167,25 +168,84 @@ const ListUser = (props) => {
               <h6 className="ml-4 font-weight-bolder mt-3 highlight-text ">
                 Filter By :{" "}
               </h6>
-              {/* <div className="dropdown mx-3">
-                <button
-                  className="drop-button dropdown-toggle"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Ascending
-                </button>
-                <div
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <a className="dropdown-item">Desending</a>
-                  <a className="dropdown-item">Random</a>
+              <div className="dropdown mx-3">
+                <div className="batch">
+                  <button
+                    className="drop-button dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Batch
+                  </button>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    <a className="dropdown-item">Desending</a>
+                    <a className="dropdown-item">Random</a>
+                  </div>
                 </div>
-              </div> */}
+                <div className="batch">
+                  <button
+                    className="drop-button dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Ascending
+                  </button>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    <a className="dropdown-item">Desending</a>
+                    <a className="dropdown-item">Random</a>
+                  </div>
+                </div>
+                <div className="batch">
+                  <button
+                    className="drop-button dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Ascending
+                  </button>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    <a className="dropdown-item">Desending</a>
+                    <a className="dropdown-item">Random</a>
+                  </div>
+                </div>
+                <div className="batch">
+                  <button
+                    className="drop-button dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Ascending
+                  </button>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    <a className="dropdown-item">Desending</a>
+                    <a className="dropdown-item">Random</a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div className="d-flex">
@@ -199,15 +259,15 @@ const ListUser = (props) => {
             </div>
 
             <div>
-              <button
-                className="pr-4 pl-4 mr-2 d-load-btn ml-3"
+              <CustomButton
+                className="btn-hover color-11 d-flex align-items-center py-2 px-3"
                 onClick={downloadStudentsDetails}
               >
                 <GetAppIcon />
                 <span className="ml-2 font-weight-bolder">
                   Download Details
                 </span>
-              </button>
+              </CustomButton>
             </div>
           </div>
         </div>

@@ -86,13 +86,13 @@ const Contests = (props) => {
       </div>
       <ContestList
         contests={contests?.ongoing}
-        contestName={"current"}
+        contestName={"Current"}
         setContest={setContest}
         snackBar={props.snackBar}
       />
       <ContestList
         contests={contests?.upcoming}
-        contestName={"upcoming"}
+        contestName={"Upcoming"}
         setContest={setContest}
         snackBar={props.snackBar}
       />

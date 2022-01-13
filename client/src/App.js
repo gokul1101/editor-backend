@@ -72,7 +72,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    document.addEventListener("contextmenu", (e) => disabledEvent(e));
+    // document.addEventListener("contextmenu", (e) => disabledEvent(e));
     document.addEventListener("keydown", (e) => {
       if (e.ctrlKey && (e.key === "u" || e.key === "U")) disabledEvent(e);
       if (e.ctrlKey && e.shiftKey && (e.key === "i" || e.key === "I"))

@@ -26,7 +26,7 @@ const Main = (props) => {
     props.fetchUser();
   }, []);
   return (
-    <div className="container-fluid p-0">
+    <div className="container-fluid h-100 p-0">
       <div className="d-flex">
         <div
           className={`${
