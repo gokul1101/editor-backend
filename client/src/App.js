@@ -56,9 +56,9 @@ const App = () => {
           payload: { ...data["userDetails"] },
         });
       }
-    } catch (err) {
-      if (err.status === 401) unauthorized(err.data);
-      snackBar(err.data, "error");
+    } catch ({ status, message }) {
+      if (status === 401) unauthorized(message);
+      snackBar(message, "error");
     }
   };
   // const disabledEvent = (e) => {

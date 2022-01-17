@@ -7,7 +7,6 @@ const ErrorLogs = require("../models/errorLogs");
 const { createUserService } = require("../services/userService");
 const { serializeUser } = require("../utils/Auth");
 let {
-  validate,
   mapBatchId,
   mapCollegeId,
   mapCourseId,
@@ -16,24 +15,34 @@ let {
   mapStreamId,
   UUID,
 } = require("../utils/helper");
-const Role = require("../models/roles");
 const { contestSubmissionsChartService } = require("../services/chartServices");
-const { default: consolaGlobalInstance } = require("consola");
+const { encryption, decryption } = require("../utils/crypto-js");
 //? To register the User
 const createUser = async (req, res) => {
-  let userDetails = req.body;
+  let { encryptedData } = req.body;
+  let userDetails = decryption(encryptedData);
   try {
-    let reponse = await createUserService(userDetails);
-    return res.status(reponse.status).json(reponse);
-  } catch (err) {
+    let { status, message } = await createUserService(userDetails);
+    message = encryption(message);
+    return res.status(status).json({ message });
+  } catch ({ status, message }) {
     //! Error in creating user
-    return res.status(err.status).send(err.message);
+    message = encryption(message);
+    return res.status(status).json(message);
   }
 };
 const getUser = async (req, res) => {
   let { user } = req;
-  let userDetails = user;
   const { id, regno } = req.query;
+  if (id && JSON.stringify(id) === JSON.stringify(user._id)) {
+    return res.status(200).json(
+      encryption({
+        user,
+        message: "User found",
+      })
+    );
+  }
+  let userDetails = user;
   try {
     if (id || regno) {
       if (id) {
@@ -108,32 +117,37 @@ const getUser = async (req, res) => {
     }
     //! User not found
     if (!user)
-      return res.status(404).json({
-        message: `user not found`,
-        success: false,
-      });
+      return res.status(404).json(
+        encryption({
+          message: `user not found`,
+        })
+      );
     //! Student cannot access admin data
     if (req.user.role_id === "student" && userDetails.role_id === "admin")
-      return res.status(401).json({
-        message: `Unauthorized access`,
-        success: false,
-      });
-    res.status(200).json({
-      userDetails,
-      message: "User found",
-      success: true,
-    });
+      return res.status(401).json(
+        encryption({
+          message: `Unauthorized access`,
+        })
+      );
+    return res.status(200).json(
+      encryption({
+        userDetails,
+        message: "User found",
+      })
+    );
   } catch (err) {
     //! Error in finding user details
     console.log(err);
-    res.status(500).json({
-      message: `unable to find user details`,
-      success: false,
-    });
+    return res.status(500).json(
+      encryption({
+        message: `unable to find user details`,
+      })
+    );
   }
 };
 const updateUser = async (req, res) => {
-  let { id, updateDetails } = req.body;
+  let { encryptedData } = req.body;
+  let { id, updateDetails } = decryption(encryptedData);
   try {
     let user = await User.findById(id).populate([
       {
@@ -170,16 +184,18 @@ const updateUser = async (req, res) => {
 
     //! User not found
     if (!user || user.deleted_at)
-      return res.status(404).json({
-        message: `user not found`,
-        success: false,
-      });
+      return res.status(404).json(
+        encryption({
+          message: `user not found`,
+        })
+      );
     //! Student cannot access admin data
     if (req.user.role_id === "student" && user.role_id.name === "admin")
-      return res.status(401).json({
-        message: `Unauthorized access`,
-        success: false,
-      });
+      return res.status(401).json(
+        encryption({
+          message: `Unauthorized access`,
+        })
+      );
     //* Only admins can change these data
     if (req.user.role_id === "admin") {
       if (updateDetails.regno) user.regno = updateDetails.regno;
@@ -205,44 +221,49 @@ const updateUser = async (req, res) => {
     if (updateDetails.batch)
       user.batch_id = await mapBatchId(updateDetails.batch);
     await user.save();
-    res.status(200).json({
-      message: "User updated",
-      success: true,
-    });
+    res.status(200).json(
+      encryption({
+        message: "Updated Successfully.",
+      })
+    );
   } catch (err) {
     //! Error in finding user details
     console.log(err);
-    res.status(500).json({
-      message: `unable to find user details`,
-      success: false,
-    });
+    res.status(500).json(
+      encryption({
+        message: `Error in Updating User.`,
+      })
+    );
   }
 };
 const deleteUser = async (req, res) => {
   try {
     let user = await User.findOne({
-      regno: req.params.id,
+      regno: req.query.regno,
       deleted_at: null,
     }).populate({ path: "role_id", model: "role", select: "name" });
     //! User not found
     if (!user || user.deleted_at)
-      return res.status(404).json({
-        message: `user not found`,
-        success: false,
-      });
+      return res.status(404).json(
+        encryption({
+          message: `user not found`,
+        })
+      );
     //! Student cannot access admin data
     if (req.user.role_id === "student" && user.role_id.name === "admin")
-      return res.status(401).json({
-        message: `Unauthorized access`,
-        success: false,
-      });
+      return res.status(401).json(
+        encryption({
+          message: `Unauthorized access`,
+        })
+      );
     user.deleted_at = Date.now();
     user.depopulate();
     await user.save();
-    res.status(204).json({
-      message: "User deleted",
-      success: true,
-    });
+    res.status(204).json(
+      encryption({
+        message: "User deleted",
+      })
+    );
   } catch (err) {
     //! Error in finding user details
     console.log(err);
@@ -305,7 +326,7 @@ const createBulkUsers = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const { page = 1, limit = 10, role = "student" } = req.query;
-    const role_id = (await Role.findOne({ name: role }))._id;
+    const role_id = await mapRoleId("student");
     let response = {},
       query = { role_id, deleted_at: null };
     const count = await User.countDocuments(query);
@@ -350,13 +371,16 @@ const getAllUsers = async (req, res) => {
     response.users = users
       .filter((user) => user.role_id.name === "student")
       .map((user) => serializeUser(user));
+    response = encryption(response);
     res.status(200).json(response);
   } catch (err) {
     //! Error in finding user details
     console.log(err);
-    res.status(500).json({
-      message: `unable to get user details`,
-    });
+    res.status(500).json(
+      encryption({
+        message: `Error in getting user details`,
+      })
+    );
   }
 };
 const adminDashboard = async (req, res) => {
@@ -367,17 +391,22 @@ const adminDashboard = async (req, res) => {
     const usersCount = await User.countDocuments({ college_id });
     const { contestSubmissions, message, status } =
       await contestSubmissionsChartService(_id);
-    res.status(status).json({
-      dashboarDetails: { contestSubmissions, usersCount },
-      message,
-      status,
-      success: true,
-    });
+    res.status(status).json(
+      encryption({
+        dashboarDetails: { contestSubmissions, usersCount },
+        message,
+        status,
+        success: true,
+      })
+    );
   } catch (err) {
     console.log(err);
-    return res.status(500).send("Internal Server Error");
+    return res
+      .status(500)
+      .json(encryption({ message: "Internal Server Error" }));
   }
 };
+
 module.exports = {
   createUser,
   getUser,

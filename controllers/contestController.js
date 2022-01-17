@@ -13,14 +13,18 @@ const {
   getSessionService,
   createSessionService,
 } = require("../services/sessionService");
+const { encryption, decryption } = require("../utils/crypto-js");
 
 const createContest = async (req, res) => {
-  let contest = req.body;
+  let { encryptedData } = req.body;
+  let contest = decryption(encryptedData);
   try {
-    let { status, message } = await createContestService(contest);
-    res.status(status).send({ message });
+    let { status, ...response } = await createContestService(contest);
+    response = encryption(response);
+    return res.status(status).json({ response });
   } catch ({ status, message }) {
-    res.status(status).send(message);
+    message = encryption(message);
+    return res.status(status).json(message);
   }
 };
 const getContest = async (req, res) => {

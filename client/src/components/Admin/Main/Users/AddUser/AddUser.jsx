@@ -120,7 +120,10 @@ const AddUser = (props) => {
     try {
       showLoader();
 
-      const { status, data } = await helperService.createUser(
+      const {
+        status,
+        data: { message },
+      } = await helperService.createUser(
         {
           ...user,
           college_id: user.college_id,
@@ -133,10 +136,10 @@ const AddUser = (props) => {
       );
       if (status === 201) {
         hideLoader();
-        props.snackBar(data.message, "success");
+        props.snackBar(message, "success");
       }
-    } catch (err) {
-      props.snackBar(err.data, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
       hideLoader();
     }
   };

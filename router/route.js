@@ -54,60 +54,50 @@ const {
 } = require("../controllers/exportController");
 
 //? Public Routes
-//* =============Login=============
-router.post(
-  "/api/v1/login",
-  async (req, res) => await userLogin(req.body, res)
-);
+//* =============Login=============  *//
+router.post("/api/v1/login", userLogin);
 
 //? Private Routes
-//* User registration
+//* ==========USER========== *//
+//* Create User
 router.post(
   "/api/v1/user/create",
   // userAuth,
   // routeAuth("createUser"),
   createUser
 );
-
-//* User Details
+//* Get User
 router.get("/api/v1/user/get", userAuth, routeAuth("getUser"), getUser);
-
-//* User Update
+//* Update User
 router.post(
   "/api/v1/user/update",
   userAuth,
   routeAuth("updateUser"),
   updateUser
 );
-
-//* User Delete
+//* Delete User
 router.post(
-  "/api/v1/user/delete/:id",
+  "/api/v1/user/delete/",
   userAuth,
   routeAuth("deleteUser"),
   deleteUser
 );
-
-//* ==============Multiple user CRUD================
+//* Create Multiple Users
 router.post(
   "/api/v1/users/createAll",
   userAuth,
   routeAuth("createBulkUsers"),
   createBulkUsers
 );
+//* Get Mulitple Users
 router.get(
   "/api/v1/users/getAll",
   userAuth,
   routeAuth("getAllUsers"),
   getAllUsers
 );
-router.post(
-  "/api/v1/user/export",
-  userAuth,
-  routeAuth("exportUsers"),
-  exportUsers
-);
-//* =============Contest================
+
+//* =============Contest=============== *//
 router.post(
   "/api/v1/contest/create",
   userAuth,
@@ -270,5 +260,11 @@ router.get(
   userAuth,
   routeAuth("adminDashboard"),
   adminDashboard
+);
+router.post(
+  "/api/v1/user/export",
+  userAuth,
+  routeAuth("exportUsers"),
+  exportUsers
 );
 module.exports = router;
