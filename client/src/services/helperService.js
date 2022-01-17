@@ -1,4 +1,5 @@
 import axios from "axios";
+import { decryption, encryption } from "./crypto-js/index";
 const baseURL = "http://localhost:5000";
 // const baseURL = "http://172.16.15.173";
 
@@ -11,11 +12,15 @@ const helperService = {
   },
   //* =================== PUBLIC ROUTE ==================== *//
   login: async (payload) => {
+    payload = {
+      encryptedData: encryption(payload),
+    };
     try {
-      const { status, data } = await axios.post(
+      let { status, data } = await axios.post(
         `${baseURL}/api/v1/login`,
         payload
       );
+      data = decryption(data);
       if (status === 200) {
         return Promise.resolve({
           status,
@@ -24,32 +29,111 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err, err.response);
       let { status, data } = err.response;
+      data = decryption(data);
       return Promise.reject({
         status,
         message: data.message,
       });
     }
   },
+
   //* ================= PRIVATE ROUTES ======================== *//
-  //** MULTIPLE USERS */
-  getUsers: async ({ page, limit }, config) => {
+
+  //** USERS */
+  createUser: async (payload, config) => {
+    payload = {
+      encryptedData: encryption(payload),
+    };
     try {
-      const { status, data } = await axios.get(
-        `${baseURL}/api/v1/users/getAll?page=${page}&limit=${limit}`,
+      let { data, status } = await axios.post(
+        `${baseURL}/api/v1/user/create`,
+        payload,
         config
       );
+      data = decryption(data);
+      if (status === 201) {
+        return Promise.resolve({
+          status,
+          message: data.message,
+        });
+      }
+    } catch (err) {
+      let { status, data } = err.response;
+      data = decryption(data);
+      return Promise.reject({
+        status,
+        message: data.message,
+      });
+    }
+  },
+  getUser: async (payload, config) => {
+    let url = `${baseURL}/api/v1/user/get`;
+    if (payload.id) url += `?id=${payload.id}`;
+    else if (payload.regno) url += `?regno=${payload.regno}`;
+    try {
+      let { status, data } = await axios.get(url, config);
+      data = decryption(data);
       if (status === 200) {
         return Promise.resolve({
           status,
           data,
         });
       }
-    } catch ({ response }) {
+    } catch (err) {
+      let { status, data } = err.response;
+      data = decryption(data);
       return Promise.reject({
-        status: response.status,
-        data: response.data,
+        status,
+        message: data.message,
+      });
+    }
+  },
+  updateUser: async (payload, config) => {
+    payload = {
+      encryptedData: encryption(payload),
+    };
+    try {
+      let { data, status } = await axios.post(
+        `${baseURL}/api/v1/user/update`,
+        payload,
+        config
+      );
+      data = decryption(data);
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          message: data.message,
+        });
+      }
+    } catch (err) {
+      let { status, data } = err.response;
+      data = decryption(data);
+      return Promise.reject({
+        status,
+        message: data.message,
+      });
+    }
+  },
+  deleteUser: async ({ regno }, config) => {
+    try {
+      let { data, status } = await axios.post(
+        `${baseURL}/api/v1/user/delete?${regno}`,
+        config
+      );
+      data = decryption(data);
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          message: data.message,
+        });
+      }
+    } catch (err) {
+      let { status, data } = err.response;
+      data = decryption(data);
+      return Promise.reject({
+        status,
+        message: data.message,
       });
     }
   },
@@ -74,34 +158,13 @@ const helperService = {
       });
     }
   },
-  //** USERS */
-  createUser: async (payload, config) => {
-    console.log(payload, config);
+  getUsers: async ({ page, limit }, config) => {
     try {
-      const { data, status } = await axios.post(
-        `${baseURL}/api/v1/user/create`,
-        payload,
+      let { status, data } = await axios.get(
+        `${baseURL}/api/v1/users/getAll?page=${page}&limit=${limit}`,
         config
       );
-      if (status === 201) {
-        return Promise.resolve({
-          status,
-          data,
-        });
-      }
-    } catch (err) {
-      return Promise.reject({
-        status: err.response.status,
-        data: err.response.data,
-      });
-    }
-  },
-  getUser: async (payload, config) => {
-    let url = `${baseURL}/api/v1/user/get`;
-    if (payload.id) url += `?id=${payload.id}`;
-    else if (payload.regno) url += `?regno=${payload.regno}`;
-    try {
-      const { status, data } = await axios.get(url, config);
+      data = decryption(data);
       if (status === 200) {
         return Promise.resolve({
           status,
@@ -109,69 +172,37 @@ const helperService = {
         });
       }
     } catch ({ response }) {
+      let { status, data } = response;
+      data = decryption(data);
       return Promise.reject({
-        status: response.status,
-        data: response.data,
+        status: status,
+        data: data.message,
       });
     }
   },
 
-  updateUser: async (payload, config) => {
-    try {
-      const { data, status } = await axios.post(
-        `${baseURL}/api/v1/user/update`,
-        payload,
-        config
-      );
-      if (status === 200) {
-        return Promise.resolve({
-          status,
-          data,
-        });
-      }
-    } catch (err) {
-      return Promise.reject({
-        status: err.response.status,
-        message: err.response.data.message,
-      });
-    }
-  },
-  //** CONTESETS */
+  //** CONTESTS */
   createContest: async (payload, config) => {
+    payload = {
+      encryptedData: encryption(payload),
+    };
     try {
-      const { data, status } = await axios.post(
+      let { data, status } = await axios.post(
         `${baseURL}/api/v1/contest/create`,
         payload,
         config
       );
+      data = decryption(data);
       return Promise.resolve({
         status,
-        data,
+        message: data.message,
       });
-    } catch (err) {
+    } catch ({ response }) {
+      let { status, data } = response;
+      data = decryption(data);
       return Promise.reject({
-        status: err.response.status,
-        data: err.response.data,
-      });
-    }
-  },
-  // TODO :: Have to change for individual contest
-  getContestWithCode: async (payload, config) => {
-    let url = `${baseURL}/api/v1/contest/dashboard`;
-    if (payload.id) url += `?id=${payload.id}`;
-    else if (payload.code) url += `?code=${payload.code}`;
-    try {
-      const { data, status } = await axios.get(url, config);
-      if (status === 200) {
-        return Promise.resolve({
-          status,
-          data,
-        });
-      }
-    } catch (err) {
-      return Promise.reject({
-        status: err?.response?.status,
-        message: err?.response?.data.message,
+        status,
+        message: data.message,
       });
     }
   },
@@ -212,6 +243,25 @@ const helperService = {
       });
     }
   },
+  getContestWithCode: async (payload, config) => {
+    let url = `${baseURL}/api/v1/contest/dashboard`;
+    if (payload.id) url += `?id=${payload.id}`;
+    else if (payload.code) url += `?code=${payload.code}`;
+    try {
+      const { data, status } = await axios.get(url, config);
+      if (status === 200) {
+        return Promise.resolve({
+          status,
+          data,
+        });
+      }
+    } catch (err) {
+      return Promise.reject({
+        status: err?.response?.status,
+        message: err?.response?.data.message,
+      });
+    }
+  },
   getAllContests: async ({ page, past, limit }, config) => {
     try {
       const { data, status } = await axios.get(
@@ -231,6 +281,7 @@ const helperService = {
       });
     }
   },
+
   //** QUIZZS */
   createQuizz: async (payload, config) => {
     try {
@@ -350,6 +401,7 @@ const helperService = {
       });
     }
   },
+
   //** CHALLENGES */
   createChallenge: async (payload, config) => {
     try {
@@ -678,10 +730,11 @@ const helperService = {
   },
   adminDashboard: async (payload, config) => {
     try {
-      const { data, status } = await axios.get(
+      let { data, status } = await axios.get(
         `${baseURL}/api/v1/user/admindashboard`,
         config
       );
+      data = decryption(data);
       if (status === 200) {
         return Promise.resolve({
           status,

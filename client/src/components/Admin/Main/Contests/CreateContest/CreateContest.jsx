@@ -62,7 +62,7 @@ const CreateContest = (props) => {
     if (!flag) return;
     try {
       showLoader();
-      const { status } = await helperService.createContest(
+      const { status, message } = await helperService.createContest(
         {
           name,
           start_date: date.start_date,
@@ -74,13 +74,13 @@ const CreateContest = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
-        hideLoader();
-        props.snackBar("Contest created successfully", "success");
+        props.snackBar(message, "success");
         history.push(`/contests`);
       }
-    } catch (error) {
+    } catch ({ message }) {
+      props.snackBar(message, "error");
+    } finally {
       hideLoader();
-      props.snackBar(error.data, "error");
     }
   };
   const updateContest = async () => {

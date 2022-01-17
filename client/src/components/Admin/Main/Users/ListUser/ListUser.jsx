@@ -134,7 +134,7 @@ const ListUser = (props) => {
 
   const updateUser = async () => {
     try {
-      const { status } = await helperService.updateUser(
+      const { status, message } = await helperService.updateUser(
         {
           id: user._id,
           updateDetails,
@@ -144,7 +144,7 @@ const ListUser = (props) => {
         }
       );
       if (status === 200) {
-        props.snackBar("Updated Successfully", "success");
+        props.snackBar(message, "success");
         handleClose();
         setUsers(
           users.map((exist_user) => {
@@ -153,8 +153,8 @@ const ListUser = (props) => {
           })
         );
       }
-    } catch (err) {
-      props.snackBar(err.message, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   return (

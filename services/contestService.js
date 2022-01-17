@@ -33,7 +33,6 @@ const createContestService = async (contest) => {
       return Promise.resolve({
         status: 201,
         message: "Contest created successfully",
-        contestCode: contest.code,
       });
     }
   } catch (err) {

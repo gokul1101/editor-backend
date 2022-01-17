@@ -18,7 +18,6 @@ const createUserService = async (userDetails) => {
       return Promise.reject({
         status: 403,
         message: `Register number already exists.`,
-        regno,
       });
     }
     //* Get the hashed password
@@ -59,15 +58,13 @@ const createUserService = async (userDetails) => {
     return Promise.resolve({
       status: 201,
       message: `New user created.`,
-      regno,
     });
   } catch (err) {
     //! Error in creating user
     console.log(err);
     return Promise.reject({
       status: 500,
-      message: `unable to create user`,
-      err,
+      message: `Error in creating user.`,
     });
   }
 };
