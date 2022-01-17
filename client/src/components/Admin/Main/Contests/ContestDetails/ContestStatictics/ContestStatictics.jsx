@@ -68,16 +68,7 @@ const ContestStatictics = (props) => {
     }
   };
   return (
-    <div className="container-fluid w-100 mt-5">
-      <div>
-        <CustomButton
-          className="btn-hover color-11 mt-4 d-flex align-items-center py-2 px-3"
-          onClickHandler={downloadStatistics}
-        >
-          <GetAppIcon />
-          <span className="ml-2">Download</span>
-        </CustomButton>
-      </div>
+    <div className="container-fluid w-100">
       <div className="d-flex stats-main">
         <div className="col-md-9 mb-5 stats-left d-flex flex-column border">
           <div className="statistics-nav d-flex justify-content-center mt-3 mb-2 w-100">
@@ -158,6 +149,15 @@ const ContestStatictics = (props) => {
                 </h1>
               </span>
             </div>
+          </div>
+          <div className="w-100 clearfix">
+            <CustomButton
+              className="btn-hover color-11 d-flex align-items-center py-1 px-3 float-right"
+              onClickHandler={downloadStatistics}
+            >
+              <GetAppIcon />
+              <span className="ml-2">Download</span>
+            </CustomButton>
           </div>
         </div>
       </div>

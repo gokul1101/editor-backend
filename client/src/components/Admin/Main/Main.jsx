@@ -26,7 +26,7 @@ const Main = (props) => {
     props.fetchUser();
   }, []);
   return (
-    <div className="container-fluid p-0">
+    <div className="container-fluid h-100 p-0">
       <div className="d-flex">
         <div
           className={`${
@@ -116,7 +116,7 @@ const Main = (props) => {
                   />
                   <span
                     className="hide-span"
-                    style={{ position: "relative", left: "-20px" }}
+                    style={{ position: "relative", left: "-20px",top:'-5px' }}
                   >
                     Logout
                   </span>

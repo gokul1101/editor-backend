@@ -60,8 +60,8 @@ const ContestDetails = (props) => {
               to={`/contests/${id}/edit`}
               activeClassName="box arrow-bottom"
             >
-              <li className="list-group-item user-group-pill position-relative">
-                <DetailsIcon /> <span>Details</span>
+              <li className="list-group-item user-group-pill d-flex position-relative">
+                <DetailsIcon /> <span className="mx-2">Details</span>
               </li>
             </NavLink>
             <NavLink
@@ -70,8 +70,8 @@ const ContestDetails = (props) => {
               to={`/contests/${id}/quizzes`}
               activeClassName="box arrow-bottom"
             >
-              <li className="list-group-item user-group-pill position-relative">
-                <SubtitlesIcon /> <span>Quizzes List</span>
+              <li className="list-group-item d-flex user-group-pill position-relative">
+                <SubtitlesIcon /> <span className="mx-2">Quizzes List</span>
               </li>
             </NavLink>
             <NavLink
@@ -80,10 +80,9 @@ const ContestDetails = (props) => {
               to={`/contests/${id}/challenges`}
               activeClassName="box arrow-bottom"
             >
-              <li className="list-group-item user-group-pill position-relative">
+              <li className="list-group-item d-flex user-group-pill position-relative">
                 <PostAddIcon />
-                <span className="ml-2">Challenges</span>
-                List
+                <span className="mx-2">Challenges List</span>
               </li>
             </NavLink>
           </>
@@ -95,9 +94,9 @@ const ContestDetails = (props) => {
           to={`/contests/${id}/statistics`}
           activeClassName="box arrow-bottom"
         >
-          <li className="list-group-item user-group-pill position-relative">
+          <li className="list-group-item d-flex user-group-pill position-relative">
             <AssessmentIcon />
-            <span className="ml-2">Statictics</span>
+            <span className="mx-2">Statictics</span>
           </li>
         </NavLink>
       </ul>

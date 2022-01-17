@@ -20,6 +20,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import EditIcon from "@material-ui/icons/Edit";
 import RestoreFromTrashIcon from "@material-ui/icons/RestoreFromTrash";
+import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const limit = 10;
+const limit = 3;
 const ListUser = (props) => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -160,364 +161,126 @@ const ListUser = (props) => {
     <>
       <div className="container-fluid">
         {loader}
-        <div className="d-flex justify-content-between p-3 m-3">
-          <div>
-            <div className="filter d-flex">
-              <FilterListIcon className="m-2" />
-              <h6 className="ml-4 font-weight-bolder mt-3 highlight-text ">
-                Filter By :{" "}
-              </h6>
-              {/* <div className="dropdown mx-3">
-                <button
-                  className="drop-button dropdown-toggle"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Ascending
-                </button>
-                <div
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <a className="dropdown-item">Desending</a>
-                  <a className="dropdown-item">Random</a>
-                </div>
-              </div> */}
-            </div>
+        <div className="d-flex">
+          <FilterListIcon />
+          <h6 className="ml-2 font-weight-bolder mt-1 highlight-text">
+            Filter By :{" "}
+          </h6>
+        </div>
+        <div className="d-flex flex-wrap">
+          <div className="col-md-6 col-lg-3 my-1 px-1">
+            <SelectReducer
+              className={classes.fieldColor}
+              array={["B.E", "B.Tech"]}
+              name="Stream"
+            />
           </div>
-          <div className="d-flex">
-            <div className="form-group has-search">
-              <span className="fa fa-search form-control-feedback"></span>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search"
-              />
-            </div>
-
-            <div>
-              <button
-                className="pr-4 pl-4 mr-2 d-load-btn ml-3"
-                onClick={downloadStudentsDetails}
-              >
-                <GetAppIcon />
-                <span className="ml-2 font-weight-bolder">
-                  Download Details
-                </span>
-              </button>
-            </div>
+          <div className="col-md-6 col-lg-3 my-1 px-1">
+            <SelectReducer
+              className={classes.fieldColor}
+              array={
+                user.stream_id === "B.Tech"
+                  ? ["Information Technology"]
+                  : [
+                      "Computer Science & Engineering",
+                      "Electrical & Electronics Engineering",
+                      "Electronics and Communication Engineering",
+                      "Mechanical Engineering",
+                      "Automobile Engineering",
+                      "Civil Engineering",
+                      "Safety & Fire Engineering",
+                    ]
+              }
+              name="Course Name"
+            />
+          </div>
+          <div className="col-md-6 col-lg-3 my-1 px-1">
+            <SelectReducer
+              className={classes.fieldColor}
+              array={[
+                "KSR College of Engineering",
+                "KSR College of Technology",
+                "KSR Institute for Engineering & Technology",
+              ]}
+              name="College Name"
+            />
+          </div>
+          <div className="col-md-6 col-lg-3 my-1 px-1">
+            <SelectReducer
+              className={classes.fieldColor}
+              array={["male", "female", "other"]}
+              name="Gender"
+            />
+          </div>
+        </div>
+        <div className="d-flex align-items-center justify-content-center">
+          <div className="col-md-6 col-lg-4 mt-2 p-0">
+            <InputReducer
+              className={classes.fieldColor}
+              label="Search"
+              placeholder="Search"
+              name="Search"
+              type="text"
+            />
+          </div>
+          <div className="col-md-4 mt-2">
+            <CustomButton
+              className="btn-hover color-11 d-flex align-items-center py-2 px-3"
+              onClick={downloadStudentsDetails}
+            >
+              <GetAppIcon />
+              <span className="ml-2 font-weight-bolder">Download Details</span>
+            </CustomButton>
           </div>
         </div>
 
-        <div className="d-flex">
-          <div
-            className="col-md-9 d-flex flex-column"
-            style={{ overflowX: "auto" }}
-          >
-            <div className="d-flex">
-              <div className="col-md-1 list-table-header text-center ">
-                Reg no
-              </div>
-              <div className="col-md-3 list-table-header text-center">Name</div>
-              <div className="col-md-3 list-table-header text-center">
-                Email
-              </div>
-              <div className="col-md-1 list-table-header text-center">
-                Gender
-              </div>
-              <div className="col-md-1 list-table-header text-center">
-                Stream
-              </div>
-              <div className="col-md-3 list-table-header text-center">
-                Course
-              </div>
-              <div className="col-md-3 list-table-header text-center">
-                College
-              </div>
-              <div className="col-md-2 list-table-header text-center">
-                Batch
-              </div>
-              <div className="col-md-2 list-table-header text-center">
-                Phone Number
-              </div>
-            </div>
-            {users?.map((e) => (
-              <div className="d-flex" key={e._id}>
-                <div
-                  className="col-md-1 list-table-data p-2 text-center data"
-                  style={{ height: "50px" }}
-                >
+        <div className="d-flex upcoming-header border-top border-bottom mt-4 p-2 mb-1">
+          <div className="col-md-2 text-center content-nav-title">REG.NO</div>
+          <div className="col-md-2 text-center content-nav-title">STREAM</div>
+          <div className="col-md-2 text-center content-nav-title">COURSE</div>
+          <div className="col-md-2 text-center content-nav-title">COLLEGE</div>
+          <div className="col-md-2 text-center content-nav-title">BATCH</div>
+        </div>
+
+        <div className="d-flex flex-column mb-5">
+          {users?.map((e) => {
+            return (
+              <div
+                className="d-flex border-top border-bottom mt-1 p-2 mb-1 align-items-center justify-content-center"
+                key={e._id}
+              >
+                <div className="col-md-2 text-center content-nav-title">
                   {e.regno}
                 </div>
-                <div
-                  className="col-md-3 list-table-data p-2 text-center data"
-                  style={{ height: "50px" }}
-                >
-                  {e.name}
-                </div>
-                <div
-                  className="col-md-3 list-table-data p-2 text-center data"
-                  style={{ height: "50px" }}
-                >
-                  {e.email}
-                </div>
-                <div
-                  className="col-md-1 list-table-data p-2 text-center data"
-                  style={{ height: "50px" }}
-                >
-                  {e.gender_id}
-                </div>
-                <div
-                  className="col-md-1 list-table-data p-2 text-center data"
-                  style={{ height: "50px" }}
-                >
+                <div className="col-md-2 text-center content-nav-title">
                   {e.stream_id}
                 </div>
-                <div
-                  className="col-md-3 list-table-data p-2 text-center data"
-                  style={{ height: "50px" }}
-                >
+                <div className="col-md-2 text-center content-nav-title">
                   {e.course_id}
                 </div>
-                <div
-                  className="col-md-3 list-table-data p-2 text-center data"
-                  style={{ height: "50px" }}
-                >
+                <div className="col-md-2 text-center content-nav-title">
                   {e.college_id}
                 </div>
-                <div
-                  className="col-md-2 list-table-data p-2 text-center data"
-                  style={{ height: "50px" }}
-                >
+                <div className="col-md-2 text-center content-nav-title">
                   {e.batch_id}
                 </div>
-                <div
-                  className="col-md-2 list-table-data p-2 text-center data"
-                  style={{ height: "50px" }}
-                >
-                  {e.phone_no}
+                <div className="col-md-2 d-flex text-center content-nav-title">
+                  <div className="px-3">
+                    <EditIcon
+                      onClick={() => editUserDetail(e)}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </div>
+                  <div className="px-3">
+                    <RestoreFromTrashIcon
+                      disabled
+                      style={{ cursor: "inherit" }}
+                    />
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-          <div className="col-md-3 ">
-            <div className="d-flex flex-column">
-              <div className="col-md-12 list-table-header text-center">
-                EDIT / DELETE
-              </div>
-              {users.map((e) => (
-                <div
-                  key={e._id}
-                  className="col-md-12 p-0 d-flex p-2 align-items-center justify-content-center"
-                  style={{ marginTop: "6px", height: "50px" }}
-                >
-                  <button
-                    className="pr-4 pl-4 mr-2 edit-btn "
-                    onClick={() => editUserDetail(e)}
-                  >
-                    <EditIcon />
-                    <span className="ml-2">Edit</span>
-                  </button>
-                  <button className="pr-4 pl-4 delete-btn" disabled>
-                    <RestoreFromTrashIcon />
-                    <span className="ml-2">Delete</span>
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <Dialog
-              open={open}
-              TransitionComponent={Transition}
-              keepMounted
-              maxWidth="md"
-              fullWidth
-              aria-labelledby="alert-dialog-slide-title"
-              aria-describedby="alert-dialog-slide-description"
-            >
-              <DialogTitle id="alert-dialog-slide-title">
-                {"Edit User"}
-              </DialogTitle>
-
-              <DialogContent>
-                <div className="d-flex mx-2 my-3">
-                  <div className="col-md-6">
-                    <InputReducer
-                      className={classes.fieldColor}
-                      id="outlined-multiline-static"
-                      label="Register Name"
-                      variant="outlined"
-                      value={user.regno}
-                      disabled={true}
-                      // onClickHandler={(value) =>
-                      //   setUser({ ...user, regno: value })
-                      // }
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <InputReducer
-                      className={classes.fieldColor}
-                      id="outlined-multiline-static"
-                      label="Name"
-                      variant="outlined"
-                      value={user.name}
-                      onClickHandler={(value) => {
-                        setUpdateDetails({ ...updateDetails, name: value });
-                        setUser({ ...user, name: value });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="d-flex mx-2 my-3">
-                  <div className="col-md-6">
-                    <InputReducer
-                      className={classes.fieldColor}
-                      id="outlined-multiline-static"
-                      label="Email"
-                      variant="outlined"
-                      value={user.email}
-                      onClickHandler={(value) => {
-                        setUpdateDetails({ ...updateDetails, email: value });
-                        setUser({ ...user, email: value });
-                      }}
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <SelectReducer
-                      className={classes.fieldColor}
-                      label="gender"
-                      array={["male", "female"]}
-                      name="Gender"
-                      value={user.gender_id}
-                      handleSelect={(e) => {
-                        setUpdateDetails({
-                          ...updateDetails,
-                          gender_id: e.target.value,
-                        });
-                        setUser({ ...user, gender_id: e.target.value });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="d-flex mx-2 my-3">
-                  <div className="col-md-6">
-                    <SelectReducer
-                      className={classes.fieldColor}
-                      array={["B.E", "B.Tech"]}
-                      name="Stream"
-                      label="Stream"
-                      defaultValue={user.stream_id}
-                      value={user.stream_id}
-                      handleSelect={(e) => {
-                        setUpdateDetails({
-                          ...updateDetails,
-                          stream_id: e.target.value,
-                        });
-                        setUser({ ...user, stream_id: e.target.value });
-                      }}
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <SelectReducer
-                      className={classes.fieldColor}
-                      array={[
-                        "Computer Science & Engineering",
-                        "Information Technology",
-                        "Civil Engineering",
-                      ]}
-                      name="Course Name"
-                      label="Course Name"
-                      defaultValue={user.course_id}
-                      value={user.course_id}
-                      handleSelect={(e) => {
-                        setUpdateDetails({
-                          ...updateDetails,
-                          course_id: e.target.value,
-                        });
-                        setUser({ ...user, course_id: e.target.value });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="d-flex mx-2 my-3">
-                  <div className="col-md-6">
-                    <SelectReducer
-                      className={classes.fieldColor}
-                      array={[
-                        "KSR College of Engineering",
-                        "KSR College of Technology",
-                        "KSR Institute for Engineering & Technology",
-                      ]}
-                      name="College Name"
-                      label="college name"
-                      defaultValue={user.college_id}
-                      value={user.college_id}
-                      handleSelect={(e) => {
-                        setUpdateDetails({
-                          ...updateDetails,
-                          college_id: e.target.value,
-                        });
-                        setUser({ ...user, college_id: e.target.value });
-                      }}
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <InputReducer
-                      className={classes.fieldColor}
-                      placeholder="Phone number"
-                      label="Phone number"
-                      name="Phone number"
-                      type="text"
-                      value={user.phone_no}
-                      onClickHandler={(value) => {
-                        setUpdateDetails({ ...updateDetails, phone_no: value });
-                        setUser({ ...user, phone_no: value });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="d-flex mx-2 my-3">
-                  <div className="col-md-6">
-                    <SelectReducer
-                      className={classes.fieldColor}
-                      array={[
-                        "2018-2022",
-                        "2019-2023",
-                        "2020-2024",
-                        "2021-2025",
-                        "2022-2026",
-                      ]}
-                      name="Batch year"
-                      label="Batch year"
-                      defaultValue={user.batch_id}
-                      value={user.batch_id}
-                      handleSelect={(e) => {
-                        setUpdateDetails({
-                          ...updateDetails,
-                          batch_id: e.target.value,
-                        });
-                        setUser({ ...user, batch_id: e.target.value });
-                      }}
-                    />
-                  </div>
-                </div>
-              </DialogContent>
-
-              <DialogActions>
-                <button className="btn btn-success" onClick={updateUser}>
-                  Update User
-                </button>
-
-                <Button onClick={handleClose} color="primary">
-                  CLOSE
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </div>
+            );
+          })}
         </div>
         {total > limit && (
           <Pagination
@@ -528,6 +291,195 @@ const ListUser = (props) => {
             onChange={(e, value) => handlePagination(e, value)}
           />
         )}
+        <div className="d-flex">
+          <Dialog
+            open={open}
+            TransitionComponent={Transition}
+            keepMounted
+            maxWidth="md"
+            fullWidth
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <DialogTitle id="alert-dialog-slide-title">
+              {"Edit User"}
+            </DialogTitle>
+
+            <DialogContent>
+              <div className="d-flex mx-2 my-3">
+                <div className="col-md-6">
+                  <InputReducer
+                    className={classes.fieldColor}
+                    id="outlined-multiline-static"
+                    label="Register Name"
+                    variant="outlined"
+                    value={user.regno}
+                    disabled={true}
+                    // onClickHandler={(value) =>
+                    //   setUser({ ...user, regno: value })
+                    // }
+                  />
+                </div>
+                <div className="col-md-6">
+                  <InputReducer
+                    className={classes.fieldColor}
+                    id="outlined-multiline-static"
+                    label="Name"
+                    variant="outlined"
+                    value={user.name}
+                    onClickHandler={(value) => {
+                      setUpdateDetails({ ...updateDetails, name: value });
+                      setUser({ ...user, name: value });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="d-flex mx-2 my-3">
+                <div className="col-md-6">
+                  <InputReducer
+                    className={classes.fieldColor}
+                    id="outlined-multiline-static"
+                    label="Email"
+                    variant="outlined"
+                    value={user.email}
+                    onClickHandler={(value) => {
+                      setUpdateDetails({ ...updateDetails, email: value });
+                      setUser({ ...user, email: value });
+                    }}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <SelectReducer
+                    className={classes.fieldColor}
+                    label="gender"
+                    array={["male", "female"]}
+                    name="Gender"
+                    value={user.gender_id}
+                    handleSelect={(e) => {
+                      setUpdateDetails({
+                        ...updateDetails,
+                        gender_id: e.target.value,
+                      });
+                      setUser({ ...user, gender_id: e.target.value });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="d-flex mx-2 my-3">
+                <div className="col-md-6">
+                  <SelectReducer
+                    className={classes.fieldColor}
+                    array={["B.E", "B.Tech"]}
+                    name="Stream"
+                    label="Stream"
+                    defaultValue={user.stream_id}
+                    value={user.stream_id}
+                    handleSelect={(e) => {
+                      setUpdateDetails({
+                        ...updateDetails,
+                        stream_id: e.target.value,
+                      });
+                      setUser({ ...user, stream_id: e.target.value });
+                    }}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <SelectReducer
+                    className={classes.fieldColor}
+                    array={[
+                      "Computer Science & Engineering",
+                      "Information Technology",
+                      "Civil Engineering",
+                    ]}
+                    name="Course Name"
+                    label="Course Name"
+                    defaultValue={user.course_id}
+                    value={user.course_id}
+                    handleSelect={(e) => {
+                      setUpdateDetails({
+                        ...updateDetails,
+                        course_id: e.target.value,
+                      });
+                      setUser({ ...user, course_id: e.target.value });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="d-flex mx-2 my-3">
+                <div className="col-md-6">
+                  <SelectReducer
+                    className={classes.fieldColor}
+                    array={[
+                      "KSR College of Engineering",
+                      "KSR College of Technology",
+                      "KSR Institute for Engineering & Technology",
+                    ]}
+                    name="College Name"
+                    label="college name"
+                    defaultValue={user.college_id}
+                    value={user.college_id}
+                    handleSelect={(e) => {
+                      setUpdateDetails({
+                        ...updateDetails,
+                        college_id: e.target.value,
+                      });
+                      setUser({ ...user, college_id: e.target.value });
+                    }}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <InputReducer
+                    className={classes.fieldColor}
+                    placeholder="Phone number"
+                    label="Phone number"
+                    name="Phone number"
+                    type="text"
+                    value={user.phone_no}
+                    onClickHandler={(value) => {
+                      setUpdateDetails({ ...updateDetails, phone_no: value });
+                      setUser({ ...user, phone_no: value });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="d-flex mx-2 my-3">
+                <div className="col-md-6">
+                  <SelectReducer
+                    className={classes.fieldColor}
+                    array={[
+                      "2018-2022",
+                      "2019-2023",
+                      "2020-2024",
+                      "2021-2025",
+                      "2022-2026",
+                    ]}
+                    name="Batch year"
+                    label="Batch year"
+                    defaultValue={user.batch_id}
+                    value={user.batch_id}
+                    handleSelect={(e) => {
+                      setUpdateDetails({
+                        ...updateDetails,
+                        batch_id: e.target.value,
+                      });
+                      setUser({ ...user, batch_id: e.target.value });
+                    }}
+                  />
+                </div>
+              </div>
+            </DialogContent>
+
+            <DialogActions>
+              <button className="btn btn-success" onClick={updateUser}>
+                Update User
+              </button>
+
+              <Button onClick={handleClose} color="primary">
+                CLOSE
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
       </div>
     </>
   );

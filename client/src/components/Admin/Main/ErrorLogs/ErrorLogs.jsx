@@ -6,7 +6,7 @@ import ErrorLogDialogBox from "../../../Reducer/ErrorLogDialogBox/ErrorLogDialog
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import ErrorIcon from "@material-ui/icons/Error";
 import VisibilityIcon from "@material-ui/icons/Visibility";
-import { IconButton } from "@material-ui/core";
+// import { IconButton } from "@material-ui/core";
 const ErrorLogs = (props) => {
   const { id } = useParams();
   const [authState] = useContext(AuthContext);
@@ -60,9 +60,9 @@ const ErrorLogs = (props) => {
           </div>
           <div className="col-md-2 text-center content-nav-title">SHOW</div>
         </div>
-        <div className="d-flex flex-column border-top border-bottom mt-1 p-2 mb-1">
+        <div className="d-flex flex-column">
           {errorLogs.map((log, index) => (
-            <div className="d-flex" key={log._id}>
+            <div className="d-flex border-top border-bottom mt-1 p-2 mb-1" key={log._id}>
               <div className="col-md-2 text-center content-nav-title">
                 {index + 1})
               </div>
@@ -76,15 +76,21 @@ const ErrorLogs = (props) => {
                 {log.errorLogs.length}
               </div>
               <div className="col-md-2 text-center content-nav-title">
-                <IconButton
+                {/* <IconButton
                   style={{ cursor: "pointer" }}
                   onClick={() => {
                     setErrorLog(log);
                     handleClickOpen();
                   }}
-                >
-                  <VisibilityIcon />
-                </IconButton>
+                > */}
+                  <VisibilityIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setErrorLog(log);
+                      handleClickOpen();
+                    }}
+                  />
+                {/* </IconButton> */}
               </div>
             </div>
           ))}

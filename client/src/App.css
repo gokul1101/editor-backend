@@ -2,10 +2,6 @@
   font-family: "Montserrat";
   src: url("../public/fonts/Montserrat/Montserrat-Regular.ttf");
 }
-
-body {
-  font-family: "Montserrat", sans-serif;
-}
 /* ::-webkit-scrollbar { width: 2px;
 }
 
@@ -48,6 +44,7 @@ a {
 body {
   min-height: 100vh;
   overflow: hidden;
+  font-family: "Montserrat", sans-serif;
 }
 *::-webkit-scrollbar {
   width: 4px;

@@ -95,7 +95,10 @@ const AdminDashboard = () => {
     return () => {};
   }, [contestSubmissions]);
   return (
-    <div className="container-fluid">
+    <div
+      className="container-fluid"
+      style={{ height: "100vh", overflowY: "scroll" }}
+    >
       <div
         className="d-flex align-items-center justify-content-center flex-wrap"
         style={{ marginTop: "40px" }}
@@ -134,7 +137,7 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
-        <div className="col-md-3 m-2 dash-highlight p-3">
+        <div className="col-md-4 m-2 dash-highlight p-3">
           <div className="d-flex justify-content-between">
             <div className="d-flex flex-column">
               <h1 className="user-count">{totalCounts.submissions}</h1>

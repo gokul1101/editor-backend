@@ -166,7 +166,7 @@ const CreateChallenge = (props) => {
         </p>
       </div>
 
-      <div className="d-flex flex-column mb-5">
+      <div className="d-flex flex-column">
         <div className="d-flex mt-2 mb-2">
           <span className="contest-line-height mr-2 col-md-4">
             Challenge name <span className="contest-star">*</span>

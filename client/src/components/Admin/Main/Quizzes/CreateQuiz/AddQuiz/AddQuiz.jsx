@@ -148,16 +148,12 @@ const AddQuiz = (props) => {
   }, []);
 
   return (
-    <>
+    <div style={{ height: "100vh", overflowY: "scroll" }}>
       <div className="d-flex m-2 p-2">
         <GoBack className="mt-2" onClickHandler={() => history.goBack()} />
-        <h5 className="m-3 text-highlight font-weight-bolder">Back</h5>
       </div>
-      <div
-        className="container"
-        style={{ height: "100vh", overflowY: "scroll" }}
-      >
-        <p className="text-left dash-title-category pb-2 mt-5">Add Quiz</p>
+      <div className="container mb-3">
+        <p className="text-left dash-title-category pb-2">Add Quiz</p>
         <span className="create-con-text mt-1">
           By adding the quiz name you can add Multiple Choice Questions (MCQ's)
         </span>
@@ -298,7 +294,7 @@ const AddQuiz = (props) => {
           })}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

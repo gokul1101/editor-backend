@@ -240,15 +240,13 @@ const TestCase = (props) => {
           the challenge and drag
         </span>
       </div>
-      <div className="create-con my-3 position-relative">
         <CustomButton
-          className="btn-hover color-11 d-flex align-items-center px-3 py-2"
+          className="btn-hover color-11 d-flex align-items-center px-3 py-2 my-2"
           onClick={handleClickOpen}
         >
           <AddCircleRoundedIcon />
           <span className="ml-2">ADD TESTCASE</span>
         </CustomButton>
-      </div>
       <h4 className="m-2 p-2 text-uppercase text-center font-weight-bolder">
         Sample Test Cases
       </h4>

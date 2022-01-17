@@ -61,7 +61,7 @@ const ContestChallenges = (props) => {
     authDispatch({ type: "REMOVE_CHALLENGE" });
   }, []);
   return (
-    <div className="container mt-5">
+    <div className="container">
       <div className="d-flex flex-column" style={{ marginTop: "40px" }}>
         <p className="text-left dash-title-category pb-2">Coding Challenges</p>
         <span className="create-con-text mt-1">
