@@ -49,11 +49,11 @@ const ErrorLogDialogBox = ({ open, handleClose, log }) => {
           </span>
         </DialogContentText>
         <DialogContentText id="alert-dialog-slide-description" className="mt-3">
-          <div className="p-2 d-flex flex-wrap">
+          <span className="p-2 d-flex flex-wrap">
             {log?.errorLogs?.map((log) => (
               <Chip key={log} label={log} className="m-1" />
             ))}
-          </div>
+          </span>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

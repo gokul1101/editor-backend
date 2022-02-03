@@ -25,20 +25,12 @@ const ContestDetails = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        // setName(data?.contest?.name);
-        // setDate({
-        //   start_date: convertDate(data?.contest?.start_date),
-        //   end_date: convertDate(data?.contest?.end_date),
-        // });
-        // setTime({
-        //   start_time: data?.contest?.start_time,
-        //   end_time: data?.contest?.end_time,
-        // });
+        props.snackBar(data.message, "success");
         authDispatch({ type: "SET_CONTEST", payload: data?.contest });
-        hideLoader();
-        // authDispatch({})
       }
-    } catch (err) {
+    } catch ({ message }) {
+      props.snackBar(message, "error");
+    } finally {
       hideLoader();
     }
   };

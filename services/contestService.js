@@ -192,7 +192,8 @@ const getAllContestWithFilter = async (created_by, page, limit, past) => {
     //**promise result */
     return Promise.resolve({
       status: 200,
-      message: {
+      message: "Contests found",
+      data: {
         pastContestsCount,
         pastContests,
         ongoingContests,

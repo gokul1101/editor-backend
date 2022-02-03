@@ -13,31 +13,27 @@ const {
   getSessionService,
   createSessionService,
 } = require("../services/sessionService");
-const { encryption, decryption } = require("../utils/crypto-js");
 
 const createContest = async (req, res) => {
-  let { encryptedData } = req.body;
-  let contest = decryption(encryptedData);
+  let { contest } = req.body;
   try {
     let { status, ...response } = await createContestService(contest);
-    response = encryption(response);
-    return res.status(status).json({ response });
+    return res.status(status).send(response);
   } catch ({ status, message }) {
-    message = encryption(message);
-    return res.status(status).json(message);
+    return res.status(status).json({ message });
   }
 };
 const getContest = async (req, res) => {
   const { id, code } = req.query;
   try {
-    let { status, message, contest } = await getContestService(
+    let { status, ...response } = await getContestService(
       id,
       code,
       req.user.role_id
     );
-    res.status(status).send({ message, contest });
+    return res.status(status).send(response);
   } catch ({ status, message }) {
-    res.status(status).send(message);
+    return res.status(status).json({ message });
   }
 };
 const getContestForDashboard = async (req, res) => {
@@ -66,7 +62,7 @@ const getContestForDashboard = async (req, res) => {
         let now = +new Date();
         let end_date = +session.ends_at;
         if (now > end_date) {
-          return res.status(403).send({ message: "Your session was expired." });
+          return res.status(403).json({ message: "Your session was expired." });
         }
       } catch (err) {
         if (err.status === 404) {
@@ -85,19 +81,18 @@ const getContestForDashboard = async (req, res) => {
     response.challenges = ContestChallenges.challenges;
     return res
       .status(status)
-      .send({ contest: response, message: "Your session is started." });
+      .json({ contest: response, message: "Your session is started." });
   } catch ({ status, message }) {
-    console.log(message);
-    return res.status(status).send(message);
+    return res.status(status).json({ message });
   }
 };
 const updateContest = async (req, res) => {
   let updateDetails = req.body;
   try {
-    let { status, message } = await updateContestService(updateDetails);
-    res.status(status).send({ message });
-  } catch (err) {
-    res.status(err.status).send(err.message);
+    let { status, ...response } = await updateContestService(updateDetails);
+    return res.status(status).send(response);
+  } catch ({ status, message }) {
+    return res.status(status).json({ message });
   }
 };
 const deleteContest = async (req, res) => {
@@ -109,9 +104,8 @@ const deleteContest = async (req, res) => {
       deleted_at: null,
     });
     if (!exist_contest)
-      return res.status(404).json({
+      return res.status(404).send({
         message: `No contest available to delete with name ${contest.name}`,
-        success: false,
       });
     //TODO : Have to remove all question related to this contest
     //Softly deleted by modified deleted_at time
@@ -123,30 +117,27 @@ const deleteContest = async (req, res) => {
       { deleted_at: new Date() },
       { new: true }
     );
-    return res.status(200).json({
+    return res.status(200).send({
       message: `Contest with name ${contest.name} deleted successfully`,
-      success: true,
     });
   } catch (err) {
     return res.status(500).json({
       message: `Unable to delete a contest with name ${contest.name}`,
-      success: false,
     });
   }
 };
 const getAllContests = async (req, res) => {
   const { page = 1, limit = 10, past } = req.query;
   try {
-    // let { code, message } = await getAllContestService(page, limit);
-    let { status, message } = await getAllContestWithFilter(
+    let { status, ...response } = await getAllContestWithFilter(
       req.user._id,
       page,
       limit,
       past
     );
-    res.status(status).send({ message });
-  } catch (err) {
-    res.status(err.status).send(err.message);
+    return res.status(status).send(response);
+  } catch ({ status, message }) {
+    return res.status(status).json({ message });
   }
 };
 

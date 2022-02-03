@@ -41,11 +41,10 @@ const ContestQuizzes = (props) => {
       if (status === 201) {
         // TODO:
         props.snackBar(message, "success");
-        // authDispatch({type:"SET_QUIZZ",payload:{...quiz}})
         setQuizzArr((existing) => [...existing, quiz]);
       }
-    } catch (err) {
-      props.snackBar(err?.data, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     } finally {
       setQuizName({});
       setOpen(false);
@@ -65,9 +64,8 @@ const ContestQuizzes = (props) => {
         setQuizzArr(quizzes);
         setOpen(false);
       }
-    } catch (err) {
-      props.snackBar(err?.data, "error");
-      console.log(err);
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   const deleteQuiz = async (quiz) => {
@@ -85,8 +83,8 @@ const ContestQuizzes = (props) => {
           setQuizzArr(quizzArr.filter((quiz) => quiz.name !== payload.name));
         props.snackBar(data.message, "success");
       }
-    } catch (err) {
-      props.snackBar(err.data, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   const updateQuizName = async () => {
@@ -104,8 +102,8 @@ const ContestQuizzes = (props) => {
         );
         props.snackBar(data.message, "success");
       }
-    } catch (err) {
-      props.snackBar(err.data, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
     setQuizName({ name: "" });
     handleClose();
@@ -125,9 +123,7 @@ const ContestQuizzes = (props) => {
     fetchQuizzes();
   }, []);
   return (
-    <div
-      className="container"
-    >
+    <div className="container">
       <div className="d-flex flex-column" style={{ marginTop: "40px" }}>
         <p className="text-left dash-title-category pb-2">Quiz Challenges</p>
         <span className="create-con-text mt-1">

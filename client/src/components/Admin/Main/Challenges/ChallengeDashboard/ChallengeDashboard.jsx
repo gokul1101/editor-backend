@@ -22,8 +22,8 @@ const ChallengeDashboard = (props) => {
       if (status === 200) {
         authDispatch({ type: "SET_CHALLENGE", payload: { ...question } });
       }
-    } catch (err) {
-      props.snakBar(err.message, "error");
+    } catch ({ message }) {
+      props.snakBar(message, "error");
     }
   };
   useEffect(() => {

@@ -1,16 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import PropTypes from "prop-types";
+import fileDownload from "js-file-download";
 
-import "./DropFileInput.css";
-import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
-import ErrorLogDialogBox from "../../../../../Reducer/ErrorLogDialogBox/ErrorLogDialogBox";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
 import DeleteIcon from "@material-ui/icons/Delete";
+import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
+import ErrorLogDialogBox from "../../../../../Reducer/ErrorLogDialogBox/ErrorLogDialogBox";
 import helperService from "../../../../../../services/helperService";
-import { useContext } from "react";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
-import fileDownload from "js-file-download";
+import Excel from "../../../../../../images/excel.png";
+import "./DropFileInput.css";
+
 const DropFileInput = (props) => {
   const wrapperRef = useRef(null);
   const [authState] = useContext(AuthContext);
@@ -63,10 +64,11 @@ const DropFileInput = (props) => {
         }
       );
       if (status == 200) {
+        props.snackBar("Downloaded Successfully!!", "success");
         fileDownload(data, "Sample_Bulk_Upload.xlsx");
       }
-    } catch (err) {
-      console.log(err);
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   useEffect(() => {
@@ -88,10 +90,7 @@ const DropFileInput = (props) => {
         onDrop={onDrop}
       >
         <div className="drop-file-input__label">
-          <img
-            alt="someImage"
-            src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png"
-          />
+          <img alt="someImage" src={Excel} />
           <p>Drag & Drop your files here</p>
         </div>
         <input
@@ -109,10 +108,7 @@ const DropFileInput = (props) => {
               key={index}
               className="drop-file-preview__item d-flex w-100 align-items-center justify-content-center"
             >
-              <img
-                alt="someImage"
-                src="https://img.icons8.com/fluency/96/000000/microsoft-excel-2019.png"
-              />
+              <img alt="someImage" src={Excel} />
               <div className="drop-file-preview__item__info d-flex flex-column">
                 <span>{item.name}</span>
                 <div className="d-flex justify-content-between">

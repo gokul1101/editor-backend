@@ -33,8 +33,8 @@ const ErrorLogs = (props) => {
         props.snackBar(data.message, "success");
         setErrorLogs(data.errorLogs);
       }
-    } catch (err) {
-      props.snackBar(err.data, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   useEffect(() => {
@@ -62,7 +62,10 @@ const ErrorLogs = (props) => {
         </div>
         <div className="d-flex flex-column">
           {errorLogs.map((log, index) => (
-            <div className="d-flex border-top border-bottom mt-1 p-2 mb-1" key={log._id}>
+            <div
+              className="d-flex border-top border-bottom mt-1 p-2 mb-1"
+              key={log._id}
+            >
               <div className="col-md-2 text-center content-nav-title">
                 {index + 1})
               </div>
@@ -83,13 +86,13 @@ const ErrorLogs = (props) => {
                     handleClickOpen();
                   }}
                 > */}
-                  <VisibilityIcon
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      setErrorLog(log);
-                      handleClickOpen();
-                    }}
-                  />
+                <VisibilityIcon
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    setErrorLog(log);
+                    handleClickOpen();
+                  }}
+                />
                 {/* </IconButton> */}
               </div>
             </div>

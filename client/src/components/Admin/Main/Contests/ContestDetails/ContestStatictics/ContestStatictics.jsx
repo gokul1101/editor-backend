@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import FileDownload from "js-file-download";
 import "./ContestStatictics.css";
 import SubmissionGif from "../../../../../../images/submission.gif";
+import Trophy from "../../../../../../images/trophy.png";
 import Pagination from "@material-ui/lab/Pagination";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { useContext } from "react";
@@ -33,8 +34,8 @@ const ContestStatictics = (props) => {
           data?.submissions?.submissions?.slice(0, leaderBoardCount) || []
         );
       }
-    } catch (err) {
-      props.snackBar(err.message, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   useEffect(() => {
@@ -56,15 +57,13 @@ const ContestStatictics = (props) => {
         }
       );
       if (status === 200) {
-        console.log(data);
         const blob = new Blob([data], {
           type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
-
         FileDownload(blob, `${authState?.contest?.name}_Submissions.xlsx`);
       }
-    } catch (err) {
-      console.log(err);
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   return (
@@ -110,11 +109,7 @@ const ContestStatictics = (props) => {
         <div className="col-md-3 stats-right d-flex flex-column m-1">
           <div className="top-part mx-2 my-2 p-2">
             <div className="d-flex align-items-center justify-content-center mt-2 mb-2">
-              <img
-                alt="someImage"
-                src="https://img.icons8.com/emoji/30/000000/trophy-emoji.png"
-                className="pr-3 img-fluid"
-              />
+              <img alt="someImage" src={Trophy} className="pr-3 img-fluid" />
               <span className="top-participants">
                 Top {leaderBoardCount} Participants
               </span>

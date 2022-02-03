@@ -15,11 +15,9 @@ const userLogin = async (req, res) => {
     const user = await User.findOne({ regno });
     if (!user || user.deleted_at) {
       //! Register Number not found
-      return res.status(404).json(
-        encryption({
-          message: "Register number not found!",
-        })
-      );
+      return res.status(404).json({
+        message: "Register number not found!",
+      });
     }
     const role = await Role.findById(user.role_id);
     //? If user exists
@@ -42,28 +40,22 @@ const userLogin = async (req, res) => {
         token: `Bearer ${token}`,
         expiresIn: 12,
       };
-      return res.status(200).json(
+      return res.status(200).send(
         encryption({
           ...result,
           message: "You are logged in!",
-          success: true,
         })
       );
     } else {
       //! Wrong password
-      return res.status(403).json(
-        encryption({
-          message: "Incorrect password.",
-          success: false,
-        })
-      );
+      return res.status(403).send({
+        message: "Incorrect password.",
+      });
     }
   } catch (err) {
-    return res.status(500).json(
-      encryption({
-        message: "Internal Server Error",
-      })
-    );
+    return res.status(500).send({
+      message: "Internal Server Error",
+    });
   }
 };
 //? Passport Middleware
@@ -73,11 +65,9 @@ const { decryption, encryption } = require("./crypto-js");
 const routeAuth = (controller) => (req, res, next) => {
   API[req.user.role_id].find((api) => api === controller)
     ? next()
-    : res.status(401).json(
-        encryption({
-          message: `Unauthorized access`,
-        })
-      );
+    : res.status(401).json({
+        message: `Unauthorized access`,
+      });
 };
 
 const serializeUser = (user) => {

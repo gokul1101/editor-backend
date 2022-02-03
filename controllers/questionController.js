@@ -14,6 +14,8 @@ const {
   getAllChallengesWithContestId,
   deleteChallenge,
 } = require("../services/challengeService");
+const { encryption } = require("../utils/crypto-js");
+
 const createQuestion = async (req, res) => {
   let questionDetails = req.body;
   let functions = [createMCQ, createChallenge],
@@ -24,12 +26,11 @@ const createQuestion = async (req, res) => {
     questionDetails.type_id = (
       await TestType.findOne({ name: questionDetails.type_id })
     )._id;
-    let { status, message, mcq } = await functions[index](questionDetails);
-    if (mcq) return res.status(status).json({ message, mcq });
-    res.status(status).send(message);
-  } catch (err) {
+    let { status, ...response } = await functions[index](questionDetails);
+    return res.status(status).send(response);
+  } catch ({ status, message }) {
     //! Error in creating question
-    return res.status(err.status).json({ message: err.message });
+    return res.status(status).json({ message });
   }
 };
 const getQuestion = async (req, res) => {
@@ -39,11 +40,12 @@ const getQuestion = async (req, res) => {
   if (type === "mcq") index = 0;
   else if (type === "problem") index = 1;
   try {
-    let response = await functions[index](id, req.user.role_id);
-    res.status(response.status).send(response);
-  } catch (err) {
+    let { status, ...response } = await functions[index](id, req.user.role_id);
+    response = encryption(response);
+    return res.status(status).send(response);
+  } catch ({ status, message }) {
     //! Error in getting question
-    return res.status(err.status).send(err.message);
+    return res.status(status).send(encryption({ message }));
   }
 };
 const updateQuestion = async (req, res) => {
@@ -54,14 +56,13 @@ const updateQuestion = async (req, res) => {
   if (type === "mcq") index = 0;
   else if (type === "problem") index = 1;
   try {
-    let response = await functions[index](questionDetails);
-    res.status(response.status).send(response);
-  } catch (err) {
+    let { status, ...response } = await functions[index](questionDetails);
+    return res.status(status).send(response);
+  } catch ({ status, message }) {
     //! Error in updating question
-    return res.status(err.status).send(err.message);
+    return res.status(status).json({ message });
   }
 };
-
 const deleteQuestion = async (req, res) => {
   let questionDetails = req.body;
   let { type } = req.query;
@@ -70,35 +71,40 @@ const deleteQuestion = async (req, res) => {
   if (type === "mcq") index = 0;
   else if (type === "problem") index = 1;
   try {
-    let response = await functions[index](questionDetails);
-    res.status(response.status).send(response);
-  } catch (err) {
+    let { status, ...response } = await functions[index](questionDetails);
+    return res.status(status).send(response);
+  } catch ({ status, message }) {
     //! Error in updating question
-    console.log(err);
-    return res.status(err.status).send(err.message);
+    return res.status(status).json({ message });
   }
 };
-
 const getAllMCQS = async (req, res) => {
   let { id, page = 1, limit } = req.query;
   let flag = req.user.role_id === "admin";
   limit = flag ? 10 : 1;
   try {
-    const response = await getAllMcqWithQuizID(id, page, limit, flag);
-    res.status(response.status).send(response);
-  } catch (err) {
+    const { status, ...response } = await getAllMcqWithQuizID(
+      id,
+      page,
+      limit,
+      flag
+    );
+    response = encryption(response);
+    return res.status(status).send(response);
+  } catch ({ status, message }) {
     //! Error in getting mcqs with quiz id
-    return res.status(err.status).send(err.message);
+    return res.status(status).json({ message });
   }
 };
 const getAllChallenges = async (req, res) => {
   const { id } = req.query;
   try {
-    const response = await getAllChallengesWithContestId(id);
-    res.status(response.status).send(response);
-  } catch (err) {
+    const { status, ...response } = await getAllChallengesWithContestId(id);
+    response = encryption(response);
+    return res.status(status).send(response);
+  } catch ({ status, message }) {
     //! Error in getting mcqs with quiz id
-    return res.status(err.status).send(err.message);
+    return res.status(status).json({ message });
   }
 };
 

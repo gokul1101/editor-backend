@@ -41,17 +41,17 @@ const exportSubmissions = async (req, res) => {
       `${contest_id}`,
       columns
     );
-    // console.log(req.get("X-username"))
     res.set({
       "Content-disposition": `attachment;filename=${username}.xlsx`,
       "Content-Type":
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     await workbook.xlsx.write(res);
-    return res.status(200).send("File Downloaded Successfully");
+    return res.status(200).json({ message: "File Downloaded Successfully" });
   } catch (err) {
-    console.log(err);
-    return res.status(500).send("Error in downloading submissions details");
+    return res
+      .status(500)
+      .json({ message: "Error in downloading submissions details" });
   }
 };
 const exportUsers = async (req, res) => {
@@ -148,10 +148,12 @@ const exportUsers = async (req, res) => {
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     await workbook.xlsx.write(res);
-    return res.status(200).send("File Downloaded Successfully");
+    return res.status(200).json({ message: "File Downloaded Successfully" });
   } catch (err) {
     console.log(err);
-    return res.status(500).send("Error in downloading users details");
+    return res
+      .status(500)
+      .json({ message: "Error in downloading users details" });
   }
 };
 const exportSampleUsersDetails = async (req, res) => {
@@ -162,8 +164,9 @@ const exportSampleUsersDetails = async (req, res) => {
     }
     return res.sendFile(filePath);
   } catch (err) {
-    console.log(err);
-    return res.status(500).send("Error in downloading users details");
+    return res
+      .status(500)
+      .json({ message: "Error in downloading users details" });
   }
 };
 module.exports = { exportSubmissions, exportUsers, exportSampleUsersDetails };

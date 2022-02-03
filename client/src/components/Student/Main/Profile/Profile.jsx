@@ -56,11 +56,17 @@ const Profile = ({ setSideToggle, ...props }) => {
     /* eslint-disable no-useless-escape */
     let username = /^[a-zA-Z\_]{3,25}$/;
 
-    if (!username.test(updateDetails.name ?? user.name)) {
+    if (
+      !username.test(updateDetails.name ?? user.name) ||
+      updateDetails.name !== ""
+    ) {
       props.snackBar("Username is Invalid", "error");
       return;
     }
-    if (!emailRegex.test(updateDetails.email ?? user.email)) {
+    if (
+      !emailRegex.test(updateDetails.email ?? user.email) ||
+      updateDetails.email !== ""
+    ) {
       props.snackBar("Email is Incorrect", "error");
       return;
     }
@@ -110,10 +116,7 @@ const Profile = ({ setSideToggle, ...props }) => {
       return;
     }
     try {
-      const {
-        status,
-        data: { message },
-      } = await helperService.updateUser(
+      const { status, message } = await helperService.updateUser(
         {
           id: user._id,
           updateDetails: details,
@@ -155,14 +158,14 @@ const Profile = ({ setSideToggle, ...props }) => {
           <div className="d-flex my-2">
             <div className="col-md-6">
               <InputReducer
-                placeholder="Register Number"
-                name="Register no"
-                id="Register number1"
-                type="text"
-                label="Register Number"
+                className={classes.fieldColor}
                 value={user.regno}
                 disabled={true}
-                className={classes.fieldColor}
+                type="text"
+                id="Register number1"
+                placeholder="Register Number"
+                name="Register no"
+                label="Register Number"
               />
             </div>
             <div className="col-md-6">

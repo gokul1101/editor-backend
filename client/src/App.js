@@ -58,7 +58,7 @@ const App = () => {
       }
     } catch ({ status, message }) {
       if (status === 401) unauthorized(message);
-      snackBar(message, "error");
+      else snackBar(message, "error");
     }
   };
   // const disabledEvent = (e) => {

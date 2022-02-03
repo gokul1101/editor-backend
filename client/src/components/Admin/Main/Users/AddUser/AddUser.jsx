@@ -37,17 +37,7 @@ const AddUser = (props) => {
   const [reqflag, setReqflag] = useState(false);
   const [logs, setLogs] = useState({});
   const [authState] = useContext(AuthContext);
-  const [user, setUser] = useState({
-    regno: "",
-    name: "",
-    email: "",
-    gender_id: "",
-    stream_id: "",
-    course_id: "",
-    college_id: "",
-    phone_no: "",
-    batch_id: "",
-  });
+  const [user, setUser] = useState({});
   const classes = useStyles();
   const removeFileHandler = (setFileList) => {
     setFileList([]);
@@ -80,7 +70,7 @@ const AddUser = (props) => {
     /* eslint-disable no-useless-escape */
     let username = /^[a-zA-Z\_]{3,25}$/;
 
-    if (!username.test(user.name)) {
+    if (user.name && !username.test(user.name)) {
       props.snackBar("Username is Invalid", "error");
       return;
     }
@@ -88,27 +78,27 @@ const AddUser = (props) => {
       props.snackBar("Please check the register Number", "error");
       return;
     }
-    if (user.stream_id === "") {
+    if (!user.stream_id) {
       props.snackBar("Stream is not selected", "error");
       return;
     }
-    if (user.course_id === "") {
+    if (!user.course_id) {
       props.snackBar(" Course is not selected", "error");
       return;
     }
-    if (user.college_id === "") {
+    if (!user.college_id) {
       props.snackBar("College is not selected", "error");
       return;
     }
-    if (!emailRegex.test(user.email)) {
+    if (user.email && !emailRegex.test(user.email)) {
       props.snackBar("Email is Incorrect", "error");
       return;
     }
-    if (user.phone_no.length !== 10) {
+    if (user.phone_no && user.phone_no.length !== 10) {
       props.snackBar("Phone Number is Incorrect", "error");
       return;
     }
-    if (user.gender_id === "") {
+    if (user.gender_id && user.gender_id === "") {
       props.snackBar("Gender is not Selected", "error");
       return;
     }
@@ -120,10 +110,7 @@ const AddUser = (props) => {
     try {
       showLoader();
 
-      const {
-        status,
-        data: { message },
-      } = await helperService.createUser(
+      const { status, message } = await helperService.createUser(
         {
           ...user,
           college_id: user.college_id,
@@ -144,7 +131,7 @@ const AddUser = (props) => {
     }
   };
   return (
-    <div className="container">
+    <div className="container mb-5">
       {loader}
       <p className="text-left dash-title-category pb-2">Add Details *</p>
       <div className="col p-0" style={{ marginTop: "-20px" }}>

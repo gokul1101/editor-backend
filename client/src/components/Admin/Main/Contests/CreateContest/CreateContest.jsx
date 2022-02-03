@@ -88,7 +88,7 @@ const CreateContest = (props) => {
     if (!flag) return;
     try {
       showLoader();
-      const { data, status } = await helperService.updateContest(
+      const { status, message } = await helperService.updateContest(
         {
           id,
           name,
@@ -100,10 +100,11 @@ const CreateContest = (props) => {
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        props.snackBar(data.message, "success");
+        props.snackBar(message, "success");
         hideLoader();
       }
-    } catch (error) {
+    } catch ({ message }) {
+      props.snackBar(message, "error");
       hideLoader();
     }
   };

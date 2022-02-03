@@ -44,8 +44,8 @@ const AddQuiz = (props) => {
       if (status === 200) {
         setQuestions(mcqs);
       }
-    } catch (err) {
-      props.snackBar(err.message, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   const createQuestion = async () => {
@@ -85,24 +85,24 @@ const AddQuiz = (props) => {
         props.snackBar("Quiz created successfully", "success");
         setQuestions([...questions, mcq]);
       }
-    } catch (err) {
-      // props.snackBar(err.data, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   const deleteQuestion = async (question) => {
     try {
-      const { status } = await helperService.deleteQuestion(
+      const { status, message } = await helperService.deleteQuestion(
         { ...question, quiz_id: id, type_id: "mcq" },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 202) {
-        props.snackBar("Question deleted successfully", "success");
+        props.snackBar(message, "success");
         setQuestions(
           questions.filter((ques) => ques.question_id !== question.question_id)
         );
       }
-    } catch (err) {
-      props.snackBar(err.data, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   const updateQuestion = async () => {

@@ -1,52 +1,55 @@
 const {
-  createMultipleTestCasesService,
-  updateTestCaseService,
-  getTestCasesService,
   createTestCaseService,
+  getTestCasesService,
+  updateTestCaseService,
   deleteTestCaseService,
 } = require("../services/testcaseService");
+const { encryption } = require("../utils/crypto-js");
 
 const createMultipleTestCases = async (req, res) => {
+  let testcaseDetails = req.body;
   try {
-    const response = await createTestCaseService(req.body);
-    console.log(response);
+    const { status, ...response } = await createTestCaseService(
+      testcaseDetails
+    );
     //TODO : possible to send added testcases
-    res
-      .status(response.status)
-      .json({ message: response.message, testcase_id: response.testcase_id });
-  } catch (err) {
-    res.status(err.status).json({ message: err.message });
+    return res.status(status).send(response);
+  } catch ({ status, message }) {
+    return res.status(status).json({ message });
   }
 };
 const getTestCases = async (req, res) => {
   try {
     const { id } = req.query;
-    const { status, message, testcases } = await getTestCasesService(
+    const { status, ...response } = await getTestCasesService(
       id,
       req.user.role_id
     );
-    res.status(status).json({ message, testcases });
-  } catch (err) {
-    if (err.status) res.status(err.status).json({ message: err.message });
-    else res.status(500).json({ message: "Internal server error" });
+    return res.status(status).send(response);
+  } catch ({ status, message }) {
+    return res.status(status).json({ message });
   }
 };
 const updateTestCase = async (req, res) => {
+  let testcaseDetails = req.body;
   try {
-    const response = await updateTestCaseService(req.body);
-    res.status(response.status).json({ message: response.message });
-  } catch (err) {
-    console.log(err);
-    if (err.status) res.status(err.status).json({ message: err.message });
-    else res.status(500).json({ message: "Unable to update testcase" });
+    const { status, ...response } = await updateTestCaseService(
+      testcaseDetails
+    );
+    return res.status(status).send(response);
+  } catch ({ status, message }) {
+    return res.status(status).json({ message });
   }
 };
 const deleteTestCase = async (req, res) => {
+  let testcaseDetails = req.body;
   try {
-    const response = await deleteTestCaseService(req.body);
-    return res.status(response.status).json({ message: response.message });
-  } catch (err) {
-    return res.status(err.status).send(err.message);
+    const { status, ...response } = await deleteTestCaseService(
+      testcaseDetails
+    );
+    return res.status(status).send(response);
+  } catch ({ status, message }) {
+    return res.status(status).json({ message });
   }
 };
 

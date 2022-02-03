@@ -52,16 +52,19 @@ const CreateChallenge = (props) => {
       return;
     }
     try {
-      const { status } = await helperService.createChallenge(
+      const {
+        status,
+        data: { message },
+      } = await helperService.createChallenge(
         { ...challenge, contest_id: id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
-        props.snackBar("Challenge is created Successfully", "success");
+        props.snackBar(message, "success");
         history.push(`/contests/${id}/challenges`);
       }
-    } catch (err) {
-      props.snackBar(err?.data?.message, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   const updateChallenge = async () => {
@@ -117,7 +120,10 @@ const CreateChallenge = (props) => {
       return;
     }
     try {
-      const { data, status } = await helperService.updateQuestion(
+      const {
+        data: { message },
+        status,
+      } = await helperService.updateQuestion(
         {
           ...challenge,
           id: authState?.challenge?._id,
@@ -128,10 +134,10 @@ const CreateChallenge = (props) => {
         }
       );
       if (status === 200) {
-        props.snackBar(data.message, "success");
+        props.snackBar(message, "success");
       }
-    } catch (err) {
-      props.snackBar(err.data, "error");
+    } catch (message) {
+      props.snackBar(message, "error");
     }
   };
   useEffect(() => {

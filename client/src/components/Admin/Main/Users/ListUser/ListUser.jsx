@@ -21,6 +21,7 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import EditIcon from "@material-ui/icons/Edit";
 import RestoreFromTrashIcon from "@material-ui/icons/RestoreFromTrash";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
+import PasswordField from "../../../../Reducer/PasswordField/PasswordField";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const limit = 3;
+const limit = 10;
 const ListUser = (props) => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -60,41 +61,43 @@ const ListUser = (props) => {
   };
   const classes = useStyles();
   const [loader, showLoader, hideLoader] = useLoader();
-  const [user, setUser] = useState({
+  const userTemplate = {
     regno: "",
     name: "",
     email: "",
-    gender_id: "",
+    phone_no: "",
     stream_id: "",
     course_id: "",
     college_id: "",
-    phone_no: "",
     batch_id: "",
-  });
+    gender_id: "",
+  };
+  const [user, setUser] = useState(userTemplate);
   const [updateDetails, setUpdateDetails] = useState({});
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const [authState] = useContext(AuthContext);
   const [users, setUsers] = useState([]);
   const [, setRegno] = useState("");
+  const [filters, setFilters] = useState({});
   const fetchUsers = async (page = 1) => {
     try {
       showLoader();
       const { status, data } = await helperService.getUsers(
-        { page, limit },
+        { page, limit, filters },
         {
           headers: { Authorization: authState.user.token },
         }
       );
       if (status === 200) {
-        //TODO :
         props.snackBar("List of Users", "success");
         setUsers(data.users);
         setRegno(data.users.reg_no);
-        if (!total) setTotal(data?.modelCount || 0);
-        hideLoader();
+        setTotal(data?.modelCount || 0);
       }
-    } catch (err) {
+    } catch ({ message }) {
+      props.snackBar(message, "error");
+    } finally {
       hideLoader();
     }
   };
@@ -102,7 +105,7 @@ const ListUser = (props) => {
     try {
       const { data, status } = await helperService.downloadStudentsDetails(
         // TODO : user quries
-        {},
+        { ...filters },
         {
           headers: { Authorization: authState?.user?.token },
           responseType: "arraybuffer",
@@ -115,29 +118,110 @@ const ListUser = (props) => {
         FileDownload(blob, `${"UserDetails"}.xlsx`);
         props.snackBar("Sample file downloaded", "success");
       }
-    } catch (err) {
-      props.snackBar(err.message, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
-
+  const fetchFilteredUsers = (queries) => {
+    setFilters({ ...filters, ...queries });
+  };
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [filters]);
 
   const editUserDetail = (data) => {
     setUser(data);
     setOpen(true);
   };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClose = () => setOpen(false);
 
   const updateUser = async () => {
+    /* eslint-disable no-useless-escape */
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    /* eslint-disable no-useless-escape */
+    let username = /^[a-zA-Z\_]{3,25}$/;
+
+    if (updateDetails.name && updateDetails.name !== "") {
+      if (!username.test(updateDetails.name)) {
+        props.snackBar("Username is Invalid", "error");
+        return;
+      }
+    }
+    if (updateDetails.email && updateDetails.email !== "") {
+      if (!emailRegex.test(updateDetails.email)) {
+        props.snackBar("Email is Incorrect", "error");
+        return;
+      }
+    }
+    if (updateDetails.phone_no && updateDetails.phone_no.length !== 10) {
+      props.snackBar("Phone Number is Incorrect", "error");
+      return;
+    }
+    if (!user.stream_id ?? !updateDetails.stream_id) {
+      props.snackBar("Stream is not Selected", "error");
+      return;
+    }
+    if (!user.course_id ?? !updateDetails.course_id) {
+      props.snackBar("Course is not Selected", "error");
+      return;
+    }
+    if (!user.college_id ?? !updateDetails.college_id) {
+      props.snackBar("College is not Selected", "error");
+      return;
+    }
+    if (!user.batch_id ?? !updateDetails.batch_id) {
+      props.snackBar("Batch is not Selected", "error");
+      return;
+    }
+    if (updateDetails.new_password !== updateDetails.confirm_password) {
+      props.snackBar("Password Mismatch", "error");
+      return;
+    }
+    if (updateDetails.new_password < 5) {
+      props.snackBar(
+        "Password is too short. Enter minimum 5 characters",
+        "error"
+      );
+      return;
+    }
+    if (updateDetails.new_password > 15) {
+      props.snackBar(
+        "Password is too long. Enter maximum 15 characters",
+        "error"
+      );
+      return;
+    }
+    let details = {};
+    if (updateDetails.name && user.name !== updateDetails.name)
+      details.name = updateDetails.name;
+    if (updateDetails.email && user.email !== updateDetails.email)
+      details.email = updateDetails.email;
+    if (updateDetails.phone_no && user.phone_no !== +updateDetails.phone_no)
+      details.phone_no = updateDetails.phone_no;
+    if (updateDetails.gender_id && user.gender_id !== updateDetails.gender_id)
+      details.gender_id = updateDetails.gender_id;
+    if (updateDetails.stream_id && user.stream_id !== updateDetails.stream_id)
+      details.stream_id = updateDetails.stream_id;
+    if (updateDetails.course_id && user.course_id !== updateDetails.course_id)
+      details.course_id = updateDetails.course_id;
+    if (
+      updateDetails.college_id &&
+      user.college_id !== updateDetails.college_id
+    )
+      details.college_id = updateDetails.college_id;
+    if (updateDetails.batch_id && user.batch_id !== updateDetails.batch_id)
+      details.batch_id = updateDetails.batch_id;
+    if (updateDetails.new_password)
+      details.password = updateDetails.new_password;
+    if (Object.keys(details).length === 0) {
+      props.snackBar("No changes made.", "info");
+      return;
+    }
     try {
       const { status, message } = await helperService.updateUser(
         {
           id: user._id,
-          updateDetails,
+          updateDetails: details,
         },
         {
           headers: { Authorization: authState.user.token },
@@ -148,7 +232,10 @@ const ListUser = (props) => {
         handleClose();
         setUsers(
           users.map((exist_user) => {
-            if (exist_user.regno === user.regno) return user;
+            if (exist_user.regno === user.regno) {
+              console.log(user, details);
+              return { ...user, ...details };
+            }
             return exist_user;
           })
         );
@@ -171,27 +258,25 @@ const ListUser = (props) => {
           <div className="col-md-6 col-lg-3 my-1 px-1">
             <SelectReducer
               className={classes.fieldColor}
-              array={["B.E", "B.Tech"]}
-              name="Stream"
-            />
-          </div>
-          <div className="col-md-6 col-lg-3 my-1 px-1">
-            <SelectReducer
-              className={classes.fieldColor}
-              array={
-                user.stream_id === "B.Tech"
-                  ? ["Information Technology"]
-                  : [
-                      "Computer Science & Engineering",
-                      "Electrical & Electronics Engineering",
-                      "Electronics and Communication Engineering",
-                      "Mechanical Engineering",
-                      "Automobile Engineering",
-                      "Civil Engineering",
-                      "Safety & Fire Engineering",
-                    ]
-              }
+              array={[
+                "Computer Science & Engineering",
+                "Electrical & Electronics Engineering",
+                "Electronics & Communication Engineering",
+                "Information Technology",
+                "Mechanical Engineering",
+                "Automobile Engineering",
+                "Civil Engineering",
+                "Safety & Fire Engineering",
+              ]}
+              id="course3"
               name="Course Name"
+              label="Course Name"
+              value={filters.course_id ?? ""}
+              handleSelect={(e) =>
+                fetchFilteredUsers({
+                  course_id: e.target.value,
+                })
+              }
             />
           </div>
           <div className="col-md-6 col-lg-3 my-1 px-1">
@@ -202,17 +287,55 @@ const ListUser = (props) => {
                 "KSR College of Technology",
                 "KSR Institute for Engineering & Technology",
               ]}
+              id="college3"
               name="College Name"
+              label="college name"
+              value={filters.college_id ?? ""}
+              handleSelect={(e) =>
+                fetchFilteredUsers({
+                  college_id: e.target.value,
+                })
+              }
             />
           </div>
           <div className="col-md-6 col-lg-3 my-1 px-1">
             <SelectReducer
               className={classes.fieldColor}
-              array={["male", "female", "other"]}
+              array={[
+                "2018-2022",
+                "2019-2023",
+                "2020-2024",
+                "2021-2025",
+                "2022-2026",
+              ]}
+              id="batch2"
+              name="Batch year"
+              label="Batch year"
+              value={filters.batch_id ?? "" ?? ""}
+              handleSelect={(e) =>
+                fetchFilteredUsers({
+                  batch_id: e.target.value,
+                })
+              }
+            />
+          </div>
+          <div className="col-md-6 col-lg-3 my-1 px-1">
+            <SelectReducer
+              className={classes.fieldColor}
+              array={["male", "female", "others"]}
+              id="Gender3"
               name="Gender"
+              label="Gender"
+              value={filters.gender_id ?? ""}
+              handleSelect={(e) =>
+                fetchFilteredUsers({
+                  gender_id: e.target.value,
+                })
+              }
             />
           </div>
         </div>
+
         <div className="d-flex align-items-center justify-content-center">
           <div className="col-md-6 col-lg-4 mt-2 p-0">
             <InputReducer
@@ -243,31 +366,31 @@ const ListUser = (props) => {
         </div>
 
         <div className="d-flex flex-column mb-5">
-          {users?.map((e) => {
+          {users?.map((user) => {
             return (
               <div
                 className="d-flex border-top border-bottom mt-1 p-2 mb-1 align-items-center justify-content-center"
-                key={e._id}
+                key={user._id}
               >
                 <div className="col-md-2 text-center content-nav-title">
-                  {e.regno}
+                  {user.regno}
                 </div>
                 <div className="col-md-2 text-center content-nav-title">
-                  {e.stream_id}
+                  {user.stream_id}
                 </div>
                 <div className="col-md-2 text-center content-nav-title">
-                  {e.course_id}
+                  {user.course_id}
                 </div>
                 <div className="col-md-2 text-center content-nav-title">
-                  {e.college_id}
+                  {user.college_id}
                 </div>
                 <div className="col-md-2 text-center content-nav-title">
-                  {e.batch_id}
+                  {user.batch_id}
                 </div>
                 <div className="col-md-2 d-flex text-center content-nav-title">
                   <div className="px-3">
                     <EditIcon
-                      onClick={() => editUserDetail(e)}
+                      onClick={() => editUserDetail(user)}
                       style={{ cursor: "pointer" }}
                     />
                   </div>
@@ -287,7 +410,7 @@ const ListUser = (props) => {
             count={Math.floor(total / limit) + (total % limit !== 0 ? 1 : 0)}
             color="primary"
             variant="text"
-            className="mt-5 d-flex justify-content-center"
+            className="my-5 d-flex justify-content-center"
             onChange={(e, value) => handlePagination(e, value)}
           />
         )}
@@ -310,27 +433,28 @@ const ListUser = (props) => {
                 <div className="col-md-6">
                   <InputReducer
                     className={classes.fieldColor}
-                    id="outlined-multiline-static"
-                    label="Register Name"
                     variant="outlined"
+                    id="Register number2"
+                    placeholder="Register Number"
+                    name="Register no"
+                    label="Register Number"
                     value={user.regno}
                     disabled={true}
-                    // onClickHandler={(value) =>
-                    //   setUser({ ...user, regno: value })
-                    // }
                   />
                 </div>
                 <div className="col-md-6">
                   <InputReducer
                     className={classes.fieldColor}
-                    id="outlined-multiline-static"
+                    placeholder="Enter Name"
+                    name="Name"
+                    id="Name2"
+                    type="text"
                     label="Name"
                     variant="outlined"
-                    value={user.name}
-                    onClickHandler={(value) => {
-                      setUpdateDetails({ ...updateDetails, name: value });
-                      setUser({ ...user, name: value });
-                    }}
+                    value={updateDetails.name ?? user.name ?? ""}
+                    onClickHandler={(value) =>
+                      setUpdateDetails({ ...updateDetails, name: value })
+                    }
                   />
                 </div>
               </div>
@@ -338,30 +462,30 @@ const ListUser = (props) => {
                 <div className="col-md-6">
                   <InputReducer
                     className={classes.fieldColor}
-                    id="outlined-multiline-static"
+                    placeholder="Enter Email"
+                    name="Email"
+                    id="Email2"
+                    type="email"
                     label="Email"
                     variant="outlined"
-                    value={user.email}
-                    onClickHandler={(value) => {
-                      setUpdateDetails({ ...updateDetails, email: value });
-                      setUser({ ...user, email: value });
-                    }}
+                    value={updateDetails.email ?? user.email ?? ""}
+                    onClickHandler={(value) =>
+                      setUpdateDetails({ ...updateDetails, email: value })
+                    }
                   />
                 </div>
                 <div className="col-md-6">
-                  <SelectReducer
+                  <InputReducer
                     className={classes.fieldColor}
-                    label="gender"
-                    array={["male", "female"]}
-                    name="Gender"
-                    value={user.gender_id}
-                    handleSelect={(e) => {
-                      setUpdateDetails({
-                        ...updateDetails,
-                        gender_id: e.target.value,
-                      });
-                      setUser({ ...user, gender_id: e.target.value });
-                    }}
+                    placeholder="Phone number"
+                    label="Phone number"
+                    name="Phone number"
+                    id="Phone number2"
+                    type="text"
+                    value={updateDetails.phone_no ?? user.phone_no ?? ""}
+                    onClickHandler={(value) =>
+                      setUpdateDetails({ ...updateDetails, phone_no: value })
+                    }
                   />
                 </div>
               </div>
@@ -370,38 +494,44 @@ const ListUser = (props) => {
                   <SelectReducer
                     className={classes.fieldColor}
                     array={["B.E", "B.Tech"]}
+                    id="Stream2"
                     name="Stream"
                     label="Stream"
-                    defaultValue={user.stream_id}
-                    value={user.stream_id}
-                    handleSelect={(e) => {
+                    value={updateDetails.stream_id ?? user.stream_id ?? ""}
+                    handleSelect={(e) =>
                       setUpdateDetails({
                         ...updateDetails,
                         stream_id: e.target.value,
-                      });
-                      setUser({ ...user, stream_id: e.target.value });
-                    }}
+                      })
+                    }
                   />
                 </div>
                 <div className="col-md-6">
                   <SelectReducer
                     className={classes.fieldColor}
-                    array={[
-                      "Computer Science & Engineering",
-                      "Information Technology",
-                      "Civil Engineering",
-                    ]}
+                    array={
+                      user.stream_id === "B.Tech"
+                        ? ["Information Technology"]
+                        : [
+                            "Computer Science & Engineering",
+                            "Electrical & Electronics Engineering",
+                            "Electronics & Communication Engineering",
+                            "Mechanical Engineering",
+                            "Automobile Engineering",
+                            "Civil Engineering",
+                            "Safety & Fire Engineering",
+                          ]
+                    }
+                    id="course2"
                     name="Course Name"
                     label="Course Name"
-                    defaultValue={user.course_id}
-                    value={user.course_id}
-                    handleSelect={(e) => {
+                    value={updateDetails.course_id ?? user.course_id ?? ""}
+                    handleSelect={(e) =>
                       setUpdateDetails({
                         ...updateDetails,
                         course_id: e.target.value,
-                      });
-                      setUser({ ...user, course_id: e.target.value });
-                    }}
+                      })
+                    }
                   />
                 </div>
               </div>
@@ -414,35 +544,18 @@ const ListUser = (props) => {
                       "KSR College of Technology",
                       "KSR Institute for Engineering & Technology",
                     ]}
+                    id="college2"
                     name="College Name"
                     label="college name"
-                    defaultValue={user.college_id}
-                    value={user.college_id}
-                    handleSelect={(e) => {
+                    value={updateDetails.college_id ?? user.college_id ?? ""}
+                    handleSelect={(e) =>
                       setUpdateDetails({
                         ...updateDetails,
                         college_id: e.target.value,
-                      });
-                      setUser({ ...user, college_id: e.target.value });
-                    }}
+                      })
+                    }
                   />
                 </div>
-                <div className="col-md-6">
-                  <InputReducer
-                    className={classes.fieldColor}
-                    placeholder="Phone number"
-                    label="Phone number"
-                    name="Phone number"
-                    type="text"
-                    value={user.phone_no}
-                    onClickHandler={(value) => {
-                      setUpdateDetails({ ...updateDetails, phone_no: value });
-                      setUser({ ...user, phone_no: value });
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="d-flex mx-2 my-3">
                 <div className="col-md-6">
                   <SelectReducer
                     className={classes.fieldColor}
@@ -453,17 +566,74 @@ const ListUser = (props) => {
                       "2021-2025",
                       "2022-2026",
                     ]}
+                    id="batch2"
                     name="Batch year"
                     label="Batch year"
-                    defaultValue={user.batch_id}
-                    value={user.batch_id}
-                    handleSelect={(e) => {
+                    value={updateDetails.batch_id ?? user.batch_id ?? "" ?? ""}
+                    handleSelect={(e) =>
                       setUpdateDetails({
                         ...updateDetails,
                         batch_id: e.target.value,
-                      });
-                      setUser({ ...user, batch_id: e.target.value });
-                    }}
+                      })
+                    }
+                  />
+                </div>
+              </div>
+              <div className="d-flex mx-2 my-3">
+                <div className="col-md-6">
+                  <SelectReducer
+                    className={classes.fieldColor}
+                    label="Gender"
+                    array={["male", "female", "others"]}
+                    name="Gender"
+                    id="gender2"
+                    value={updateDetails.gender_id ?? user.gender_id ?? ""}
+                    handleSelect={(e) =>
+                      setUpdateDetails({
+                        ...updateDetails,
+                        gender_id: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+              <div className="col-md-12 mx-2">
+                <p
+                  className="text-dark"
+                  style={{ fontSize: "20px", fontWeight: "bolder" }}
+                >
+                  Edit Password
+                </p>
+              </div>
+              <div className="d-flex mx-2 my-3">
+                <div className="col-md-6">
+                  <PasswordField
+                    type="New Password"
+                    name="new password"
+                    id="new password"
+                    variant="outlined"
+                    value={updateDetails.new_password ?? ""}
+                    onClickHandler={(e) =>
+                      setUpdateDetails({
+                        ...updateDetails,
+                        new_password: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="col-md-6">
+                  <PasswordField
+                    type="Confirm Password"
+                    name="confirm password"
+                    id="confirm password"
+                    variant="outlined"
+                    value={updateDetails.confirm_password ?? ""}
+                    onClickHandler={(e) =>
+                      setUpdateDetails({
+                        ...updateDetails,
+                        confirm_password: e.target.value,
+                      })
+                    }
                   />
                 </div>
               </div>

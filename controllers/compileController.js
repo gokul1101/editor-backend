@@ -4,19 +4,23 @@ const { challengeSubmissionService } = require("../services/submissionService");
 const compile = async (req, res) => {
   try {
     const { input, code, lang } = req.body;
-    const { status, output } = await compilerService(code, input, lang);
-    res.status(status).json(output);
-  } catch ({ status, err, message }) {
-    res.status(status).json({ err, message });
+    const { status, ...response } = await compilerService(code, input, lang);
+    return res.status(status).send(response);
+  } catch ({ status, ...response }) {
+    return res.status(status).send(response);
   }
 };
 const executeContestChallenge = async (req, res) => {
   try {
     const { id, code, lang } = req.body;
-    const result = await challengeSubmissionService(id, code, lang);
-    res.status(result.status).json(result);
-  } catch (err) {
-    res.status(err.status).json(err);
+    const { status, ...response } = await challengeSubmissionService(
+      id,
+      code,
+      lang
+    );
+    return res.status(status).send(response);
+  } catch ({ status, ...response }) {
+    return res.status(status).send(response);
   }
 };
 module.exports = { compile, executeContestChallenge };

@@ -1,15 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import Chart from "react-apexcharts";
-
 import "./AdminDashboard.css";
-
 import helperService from "../../../../services/helperService";
 import { AuthContext } from "../../../../contexts/AuthContext";
 
 import adminUser from "../../../../images/admin-dashboard-user.png";
 import adminStar from "../../../../images/admin-star.png";
 import adminSubmission from "../../../../images/admin-submission.png";
-const AdminDashboard = () => {
+const AdminDashboard = (props) => {
   const [totalCounts, setTotalCounts] = useState({
     users: 0,
     contests: 0,
@@ -82,18 +80,13 @@ const AdminDashboard = () => {
             ),
         });
       }
-    } catch (err) {
-      console.log(err);
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   useEffect(() => {
     fetchAdminDashboard();
-    return () => {};
   }, []);
-  useEffect(() => {
-    console.log(contestSubmissions);
-    return () => {};
-  }, [contestSubmissions]);
   return (
     <div
       className="container-fluid"

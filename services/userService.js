@@ -18,6 +18,7 @@ const createUserService = async (userDetails) => {
       return Promise.reject({
         status: 403,
         message: `Register number already exists.`,
+        regno,
       });
     }
     //* Get the hashed password

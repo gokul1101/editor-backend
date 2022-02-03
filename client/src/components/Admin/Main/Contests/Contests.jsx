@@ -32,7 +32,10 @@ const Contests = (props) => {
   const fetchContests = async (page = 1, past = false) => {
     try {
       if (!past) showLoader();
-      const { status, data } = await helperService.getAllContests(
+      const {
+        status,
+        data: { data, message },
+      } = await helperService.getAllContests(
         { page, past, limit },
         { headers: { Authorization: authState.user.token } }
       );
@@ -42,7 +45,8 @@ const Contests = (props) => {
           ongoingContests,
           upcomingContests,
           pastContestsCount,
-        } = data.message;
+        } = data;
+        props.snackBar(message, "success");
         setContests({
           pastContestsCount,
           past: pastContests,
@@ -57,7 +61,8 @@ const Contests = (props) => {
         });
         if (!past) hideLoader();
       }
-    } catch (err) {
+    } catch ({ message }) {
+      props.snackBar(message, "error");
       hideLoader();
     }
   };

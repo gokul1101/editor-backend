@@ -67,7 +67,6 @@ const mapBatchId = async ([start, end]) => {
   }
 };
 const mapCourseId = async (name) => {
-  console.log(name);
   try {
     let course = await Course.findOne({ name });
     return Promise.resolve(course._id);

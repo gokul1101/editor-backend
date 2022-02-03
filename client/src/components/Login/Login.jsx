@@ -63,11 +63,10 @@ const Login = (props) => {
         authDispatch({ type: "SET_USER", payload: user });
         props.snackBar(message, "success");
       }
-    } catch (err) {
-      props.snackBar(err.message, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
-  React.useEffect(() => {}, [change]);
   const handleKeypress = (e) => {
     if (e.keyCode === 13) {
       handleSubmit();

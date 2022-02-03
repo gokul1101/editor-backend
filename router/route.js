@@ -90,13 +90,18 @@ router.post(
   createBulkUsers
 );
 //* Get Mulitple Users
-router.get(
+router.post(
   "/api/v1/users/getAll",
   userAuth,
   routeAuth("getAllUsers"),
   getAllUsers
 );
-
+router.get(
+  "/api/v1/user/admindashboard",
+  userAuth,
+  routeAuth("adminDashboard"),
+  adminDashboard
+);
 //* =============Contest=============== *//
 router.post(
   "/api/v1/contest/create",
@@ -231,6 +236,7 @@ router.post(
   routeAuth("getSubmission"),
   getSubmission
 );
+//* ========DOWNLOAD======== */
 router.post(
   "/api/v1/submission/export",
   userAuth,
@@ -243,6 +249,12 @@ router.get(
   routeAuth("exportSampleUsersDetails"),
   exportSampleUsersDetails
 );
+router.post(
+  "/api/v1/user/export",
+  userAuth,
+  routeAuth("exportUsers"),
+  exportUsers
+);
 //* ==============Compiler===============*//
 router.post("/api/v1/compiler", userAuth, routeAuth("compiler"), compile);
 router.post(
@@ -254,17 +266,5 @@ router.post(
 
 //* =============== Error Logs =========== *//
 router.get("/api/v1/errorLogs", userAuth, routeAuth("errorLogs"), getErrorLogs);
-//* =============== Admin Dashboard =========== *//
-router.get(
-  "/api/v1/user/admindashboard",
-  userAuth,
-  routeAuth("adminDashboard"),
-  adminDashboard
-);
-router.post(
-  "/api/v1/user/export",
-  userAuth,
-  routeAuth("exportUsers"),
-  exportUsers
-);
+
 module.exports = router;

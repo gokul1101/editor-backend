@@ -31,23 +31,26 @@ const ContestChallenges = (props) => {
         setChallenges(data.challenges);
         props.snackBar(data.message, "success");
       }
-    } catch (err) {
-      props.snackBar(err.message, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   const deleteQuestion = async (challenge) => {
     try {
-      const { status } = await helperService.deleteQuestion(
+      const {
+        data: { message },
+        status,
+      } = await helperService.deleteQuestion(
         { ...challenge, type_id: "problem" },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 202) {
-        props.snackBar("Question deleted successfully", "success");
+        props.snackBar(message, "success");
         console.log(challenge, challenges);
         setChallenges(challenges.filter((ques) => ques._id !== challenge._id));
       }
-    } catch (err) {
-      props.snackBar(err.data, "error");
+    } catch ({ message }) {
+      props.snackBar(message, "error");
     }
   };
   const [open, setOpen] = React.useState(false);
