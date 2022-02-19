@@ -16,16 +16,16 @@ const helperService = {
       encryptedData: encryption(payload),
     };
     try {
-      let { status, data, message } = await axios.post(
+      let { status, data } = await axios.post(
         `${baseURL}/api/v1/login`,
         payload
       );
       data = decryption(data);
+      console.log(data);
       if (status === 200) {
         return Promise.resolve({
           status,
           data,
-          message,
         });
       }
     } catch (err) {

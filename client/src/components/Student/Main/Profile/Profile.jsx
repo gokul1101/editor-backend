@@ -55,35 +55,20 @@ const Profile = ({ setSideToggle, ...props }) => {
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     /* eslint-disable no-useless-escape */
     let username = /^[a-zA-Z\_]{3,25}$/;
-
-    if (
-      !username.test(updateDetails.name ?? user.name) ||
-      updateDetails.name !== ""
-    ) {
-      props.snackBar("Username is Invalid", "error");
-      return;
+    if (updateDetails.name && updateDetails.name !== "") {
+      if (!username.test(updateDetails.name)) {
+        props.snackBar("Username is Invalid", "error");
+        return;
+      }
     }
-    if (
-      !emailRegex.test(updateDetails.email ?? user.email) ||
-      updateDetails.email !== ""
-    ) {
-      props.snackBar("Email is Incorrect", "error");
-      return;
+    if (updateDetails.email && updateDetails.email !== "") {
+      if (!emailRegex.test(updateDetails.email)) {
+        props.snackBar("Email is Incorrect", "error");
+        return;
+      }
     }
-    if (
-      !user.phone_no ||
-      (user.phone_no + "").length !== 10 ||
-      (updateDetails.phone_no && updateDetails.phone_no.length !== 10)
-    ) {
+    if (updateDetails.phone_no && updateDetails.phone_no.length !== 10) {
       props.snackBar("Phone Number is Incorrect", "error");
-      return;
-    }
-    if (!user.gender_id ?? !updateDetails.gender_id) {
-      props.snackBar("Gender is not Selected", "error");
-      return;
-    }
-    if (updateDetails.new_password !== updateDetails.confirm_password) {
-      props.snackBar("Password Mismatch", "error");
       return;
     }
     if (updateDetails.new_password < 5) {
@@ -98,6 +83,10 @@ const Profile = ({ setSideToggle, ...props }) => {
         "Password is too long. Enter maximum 15 characters",
         "error"
       );
+      return;
+    }
+    if (updateDetails.new_password !== updateDetails.confirm_password) {
+      props.snackBar("Password Mismatch", "error");
       return;
     }
     let details = {};
