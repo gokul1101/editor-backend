@@ -53,7 +53,7 @@ const Login = (props) => {
       return;
     }
     try {
-      const { status, data, message } = await helperService.login({
+      const { status, data } = await helperService.login({
         regno: register,
         password,
       });
@@ -61,7 +61,7 @@ const Login = (props) => {
         const user = { role: data.role, token: data.token };
         localStorage.setItem("user", JSON.stringify(user));
         authDispatch({ type: "SET_USER", payload: user });
-        props.snackBar(message, "success");
+        // props.snackBar(message, "success");
       }
     } catch ({ message }) {
       props.snackBar(message, "error");

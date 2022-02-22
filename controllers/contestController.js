@@ -15,7 +15,7 @@ const {
 } = require("../services/sessionService");
 
 const createContest = async (req, res) => {
-  let { contest } = req.body;
+  let contest = req.body;
   try {
     let { status, ...response } = await createContestService(contest);
     return res.status(status).send(response);
