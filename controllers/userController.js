@@ -16,7 +16,7 @@ let {
   UUID,
 } = require("../utils/helper");
 const { contestSubmissionsChartService } = require("../services/chartServices");
-const { encryption, decryption } = require("../utils/crypto-js");
+const { encryption } = require("../utils/crypto-js");
 //? To register the User
 const createUser = async (req, res) => {
   let userDetails = req.body;
@@ -120,10 +120,12 @@ const getUser = async (req, res) => {
       return res.status(401).json({
         message: `Unauthorized access`,
       });
-    return res.status(200).json({
-      userDetails,
-      message: "User found",
-    });
+    return res.status(200).json(
+      encryption({
+        userDetails,
+        message: "User found",
+      })
+    );
   } catch (err) {
     //! Error in finding user details
     return res.status(500).json({

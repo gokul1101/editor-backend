@@ -95,7 +95,10 @@ const ContestDetails = ({ setSideToggle, snackBar }) => {
       return localCode;
     });
     try {
-      const { status, message } = await helperService.createSubmission(
+      const {
+        status,
+        data: { message },
+      } = await helperService.createSubmission(
         { ...payload },
         { headers: { Authorization: authState.user.token } }
       );

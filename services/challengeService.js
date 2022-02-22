@@ -138,7 +138,7 @@ const getAllChallengesWithContestId = async (id) => {
     if (challenges) {
       return Promise.resolve({
         status: 200,
-        message: `challenges that are available`,
+        message: `Challenges that are available`,
         challenges,
       });
     } else {

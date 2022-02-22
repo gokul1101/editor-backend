@@ -1,7 +1,7 @@
 import axios from "axios";
 import { decryption, encryption } from "./crypto-js/index";
-const baseURL = "http://localhost:5000";
-// const baseURL = "http://172.16.15.173";
+// const baseURL = "http://localhost:5000";
+const baseURL = "http://172.16.15.173";
 
 const helperService = {
   rejectionHandler: ({ response }) => {
@@ -29,6 +29,7 @@ const helperService = {
         });
       }
     } catch (err) {
+      console.log(err);
       let {
         status,
         data: { message },
@@ -72,6 +73,7 @@ const helperService = {
     else if (payload.regno) url += `?regno=${payload.regno}`;
     try {
       let { status, data } = await axios.get(url, config);
+      data = decryption(data);
       if (status === 200) {
         return Promise.resolve({
           status,
@@ -419,6 +421,7 @@ const helperService = {
         `${baseURL}/api/v1/mcq/all?id=${id}&page=${page}`,
         config
       );
+      data = decryption(data);
       if (status === 200) {
         return Promise.resolve({
           status,
@@ -492,6 +495,7 @@ const helperService = {
         `${baseURL}/api/v1/challenges/all?id=${id}`,
         config
       );
+      data = decryption(data);
       if (status === 200) {
         return Promise.resolve({
           status,
@@ -780,6 +784,7 @@ const helperService = {
   },
   //* ERROR LOGS */
   getErrorLogs: async (payload, config) => {
+    console.log(payload);
     try {
       let { data, status } = await axios.get(
         `${baseURL}/api/v1/errorLogs?created_by=${payload.created_by}`,

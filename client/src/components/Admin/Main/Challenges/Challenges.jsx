@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 const Challenges = () => {
   return (
     <div
@@ -13,8 +13,9 @@ const Challenges = () => {
         </div>
         <div className="create-con">
           <Link to="/challenges/challenges-dashboard">
-            <button className="p-2">
-              <i className="fas fa-plus pr-2 pl-2"></i>CREATE CHALLENGES
+            <button className="p-2 d-flex align-items-center">
+              <AddCircleOutlineIcon className="mx-2" />
+              CREATE CHALLENGES
             </button>
           </Link>
         </div>

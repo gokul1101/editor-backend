@@ -23,13 +23,13 @@ const ContestChallenges = (props) => {
   const [challenges, setChallenges] = useState([]);
   const fetchChallenges = async () => {
     try {
-      const { data, status } = await helperService.getChallenges(
+      const { data: {message, challenges}, status } = await helperService.getChallenges(
         { id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        setChallenges(data.challenges);
-        props.snackBar(data.message, "success");
+        setChallenges(challenges);
+        props.snackBar(message, "success");
       }
     } catch ({ message }) {
       props.snackBar(message, "error");

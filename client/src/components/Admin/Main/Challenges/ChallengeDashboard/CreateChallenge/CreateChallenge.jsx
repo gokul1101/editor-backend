@@ -78,14 +78,6 @@ const CreateChallenge = (props) => {
         }
       }
     }
-    if (checkStatus === true || Object.keys(updateDetails).length === 0) {
-      props.snackBar("Already Up-to-Date", "info");
-      return;
-    }
-    if (Object.keys(updateDetails).length === 0) {
-      props.snackBar("Already Up-to-Date", "info");
-      return;
-    }
 
     if (challenge.name.length <= 0) {
       props.snackBar("Challenge Name is Empty", "error");
@@ -117,6 +109,10 @@ const CreateChallenge = (props) => {
     }
     if (challenge.max_score.length <= 0) {
       props.snackBar("Maximum Score is Empty", "error");
+      return;
+    }
+    if (checkStatus === true) {
+      props.snackBar("Already Up-to-Date", "info");
       return;
     }
     try {

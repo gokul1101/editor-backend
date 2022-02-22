@@ -8,6 +8,8 @@ import "./Testcase.css";
 import Loader from "../../../../../../../images/loader.gif";
 import CompilerError from "../CompileError/CompilerError";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
+import CancelIcon from "@material-ui/icons/Cancel";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 const Accordion = withStyles({
   root: {
     border: "1px solid rgba(0, 0, 0, .125)",
@@ -89,7 +91,11 @@ const Testcase = ({
                     aria-controls={`panel${index + 1}d-content`}
                     id={`panel${index + 1}d-header`}
                   >
-                    <Typography classname="test-case-heading ">
+                    <Typography
+                      component={"span"}
+                      variant={"body2"}
+                      classname="test-case-heading "
+                    >
                       {isLoading ? (
                         <img
                           src={Loader}
@@ -98,24 +104,22 @@ const Testcase = ({
                           className="p-2 rounded-circle"
                         />
                       ) : (
-                        <>
+                        <div className="d-flex align-items-center">
                           <button
-                            className={`btn btn-${
+                            className={`d-flex align-items-center justify-content-center btn btn-${
                               sampleOutput?.errors ? "danger" : "success"
                             }`}
                           >
-                            <i
-                              className={
-                                sampleOutput?.errors
-                                  ? "fas fa-times-circle"
-                                  : "far fa-check-circle"
-                              }
-                            ></i>
+                            {sampleOutput?.errors ? (
+                              <CancelIcon />
+                            ) : (
+                              <CheckCircleOutlineIcon />
+                            )}
                           </button>
                           <span className="ml-3 text-dark">
                             Test Case {index + 1}
                           </span>
-                        </>
+                        </div>
                       )}
                     </Typography>
                   </AccordionSummary>
@@ -149,14 +153,14 @@ const Testcase = ({
                     return (
                       <Accordion
                         square
-                        key={testcase._id}
+                        key={index}
                         expanded={expanded === `panel${length}`}
                       >
                         <AccordionSummary
                           aria-controls={`panel${length}d-content`}
                           id={`panel${length}d-header`}
                         >
-                          <Typography className="test-case-heading w-100 mr-auto">
+                          <div className="test-case-heading w-100 mr-auto">
                             {isLoading ? (
                               <img
                                 src={Loader}
@@ -165,26 +169,24 @@ const Testcase = ({
                                 className="p-2 rounded-circle"
                               />
                             ) : (
-                              <>
+                              <div className="d-flex align-items-center">
                                 <button
-                                  className={`btn btn-${
+                                  className={`d-flex align-items-center justify-content-center btn btn-${
                                     hiddenOutput ? "success" : "danger"
                                   }`}
                                 >
-                                  <i
-                                    className={
-                                      hiddenOutput
-                                        ? "far fa-check-circle"
-                                        : "fas fa-times-circle"
-                                    }
-                                  ></i>
+                                  {hiddenOutput ? (
+                                    <CheckCircleOutlineIcon />
+                                  ) : (
+                                    <CancelIcon />
+                                  )}
                                 </button>
                                 <span className="ml-3 text-dark">
                                   Test Case {length}
                                 </span>
-                              </>
+                              </div>
                             )}
-                          </Typography>
+                          </div>
 
                           <div className="lock-icon p-2 float-right">
                             <LockRoundedIcon />

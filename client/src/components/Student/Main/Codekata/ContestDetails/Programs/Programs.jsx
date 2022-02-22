@@ -28,7 +28,11 @@ const Programs = (props) => {
   const [challenge] = useState(findChallenge());
   let [testCases, setTestCases] = useState({});
   const [themeName, setThemeName] = useState("nord_dark");
-  const [language, setLanguage] = useState("java");
+  const [language, setLanguage] = useState(
+    localStorage.getItem(challenge?.name)
+      ? JSON.parse(localStorage.getItem(challenge?.name))?.lang
+      : "java"
+  );
   const [code, setCode] = useState(
     localStorage.getItem(challenge?.name)
       ? JSON.parse(localStorage.getItem(challenge?.name))?.code

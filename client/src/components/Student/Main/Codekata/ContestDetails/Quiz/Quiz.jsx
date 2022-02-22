@@ -70,7 +70,10 @@ const Quiz = ({ setSideToggle, snackBar }) => {
   };
   let answers = parseQuiz();
   const handleNext = async () => {
-    if (!status) return;
+    if (!status) {
+      snackBar("Choose an option!", "info");
+      return;
+    }
     let obj = {
       id: currentQuestion.id,
       option: selectedAnswer,
@@ -167,6 +170,7 @@ const Quiz = ({ setSideToggle, snackBar }) => {
                   (option, index) => {
                     return (
                       <button
+                        style={{ cursor: "pointer" }}
                         key={option}
                         className={`${
                           status &&

@@ -83,7 +83,7 @@ const getAllMCQS = async (req, res) => {
   let flag = req.user.role_id === "admin";
   limit = flag ? 10 : 1;
   try {
-    const { status, ...response } = await getAllMcqWithQuizID(
+    let { status, ...response } = await getAllMcqWithQuizID(
       id,
       page,
       limit,
@@ -99,11 +99,11 @@ const getAllMCQS = async (req, res) => {
 const getAllChallenges = async (req, res) => {
   const { id } = req.query;
   try {
-    const { status, ...response } = await getAllChallengesWithContestId(id);
+    let { status, ...response } = await getAllChallengesWithContestId(id);
     response = encryption(response);
     return res.status(status).send(response);
   } catch ({ status, message }) {
-    //! Error in getting mcqs with quiz id
+    //! Error in getting challenges with contest id
     return res.status(status).json({ message });
   }
 };

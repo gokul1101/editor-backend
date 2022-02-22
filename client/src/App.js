@@ -46,14 +46,17 @@ const App = () => {
   };
   const fetchUser = async () => {
     try {
-      const { status, data } = await helperService.getUser(
+      const {
+        status,
+        data: { userDetails },
+      } = await helperService.getUser(
         {},
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
         authDispatch({
           type: "SET_USER",
-          payload: { ...data["userDetails"] },
+          payload: { userDetails },
         });
       }
     } catch ({ status, message }) {

@@ -39,7 +39,11 @@ const DialogBox = ({ localData, ...props }) => {
           >
             {localData ? (
               <>
-                <Typography className="font-weight-bold">
+                <Typography
+                  component={"span"}
+                  variant={"body2"}
+                  className="font-weight-bold"
+                >
                   Some sections are not sumbitted!!!.
                 </Typography>
                 {unSubmittedQuestions().map((ques, index) => {
@@ -54,7 +58,11 @@ const DialogBox = ({ localData, ...props }) => {
                 })}
               </>
             ) : (
-              <Typography className="font-weight-bold">
+              <Typography
+                component={"span"}
+                variant={"body2"}
+                className="font-weight-bold"
+              >
                 {props.bodyMsg}
               </Typography>
             )}

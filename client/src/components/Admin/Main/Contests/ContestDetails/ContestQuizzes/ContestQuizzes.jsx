@@ -165,7 +165,11 @@ const ContestQuizzes = (props) => {
                 }
               />
             </div>
-            <Typography className="text-muted mt-3">
+            <Typography
+              component={"span"}
+              variant={"body2"}
+              className="text-muted mt-3"
+            >
               Note : Should contain a valid quiz name , Please don't use
               previous names
             </Typography>

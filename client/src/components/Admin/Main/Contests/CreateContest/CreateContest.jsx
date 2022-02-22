@@ -28,7 +28,11 @@ const CreateContest = (props) => {
   });
   const validateContestDetails = () => {
     if (name?.length < 4) {
-      props.snackBar("Contest Name should ", "error");
+      props.snackBar("Contest Name should have more than 3 letters.", "error");
+      return false;
+    }
+    if (name?.length > 25) {
+      props.snackBar("Contest Name should have less than 25 letters.", "error");
       return false;
     }
     if (!date.start_date) {
@@ -53,6 +57,10 @@ const CreateContest = (props) => {
     }
     if (+new Date() > +new Date(`${date.end_date} ${time.end_time}`)) {
       props.snackBar("Check contest end date or end time", "error");
+      return false;
+    }
+    if ((+new Date(`${date.start_date} ${time.start_time}`)) > (+new Date(`${date.end_date} ${time.end_time}`))) {
+      props.snackBar("Starting date & time must be before the ending date & time", "error");
       return false;
     }
     return true;

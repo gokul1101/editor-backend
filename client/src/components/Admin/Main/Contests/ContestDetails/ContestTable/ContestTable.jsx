@@ -34,7 +34,6 @@ const ContestTable = ({
               <div className="d-flex w-100 p-2 border m-1" key={question._id}>
                 <div className="col-md-3 text-center content-nav-title">
                   <Link
-                    style={{ color: "#000" }}
                     to={
                       setUpdateQuestion
                         ? `/quizzes/${question._id}/add-question`

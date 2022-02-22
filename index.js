@@ -40,7 +40,7 @@ const startApp = async () => {
     //* DB CONNECTION
     connect(DB, {
       useUnifiedTopology: true,
-      useNewUrlParser: true
+      useNewUrlParser: true,
     });
 
     success({ message: `Connected to DB \n${DB}`, badge: true });
@@ -59,5 +59,3 @@ const startApp = async () => {
   }
 };
 startApp();
-
-// app.use('/static', express.static(`${__dirname}/static`, { maxAge: '28 days' }));
