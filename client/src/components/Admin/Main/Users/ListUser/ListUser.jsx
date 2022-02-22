@@ -3,7 +3,8 @@ import FileDownload from "js-file-download";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import InputReducer from "../../../../Reducer/InputReducer";
@@ -22,6 +23,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import RestoreFromTrashIcon from "@material-ui/icons/RestoreFromTrash";
 import CustomButton from "../../../../Reducer/CustomButton/CustomButton";
 import PasswordField from "../../../../Reducer/PasswordField/PasswordField";
+
+import Chip from "@material-ui/core/Chip";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -51,6 +54,18 @@ const useStyles = makeStyles((theme) => ({
 
 const limit = 10;
 const ListUser = (props) => {
+  const nameList = [
+    "1813015",
+    "1813016",
+    "1813017",
+    "1813018",
+    "1813019",
+    "1813020",
+    "1813021",
+    "1813022",
+    "1813023",
+    "1813024",
+  ];
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const handlePagination = (e, value) => {
@@ -125,8 +140,12 @@ const ListUser = (props) => {
   const fetchFilteredUsers = (queries) => {
     setFilters({ ...filters, ...queries });
   };
+  const handleDelete = (key) => {
+    console.log(key);
+  };
   useEffect(() => {
     fetchUsers();
+    console.log(filters);
   }, [filters]);
 
   const editUserDetail = (data) => {
@@ -338,12 +357,19 @@ const ListUser = (props) => {
 
         <div className="d-flex align-items-center justify-content-center">
           <div className="col-md-6 col-lg-4 mt-2 p-0">
-            <InputReducer
+            <Autocomplete
               className={classes.fieldColor}
-              label="Search"
-              placeholder="Search"
-              name="Search"
-              type="text"
+              id="combo-box-demo"
+              options={nameList}
+              getOptionLabel={(option) => option}
+              style={{ width: "100%" }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Search Users"
+                  variant="outlined"
+                />
+              )}
             />
           </div>
           <div className="col-md-4 mt-2">
@@ -355,6 +381,26 @@ const ListUser = (props) => {
               <span className="ml-2 font-weight-bolder">Download Details</span>
             </CustomButton>
           </div>
+        </div>
+        <div className="d-flex align-items-center flex-wrap justify-content-center">
+          {Object.keys(filters).length > 0 ? (
+            <span className="mx-2">selected filters : </span>
+          ) : (
+            ""
+          )}
+          {Object.entries(filters).map((key) => {
+            return (
+              <>
+                <Chip
+                  key={key}
+                  label={key[1]}
+                  onDelete={() => handleDelete(key[0])}
+                  style={{ backgroundColor: "#21A366", color: "white" }}
+                  className="my-2 mx-1"
+                />
+              </>
+            );
+          })}
         </div>
 
         <div className="d-flex upcoming-header border-top border-bottom mt-4 p-2 mb-1">

@@ -40,7 +40,7 @@ const startApp = async () => {
     //* DB CONNECTION
     connect(DB, {
       useUnifiedTopology: true,
-      useNewUrlParser: true,
+      useNewUrlParser: true
     });
 
     success({ message: `Connected to DB \n${DB}`, badge: true });
