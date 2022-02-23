@@ -1,7 +1,7 @@
 import axios from "axios";
 import { decryption, encryption } from "./crypto-js/index";
-// const baseURL = "http://localhost:5000";
-const baseURL = "http://172.16.15.173";
+const baseURL = "http://localhost:5000";
+// const baseURL = "http://172.16.15.173";
 
 const helperService = {
   rejectionHandler: ({ response }) => {
@@ -21,7 +21,6 @@ const helperService = {
         payload
       );
       data = decryption(data);
-      console.log(data);
       if (status === 200) {
         return Promise.resolve({
           status,
@@ -29,7 +28,6 @@ const helperService = {
         });
       }
     } catch (err) {
-      console.log(err);
       let {
         status,
         data: { message },
@@ -77,7 +75,7 @@ const helperService = {
       if (status === 200) {
         return Promise.resolve({
           status,
-          data,
+          data: data.userDetails,
         });
       }
     } catch (err) {
@@ -85,6 +83,7 @@ const helperService = {
         status,
         data: { message },
       } = err.response;
+      if (status === 401) message = "Unauthorized";
       return Promise.reject({
         status,
         message,
@@ -599,17 +598,15 @@ const helperService = {
       if (status === 200) {
         return Promise.resolve({
           status,
-          data,
+          data: data.output,
         });
       }
     } catch (err) {
-      let {
-        status,
-        data: { message },
-      } = err.response;
+      let { status, data } = err.response;
+      console.log(err.response);
       return Promise.reject({
         status,
-        message,
+        data,
       });
     }
   },

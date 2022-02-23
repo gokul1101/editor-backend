@@ -13,7 +13,7 @@ import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import DialogBox from "../../../../../Reducer/DialogBox/DialogBox";
 import CodeRoundedIcon from "@material-ui/icons/CodeRounded";
 import DoneAllRoundedIcon from "@material-ui/icons/DoneAllRounded";
-import FiberManualRecordRoundedIcon from "@material-ui/icons/FiberManualRecordRounded";
+import StarOutlineIcon from "@material-ui/icons/StarOutline";
 const Programs = (props) => {
   let history = useHistory();
   const { id, questionId } = useParams();
@@ -249,8 +249,8 @@ const Programs = (props) => {
                       Constraints :
                     </span>
                     <div className="constraints-content d-flex flex-column mt-2">
-                      <span className="mt-2">
-                        <FiberManualRecordRoundedIcon />
+                      <span className="mt-2 d-flex align-items-center">
+                        <StarOutlineIcon />
                         <span className="constraints-highlight pr-2 pl-2 mr-1 ">
                           {challenge?.constraints}
                         </span>

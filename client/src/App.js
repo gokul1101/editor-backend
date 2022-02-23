@@ -46,17 +46,14 @@ const App = () => {
   };
   const fetchUser = async () => {
     try {
-      const {
-        status,
-        data: { userDetails },
-      } = await helperService.getUser(
+      const { status, data } = await helperService.getUser(
         {},
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
         authDispatch({
           type: "SET_USER",
-          payload: { userDetails },
+          payload: data,
         });
       }
     } catch ({ status, message }) {
@@ -75,7 +72,7 @@ const App = () => {
   // };
 
   // useEffect(() => {
-  //   // document.addEventListener("contextmenu", (e) => disabledEvent(e));
+  //   document.addEventListener("contextmenu", (e) => disabledEvent(e));
   //   document.addEventListener("keydown", (e) => {
   //     if (e.ctrlKey && (e.key === "u" || e.key === "U")) disabledEvent(e);
   //     if (e.ctrlKey && e.shiftKey && (e.key === "i" || e.key === "I"))

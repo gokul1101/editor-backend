@@ -17,6 +17,7 @@ const Codekata = ({ setSideToggle, ...props }) => {
     setSideToggle(false);
     authDispatch({ type: "REMOVE_CONTEST" });
     authDispatch({ type: "REMOVE_DURATION" });
+    return () => window.removeEventListener("keydown", submitCode);
   }, []);
   const submitCode = async (e) => {
     e.preventDefault();
@@ -68,6 +69,7 @@ const Codekata = ({ setSideToggle, ...props }) => {
                 type="text"
                 maxLength="6"
                 value={code.toUpperCase()}
+                onKeyDown={(e) => (e.key === "Enter" ? submitCode(e) : null)}
                 onChange={(e) => setCode(e.target.value)}
               />
             </div>

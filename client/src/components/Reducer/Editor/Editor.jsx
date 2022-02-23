@@ -1,5 +1,9 @@
 import React from "react";
 import AceEditor from "react-ace";
+import * as ace from "ace-builds/src-noconflict/ace";
+ace.config.set("basePath", "/assets/ui/");
+ace.config.set("modePath", "");
+ace.config.set("themePath", "");
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/mode-c_cpp";
