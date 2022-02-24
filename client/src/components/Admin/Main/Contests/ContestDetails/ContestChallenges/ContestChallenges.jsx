@@ -23,7 +23,10 @@ const ContestChallenges = (props) => {
   const [challenges, setChallenges] = useState([]);
   const fetchChallenges = async () => {
     try {
-      const { data: {message, challenges}, status } = await helperService.getChallenges(
+      const {
+        data: { message, challenges },
+        status,
+      } = await helperService.getChallenges(
         { id },
         { headers: { Authorization: authState.user.token } }
       );
@@ -66,7 +69,9 @@ const ContestChallenges = (props) => {
   return (
     <div className="container">
       <div className="d-flex flex-column" style={{ marginTop: "40px" }}>
-        <p className="text-left dash-title-category pb-2">Coding Challenges</p>
+        <h6 className="text-left dash-title-category pb-2">
+          Coding Challenges
+        </h6>
         <span className="create-con-text mt-1">
           Add quiz to the challenge to the contest by selecting quiz challenge
           from our library or create

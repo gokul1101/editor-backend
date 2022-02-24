@@ -69,9 +69,7 @@ const TestCase = (props) => {
   useEffect(() => {
     fetchTestcases();
   }, []);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const handleClickOpen = () => setOpen(true);
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
@@ -242,7 +240,7 @@ const TestCase = (props) => {
       </div>
       <CustomButton
         className="btn-hover color-11 d-flex align-items-center px-3 py-2 my-2"
-        onClick={handleClickOpen}
+        onClickHandler={handleClickOpen}
       >
         <AddCircleRoundedIcon />
         <span className="ml-2">ADD TESTCASE</span>
@@ -256,8 +254,8 @@ const TestCase = (props) => {
         </div>
       ) : (
         <div className="d-flex p-2 flex-wrap">
-          {testcases?.sample?.map((testcase) => (
-            <div className="p-2" key={testcase._id}>
+          {testcases?.sample?.map((testcase, index) => (
+            <div className="p-2" key={index}>
               <div
                 className="card test-card p-3"
                 style={{

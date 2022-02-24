@@ -47,6 +47,7 @@ const AddUser = (props) => {
     formData.append("file", files[0]);
     formData.get("file");
     //**This is modified when compare to other api calls*/
+    showLoader();
     try {
       const { data, status } = await helperService.createBulkUsers(
         { file: formData },
@@ -61,6 +62,8 @@ const AddUser = (props) => {
       }
     } catch ({ message }) {
       props.snackBar(message, "error");
+    } finally {
+      hideLoader();
     }
     return false;
   };

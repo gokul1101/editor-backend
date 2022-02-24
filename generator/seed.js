@@ -3,6 +3,7 @@ const { execSync } = require("child_process");
 const DB_NAME = "loop";
 
 const files = [
+  "users",
   "colleges",
   "courses",
   "difficulties",

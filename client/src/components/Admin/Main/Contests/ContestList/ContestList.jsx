@@ -6,7 +6,11 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { IconButton, Tooltip } from "@material-ui/core";
 const ContestList = ({ contests, contestName, setContest, snackBar }) => {
   const copyToClipboard = async (text) => {
-    await navigator.clipboard.writeText(text ?? "");
+    if ("clipboard" in navigator) {
+      await navigator.clipboard.writeText(text ?? "");
+    } else {
+      document.execCommand("copy", true, text ?? "");
+    }
     snackBar("Code Copied", "success");
   };
   return (

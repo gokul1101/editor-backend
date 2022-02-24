@@ -73,7 +73,7 @@ const ContestQuizzes = (props) => {
       const payload = {};
       if (quiz._id) payload.id = quiz._id;
       else if (quiz.name) payload.name = quiz.name;
-      const { data, status } = await helperService.deleteQuiz(payload, {
+      const { message, status } = await helperService.deleteQuiz(payload, {
         headers: { Authorization: authState?.user?.token },
       });
       if (status === 202) {
@@ -81,7 +81,7 @@ const ContestQuizzes = (props) => {
           setQuizzArr(quizzArr.filter((quiz) => quiz._id !== payload.id));
         else if (payload.name)
           setQuizzArr(quizzArr.filter((quiz) => quiz.name !== payload.name));
-        props.snackBar(data.message, "success");
+        props.snackBar(message, "success");
       }
     } catch ({ message }) {
       props.snackBar(message, "error");

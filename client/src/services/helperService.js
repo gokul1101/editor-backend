@@ -1,7 +1,7 @@
 import axios from "axios";
 import { decryption, encryption } from "./crypto-js/index";
-const baseURL = "http://localhost:5000";
-// const baseURL = "http://172.16.15.173";
+// const baseURL = "http://localhost:5000";
+const baseURL = "http://172.16.15.173";
 
 const helperService = {
   rejectionHandler: ({ response }) => {
@@ -324,14 +324,15 @@ const helperService = {
   //** QUIZZES */
   createQuizz: async (payload, config) => {
     try {
-      let {
-        status,
-        data: { message },
-      } = await axios.post(`${baseURL}/api/v1/quiz/create`, payload, config);
+      let { status, data } = await axios.post(
+        `${baseURL}/api/v1/quiz/create`,
+        payload,
+        config
+      );
       if (status === 201) {
         return Promise.resolve({
           status,
-          message,
+          data,
         });
       }
     } catch (err) {
