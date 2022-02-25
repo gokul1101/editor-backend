@@ -604,7 +604,6 @@ const helperService = {
       }
     } catch (err) {
       let { status, data } = err.response;
-      console.log(err.response);
       return Promise.reject({
         status,
         data,
@@ -782,7 +781,6 @@ const helperService = {
   },
   //* ERROR LOGS */
   getErrorLogs: async (payload, config) => {
-    console.log(payload);
     try {
       let { data, status } = await axios.get(
         `${baseURL}/api/v1/errorLogs?created_by=${payload.created_by}`,
