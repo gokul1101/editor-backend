@@ -80,7 +80,7 @@ const ContestStatictics = (props) => {
 
           {submissions.map((e, id) => {
             return (
-              <div className="stats d-flex w-100" key={id}>
+              <div className="stats d-flex w-100" key={e._id}>
                 <div className="col-md-2 stats-detail">{id + 1}</div>
                 <div className="col-md-2 stats-detail">{e.user_id.regno}</div>
                 <div className="col-md-3 stats-detail">{e.user_id.name}</div>

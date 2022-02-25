@@ -7,7 +7,9 @@ const createSession = async (req, res) => {
     });
     res.status(status).send(message);
   } catch (err) {
-    res.status(err.status).send(err.message);
+    console.log(err);
+    let { status = 500, message } = err;
+    res.status(status).send(message);
   }
 };
 const getSession = async (req, res) => {
@@ -19,7 +21,9 @@ const getSession = async (req, res) => {
     });
     res.status(status).send(message);
   } catch (err) {
-    res.status(err.status).send(err.message);
+    console.log(err);
+    let { status = 500, message } = err;
+    res.status(status).send(message);
   }
 };
 const getAllSessions = async (req, res) => {
@@ -31,7 +35,9 @@ const getAllSessions = async (req, res) => {
     );
     res.status(status).send(message);
   } catch (err) {
-    res.status(err.status).send(err.message);
+    console.log(err);
+    let { status = 500, message } = err;
+    res.status(status).send(message);
   }
 };
 

@@ -49,6 +49,7 @@ const exportSubmissions = async (req, res) => {
     await workbook.xlsx.write(res);
     return res.status(200).json({ message: "File Downloaded Successfully" });
   } catch (err) {
+    console.log(err);
     return res
       .status(500)
       .json({ message: "Error in downloading submissions details" });
@@ -164,6 +165,7 @@ const exportSampleUsersDetails = async (req, res) => {
     }
     return res.sendFile(filePath);
   } catch (err) {
+    console.log(err);
     return res
       .status(500)
       .json({ message: "Error in downloading users details" });

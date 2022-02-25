@@ -8,7 +8,7 @@ import "./Compiler.css";
 import Male from "../../../../images/man.png";
 import TextField from "@material-ui/core/TextField";
 import ComImg from "../../../../images/Loop1.jpg";
-import { AuthContext } from "../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../contexts/AuthContext";
 import helperService from "../../../../services/helperService";
 import { parseCode, template } from "../../../../services/utils";
 import Editor from "../../../Reducer/Editor/Editor";
@@ -16,9 +16,11 @@ import GoBack from "../../../Reducer/GoBack/GoBack";
 import CustomButton from "../../../Reducer/CustomButton/CustomButton";
 import { useHistory } from "react-router-dom";
 import CodeRoundedIcon from "@material-ui/icons/CodeRounded";
+
 const Compiler = (props) => {
   const history = useHistory();
   const [authState] = useContext(AuthContext);
+  const [loader, showLoader, hideLoader] = useLoader();
   const themes = [
     "xcode",
     "monokai",
@@ -73,6 +75,7 @@ const Compiler = (props) => {
     sessionStorage.removeItem("compile");
   };
   const compile = async () => {
+    showLoader();
     try {
       let parsedCode = parseCode(code);
       sessionStorage.setItem(
@@ -88,10 +91,13 @@ const Compiler = (props) => {
       }
     } catch (err) {
       setOutput(err.data.err);
+    } finally {
+      hideLoader();
     }
   };
   return (
     <div className="container-fluid p-0 compiler-container">
+      {loader}
       <div className="d-flex">
         <div className="d-flex mr-auto mt-2">
           <GoBack onClickHandler={() => history.goBack()} />
@@ -110,7 +116,6 @@ const Compiler = (props) => {
             <div className="gender-info mr-3">
               <img src={Male} alt="male" height="50" width="50" />
             </div>
-            {/* //Write in reusable same in Navebar */}
             <div className="user-profile d-flex flex-column">
               <span className="user-name">{authState?.user?.name}</span>
               <span className="register-no">{authState?.user?.regno}</span>
@@ -197,8 +202,6 @@ const Compiler = (props) => {
               <span className="mt-3 text-highlight font-weight-bolder">
                 OUTPUT :
               </span>
-              {/* <input className="output-box" value={output} /> */}
-              {/* <>{output}</> */}
 
               <TextField
                 className="mt-2 text-output"

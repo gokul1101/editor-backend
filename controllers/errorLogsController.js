@@ -8,7 +8,9 @@ const getErrorLogs = async (req, res) => {
       req.user._id
     );
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };

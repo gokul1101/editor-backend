@@ -40,7 +40,7 @@ const createSubmissionService = async (submissionDetails) => {
         return 0;
       })
     );
-    total_score += quizScore.reduce(reducer);
+    total_score += quizScore.reduce(reducer, 0);
     let challengeScore = await Promise.all(
       challenges.map(async (challenge) => {
         try {
@@ -57,7 +57,7 @@ const createSubmissionService = async (submissionDetails) => {
         return 0;
       })
     );
-    total_score += challengeScore.reduce(reducer);
+    total_score += challengeScore.reduce(reducer, 0);
     let newSubmission = new Submission({
       user_id,
       contest_id,

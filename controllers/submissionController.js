@@ -11,8 +11,10 @@ const createSubmission = async (req, res) => {
       submissionDetails
     );
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
     //! Error in creating submission
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -26,8 +28,10 @@ const getSubmission = async (req, res) => {
       submissionDetails
     );
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
     //! Error in getting submissions
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -36,11 +40,14 @@ const getAllSubmissions = async (req, res) => {
   try {
     const { status, ...response } = await getAllSubmissionsService(page, limit);
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
     //! Error in getting submissions
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
+
 module.exports = {
   createSubmission,
   getSubmission,

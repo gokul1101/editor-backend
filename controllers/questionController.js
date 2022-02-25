@@ -28,8 +28,10 @@ const createQuestion = async (req, res) => {
     )._id;
     let { status, ...response } = await functions[index](questionDetails);
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
     //! Error in creating question
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -43,8 +45,10 @@ const getQuestion = async (req, res) => {
     let { status, ...response } = await functions[index](id, req.user.role_id);
     response = encryption(response);
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
     //! Error in getting question
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).send(encryption({ message }));
   }
 };
@@ -58,8 +62,10 @@ const updateQuestion = async (req, res) => {
   try {
     let { status, ...response } = await functions[index](questionDetails);
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
     //! Error in updating question
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -73,8 +79,10 @@ const deleteQuestion = async (req, res) => {
   try {
     let { status, ...response } = await functions[index](questionDetails);
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
     //! Error in updating question
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -91,8 +99,10 @@ const getAllMCQS = async (req, res) => {
     );
     response = encryption(response);
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
     //! Error in getting mcqs with quiz id
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -102,8 +112,10 @@ const getAllChallenges = async (req, res) => {
     let { status, ...response } = await getAllChallengesWithContestId(id);
     response = encryption(response);
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
     //! Error in getting challenges with contest id
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };

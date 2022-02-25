@@ -9,7 +9,7 @@
     "client": "cd client && npm start",
     "dev": "nodemon index.js",
     "seed:local": "node generator/seed.js",
-    "post-build": "cd client && npm run build"
+    "build": "cd client && npm run build"
   },
   "keywords": [],
   "author": "",

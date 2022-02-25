@@ -252,7 +252,6 @@ const ListUser = (props) => {
         setUsers(
           users.map((exist_user) => {
             if (exist_user.regno === user.regno) {
-              console.log(user, details);
               return { ...user, ...details };
             }
             return exist_user;
@@ -388,11 +387,11 @@ const ListUser = (props) => {
           ) : (
             ""
           )}
-          {Object.entries(filters).map((key) => {
+          {Object.entries(filters).map((key, index) => {
             return (
               <>
                 <Chip
-                  key={key}
+                  key={key + index}
                   label={key[1]}
                   onDelete={() => handleDelete(key[0])}
                   style={{ backgroundColor: "#21A366", color: "white" }}

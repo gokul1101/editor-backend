@@ -4,7 +4,6 @@ const {
   updateTestCaseService,
   deleteTestCaseService,
 } = require("../services/testcaseService");
-const { encryption } = require("../utils/crypto-js");
 
 const createMultipleTestCases = async (req, res) => {
   let testcaseDetails = req.body;
@@ -14,7 +13,9 @@ const createMultipleTestCases = async (req, res) => {
     );
     //TODO : possible to send added testcases
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -26,7 +27,9 @@ const getTestCases = async (req, res) => {
       req.user.role_id
     );
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -37,7 +40,9 @@ const updateTestCase = async (req, res) => {
       testcaseDetails
     );
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -48,7 +53,9 @@ const deleteTestCase = async (req, res) => {
       testcaseDetails
     );
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };

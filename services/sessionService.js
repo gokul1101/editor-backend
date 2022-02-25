@@ -1,6 +1,5 @@
 const Session = require("../models/sessions");
 const Contest = require("../models/contests");
-const { setTime } = require("../utils/helper");
 const createSessionService = async ({ user_id, contest_id }) => {
   try {
     let contest = await Contest.findById(contest_id);
@@ -76,7 +75,6 @@ const updateSessionService = async (contest_id, user_id, ends_at) => {
       session,
     });
   } catch (err) {
-    console.log(err);
     return Promise.reject({
       status: 500,
       message: "Error in getting session.",

@@ -49,7 +49,7 @@ const DialogBox = ({ localData, ...props }) => {
                 {unSubmittedQuestions().map((ques, index) => {
                   return (
                     <span
-                      key={index}
+                      key={ques + index}
                       className="badge badge-success font-weight-normal px-2 py-2 m-1"
                     >
                       {ques}

@@ -255,7 +255,7 @@ const TestCase = (props) => {
       ) : (
         <div className="d-flex p-2 flex-wrap">
           {testcases?.sample?.map((testcase, index) => (
-            <div className="p-2" key={index}>
+            <div className="p-2" key={testcase.input + testcase.output + index}>
               <div
                 className="card test-card p-3"
                 style={{

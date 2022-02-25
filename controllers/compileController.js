@@ -6,7 +6,9 @@ const compile = async (req, res) => {
     const { input, code, lang } = req.body;
     const { status, ...response } = await compilerService(code, input, lang);
     return res.status(status).send(response);
-  } catch ({ status, ...response }) {
+  } catch (err) {
+    console.log(err);
+    let { status = 500, ...response } = err;
     return res.status(status).send(response);
   }
 };
@@ -19,7 +21,9 @@ const executeContestChallenge = async (req, res) => {
       lang
     );
     return res.status(status).send(response);
-  } catch ({ status, ...response }) {
+  } catch (err) {
+    console.log(err);
+    let { status = 500, ...response } = err;
     return res.status(status).send(response);
   }
 };

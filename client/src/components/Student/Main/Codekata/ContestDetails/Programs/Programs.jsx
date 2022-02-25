@@ -266,18 +266,18 @@ const Programs = (props) => {
                         input format :
                       </span>{" "}
                       <br />
-                      <p className="mt-2">
+                      <h6 className="my-2">
                         <pre>{challenge?.input_format}</pre>
-                      </p>
+                      </h6>
                     </div>
                     <div className="example-output mt-2">
                       <span className="font-weight-bolder op-highlight">
                         output format :
                       </span>{" "}
                       <br />
-                      <p className="mt-2 ">
+                      <h6 className="my-2">
                         <pre>{challenge?.output_format}</pre>
-                      </p>
+                      </h6>
                     </div>
                   </div>
                   <div className="hints mt-2 d-flex flex-column">
@@ -285,9 +285,9 @@ const Programs = (props) => {
                       Description :
                     </span>
                     <div className="problem-statement text-justify mt-2">
-                      <p>
+                      <h6>
                         <pre>{challenge?.description}</pre>
-                      </p>
+                      </h6>
                     </div>
                   </div>
                 </div>
@@ -320,6 +320,7 @@ const Programs = (props) => {
               <div className="my-3 d-flex justify-content-end">
                 <CustomButton
                   className="btn-hover color-11 mr-2 d-flex align-items-center py-2 px-3"
+                  disabled={isLoading}
                   onClickHandler={compile}
                 >
                   <CodeRoundedIcon />

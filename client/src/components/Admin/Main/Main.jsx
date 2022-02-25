@@ -45,7 +45,7 @@ const Main = (props) => {
             />
           </div>
           <ul className="nav flex-column w-100 p-2 side-ul">
-            <li className="nav-item dash-item mb-2 color-11">
+            <li className="nav-item dash-item mb-2 color-11" key="dashboard">
               <NavLink
                 exact
                 className="d-flex nav-link dash-li"
@@ -59,7 +59,7 @@ const Main = (props) => {
                 <span className="tooltip">Dashboard</span>
               </NavLink>
             </li>
-            <li className="nav-item dash-item mb-2 color-11">
+            <li className="nav-item dash-item mb-2 color-11" key="users">
               <NavLink
                 activeClassName="active-class"
                 to="/users"
@@ -72,7 +72,7 @@ const Main = (props) => {
                 <span className="tooltip">Users</span>
               </NavLink>
             </li>
-            <li className="nav-item dash-item mb-2 color-11">
+            <li className="nav-item dash-item mb-2 color-11" key="contests">
               <NavLink
                 activeClassName="active-class color-11"
                 to="/contests"
@@ -85,7 +85,7 @@ const Main = (props) => {
                 <span className="tooltip">Contests</span>
               </NavLink>
             </li>
-            <li className="nav-item dash-item mb-2 color-11">
+            <li className="nav-item dash-item mb-2 color-11" key="errorlogs">
               <NavLink
                 activeClassName="active-class color-11"
                 to={`/error-logs/${authState?.user?._id}`}
@@ -101,7 +101,7 @@ const Main = (props) => {
           </ul>
           <div className="sidebar-footer d-flex align-items-center justify-content-center position-relative">
             <ul className="nav flex-column w-100 side-ul">
-              <li className="nav-item dash-item mb-2 color-11">
+              <li className="nav-item dash-item mb-2 color-11" key="logout">
                 <NavLink
                   to="/login"
                   onClick={() => {
@@ -116,7 +116,7 @@ const Main = (props) => {
                   />
                   <span
                     className="hide-span"
-                    style={{ position: "relative", left: "-20px",top:'-5px' }}
+                    style={{ position: "relative", left: "-20px", top: "-5px" }}
                   >
                     Logout
                   </span>

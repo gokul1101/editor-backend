@@ -19,7 +19,9 @@ const createContest = async (req, res) => {
   try {
     let { status, ...response } = await createContestService(contest);
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -32,7 +34,9 @@ const getContest = async (req, res) => {
       req.user.role_id
     );
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -82,7 +86,9 @@ const getContestForDashboard = async (req, res) => {
     return res
       .status(status)
       .json({ contest: response, message: "Your session is started." });
-  } catch ({ status, message }) {
+  } catch (err) {
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -91,7 +97,9 @@ const updateContest = async (req, res) => {
   try {
     let { status, ...response } = await updateContestService(updateDetails);
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -136,7 +144,9 @@ const getAllContests = async (req, res) => {
       past
     );
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };

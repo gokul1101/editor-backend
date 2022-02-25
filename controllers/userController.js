@@ -23,8 +23,10 @@ const createUser = async (req, res) => {
   try {
     let { status, ...response } = await createUserService(userDetails);
     return res.status(status).send(response);
-  } catch ({ status, message }) {
+  } catch (err) {
     //! Error in creating user
+    console.log(err);
+    let { status = 500, message } = err;
     return res.status(status).json({ message });
   }
 };
@@ -128,6 +130,7 @@ const getUser = async (req, res) => {
     );
   } catch (err) {
     //! Error in finding user details
+    console.log(err);
     return res.status(500).json({
       message: `Error in finding user details`,
     });
@@ -209,6 +212,7 @@ const updateUser = async (req, res) => {
     });
   } catch (err) {
     //! Error in finding user details
+    console.log(err);
     res.status(500).json({
       message: `Error in Updating User.`,
     });
@@ -238,6 +242,7 @@ const deleteUser = async (req, res) => {
     });
   } catch (err) {
     //! Error in deleting user
+    console.log(err);
     res.status(500).json({
       message: "Error in deleting user",
     });
@@ -282,9 +287,10 @@ const createBulkUsers = async (req, res) => {
       created_by: userDetails._id,
     });
     await errorLogs.save();
-    return res.status(201).json({ errorLogs, message: "Created error logs." });
+    return res.status(200).json({ errorLogs, message: "Created error logs." });
   } catch (err) {
     //! Error in creating user
+    console.log(err);
     return res.status(500).json({
       message: `Error in creating users, Try again later.`,
     });
@@ -374,6 +380,7 @@ const adminDashboard = async (req, res) => {
       status,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

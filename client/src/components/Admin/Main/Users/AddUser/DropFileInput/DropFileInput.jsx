@@ -103,11 +103,12 @@ const DropFileInput = (props) => {
       {fileList.length > 0 ? (
         <div className="drop-file-preview">
           <p className="drop-file-preview__title">Ready to upload</p>
-          {fileList.map((item, index) => (
+          {fileList.map((item) => (
             <div
-              key={index}
+              key={item.lastModified}
               className="drop-file-preview__item d-flex w-100 align-items-center justify-content-center"
             >
+              {console.log(item)}
               <img alt="someImage" src={Excel} />
               <div className="drop-file-preview__item__info d-flex flex-column">
                 <span>{item.name}</span>

@@ -26,7 +26,7 @@ const SelectReducer = (props) => {
         >
           {props.array.map((item, id) => {
             return (
-              <MenuItem value={item} key={id}>
+              <MenuItem value={item} key={item + id}>
                 {item}
               </MenuItem>
             );

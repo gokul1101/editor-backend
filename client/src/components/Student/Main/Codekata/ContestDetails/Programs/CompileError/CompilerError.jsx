@@ -6,7 +6,7 @@ const CompilerError = ({ errors }) => {
       {errors?.length > 0 ? (
         <p className="p-4 font-weight-bolder">
           {errors.map((err, index) => (
-            <p key={index}>{err}</p>
+            <p key={err + index}>{err}</p>
           ))}
         </p>
       ) : (

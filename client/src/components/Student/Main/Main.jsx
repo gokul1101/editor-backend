@@ -54,7 +54,10 @@ const Main = (props) => {
             />
           </div>
           <ul className="nav flex-column w-100 p-2 side-ul">
-            <li className="nav-item dash-item mb-2 color-11">
+            <li
+              className="nav-item dash-item mb-2 color-11"
+              key="student-dashboard"
+            >
               <NavLink
                 exact
                 className="nav-link dash-li d-flex"
@@ -68,7 +71,7 @@ const Main = (props) => {
                 <span className="tooltip">Dashboard</span>
               </NavLink>
             </li>
-            <li className="nav-item dash-item mb-2 color-11">
+            <li className="nav-item dash-item mb-2 color-11" key="codekata">
               <NavLink
                 activeClassName="active-class"
                 to="/codekata"
@@ -81,7 +84,7 @@ const Main = (props) => {
                 <span className="tooltip">Codekata</span>
               </NavLink>
             </li>
-            <li className="nav-item dash-item mb-2 color-11">
+            <li className="nav-item dash-item mb-2 color-11" key="articles">
               <NavLink
                 activeClassName="active-class color-11"
                 to="/articles"
@@ -94,7 +97,7 @@ const Main = (props) => {
                 <span className="tooltip">Articles</span>
               </NavLink>
             </li>
-            <li className="nav-item dash-item mb-2 color-11">
+            <li className="nav-item dash-item mb-2 color-11" key="roadmap">
               <NavLink
                 activeClassName="active-class color-11"
                 to="/roadmap"
@@ -107,7 +110,10 @@ const Main = (props) => {
                 <span className="tooltip">Roadmap</span>
               </NavLink>
             </li>
-            <li className="nav-item mb-2 dash-item mb-2 color-11">
+            <li
+              className="nav-item mb-2 dash-item mb-2 color-11"
+              key="compiler"
+            >
               <NavLink
                 activeClassName="active-class color-11"
                 to="/compiler"
@@ -120,7 +126,10 @@ const Main = (props) => {
                 <span className="tooltip">Compiler</span>
               </NavLink>
             </li>
-            <li className="nav-item dash-item mb-2 color-11">
+            <li
+              className="nav-item dash-item mb-2 color-11"
+              key="student-logout"
+            >
               <NavLink
                 to="/login"
                 onClick={() => {

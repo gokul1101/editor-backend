@@ -150,6 +150,7 @@ const Testcase = ({
                     let length = (testcases?.sample?.length || 0) + index + 1;
                     let hiddenOutput =
                       (output?.hidden && output?.hidden[index]) || false;
+                    console.log(testcase);
                     return (
                       <Accordion
                         square
