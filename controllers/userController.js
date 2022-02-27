@@ -303,15 +303,23 @@ const getAllUsers = async (req, res) => {
     const { page = 1, limit = 10, role = "student" } = req.query;
     let { filters = {} } = req.body;
     let response = {};
-    for (let query in filters) {
+    for (const query in filters) {
       if (query === "course_id")
-        filters.course_id = await mapCourseId(filters[query]);
+        filters.course_id = await Promise.all(
+          filters[query].map(async (val) => await mapCourseId(val))
+        );
       else if (query === "college_id")
-        filters.college_id = await mapCollegeId(filters[query]);
+        filters.college_id = await Promise.all(
+          filters[query].map(async (val) => await mapCollegeId(val))
+        );
       else if (query === "batch_id")
-        filters.batch_id = await mapBatchId(filters[query]);
+        filters.batch_id = await Promise.all(
+          filters[query].map(async (val) => await mapBatchId(val))
+        );
       else if (query === "gender_id")
-        filters.gender_id = await mapGenderId(filters[query]);
+        filters.gender_id = await Promise.all(
+          filters[query].map(async (val) => await mapGenderId(val))
+        );
     }
     filters.role_id = await mapRoleId(role);
     filters.deleted_at = null;
@@ -354,9 +362,7 @@ const getAllUsers = async (req, res) => {
         },
       ]);
     response.total = users.length;
-    response.users = users
-      .filter((user) => user.role_id.name === "student")
-      .map((user) => serializeUser(user));
+    response.users = users.map((user) => serializeUser(user));
     return res.status(200).json(response);
   } catch (err) {
     //! Error in finding user details

@@ -95,6 +95,7 @@ const ListUser = (props) => {
   const [users, setUsers] = useState([]);
   const [, setRegno] = useState("");
   const [filters, setFilters] = useState({});
+  const [chips, setChips] = useState([]);
   const fetchUsers = async (page = 1) => {
     try {
       showLoader();
@@ -138,15 +139,34 @@ const ListUser = (props) => {
     }
   };
   const fetchFilteredUsers = (queries) => {
-    setFilters({ ...filters, ...queries });
+    let key = Object.keys(queries)[0];
+    let value = queries[key];
+    let newFilters = filters;
+    if (newFilters[key]) {
+      if (newFilters[key].find((val) => val === value)) return;
+      else newFilters[key] = [...newFilters[key], value];
+    } else newFilters[key] = [value];
+    setChips([...chips, value]);
+    setFilters(newFilters);
   };
-  const handleDelete = (key) => {
-    console.log(key);
+  const handleDelete = (chipValue) => {
+    let tempArr = filters;
+    let tempArr2 = chips;
+    for (const key in tempArr) {
+      let len = tempArr[key].length;
+      tempArr[key] = tempArr[key].filter((val) => val !== chipValue);
+      if (len !== tempArr[key].length) {
+        if (tempArr[key].length === 0) delete tempArr[key];
+        break;
+      }
+    }
+    tempArr2 = tempArr2.filter((val) => val !== chipValue);
+    setFilters(tempArr);
+    setChips(tempArr2);
   };
   useEffect(() => {
     fetchUsers();
-    console.log(filters);
-  }, [filters]);
+  }, [chips]);
 
   const editUserDetail = (data) => {
     setUser(data);
@@ -262,6 +282,7 @@ const ListUser = (props) => {
       props.snackBar(message, "error");
     }
   };
+
   return (
     <>
       <div className="container-fluid">
@@ -289,7 +310,7 @@ const ListUser = (props) => {
               id="course3"
               name="Course Name"
               label="Course Name"
-              value={filters.course_id ?? ""}
+              value=""
               handleSelect={(e) =>
                 fetchFilteredUsers({
                   course_id: e.target.value,
@@ -308,7 +329,7 @@ const ListUser = (props) => {
               id="college3"
               name="College Name"
               label="college name"
-              value={filters.college_id ?? ""}
+              value=""
               handleSelect={(e) =>
                 fetchFilteredUsers({
                   college_id: e.target.value,
@@ -329,7 +350,7 @@ const ListUser = (props) => {
               id="batch2"
               name="Batch year"
               label="Batch year"
-              value={filters.batch_id ?? "" ?? ""}
+              value={""}
               handleSelect={(e) =>
                 fetchFilteredUsers({
                   batch_id: e.target.value,
@@ -344,7 +365,7 @@ const ListUser = (props) => {
               id="Gender3"
               name="Gender"
               label="Gender"
-              value={filters.gender_id ?? ""}
+              value={""}
               handleSelect={(e) =>
                 fetchFilteredUsers({
                   gender_id: e.target.value,
@@ -384,20 +405,17 @@ const ListUser = (props) => {
         <div className="d-flex align-items-center flex-wrap justify-content-center">
           {Object.keys(filters).length > 0 ? (
             <span className="mx-2">selected filters : </span>
-          ) : (
-            ""
-          )}
-          {Object.entries(filters).map((key, index) => {
+          ) : null}
+
+          {chips.map((chip) => {
             return (
-              <>
-                <Chip
-                  key={key + index}
-                  label={key[1]}
-                  onDelete={() => handleDelete(key[0])}
-                  style={{ backgroundColor: "#21A366", color: "white" }}
-                  className="my-2 mx-1"
-                />
-              </>
+              <Chip
+                key={chip}
+                label={chip}
+                onDelete={() => handleDelete(chip)}
+                style={{ backgroundColor: "#21A366", color: "white" }}
+                className="my-2 mx-1"
+              />
             );
           })}
         </div>
