@@ -254,8 +254,6 @@ const challengeSubmissionService = async (
     );
     if (submission) {
       let total_score = Math.round((score / totalTestCases) * max_score);
-      console.log(score, totalTestCases, max_score);
-      console.log(total_score);
       return Promise.resolve({ status: 200, score: total_score });
     }
     return Promise.resolve({

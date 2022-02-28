@@ -138,7 +138,7 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
     }
     return Promise.resolve({
       status: 200,
-      message: "MCQs has been found.",
+      message: "MCQs found.",
       mcqs,
     });
   } catch (err) {

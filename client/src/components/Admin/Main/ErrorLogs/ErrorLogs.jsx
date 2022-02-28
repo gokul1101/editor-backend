@@ -25,13 +25,16 @@ const ErrorLogs = (props) => {
 
   const fetchErrorLogs = async () => {
     try {
-      const { data, status } = await helperService.getErrorLogs(
+      const {
+        data: { message, errorLogs },
+        status,
+      } = await helperService.getErrorLogs(
         { created_by: id },
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 200) {
-        props.snackBar(data.message, "success");
-        setErrorLogs(data.errorLogs);
+        props.snackBar(message, "success");
+        setErrorLogs(errorLogs);
       }
     } catch ({ message }) {
       props.snackBar(message, "error");

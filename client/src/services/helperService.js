@@ -30,7 +30,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -57,7 +57,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -81,7 +81,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       if (status === 401) message = "Unauthorized";
       return Promise.reject({
@@ -105,7 +105,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -128,7 +128,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -153,7 +153,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -200,7 +200,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -245,7 +245,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -266,7 +266,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -289,7 +289,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -312,7 +312,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -338,7 +338,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -361,7 +361,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -384,7 +384,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -407,7 +407,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -431,7 +431,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -455,7 +455,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -481,7 +481,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -505,7 +505,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -530,7 +530,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -555,7 +555,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -580,7 +580,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -626,7 +626,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -651,7 +651,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -674,7 +674,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -698,7 +698,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -722,7 +722,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -747,7 +747,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -771,7 +771,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -795,7 +795,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -820,7 +820,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -844,7 +844,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,
@@ -867,7 +867,7 @@ const helperService = {
     } catch (err) {
       let {
         status,
-        data: { message },
+        data: { message = "Internal Server Error" },
       } = err.response;
       return Promise.reject({
         status,

@@ -36,13 +36,14 @@ const AddQuiz = (props) => {
     try {
       const {
         status,
-        data: { mcqs },
+        data: { mcqs, message },
       } = await helperService.getQuizQuestions(
         { id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
         setQuestions(mcqs);
+        props.snackBar(message, "success");
       }
     } catch ({ message }) {
       props.snackBar(message, "error");
@@ -75,14 +76,14 @@ const AddQuiz = (props) => {
     }
     try {
       const {
-        data: { mcq },
+        data: { mcq, message },
         status,
       } = await helperService.createQuizQuestion(
         { quiz_id: id, ...question },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 201) {
-        props.snackBar("Quiz created successfully", "success");
+        props.snackBar(message, "success");
         setQuestions([...questions, mcq]);
       }
     } catch ({ message }) {
@@ -91,7 +92,10 @@ const AddQuiz = (props) => {
   };
   const deleteQuestion = async (question) => {
     try {
-      const { status, message } = await helperService.deleteQuestion(
+      const {
+        status,
+        data: { message },
+      } = await helperService.deleteQuestion(
         { ...question, quiz_id: id, type_id: "mcq" },
         { headers: { Authorization: authState.user.token } }
       );
@@ -107,13 +111,15 @@ const AddQuiz = (props) => {
   };
   const updateQuestion = async () => {
     try {
-      const { status } = await helperService.updateQuestion(
+      const {
+        status,
+        data: { message },
+      } = await helperService.updateQuestion(
         { ...question, quiz_id: id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
-        props.snackBar("Question updated successfully", "info");
-
+        props.snackBar(message, "success");
         setQuestions(
           questions.map((ques) => {
             if (ques.question_id === question.question_id) return question;

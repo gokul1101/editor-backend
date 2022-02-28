@@ -13,13 +13,13 @@ const generateFile = async (code, input, lang) => {
     fs.mkdirSync(folderPath, { recursive: true });
     fs.writeFileSync(filePath, code);
     if (input) fs.writeFileSync(path.join(folderPath, "input.txt"), input);
+    return [folderPath, filePath];
   } catch (e) {
     return Promise.reject({
       status: 500,
       output: "Server error",
     });
   }
-  return [folderPath, filePath];
 };
 
 module.exports = {

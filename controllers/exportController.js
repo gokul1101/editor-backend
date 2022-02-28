@@ -163,7 +163,7 @@ const exportSampleUsersDetails = async (req, res) => {
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({ message: "File Not Found" });
     }
-    return res.sendFile(filePath);
+    return res.status(200).sendFile(filePath);
   } catch (err) {
     console.log(err);
     return res

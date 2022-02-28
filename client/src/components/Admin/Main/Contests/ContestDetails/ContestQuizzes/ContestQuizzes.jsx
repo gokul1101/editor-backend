@@ -89,7 +89,7 @@ const ContestQuizzes = (props) => {
   };
   const updateQuizName = async () => {
     try {
-      const { data, status } = await helperService.updateQuiz(
+      const { message, status } = await helperService.updateQuiz(
         { name: quizName.name, id: quizName.id },
         { headers: { Authorization: authState?.user?.token } }
       );
@@ -100,7 +100,7 @@ const ContestQuizzes = (props) => {
             return quiz;
           })
         );
-        props.snackBar(data.message, "success");
+        props.snackBar(message, "success");
       }
     } catch ({ message }) {
       props.snackBar(message, "error");
