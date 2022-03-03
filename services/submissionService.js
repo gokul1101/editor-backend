@@ -5,6 +5,11 @@ const Answer = require("../models/answers");
 const Question = require("../models/questions");
 const { compilerService } = require("./compilerService");
 const { updateSessionService } = require("./sessionService");
+const {
+  generateLangFile,
+  generateInputFile,
+} = require("../utils/tools/generateFile");
+const { removeFolder } = require("../utils/tools/executeCode");
 const createSubmissionService = async (submissionDetails) => {
   let { user_id, contest_id, quizzes, challenges } = submissionDetails;
   try {
@@ -182,21 +187,25 @@ const challengeSubmissionService = async (
   if (submission && !question_id)
     return Promise.resolve({ status: 200, score: 0 });
   let complilationError = false,
-    isSampleFailed = false,
-    score = 0;
+    isSampleFailed = false;
+  let score = 0;
+  let path = "";
   try {
     const max_score = (await Question.findById(question_id))?.max_score || 1;
     const testcases = (await Answer.findOne({ question_id }))?.testcases || {};
     const totalTestCases =
       testcases?.sample?.length + testcases?.hidden?.length;
     let sampleTestCaseOutput = [];
+    const [folderPath, filePath] = await generateLangFile(code, lang);
+    path = folderPath;
     for (let i = 0; i < testcases?.sample.length; i++) {
       try {
-        let { output } = await compilerService(
-          code,
+        await generateInputFile(
+          folderPath,
           JSON.parse(testcases?.sample[i].input || '""'),
-          lang
+          i
         );
+        let { output } = await compilerService(folderPath, filePath, i, true);
         output = JSON.stringify(output.replace(/[\n\r]$/, "")) || "";
         let testCaseOutput = {
           expectedOutput: testcases?.sample[i].output,
@@ -211,6 +220,7 @@ const challengeSubmissionService = async (
         }
         sampleTestCaseOutput.push(testCaseOutput);
       } catch (err) {
+        console.log(err);
         if (i == 0) {
           return Promise.resolve({
             status: 200,
@@ -235,14 +245,22 @@ const challengeSubmissionService = async (
         message: "Sample testCases Failed.",
       });
     const hiddenTestCaseOutput = await Promise.all(
-      testcases?.hidden?.map(async (testcase) => {
+      testcases?.hidden?.map(async (testcase, index) => {
         try {
-          let { output } = await compilerService(
-            code,
+          console.log(testcase);
+          await generateInputFile(
+            folderPath,
             JSON.parse(testcase.input || '""'),
-            lang
+            index + testcases?.sample.length
+          );
+          let { output } = await compilerService(
+            folderPath,
+            filePath,
+            index + testcases?.sample.length,
+            true
           );
           output = JSON.stringify(output.replace(/[\n\r]$/, "")) || "";
+          console.log(output);
           if (output === testcase.output) {
             if (submission) score++;
             return true;
@@ -268,6 +286,8 @@ const challengeSubmissionService = async (
       status: 500,
       message: "Error in checking testcases.",
     });
+  } finally {
+    removeFolder(path);
   }
 };
 module.exports = {

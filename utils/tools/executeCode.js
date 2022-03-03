@@ -1,29 +1,25 @@
 const { exec } = require("child_process");
 const path = require("path");
-const executeCode = (filePath, input) => {
+const fs = require("fs");
+const executeCode = (folderPath, filePath, index, flag) => {
   const [fileId, fileFormat] = path.basename(filePath).split(".");
   let command = ``;
   if (fileFormat === "c") {
-    if (input)
-      command = `gcc ${filePath} -o ${path.dirname(
-        filePath
-      )}/${fileId} && ${path.dirname(filePath)}/${fileId} a.exe < ${path.join(
-        path.dirname(filePath),
-        "input.txt"
+    if (flag)
+      command = `gcc ${filePath} -o ${folderPath}/${fileId} && ${folderPath}/${fileId} a.exe < ${path.join(
+        folderPath,
+        `input${index}.txt`
       )}`;
     else {
-      command = `gcc ${filePath} -o ${path.dirname(
-        filePath
-      )}/${fileId} && ${path.dirname(filePath)}/${fileId} a.exe`;
+      command = `gcc ${filePath} -o ${folderPath}/${fileId} && ${folderPath}/${fileId} a.exe`;
     }
   } else if (fileFormat === "java") {
-    if (input)
-      command = `javac ${filePath} && java -cp ${path.dirname(
-        filePath
-      )} Main < ${path.join(path.dirname(filePath), "input.txt")}`;
-    // else command = `javac ${filePath} && java ${path.dirname(filePath)}`;
-    else
-      command = `javac ${filePath} && java -cp ${path.dirname(filePath)} Main`;
+    if (flag)
+      command = `javac ${filePath} && java -cp ${folderPath} Main < ${path.join(
+        folderPath,
+        `input${index}.txt`
+      )}`;
+    else command = `javac ${filePath} && java -cp ${folderPath} Main`;
   }
   return new Promise((resolve, reject) => {
     exec(command, { maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
@@ -37,7 +33,14 @@ const executeCode = (filePath, input) => {
     });
   });
 };
-
+const removeFolder = (folderPath) => {
+  if (fs.existsSync(folderPath)) {
+    fs.rmdir(folderPath, { recursive: true }, (err) => {
+      if (err) console.log(err);
+    });
+  }
+};
 module.exports = {
   executeCode,
+  removeFolder,
 };
