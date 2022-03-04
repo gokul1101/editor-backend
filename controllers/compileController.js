@@ -7,9 +7,11 @@ const {
 } = require("../utils/tools/generateFile");
 
 const compile = async (req, res) => {
+  let path;
   try {
     const { input, code, lang } = req.body;
     const [folderPath, filePath] = await generateLangFile(code, lang);
+    path = folderPath;
     await generateInputFile(folderPath, input, 0);
     const { status, ...response } = await compilerService(
       folderPath,
@@ -23,7 +25,7 @@ const compile = async (req, res) => {
     let { status = 500, ...response } = err;
     return res.status(status).send(response);
   } finally {
-    removeFolder(folderPath);
+    removeFolder(path);
   }
 };
 const executeContestChallenge = async (req, res) => {

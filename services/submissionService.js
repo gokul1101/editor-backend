@@ -186,8 +186,7 @@ const challengeSubmissionService = async (
 ) => {
   if (submission && !question_id)
     return Promise.resolve({ status: 200, score: 0 });
-  let complilationError = false,
-    isSampleFailed = false;
+  let isSampleFailed = false;
   let score = 0;
   let path = "";
   try {
@@ -196,8 +195,12 @@ const challengeSubmissionService = async (
     const totalTestCases =
       testcases?.sample?.length + testcases?.hidden?.length;
     let sampleTestCaseOutput = [];
+
+    //? Generate File
     const [folderPath, filePath] = await generateLangFile(code, lang);
     path = folderPath;
+
+    //? Sample Testcases
     for (let i = 0; i < testcases?.sample.length; i++) {
       try {
         await generateInputFile(
@@ -220,24 +223,14 @@ const challengeSubmissionService = async (
         }
         sampleTestCaseOutput.push(testCaseOutput);
       } catch (err) {
-        console.log(err);
-        if (i == 0) {
-          return Promise.resolve({
-            status: 200,
-            errors: true,
-            err: err.err,
-          });
-        }
-        complilationError = true;
-        sampleTestCaseOutput.push({
-          expectedOutput: testcases?.sample[i].output,
-          actualOutput: err,
+        return Promise.resolve({
+          status: 200,
           errors: true,
+          err: err.err,
         });
-        break;
       }
     }
-    if (!submission && (complilationError || isSampleFailed))
+    if (!submission && isSampleFailed)
       return Promise.resolve({
         status: 200,
         isSampleFailed,
@@ -247,7 +240,6 @@ const challengeSubmissionService = async (
     const hiddenTestCaseOutput = await Promise.all(
       testcases?.hidden?.map(async (testcase, index) => {
         try {
-          console.log(testcase);
           await generateInputFile(
             folderPath,
             JSON.parse(testcase.input || '""'),
@@ -260,7 +252,6 @@ const challengeSubmissionService = async (
             true
           );
           output = JSON.stringify(output.replace(/[\n\r]$/, "")) || "";
-          console.log(output);
           if (output === testcase.output) {
             if (submission) score++;
             return true;
@@ -282,10 +273,17 @@ const challengeSubmissionService = async (
     });
   } catch (err) {
     console.log(err);
-    return Promise.reject({
-      status: 500,
-      message: "Error in checking testcases.",
-    });
+    if (err.err) {
+      return Promise.resolve({
+        status: 200,
+        errors: true,
+        err: err.err,
+      });
+    } else
+      return Promise.reject({
+        status: 500,
+        message: "Error in checking testcases.",
+      });
   } finally {
     removeFolder(path);
   }

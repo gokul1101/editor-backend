@@ -1,25 +1,47 @@
 const { exec } = require("child_process");
 const path = require("path");
 const fs = require("fs");
-const executeCode = (folderPath, filePath, index, flag) => {
+const generateMachineCode = (folderPath, filePath) => {
+  const [fileId, fileFormat] = path.basename(filePath).split(".");
+  let command = ``;
+  if (fileFormat === "c") {
+    command = `gcc ${filePath} -o ${folderPath}/${fileId}`;
+  } else if (fileFormat === "java") {
+    command = `javac ${filePath}`;
+  }
+  return new Promise((resolve, reject) => {
+    const { pid, stdout, stderr, error } = exec(command, {
+      maxBuffer: 1024 * 1024,
+    });
+    if (error) {
+      stderr = stderr.split(filePath);
+      stderr = stderr.filter((err) => err !== "").map((err) => `Main ${err}`);
+      stderr.code = error.code;
+      reject(stderr);
+    }
+    console.log(pid);
+    resolve(stdout);
+  });
+};
+const executeMachineCode = (folderPath, filePath, index, flag) => {
   const [fileId, fileFormat] = path.basename(filePath).split(".");
   let command = ``;
   if (fileFormat === "c") {
     if (flag)
-      command = `gcc ${filePath} -o ${folderPath}/${fileId} && ${folderPath}/${fileId} a.exe < ${path.join(
+      command = `${folderPath}/${fileId} a.exe < ${path.join(
         folderPath,
         `input${index}.txt`
       )}`;
     else {
-      command = `gcc ${filePath} -o ${folderPath}/${fileId} && ${folderPath}/${fileId} a.exe`;
+      command = `${folderPath}/${fileId} a.exe`;
     }
   } else if (fileFormat === "java") {
     if (flag)
-      command = `javac ${filePath} && java -cp ${folderPath} Main < ${path.join(
+      command = `java -cp ${folderPath} Main < ${path.join(
         folderPath,
         `input${index}.txt`
       )}`;
-    else command = `javac ${filePath} && java -cp ${folderPath} Main`;
+    else command = `java -cp ${folderPath} Main`;
   }
   return new Promise((resolve, reject) => {
     exec(command, { maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
@@ -41,6 +63,7 @@ const removeFolder = (folderPath) => {
   }
 };
 module.exports = {
-  executeCode,
+  generateMachineCode,
+  executeMachineCode,
   removeFolder,
 };
