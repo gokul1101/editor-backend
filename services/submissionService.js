@@ -92,8 +92,7 @@ const getSubmissionsService = async (
     const submissions = {};
     submissions["leaderBoard"] = await Submission.find({ contest_id })
       .sort({ score: "desc", created_at: "asc" })
-      .limit(limit * 1)
-      .skip((page > 0 ? page - 1 : 1) * limit);
+      .limit(5);
     if (page == 1) {
       submissions["totalCount"] =
         user_id && contest_id

@@ -31,7 +31,7 @@ const ContestStatictics = (props) => {
 
         if (!total) setTotal(data?.submissions?.totalCount || 0);
         setLeaderBoard(
-          data?.submissions?.submissions?.slice(0, leaderBoardCount) || []
+          data?.submissions?.leaderBoard?.slice(0, leaderBoardCount) || []
         );
       }
     } catch ({ message }) {

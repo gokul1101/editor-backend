@@ -10,17 +10,15 @@ const generateMachineCode = (folderPath, filePath) => {
     command = `javac ${filePath}`;
   }
   return new Promise((resolve, reject) => {
-    const { pid, stdout, stderr, error } = exec(command, {
-      maxBuffer: 1024 * 1024,
+    exec(command, { maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
+      if (error) {
+        stderr = stderr.split(filePath);
+        stderr = stderr.filter((err) => err !== "").map((err) => `Main ${err}`);
+        stderr.code = error.code;
+        reject(stderr);
+      }
+      resolve(stdout);
     });
-    if (error) {
-      stderr = stderr.split(filePath);
-      stderr = stderr.filter((err) => err !== "").map((err) => `Main ${err}`);
-      stderr.code = error.code;
-      reject(stderr);
-    }
-    console.log(pid);
-    resolve(stdout);
   });
 };
 const executeMachineCode = (folderPath, filePath, index, flag) => {
