@@ -20,10 +20,10 @@ const ContestStatictics = (props) => {
   const [submissions, setSubmissions] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const fethContestSubmissions = async () => {
+  const fethContestSubmissions = async (page_count = 1) => {
     try {
       const { data, status } = await helperService.getContestSubmissions(
-        { page, limit, contest_id: id },
+        { page: page_count, limit, contest_id: id },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
@@ -42,6 +42,7 @@ const ContestStatictics = (props) => {
     fethContestSubmissions();
   }, []);
   const handlePagination = (e, value) => {
+    console.log(value);
     if (page !== value) {
       setPage(value);
       fethContestSubmissions(value);

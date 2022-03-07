@@ -47,8 +47,8 @@ const getContestService = async (id, code, role_id) => {
   try {
     //If contest already exist return success otherwise not found
     let contest;
-    if (role_id === "admin") contest = await Contest.findById(id);
-    else if (role_id === "student") contest = await Contest.findOne({ code });
+    if (id) contest = await Contest.findById(id);
+    else if (code) contest = await Contest.findOne({ code });
     if (!contest) {
       return Promise.reject({
         status: 404,

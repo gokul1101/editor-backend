@@ -52,6 +52,12 @@ const {
   exportUsers,
   exportSampleUsersDetails,
 } = require("../controllers/exportController");
+const {
+  createExecution,
+  getExecution,
+  getAllExecutions,
+  updateExecution,
+} = require("../controllers/executionController");
 
 //? Public Routes
 //* =============Login=============  *//
@@ -222,6 +228,25 @@ router.post(
   userAuth,
   routeAuth("deleteTestCase"),
   deleteTestCase
+);
+//* =============Execution===============*//
+router.post(
+  "/api/v1/execution/create",
+  userAuth,
+  routeAuth("createExecution"),
+  createExecution
+);
+router.post(
+  "/api/v1/execution/get",
+  userAuth,
+  routeAuth("getExecution"),
+  getExecution
+);
+router.post(
+  "/api/v1/execution/update",
+  userAuth,
+  routeAuth("updateExecution"),
+  updateExecution
 );
 //* =============Submission===============*//
 router.post(

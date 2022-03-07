@@ -83,7 +83,12 @@ const Programs = (props) => {
       setIsLoading(true);
       let parsedCode = setCodeInLocal(code);
       const { status, data } = await helperService.runCode(
-        { id: challenge?._id, code: parsedCode, lang: language },
+        {
+          question_id: challenge?._id,
+          code: parsedCode,
+          lang: language,
+          contest_id: authState?.contest?.contest._id,
+        },
         { headers: { Authorization: authState?.user?.token } }
       );
       if (status === 200) {

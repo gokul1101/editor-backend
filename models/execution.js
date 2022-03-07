@@ -1,13 +1,17 @@
 const { Schema, model } = require("mongoose");
 
-const sessionSchema = new Schema({
+const executionSchema = new Schema({
   user_id: { type: Schema.Types.ObjectId, ref: "users", required: true },
   contest_id: { type: Schema.Types.ObjectId, ref: "contests", required: true },
-  starts_at: { type: Date },
-  ends_at: { type: Date },
-  created_at: { type: Date, default: new Date() },
+  question_id: {
+    type: Schema.Types.ObjectId,
+    ref: "questions",
+    required: true,
+  },
+  code: { type: String, required: true },
+  created_at: { type: Date, default: Date.now() },
   updated_at: { type: Date, default: null },
   deleted_at: { type: Date, default: null },
 });
 
-module.exports = model("sessions", sessionSchema);
+module.exports = model("execution", executionSchema);
