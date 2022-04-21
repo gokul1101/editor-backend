@@ -13,8 +13,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import UpdateIcon from "@material-ui/icons/Update";
 const AddQuiz = (props) => {
   const history = useHistory();
-
-  const [question, setQuestion] = useState({
+  const questionTemplate = {
     statement: "",
     options: {
       A: "",
@@ -24,7 +23,8 @@ const AddQuiz = (props) => {
       correctOption: "",
     },
     type_id: "mcq",
-  });
+  };
+  const [question, setQuestion] = useState(questionTemplate);
 
   const [updateFlag, setUpdateFlag] = useState(false);
 
@@ -85,6 +85,7 @@ const AddQuiz = (props) => {
       if (status === 201) {
         props.snackBar(message, "success");
         setQuestions([...questions, mcq]);
+        setQuestion(questionTemplate);
       }
     } catch ({ message }) {
       props.snackBar(message, "error");

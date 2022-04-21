@@ -19,7 +19,7 @@
   border-radius: 9px;
 }
 .active-user-pill {
-  background: #21a366;
+  background: #21a366 !important;
   color: #fff !important;
 }
 .add-user-container {

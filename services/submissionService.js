@@ -10,6 +10,7 @@ const {
   generateInputFile,
 } = require("../utils/tools/generateFile");
 const { removeFolder } = require("../utils/tools/executeCode");
+const { createExecutionService } = require("./executionService");
 const createSubmissionService = async (submissionDetails) => {
   let { user_id, contest_id, quizzes, challenges } = submissionDetails;
   try {
@@ -49,6 +50,12 @@ const createSubmissionService = async (submissionDetails) => {
     let challengeScore = await Promise.all(
       challenges.map(async (challenge) => {
         try {
+          await createExecutionService({
+            user_id,
+            contest_id,
+            question_id: challenge.question_id,
+            code: challenge.code.join("\r\n"),
+          });
           const { score } = await challengeSubmissionService(
             challenge.question_id,
             challenge.code,
@@ -68,8 +75,9 @@ const createSubmissionService = async (submissionDetails) => {
       contest_id,
       score: total_score,
     });
+    newSubmission.created_at = new Date();
     await newSubmission.save();
-    await updateSessionService(contest_id, user_id, new Date());
+    await updateSessionService(contest_id, user_id, newSubmission.created_at);
     return Promise.resolve({
       status: 201,
       message: `Submitted successfully!`,
@@ -91,6 +99,7 @@ const getSubmissionsService = async (
   try {
     const submissions = {};
     submissions["leaderBoard"] = await Submission.find({ contest_id })
+      .populate({ path: "user_id", model: "users", select: "name regno" })
       .sort({ score: "desc", created_at: "asc" })
       .limit(5);
     if (page == 1) {

@@ -80,10 +80,11 @@ const Testcase = ({
             {testcases?.sample?.map((testcase, index) => {
               let sampleOutput =
                 (output?.sample && output?.sample[index]) || {};
+              console.log(testcase);
               return (
                 <Accordion
                   square
-                  key={testcase._id}
+                  key={"sample" + index}
                   expanded={expanded === `panel${index + 1}`}
                   onChange={handleChange(`panel${index + 1}`)}
                 >
@@ -94,7 +95,7 @@ const Testcase = ({
                     <Typography
                       component={"span"}
                       variant={"body2"}
-                      classname="test-case-heading "
+                      className="test-case-heading "
                     >
                       {isLoading ? (
                         <img
@@ -154,7 +155,7 @@ const Testcase = ({
                     return (
                       <Accordion
                         square
-                        key={index}
+                        key={"hidden" + index}
                         expanded={expanded === `panel${length}`}
                       >
                         <AccordionSummary

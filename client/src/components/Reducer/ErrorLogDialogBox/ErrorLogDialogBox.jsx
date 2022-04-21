@@ -29,7 +29,7 @@ const ErrorLogDialogBox = ({ open, handleClose, log }) => {
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle id="alert-dialog-slide-title">{"Error logs"}</DialogTitle>
+      <DialogTitle id="alert-dialog-slide-title">Error logs</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
           <span className="model-correct p-2">
@@ -49,11 +49,11 @@ const ErrorLogDialogBox = ({ open, handleClose, log }) => {
           </span>
         </DialogContentText>
         <DialogContentText id="alert-dialog-slide-description" className="mt-3">
-          <span className="p-2 d-flex flex-wrap">
+          <div className="p-2 d-flex flex-wrap">
             {log?.errorLogs?.map((log) => (
               <Chip key={log} label={log} className="m-1" />
             ))}
-          </span>
+          </div>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

@@ -108,7 +108,6 @@ const DropFileInput = (props) => {
               key={item.lastModified}
               className="drop-file-preview__item d-flex w-100 align-items-center justify-content-center"
             >
-              {console.log(item)}
               <img alt="someImage" src={Excel} />
               <div className="drop-file-preview__item__info d-flex flex-column">
                 <span>{item.name}</span>
@@ -134,14 +133,13 @@ const DropFileInput = (props) => {
           </div>
           <div className="d-flex align-items-end justify-content-end mt-3 p-2">
             {props?.logs?.totalLogs >= 0 && (
-              <div className="log-file">
-                <span
-                  className="badge badge-pill badge-secondary"
-                  onClick={handleClickOpen}
-                >
-                  Logs
-                </span>
-              </div>
+              <span
+                role="button"
+                className="badge badge-pill badge-secondary p-2"
+                onClick={handleClickOpen}
+              >
+                Logs
+              </span>
             )}
 
             <ErrorLogDialogBox

@@ -219,24 +219,19 @@ const updateUser = async (req, res) => {
   }
 };
 const deleteUser = async (req, res) => {
+  const { id } = req.query;
   try {
-    let user = await User.findOne({
-      regno: req.query.regno,
-      deleted_at: null,
-    }).populate({ path: "role_id", model: "role", select: "name" });
-    //! User not found
-    if (!user || user.deleted_at)
-      return res.status(404).json({
-        message: `user not found`,
-      });
     //! Student cannot access admin data
     if (req.user.role_id === "student" && user.role_id.name === "admin")
       return res.status(401).json({
         message: `Unauthorized access`,
       });
-    user.deleted_at = Date.now();
-    user.depopulate();
-    await user.save();
+    let user = await User.findByIdAndDelete(id);
+    //! User not found
+    if (!user)
+      return res.status(404).json({
+        message: `User not found`,
+      });
     res.status(204).json({
       message: "User deleted",
     });
@@ -303,6 +298,7 @@ const getAllUsers = async (req, res) => {
     const { page = 1, limit = 10, role = "student" } = req.query;
     let { filters = {} } = req.body;
     let response = {};
+    console.log(filters);
     for (const query in filters) {
       if (query === "course_id")
         filters.course_id = await Promise.all(
@@ -314,7 +310,7 @@ const getAllUsers = async (req, res) => {
         );
       else if (query === "batch_id")
         filters.batch_id = await Promise.all(
-          filters[query].map(async (val) => await mapBatchId(val))
+          filters[query].map(async (val) => await mapBatchId(val.split("-")))
         );
       else if (query === "gender_id")
         filters.gender_id = await Promise.all(
@@ -361,6 +357,7 @@ const getAllUsers = async (req, res) => {
           select: "start_year end_year",
         },
       ]);
+    console.log(users);
     response.total = users.length;
     response.users = users.map((user) => serializeUser(user));
     return res.status(200).json(response);

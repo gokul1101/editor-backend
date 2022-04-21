@@ -4,18 +4,12 @@ const Question = require("../models/questions");
 const User = require("../models/users");
 
 const createExecutionService = async ({
-  id,
   user_id,
   contest_id,
   question_id,
   code,
 }) => {
   try {
-    let execution;
-    if (id) {
-      execution = await Execution.findByIdAndUpdate(id, { code });
-      return Promise.resolve();
-    }
     const user = await User.findById(user_id);
     if (!user)
       return Promise.reject({
@@ -34,15 +28,21 @@ const createExecutionService = async ({
         status: 404,
         message: "Question not found",
       });
-    execution = new Execution({ user_id, contest_id, question_id, code });
-    await execution.save();
+    let execution = await Execution.findOneAndUpdate(
+      { user_id, contest_id, question_id },
+      { code }
+    );
+    if (!execution) {
+      execution = new Execution({ user_id, contest_id, question_id, code });
+      await execution.save();
+    }
     return Promise.resolve({
       status: 201,
       execution,
       message: "New execution created.",
     });
   } catch (e) {
-    console.log(err);
+    console.log(e);
     return Promise.reject({
       status: 500,
       message: "Error in creating execution",
@@ -65,7 +65,7 @@ const getExecutionService = async (id) => {
       message: "Execution Found.",
     });
   } catch (e) {
-    console.log(err);
+    console.log(e);
     return Promise.reject({
       status: 500,
       message: "Error in getting execution",
@@ -73,31 +73,7 @@ const getExecutionService = async (id) => {
   }
 };
 
-const updateExecutionService = async (id, code) => {
-  try {
-    let execution = await Execution.findByIdAndUpdate(id, { code });
-    if (!execution) {
-      return Promise.reject({
-        status: 404,
-        message: "Execution not found",
-      });
-    }
-    return Promise.resolve({
-      status: 200,
-      execution,
-      message: "Execution updated.",
-    });
-  } catch (e) {
-    console.log(err);
-    return Promise.reject({
-      status: 500,
-      message: "Error in updating execution",
-    });
-  }
-};
-
 module.exports = {
   createExecutionService,
   getExecutionService,
-  updateExecutionService,
 };

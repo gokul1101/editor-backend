@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Login from "./components/Login/Login";
 import AdminMain from "./components/Admin/Main/Main";
 import Main from "./components/Student/Main/Main";
@@ -15,7 +15,6 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { AuthContext } from "./contexts/AuthContext";
 import helperService from "./services/helperService";
 import PageNotFound from "./components/Reducer/PageNotFound/404";
-// import Loader from "./components/Reducer/Loader/Loader";
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -61,6 +60,33 @@ const App = () => {
       else snackBar(message, "error");
     }
   };
+  // const disabledEvent = (e) => {
+  //   if (e.stopPropagation) {
+  //     e.stopPropagation();
+  //   } else if (window.event) {
+  //     window.event.cancelBubble = true;
+  //   }
+  //   e.preventDefault();
+  //   return false;
+  // };
+
+  useEffect(() => {
+    // document.addEventListener("contextmenu", (e) => disabledEvent(e));
+    // document.addEventListener("keydown", (e) => {
+    //   if (e.ctrlKey && (e.key === "u" || e.key === "U")) disabledEvent(e);
+    //   if (e.ctrlKey && e.shiftKey && (e.key === "i" || e.key === "I"))
+    //     disabledEvent(e);
+    //   if (e.ctrlKey && e.shiftKey && (e.key === "j" || e.key === "J"))
+    //     disabledEvent(e);
+    //   if (e.ctrlKey && e.shiftKey && (e.key === "c" || e.key === "C"))
+    //     disabledEvent(e);
+    //   if (e.key === "F12") disabledEvent(e);
+    // });
+    // return () => {
+    //   document.removeEventListener("contextmenu", (e) => disabledEvent(e));
+    //   document.removeEventListener("keydown", (e) => disabledEvent(e));
+    // };
+  }, []);
   return (
     <>
       <div className="App m-0 p-0">
@@ -101,40 +127,10 @@ const App = () => {
           </Route>
         </Switch>
       </div>
-      {window.innerWidth < 2400 && (
-        <div className="breakpoint d-flex" style={{ height: "100vh" }}>
-          This page Enables on Tablet
-        </div>
-      )}
+      <div className="breakpoint" style={{ height: "100vh" }}>
+        This page Enables on Tablet
+      </div>
     </>
   );
 };
-
 export default withRouter(App);
-// const disabledEvent = (e) => {
-//   if (e.stopPropagation) {
-//     e.stopPropagation();
-//   } else if (window.event) {
-//     window.event.cancelBubble = true;
-//   }
-//   e.preventDefault();
-//   return false;
-// };
-
-// useEffect(() => {
-//   document.addEventListener("contextmenu", (e) => disabledEvent(e));
-//   document.addEventListener("keydown", (e) => {
-//     if (e.ctrlKey && (e.key === "u" || e.key === "U")) disabledEvent(e);
-//     if (e.ctrlKey && e.shiftKey && (e.key === "i" || e.key === "I"))
-//       disabledEvent(e);
-//     if (e.ctrlKey && e.shiftKey && (e.key === "j" || e.key === "J"))
-//       disabledEvent(e);
-//     if (e.ctrlKey && e.shiftKey && (e.key === "c" || e.key === "C"))
-//       disabledEvent(e);
-//     if (e.key === "F12") disabledEvent(e);
-//   });
-//   return () => {
-//     document.removeEventListener("contextmenu", (e) => disabledEvent(e));
-//     document.removeEventListener("keydown", (e) => disabledEvent(e));
-//   };
-// }, []);

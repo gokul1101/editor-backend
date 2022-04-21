@@ -56,11 +56,12 @@ const AddUser = (props) => {
           "Content-Type": "multipart/form-data",
         }
       );
-      if (status === 201) {
+      if (status === 200) {
         if (data?.errorLogs?.errorLogs.length >= 0) setLogs(data.errorLogs);
         return true;
       }
-    } catch ({ message }) {
+    } catch ({ message, ...err }) {
+      console.log(err);
       props.snackBar(message, "error");
     } finally {
       hideLoader();
