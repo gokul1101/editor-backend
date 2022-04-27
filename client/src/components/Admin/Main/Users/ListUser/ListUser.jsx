@@ -172,8 +172,10 @@ const ListUser = (props) => {
     setUser(data);
     setOpen(true);
   };
-  const handleClose = () => setOpen(false);
-
+  const handleClose = () => {
+    setOpen(false);
+    setUpdateDetails({});
+  };
   const updateUser = async () => {
     /* eslint-disable no-useless-escape */
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -280,6 +282,8 @@ const ListUser = (props) => {
       }
     } catch ({ message }) {
       props.snackBar(message, "error");
+    } finally {
+      setUpdateDetails({});
     }
   };
 

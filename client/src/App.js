@@ -15,6 +15,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { AuthContext } from "./contexts/AuthContext";
 import helperService from "./services/helperService";
 import PageNotFound from "./components/Reducer/PageNotFound/404";
+import { AboutUs } from "./components/AboutUs/AboutUs";
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -101,6 +102,7 @@ const App = () => {
           </Alert>
         </Snackbar>
         <Switch>
+          <Route path="/aboutus" component={AboutUs} />
           <Route path="/login">
             {!authState.user ? (
               <Login snackBar={snackBar} />

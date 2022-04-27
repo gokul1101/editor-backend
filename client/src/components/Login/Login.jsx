@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import "./Login.css";
 import Developer from "../../images/developer.svg";
 import Hello from "../../images/Hello.svg";
-
+import LoginImg from "../../images/Loop1.jpg";
 import CustomButton from "../Reducer/CustomButton/CustomButton";
 import { AuthContext } from "../../contexts/AuthContext";
 import helperService from "../../services/helperService";
@@ -10,6 +10,7 @@ import LocalLibraryRoundedIcon from "@material-ui/icons/LocalLibraryRounded";
 import { IconButton } from "@material-ui/core";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
 import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
+import { NavLink } from "react-router-dom";
 const Login = (props) => {
   //** Context Consumer */
   const [, authDispatch] = useContext(AuthContext);
@@ -76,11 +77,22 @@ const Login = (props) => {
   return (
     <div>
       <div className={change ? "clip-content sign-up-mode" : "clip-content"}>
+        <NavLink className="login-about-us px-4 py-3" to="/aboutus">
+          ABOUT US
+        </NavLink>
         <div className="forms-cont">
-          <div className="signin-signup">
+          <div className="signin-signup ">
             <form className="sign-in-form" onSubmit={handleSubmit}>
+              <div className="mb-4 d-flex align-items-center justify-content-center flex-column">
+                <img
+                  src={LoginImg}
+                  className="img-fluid mb-1"
+                  height={150}
+                  width={150}
+                />
+                <p className="highlight">Learn , Code , Repeat</p>
+              </div>
               <h2 className="title form-title">Student Sign in</h2>
-              <p className="text-muted">Learn , code , repeat</p>
 
               <div className="input-field mb-2">
                 <IconButton disabled={true}>
@@ -114,8 +126,17 @@ const Login = (props) => {
               </CustomButton>
             </form>
             <form action="#" className="sign-up-form" onSubmit={handleSubmit}>
+              <div className="mb-4 d-flex align-items-center justify-content-center flex-column">
+                <img
+                  src={LoginImg}
+                  className="img-fluid mb-1"
+                  height={150}
+                  width={150}
+                />
+                <p className="highlight">Learn , Code , Repeat</p>
+              </div>
               <h2 className="title">Admin Sign in</h2>
-              <p className="highlight">Learn , Code , Repeat</p>
+
               <div className="input-field">
                 <IconButton disabled={true}>
                   <LocalLibraryRoundedIcon />

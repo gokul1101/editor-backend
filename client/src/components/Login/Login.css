@@ -1,3 +1,17 @@
+.login-about-us{
+  position: absolute;
+  bottom: 0;
+  right:0;
+  color: #000;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer !important;
+  z-index: 999;
+}
+.login-about-us:hover{
+  color: #0ba360;
+
+}
 .clip-content {
   position: relative;
   width: 100vw;
@@ -423,6 +437,7 @@ form.sign-in-form {
 
 .highlight {
   color: #0ba360;
+  font-weight: 500;
 }
 
 .signin-button,
