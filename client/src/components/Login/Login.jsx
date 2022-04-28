@@ -77,9 +77,12 @@ const Login = (props) => {
   return (
     <div>
       <div className={change ? "clip-content sign-up-mode" : "clip-content"}>
-        <NavLink className="login-about-us px-4 py-3" to="/aboutus">
-          ABOUT US
-        </NavLink>
+        <div className="login-about-us d-flex align-items-center justify-content-center px-4 py-3">
+          <span className="copyright px-3">Copyright©2022<span className="pr-2 pl-3">|</span></span>
+          <NavLink className="login-about-us-link " to="/aboutus">
+            About Us
+          </NavLink>
+        </div>
         <div className="forms-cont">
           <div className="signin-signup ">
             <form className="sign-in-form" onSubmit={handleSubmit}>

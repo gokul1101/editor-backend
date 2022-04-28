@@ -1,16 +1,18 @@
-.login-about-us{
+.login-about-us {
   position: absolute;
   bottom: 0;
-  right:0;
-  color: #000;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer !important;
+  right: 0;
   z-index: 999;
 }
-.login-about-us:hover{
+.copyright{
+  font-size: 15px !important;
+  color: #000;
+  font-weight: 500;
+}
+.login-about-us-link,.login-about-us-link:hover{
   color: #0ba360;
-
+  font-size: 15px;
+  font-weight: 600;
 }
 .clip-content {
   position: relative;
