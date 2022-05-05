@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import Male from "../../../../../images/man.png";
+import Male from "../../../../../images/man.webp";
 import { useParams, useHistory } from "react-router-dom";
 import "./ContestDetails.css";
-import QuizImage from "../../../../../images/Quiz.png";
-import ProblemImage from "../../../../../images/problem.png";
+import QuizImage from "../../../../../images/Quiz.webp";
+import ProblemImage from "../../../../../images/problem.webp";
 import Timer from "../Timer/Timer";
 import { AuthContext, useLoader } from "../../../../../contexts/AuthContext";
 import ContestCard from "./ContestCard/ContestCard";

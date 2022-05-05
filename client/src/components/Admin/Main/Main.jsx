@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import LoopLogo from "../../../images/Loop1.jpg";
+import LoopLogo from "../../../images/Loop1.webp";
 import { NavLink, Route, Redirect, Switch } from "react-router-dom";
 import "../../Student/Main/Main.css";
 import "./Main.css";

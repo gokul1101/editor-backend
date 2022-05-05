@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import "./Login.css";
 import Developer from "../../images/developer.svg";
 import Hello from "../../images/Hello.svg";
-import LoginImg from "../../images/Loop1.jpg";
+import LoginImg from "../../images/Loop1.webp";
 import CustomButton from "../Reducer/CustomButton/CustomButton";
 import { AuthContext } from "../../contexts/AuthContext";
 import helperService from "../../services/helperService";
@@ -78,7 +78,9 @@ const Login = (props) => {
     <div>
       <div className={change ? "clip-content sign-up-mode" : "clip-content"}>
         <div className="login-about-us d-flex align-items-center justify-content-center px-4 py-3">
-          <span className="copyright px-3">Copyright©2022<span className="pr-2 pl-3">|</span></span>
+          <span className="copyright px-3">
+            Copyright©2022<span className="pr-2 pl-3">|</span>
+          </span>
           <NavLink className="login-about-us-link " to="/aboutus">
             About Us
           </NavLink>

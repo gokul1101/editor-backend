@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import "./Dashboard.css";
-import Male from "../../../../images/man.png";
-import DashImg1 from "../../../../images/card-image-1.png";
-import DashImg2 from "../../../../images/card-image-2.png";
-import DashImg3 from "../../../../images/card-image-3.png";
+import Male from "../../../../images/man.webp";
+import DashImg1 from "../../../../images/card-image-1.webp";
+import DashImg2 from "../../../../images/card-image-2.webp";
+import DashImg3 from "../../../../images/card-image-3.webp";
 import ProblemKit from "../../../../images/problem-img.svg";
 import LoopHeader from "../../../../images/Loop start.svg";
 import Img1 from "../../../../images/img-1 (1).svg";

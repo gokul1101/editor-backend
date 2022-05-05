@@ -4,9 +4,9 @@ import "./AdminDashboard.css";
 import helperService from "../../../../services/helperService";
 import { AuthContext } from "../../../../contexts/AuthContext";
 
-import adminUser from "../../../../images/admin-dashboard-user.png";
-import adminStar from "../../../../images/admin-star.png";
-import adminSubmission from "../../../../images/admin-submission.png";
+import adminUser from "../../../../images/admin-dashboard-user.webp";
+import adminStar from "../../../../images/admin-star.webp";
+import adminSubmission from "../../../../images/admin-submission.webp";
 const AdminDashboard = (props) => {
   const [totalCounts, setTotalCounts] = useState({
     users: 0,

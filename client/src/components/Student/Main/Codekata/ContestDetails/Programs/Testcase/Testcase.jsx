@@ -5,7 +5,7 @@ import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import "./Testcase.css";
-import Loader from "../../../../../../../images/loader.gif";
+import Loader from "../../../../../../../images/loader.webp";
 import CompilerError from "../CompileError/CompilerError";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
 import CancelIcon from "@material-ui/icons/Cancel";

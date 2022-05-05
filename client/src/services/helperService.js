@@ -1,8 +1,7 @@
 import axios from "axios";
 import { decryption, encryption } from "./crypto-js/index";
-// const baseURL = "http://localhost:5000";
-const baseURL = "http://172.16.15.173";
-
+const baseURL = process.env.REACT_APP_URL || "http://localhost:5000";
+// REACT_APP_URL=http://172.16.15.173
 const helperService = {
   rejectionHandler: ({ response }) => {
     return Promise.reject({

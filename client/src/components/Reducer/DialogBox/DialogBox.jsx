@@ -7,7 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
 import HighlightOffRoundedIcon from "@material-ui/icons/HighlightOffRounded";
 import NotificationsActiveRoundedIcon from "@material-ui/icons/NotificationsActiveRounded";
-import WarningGif from "../../../images/dribbble_1.gif";
+import WarningGif from "../../../images/dribbble_1.webp";
 import CustomButton from "../CustomButton/CustomButton";
 const DialogBox = ({ localData, ...props }) => {
   const unSubmittedQuestions = () => {

@@ -9,7 +9,7 @@ import CustomButton from "../../../../../Reducer/CustomButton/CustomButton";
 import ErrorLogDialogBox from "../../../../../Reducer/ErrorLogDialogBox/ErrorLogDialogBox";
 import helperService from "../../../../../../services/helperService";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
-import Excel from "../../../../../../images/excel.png";
+import Excel from "../../../../../../images/excel.webp";
 import "./DropFileInput.css";
 
 const DropFileInput = (props) => {
