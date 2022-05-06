@@ -10,7 +10,6 @@ const {
   generateInputFile,
 } = require("../utils/tools/generateFile");
 const { removeFolder } = require("../utils/tools/executeCode");
-const { createExecutionService } = require("./executionService");
 const createSubmissionService = async (submissionDetails) => {
   let { user_id, contest_id, quizzes, challenges } = submissionDetails;
   try {
@@ -50,12 +49,6 @@ const createSubmissionService = async (submissionDetails) => {
     let challengeScore = await Promise.all(
       challenges.map(async (challenge) => {
         try {
-          await createExecutionService({
-            user_id,
-            contest_id,
-            question_id: challenge.question_id,
-            code: challenge.code.join("\r\n"),
-          });
           const { score } = await challengeSubmissionService(
             challenge.question_id,
             challenge.code,

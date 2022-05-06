@@ -1,5 +1,4 @@
 const { executeMachineCode } = require("../utils/tools/executeCode");
-const fs = require("fs");
 const compilerService = async (folderPath, filePath, index, flag) => {
   try {
     const output = await executeMachineCode(folderPath, filePath, index, flag);

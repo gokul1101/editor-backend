@@ -1,5 +1,4 @@
 const { compilerService } = require("../services/compilerService");
-const { createExecutionService } = require("../services/executionService");
 const { challengeSubmissionService } = require("../services/submissionService");
 const { removeFolder } = require("../utils/tools/executeCode");
 const {
@@ -13,7 +12,7 @@ const compile = async (req, res) => {
     const { input, code, lang } = req.body;
     const [folderPath, filePath] = await generateLangFile(code, lang);
     path = folderPath;
-    await generateInputFile(folderPath, input, 0);
+    if (input) await generateInputFile(folderPath, input, 0);
     const { status, ...response } = await compilerService(
       folderPath,
       filePath,
