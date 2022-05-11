@@ -49,7 +49,6 @@ const ContestChallenges = (props) => {
       );
       if (status === 202) {
         props.snackBar(message, "success");
-        console.log(challenge, challenges);
         setChallenges(challenges.filter((ques) => ques._id !== challenge._id));
       }
     } catch ({ message }) {

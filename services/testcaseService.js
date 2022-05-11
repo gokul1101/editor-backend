@@ -46,22 +46,16 @@ const createTestCaseService = async ({
   if (hidden) idx = 1;
   try {
     let testcases = await Answer.findOne({ question_id });
-    console.log(testcases);
     if (
       !testcases ||
       (testcases && !testcases.testcases.hidden && !testcases.testcases.sample)
     ) {
       return createMultipleTestCasesService({ question_id, testcase });
     }
-    console.log([
-      ...testcases.testcases["sample"],
-      ...testcases.testcases["hidden"],
-    ]);
     const isTestcaseAlreadyExist = [
       ...testcases.testcases["sample"],
       ...testcases.testcases["hidden"],
     ].find((e) => e.input == testcase[input[idx]].input);
-    // console.log(isTestcaseAlreadyExist);
     if (isTestcaseAlreadyExist) {
       return Promise.reject({
         status: 403,
@@ -217,7 +211,6 @@ const deleteTestCaseService = async ({
         testcases: exist_testcases["testcases"],
       },
     });
-    console.log(testcase_id, updated_result, "at line 208");
     if (!updated_result) {
       await Answer.findOneAndUpdate(
         { question_id },

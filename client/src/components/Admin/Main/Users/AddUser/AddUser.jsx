@@ -61,7 +61,6 @@ const AddUser = (props) => {
         return true;
       }
     } catch ({ message, ...err }) {
-      console.log(err);
       props.snackBar(message, "error");
     } finally {
       hideLoader();

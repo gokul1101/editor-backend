@@ -42,7 +42,6 @@ const ContestStatictics = (props) => {
     fethContestSubmissions();
   }, []);
   const handlePagination = (e, value) => {
-    console.log(value);
     if (page !== value) {
       setPage(value);
       fethContestSubmissions(value);

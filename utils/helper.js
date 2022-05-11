@@ -110,7 +110,6 @@ const setTime = (date, duration) => {
   return date;
 };
 const exportToExcel = async (rows, username, sheetName, columns) => {
-  console.log(rows, username, sheetName, columns);
   let workbook = new excel.Workbook();
   workbook.creator = username;
   workbook.lastModifiedBy = username;

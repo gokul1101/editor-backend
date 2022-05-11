@@ -3,7 +3,7 @@ import "./Programs.css";
 import { useHistory, useParams } from "react-router-dom";
 import SelectReducer from "../../../../../Reducer/SelectReducer/SelectReducer";
 import Editor from "../../../../../Reducer/Editor/Editor";
-import { AuthContext } from "../../../../../../contexts/AuthContext";
+import { AuthContext, useLoader } from "../../../../../../contexts/AuthContext";
 import helperService from "../../../../../../services/helperService";
 import Testcase from "./Testcase/Testcase";
 import Timer from "../../Timer/Timer";
@@ -16,6 +16,7 @@ import DoneAllRoundedIcon from "@material-ui/icons/DoneAllRounded";
 import StarOutlineIcon from "@material-ui/icons/StarOutline";
 const Programs = (props) => {
   let history = useHistory();
+  const [loader, showLoader, hideLoader] = useLoader();
   const { id, questionId } = useParams();
   const [authState] = useContext(AuthContext);
   let [difficulty, setDifficulty] = useState("");
@@ -46,7 +47,7 @@ const Programs = (props) => {
   const [tabClick, setTabClick] = useState(true);
   const [quizOpen, setQuizOpen] = useState(false);
   const handleOpenQuiz = () => setQuizOpen(true);
-  const quizRedirect = () => history.goBack();
+  const quizRedirect = () => history.push(`/codekata/${id}`);
   const handleCloseQuiz = () => setQuizOpen(false);
   useEffect(() => {
     props.setSideToggle(true);
@@ -79,6 +80,7 @@ const Programs = (props) => {
   };
   const compile = async () => {
     try {
+      if (isError) showLoader();
       setTabClick(false);
       setIsLoading(true);
       let parsedCode = setCodeInLocal(code);
@@ -102,6 +104,7 @@ const Programs = (props) => {
     } catch (err) {
       props.snackBar(err.message, "error");
     } finally {
+      hideLoader();
       setIsLoading(false);
     }
   };
@@ -126,6 +129,7 @@ const Programs = (props) => {
   return (
     <>
       <div className="container-fluid" id={challenge?._id}>
+        {loader}
         <div className="problem-header p-2 d-flex border-bottom border-left">
           <div className="problem-title d-flex">
             <div className="mt-1 mr-2 ml-2">
@@ -139,7 +143,7 @@ const Programs = (props) => {
             </div>
           </div>
           <div className="timer mt-3 ml-4">
-            <h6 className="timer-text" style={{ width: "230px" }}>
+            <h6 className="timer-text" style={{ width: "240px" }}>
               <Timer />
             </h6>
           </div>

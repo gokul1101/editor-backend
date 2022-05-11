@@ -10,11 +10,17 @@
 .answer-add-quiz {
   height: auto;
   width: 100%;
-  color: #000;
   font-size: 18px;
   text-align: center;
-  background-color: rgba(219, 219, 219, 0.9);
   border-radius: 10px;
+}
+.crt-option{
+  background-color: #21a366;
+  color: #fff;
+}
+.mcq-option {
+  background-color: rgba(219, 219, 219, 0.9);
+  color: #000;
 }
 .add-quiz-question-span {
   color: #21a366;
@@ -38,4 +44,7 @@
   border-radius: 10px;
   cursor: pointer;
   border-left: 5px solid #21a366;
+}
+.crt-option {
+
 }

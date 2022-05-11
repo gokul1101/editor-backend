@@ -221,7 +221,7 @@ const TestCase = (props) => {
   };
 
   return (
-    <div className="container">
+    <div className="container mb-4">
       <div className="d-flex flex-column" style={{ marginTop: "40px" }}>
         <div className="d-flex">
           <GoBack onClickHandler={() => history.goBack()} />
@@ -255,42 +255,39 @@ const TestCase = (props) => {
       ) : (
         <div className="d-flex p-2 flex-wrap">
           {testcases?.sample?.map((testcase, index) => (
-            <div className="p-2" key={testcase.input + testcase.output + index}>
-              <div
-                className="card test-card p-3"
-                style={{
-                  height: "250px",
-                  width: "300px",
-                  borderBottom: "5px solid #21A366",
-                }}
-              >
-                <div className="edit-delete d-flex ml-auto p-2 m-2">
-                  <IconButton
-                    onClick={() => updateTestcaseHandler("sample", testcase)}
-                  >
-                    <EditRoundedIcon />
-                  </IconButton>
+            <div
+              className="card test-card p-3 m-2"
+              key={testcase.input + testcase.output + index}
+              style={{
+                height: "250px",
+                width: "300px",
+                borderBottom: "5px solid #21A366",
+              }}
+            >
+              <div className="edit-delete d-flex ml-auto">
+                <IconButton
+                  onClick={() => updateTestcaseHandler("sample", testcase)}
+                >
+                  <EditRoundedIcon />
+                </IconButton>
 
-                  <IconButton
-                    onClick={() => deleteTestcaseHandler("sample", testcase)}
-                  >
-                    <DeleteRoundedIcon />
-                  </IconButton>
-                </div>
-                <div className="input">
-                  <h4 className="font-weight-bolder text-highlight">Input</h4>
-                  <h6>
-                    <pre>{testcase?.input && JSON.parse(testcase?.input)}</pre>
-                  </h6>
-                </div>
-                <div className="output">
-                  <h4 className="font-weight-bolder text-highlight">Output</h4>
-                  <h6>
-                    <pre>
-                      {testcase?.output && JSON.parse(testcase?.output)}
-                    </pre>
-                  </h6>
-                </div>
+                <IconButton
+                  onClick={() => deleteTestcaseHandler("sample", testcase)}
+                >
+                  <DeleteRoundedIcon />
+                </IconButton>
+              </div>
+              <div className="input">
+                <h4 className="font-weight-bolder text-highlight">Input</h4>
+                <h6>
+                  <pre>{testcase?.input && JSON.parse(testcase?.input)}</pre>
+                </h6>
+              </div>
+              <div className="output">
+                <h4 className="font-weight-bolder text-highlight">Output</h4>
+                <h6>
+                  <pre>{testcase?.output && JSON.parse(testcase?.output)}</pre>
+                </h6>
               </div>
             </div>
           ))}

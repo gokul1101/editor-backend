@@ -200,8 +200,24 @@ const Quiz = ({ setSideToggle, snackBar }) => {
             ) : null}
           </div>
         </div>
-        <div className="col-md-4">
-          <div className="d-flex flex-column">
+        <div className="col-md-4 py-2">
+          <div className="d-flex flex-column my-2 pt-1">
+            <div className="d-flex justify-content-end my-3 mx-2">
+              <CustomButton
+                className="btn-hover color-11 mt-3 d-flex align-items-center py-2 px-3"
+                onClickHandler={handleOpen}
+              >
+                <AllInclusiveRoundedIcon />
+                <span className="ml-2">SUBMIT QUIZ</span>
+              </CustomButton>
+              <DialogBox
+                headerMsg={"This is a warning message !"}
+                bodyMsg={`Are you sure do you want to exit from the ${quiz?.name}`}
+                open={open}
+                handleClose={handleClose}
+                handleOpen={submitQuiz}
+              />
+            </div>
             <div className="d-flex flex-column quizzes align-items-center justify-content-center mt-2 mb-2 p-3">
               <img
                 src={TimerImg}
@@ -251,22 +267,6 @@ const Quiz = ({ setSideToggle, snackBar }) => {
                   );
                 })}
               </div>
-            </div>
-            <div className="d-flex justify-content-end my-2">
-              <CustomButton
-                className="btn-hover color-11 mt-3 d-flex align-items-center py-2 px-3"
-                onClickHandler={handleOpen}
-              >
-                <AllInclusiveRoundedIcon />
-                <span className="ml-2">SUBMIT QUIZ</span>
-              </CustomButton>
-              <DialogBox
-                headerMsg={"This is a warning message !"}
-                bodyMsg={`Are you sure do you want to exit from the ${quiz?.name}`}
-                open={open}
-                handleClose={handleClose}
-                handleOpen={submitQuiz}
-              />
             </div>
           </div>
         </div>

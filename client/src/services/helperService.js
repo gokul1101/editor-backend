@@ -143,7 +143,6 @@ const helperService = {
         headers,
         data: file,
       });
-      console.log(data, status);
       if (status === 200) {
         return Promise.resolve({
           status,
@@ -155,7 +154,6 @@ const helperService = {
         status,
         data: { message = "Internal Server Error" },
       } = err.response;
-      console.log(err);
       return Promise.reject({
         status,
         message,

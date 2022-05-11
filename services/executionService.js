@@ -41,8 +41,8 @@ const createExecutionService = async ({
       execution,
       message: "New execution created.",
     });
-  } catch (e) {
-    console.log(e);
+  } catch (err) {
+    console.log(err);
     return Promise.reject({
       status: 500,
       message: "Error in creating execution",
@@ -64,8 +64,8 @@ const getExecutionService = async (id) => {
       execution,
       message: "Execution Found.",
     });
-  } catch (e) {
-    console.log(e);
+  } catch (err) {
+    console.log(err);
     return Promise.reject({
       status: 500,
       message: "Error in getting execution",

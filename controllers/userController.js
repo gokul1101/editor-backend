@@ -298,7 +298,6 @@ const getAllUsers = async (req, res) => {
     const { page = 1, limit = 10, role = "student" } = req.query;
     let { filters = {} } = req.body;
     let response = {};
-    console.log(filters);
     for (const query in filters) {
       if (query === "course_id")
         filters.course_id = await Promise.all(
@@ -357,7 +356,6 @@ const getAllUsers = async (req, res) => {
           select: "start_year end_year",
         },
       ]);
-    console.log(users);
     response.total = users.length;
     response.users = users.map((user) => serializeUser(user));
     return res.status(200).json(response);

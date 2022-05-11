@@ -59,7 +59,7 @@ const Testcase = ({
   errors,
   isLoading,
 }) => {
-  const [expanded, setExpanded] = useState("");
+  const [expanded, setExpanded] = useState("panel1");
   const [output, setOutput] = useState({});
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -80,7 +80,6 @@ const Testcase = ({
             {testcases?.sample?.map((testcase, index) => {
               let sampleOutput =
                 (output?.sample && output?.sample[index]) || {};
-              console.log(testcase);
               return (
                 <Accordion
                   square
@@ -151,7 +150,6 @@ const Testcase = ({
                     let length = (testcases?.sample?.length || 0) + index + 1;
                     let hiddenOutput =
                       (output?.hidden && output?.hidden[index]) || false;
-                    console.log(testcase);
                     return (
                       <Accordion
                         square
