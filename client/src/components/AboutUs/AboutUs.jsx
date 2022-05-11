@@ -2,7 +2,6 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import Logo from "../../images/Loop1.webp";
 import HOD from "../../images/hod.webp";
-import Vadivel from "../../images/vadivel.webp";
 import Vasuki from "../../images/vasuki.webp";
 // import Nivodhini from "../../images/nivodhini.webp";
 
@@ -12,8 +11,7 @@ import Dhusandhan from "../../images/dhus.webp";
 import Gaju from "../../images/gaju.webp";
 import Gobinath from "../../images/gobi.webp";
 import Nandha from "../../images/nandha.webp";
-import Vasanth from "../../images/vasanth.jpeg";
-// import ProfilePic from "../../images/man.webp";
+import Vasanth from "../../images/vasanth.webp";
 import ProfilePic1 from "../../images/woman.webp";
 import GoBack from "../Reducer/GoBack/GoBack";
 import { TeamCard } from "../Reducer/TeamCard/TeamCard";
@@ -52,13 +50,6 @@ export const AboutUs = () => {
               <TeamCard
                 src={Vasuki}
                 name="Mrs. P. Vasuki M.E.,"
-                designation="AP CSE"
-              />
-            </div>
-            <div className="col-md-12 my-2">
-              <TeamCard
-                src={Vadivel}
-                name="Mr. S. Vadivel M.E.,(Ph.D)"
                 designation="AP CSE"
               />
             </div>
