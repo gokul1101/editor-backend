@@ -10,15 +10,22 @@ const generateMachineCode = (folderPath, filePath) => {
     command = `javac ${filePath}`;
   }
   return new Promise((resolve, reject) => {
-    exec(command, { maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
-      if (error) {
-        stderr = stderr.split(filePath);
-        stderr = stderr.filter((err) => err !== "").map((err) => `Main ${err}`);
-        stderr.code = error.code;
-        reject(stderr);
+    exec(
+      command,
+      { maxBuffer: 1024 * 1024, timeout: 10000 },
+      (error, stdout, stderr) => {
+        if (error) {
+          if (error.signal === "SIGTERM") reject(["Request Timeout"]);
+          stderr = stderr.split(filePath);
+          stderr = stderr
+            .filter((err) => err !== "")
+            .map((err) => `Main ${err}`);
+          stderr.code = error.code;
+          reject(stderr);
+        }
+        resolve(stdout);
       }
-      resolve(stdout);
-    });
+    );
   });
 };
 const executeMachineCode = (folderPath, filePath, index, flag) => {
@@ -42,20 +49,27 @@ const executeMachineCode = (folderPath, filePath, index, flag) => {
     else command = `java -cp ${folderPath} Main`;
   }
   return new Promise((resolve, reject) => {
-    exec(command, { maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
-      if (error) {
-        stderr = stderr.split(filePath);
-        stderr = stderr.filter((err) => err !== "").map((err) => `Main ${err}`);
-        stderr.code = error.code;
-        reject(stderr);
+    exec(
+      command,
+      { maxBuffer: 1024 * 1024, timeout: 10000 },
+      (error, stdout, stderr) => {
+        if (error) {
+          if (error.signal === "SIGTERM") reject(["Request Timeout"]);
+          stderr = stderr.split(filePath);
+          stderr = stderr
+            .filter((err) => err !== "")
+            .map((err) => `Main ${err}`);
+          stderr.code = error.code;
+          reject(stderr);
+        }
+        resolve(stdout);
       }
-      resolve(stdout);
-    });
+    );
   });
 };
 const removeFolder = (folderPath) => {
   if (fs.existsSync(folderPath)) {
-    fs.rmdir(folderPath, { recursive: true }, (err) => {
+    fs.rm(folderPath, { recursive: true }, (err) => {
       if (err) console.log(err);
     });
   }
