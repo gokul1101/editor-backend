@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import Logo from "../../images/Loop1.webp";
 import HOD from "../../images/hod.webp";
 import Vasuki from "../../images/vasuki.webp";
-// import Nivodhini from "../../images/nivodhini.webp";
+import Nivodhini from "../../images/nivodhini.webp";
 
 import Gokul from "../../images/gokul.webp";
 import Dhanush from "../../images/dhanush.webp";
@@ -12,7 +12,6 @@ import Gaju from "../../images/gaju.webp";
 import Gobinath from "../../images/gobi.webp";
 import Nandha from "../../images/nandha.webp";
 import Vasanth from "../../images/vasanth.webp";
-import ProfilePic1 from "../../images/woman.webp";
 import GoBack from "../Reducer/GoBack/GoBack";
 import { TeamCard } from "../Reducer/TeamCard/TeamCard";
 import "./AboutUs.css";
@@ -41,7 +40,7 @@ export const AboutUs = () => {
           <div className="d-flex flex-wrap align-items-center justify-content-center col-md-12">
             <div className="col-md-12 my-2">
               <TeamCard
-                src={ProfilePic1}
+                src={Nivodhini}
                 name="Mrs. M.K. Nivodhini M.E.,"
                 designation="AP CSE"
               />

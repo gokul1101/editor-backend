@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import "./Dashboard.css";
-import Male from "../../../../images/man.webp";
+import Man from "../../../../images/man.webp";
+import Woman from "../../../../images/woman.webp";
 import DashImg1 from "../../../../images/card-image-1.webp";
 import DashImg2 from "../../../../images/card-image-2.webp";
 import DashImg3 from "../../../../images/card-image-3.webp";
@@ -21,7 +22,11 @@ const Dashboard = () => {
         <div className="user-info position-relative">
           <div className="d-flex mx-4 pt-3 user-det justify-content-end">
             <div className="gender-info mr-3">
-              <img src={Male} alt="male" height="50" width="50" />
+              {authState?.user?.gender_id === "female" ? (
+                <img src={Woman} alt="female" height="50" width="50" />
+              ) : (
+                <img src={Man} alt="male" height="50" width="50" />
+              )}
             </div>
             <div className="user-profile d-flex flex-column">
               <span className="user-name name-title">
