@@ -3,6 +3,7 @@ const { connect } = require("mongoose");
 const { success, error } = require("consola");
 const cors = require("cors");
 const passport = require("passport");
+const compression = require("compression");
 
 //* CONSTANTS
 const { DB, PORT } = require("./config/index");
@@ -21,6 +22,12 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "100mb" }));
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  compression({
+    level: 6,
+    threshold: 0,
+  })
+);
 app.use(fileupload());
 app.use(passport.initialize());
 require("./middlewares/passport")(passport);

@@ -61,32 +61,32 @@ const App = () => {
       else snackBar(message, "error");
     }
   };
-  // const disabledEvent = (e) => {
-  //   if (e.stopPropagation) {
-  //     e.stopPropagation();
-  //   } else if (window.event) {
-  //     window.event.cancelBubble = true;
-  //   }
-  //   e.preventDefault();
-  //   return false;
-  // };
+  const disabledEvent = (e) => {
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    } else if (window.event) {
+      window.event.cancelBubble = true;
+    }
+    e.preventDefault();
+    return false;
+  };
 
   useEffect(() => {
-    // document.addEventListener("contextmenu", (e) => disabledEvent(e));
-    // document.addEventListener("keydown", (e) => {
-    //   if (e.ctrlKey && (e.key === "u" || e.key === "U")) disabledEvent(e);
-    //   if (e.ctrlKey && e.shiftKey && (e.key === "i" || e.key === "I"))
-    //     disabledEvent(e);
-    //   if (e.ctrlKey && e.shiftKey && (e.key === "j" || e.key === "J"))
-    //     disabledEvent(e);
-    //   if (e.ctrlKey && e.shiftKey && (e.key === "c" || e.key === "C"))
-    //     disabledEvent(e);
-    //   if (e.key === "F12") disabledEvent(e);
-    // });
-    // return () => {
-    //   document.removeEventListener("contextmenu", (e) => disabledEvent(e));
-    //   document.removeEventListener("keydown", (e) => disabledEvent(e));
-    // };
+    document.addEventListener("contextmenu", (e) => disabledEvent(e));
+    document.addEventListener("keydown", (e) => {
+      if (e.ctrlKey && (e.key === "u" || e.key === "U")) disabledEvent(e);
+      if (e.ctrlKey && e.shiftKey && (e.key === "i" || e.key === "I"))
+        disabledEvent(e);
+      if (e.ctrlKey && e.shiftKey && (e.key === "j" || e.key === "J"))
+        disabledEvent(e);
+      if (e.ctrlKey && e.shiftKey && (e.key === "c" || e.key === "C"))
+        disabledEvent(e);
+      if (e.key === "F12") disabledEvent(e);
+    });
+    return () => {
+      document.removeEventListener("contextmenu", (e) => disabledEvent(e));
+      document.removeEventListener("keydown", (e) => disabledEvent(e));
+    };
   }, []);
   return (
     <>
