@@ -13,7 +13,7 @@ import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 import ContestList from "./ContestList/ContestList";
 const Contests = (props) => {
   const [loader, showLoader, hideLoader] = useLoader();
-  const limit = 3;
+  const limit = 10;
   const [authState, authDispatch] = useContext(AuthContext);
   const [contests, setContests] = useState({
     upcoming: [],

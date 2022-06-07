@@ -166,11 +166,12 @@ const quizSubmissionService = async (quizAnswers) => {
     quizAnswers.map(async ({ id, option }) => {
       try {
         const answer = await Answer.findById(id);
-        if (option === answer.options.correctOption) return true;
+        if (option === answer.options.correctOption)
+          return Promise.resolve(true);
       } catch (err) {
         console.log(err);
       }
-      return false;
+      return Promise.reject(false);
     })
   );
   answers.forEach((ans) => (ans ? score++ : null));

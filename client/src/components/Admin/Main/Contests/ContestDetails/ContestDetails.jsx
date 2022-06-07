@@ -119,16 +119,10 @@ const ContestDetails = (props) => {
               </Route>
             </>
           ) : (
-            <></>
+            <Route path={`/contests/:id/statistics`} exact>
+              <ContestStatictics snackBar={props.snackBar} />
+            </Route>
           )}
-          <Route path={`/contests/:id/statistics`} exact>
-            <ContestStatictics snackBar={props.snackBar} />
-          </Route>
-
-          {/* <Route
-            path={`/contests/:id`}
-            render={() => <Redirect to={`/contests/${id}/edit`} />}
-          /> */}
           <Route path="*">
             <PageNotFound />
           </Route>

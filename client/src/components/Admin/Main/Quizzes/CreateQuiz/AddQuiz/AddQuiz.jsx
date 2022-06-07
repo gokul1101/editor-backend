@@ -11,6 +11,7 @@ import QuizQuestion from "./QuizQuestion/QuizQuestion";
 import { useHistory } from "react-router-dom";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import UpdateIcon from "@material-ui/icons/Update";
+import Pagination from "@material-ui/lab/Pagination";
 const AddQuiz = (props) => {
   const history = useHistory();
   const questionTemplate = {
@@ -30,19 +31,28 @@ const AddQuiz = (props) => {
 
   const [authState] = useContext(AuthContext);
   const [questions, setQuestions] = useState([]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(1);
+  const [limit] = useState(10);
   const { id } = useParams();
-
-  const fetchQuizzes = async () => {
+  const handlePagination = (e, value) => {
+    if (page !== value) {
+      setPage(value);
+      fetchQuizzes(value);
+    }
+  };
+  const fetchQuizzes = async (page = 1) => {
     try {
       const {
         status,
-        data: { mcqs, message },
+        data: { mcqs, message, total_mcqs },
       } = await helperService.getQuizQuestions(
-        { id },
+        { id, page },
         { headers: { Authorization: authState.user.token } }
       );
       if (status === 200) {
         setQuestions(mcqs);
+        setTotal(total_mcqs);
         props.snackBar(message, "success");
       }
     } catch ({ message }) {
@@ -299,6 +309,16 @@ const AddQuiz = (props) => {
               />
             );
           })}
+          {console.log(total, limit)}
+          {total > limit && (
+            <Pagination
+              count={Math.floor(total / limit) + (total % limit !== 0 ? 1 : 0)}
+              color="primary"
+              variant="text"
+              className="mt-5 d-flex justify-content-center"
+              onChange={(e, value) => handlePagination(e, value)}
+            />
+          )}
         </div>
       </div>
     </div>

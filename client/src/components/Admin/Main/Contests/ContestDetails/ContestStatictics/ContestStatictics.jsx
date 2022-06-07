@@ -81,7 +81,9 @@ const ContestStatictics = (props) => {
           {submissions.map((e, id) => {
             return (
               <div className="stats d-flex w-100" key={e._id}>
-                <div className="col-md-2 stats-detail">{id + 1}</div>
+                <div className="col-md-2 stats-detail">
+                  {page * limit + id - 9}
+                </div>
                 <div className="col-md-2 stats-detail">{e.user_id.regno}</div>
                 <div className="col-md-3 stats-detail">{e.user_id.name}</div>
                 <div className="col-md-2 stats-detail">
@@ -121,7 +123,11 @@ const ContestStatictics = (props) => {
                     <button className="correct">{idx + 1}</button>
                   </div>
                   <div className="col-md-6 top-scorer">
-                    {submission.user_id.name}
+                    {submission.user_id.regno}
+                    <br />
+                    {submission.user_id.name
+                      ? `(${submission.user_id?.name?.toLowerCase()})`
+                      : ""}
                   </div>
                   <div className="col-md-4 d-flex justify-content-between align-items-center">
                     <img

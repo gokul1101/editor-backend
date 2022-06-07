@@ -115,9 +115,7 @@ const updateMCQ = async ({
 };
 const getAllMcqWithQuizID = async (id, page, limit, flag) => {
   try {
-    let response = {};
-    const count = await Question.countDocuments();
-    response.modelCount = count;
+    const count = await Question.countDocuments({ quiz_id: id });
     const questions = await Question.find({ quiz_id: id })
       .limit(limit * 1)
       .skip((page > 0 ? page - 1 : 1) * limit);
@@ -140,6 +138,7 @@ const getAllMcqWithQuizID = async (id, page, limit, flag) => {
       status: 200,
       message: "MCQs found.",
       mcqs,
+      total_mcqs: count,
     });
   } catch (err) {
     //! Error in getting mcqs

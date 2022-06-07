@@ -399,7 +399,7 @@ const ListUser = (props) => {
           <div className="col-md-4 mt-2">
             <CustomButton
               className="btn-hover color-11 d-flex align-items-center py-2 px-3"
-              onClick={downloadStudentsDetails}
+              onClickHandler={downloadStudentsDetails}
             >
               <GetAppIcon />
               <span className="ml-2 font-weight-bolder">Download Details</span>
